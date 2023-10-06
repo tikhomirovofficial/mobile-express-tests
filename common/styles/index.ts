@@ -14,6 +14,12 @@ const commonStyles = StyleSheet.create({
         display: "flex",
         flexDirection: "column"
     },
+    fCenterCol: {
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center"
+    },
+
     fColumnBetw: {
         display: "flex",
         justifyContent: "space-between",
@@ -36,6 +42,14 @@ const commonStyles = StyleSheet.create({
     },
     fzXL: {
         fontSize: 20
+    },
+    yellowBtn: {
+        padding: 15,
+        borderRadius: 6,
+        textAlign: "center"
+    },
+    yellowBtnText: {
+        fontFamily: "MontserratSemiBold",
     }
 
 })
