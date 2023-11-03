@@ -51,9 +51,11 @@ const WelcomeStep: FC<WelcomeStepProps> = ({title, step, features, buttonContent
 
                 </View>
                 <View style={[commonStyles.fCenterCol, {flexDirection: "row", gap: 13}]}>
-                    <View style={[styles.sliderDot, styles.sliderDotActive]}></View>
-                    <View style={styles.sliderDot}></View>
-                    <View style={styles.sliderDot}></View>
+                    {
+                        Array(3).fill(0).map((item, index) => (
+                            <View style={[styles.sliderDot, (index === step ? styles.sliderDotActive : null)]}></View>
+                        ))
+                    }
                 </View>
                 <View>
                     {buttonContent}
