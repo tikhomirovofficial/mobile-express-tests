@@ -1,22 +1,31 @@
 import React from 'react';
-import WelcomeStep from "../layouts/WelcomeStep";
+import FeauturesLayout from "../layouts/FeaturesLayout";
 import {Text, TouchableOpacity} from "react-native";
 import {LinearGradient} from "expo-linear-gradient";
-import {commonStyles} from "../common/styles";
-
+import {cs} from "../common/styles";
+import {useAppDispatch} from "../app/base/hooks";
+import {setWelcomeStep} from "../app/features/welcome/welcomeSlice";
 const WelcomePatients = () => {
+    const dispatch = useAppDispatch()
+
+    const nextStep = () => {
+        dispatch(setWelcomeStep(1))
+    }
     return (
-        <WelcomeStep features={[
-                        "Лучшее 1",
-                        "Лучшее 2",
+        <FeauturesLayout features={[
+                        "Приглашайте своих пациентов по номеру телефона",
+                        "Назначайте им необходимые анализы",
+                        "Отслеживайте статус заказ",
+                        "Просматривайте результаты, назначенных анализов",
                     ]}
-                     step={0}
-                     title={"Работа с вашими пациентами"}
-                     buttonContent={
-                         <TouchableOpacity>
-                             <LinearGradient style={[commonStyles.yellowBtn, commonStyles.fCenterCol]}
+                         step={0}
+                         image={"step_1.jpg"}
+                         title={"Работа с вашими пациентами"}
+                         buttonContent={
+                         <TouchableOpacity onPress={nextStep}>
+                             <LinearGradient style={[cs.yellowBtn, cs.fCenterCol]}
                                              colors={["#FB0", "#FFCB3D", "#FFDA75"]}>
-                                 <Text style={[commonStyles.fzM, commonStyles.yellowBtnText]}>Далее</Text>
+                                 <Text style={[cs.fzM, cs.yellowBtnText]}>Далее</Text>
                              </LinearGradient>
                          </TouchableOpacity>
                      }/>

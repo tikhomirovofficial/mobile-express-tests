@@ -14,6 +14,7 @@ const styles = StyleSheet.create({
         alignSelf: "center",
         maxWidth: "85.2%",
         width: "100%",
+        paddingBottom: 30
     }
 })
 export default AppContainer;

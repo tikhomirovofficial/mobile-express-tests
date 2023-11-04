@@ -1,33 +1,40 @@
-import React, {FC, ReactNode} from 'react';
-import {ImageBackground, StyleSheet, Text, TouchableOpacity, View} from "react-native";
+import React, {FC, ReactNode, useEffect} from 'react';
+import {ImageBackground, StyleSheet, Text, View} from "react-native";
 import {LinearGradient} from "expo-linear-gradient";
 import ContentWrapper from "../../components/ContentWrapper";
 import AppContainer from "../../components/AppContainer";
-import {commonStyles} from "../../common/styles";
+import {cs} from "../../common/styles";
 import {CheckboxIcon} from "../../icons";
 
 interface WelcomeStepProps {
     title: string,
     features: Array<string>
-    step?: number
+    step?: number,
     buttonContent: ReactNode
+    image: string
 }
-const WelcomeStep: FC<WelcomeStepProps> = ({title, step, features, buttonContent}) => {
+
+const FeauturesLayout: FC<WelcomeStepProps> = ({title, image, step, features, buttonContent}) => {
+    useEffect(() => {
+
+    }, [])
     return (
         <View style={{flex: 1}}>
             <View style={styles.backgroundWrapper}>
                 <ImageBackground style={[styles.background]} resizeMode={"cover"}
-                                 source={require("../../assets/step_1.jpg")}>
-                    <LinearGradient start={{ x: 0.18, y: 0 }}
-                                    end={{ x: 0, y: 0.8 }} style={{height: "80%", position: "absolute", bottom: 0, left: 0, width: "100%"}}
+                                 source={require(`../../assets/step_1.jpg`)}>
+                    <LinearGradient start={{x: 0.18, y: 0}}
+                                    end={{x: 0, y: 0.8}}
+                                    style={{height: "80%", position: "absolute", bottom: 0, left: 0, width: "100%"}}
                                     colors={['rgba(255, 0, 0, 0.0)', 'white']}>
 
                     </LinearGradient>
                     <ContentWrapper style={{height: "100%"}}>
                         <AppContainer style={{height: "100%"}}>
-                            <View style={[commonStyles.fColumnBetw, {flex: 1, paddingBottom: 30}]}>
-                                <Text style={[styles.textSkip, commonStyles.textYellow]} onPress={() => alert("sas")}>Пропустить</Text>
-                                <Text style={[commonStyles.fwBold, commonStyles.fzXL, styles.welcomeStepTitle]}>{title}</Text>
+                            <View style={[cs.fColumnBetw, {flex: 1, paddingBottom: 30}]}>
+                                <Text style={[styles.textSkip, cs.textYellow]}
+                                      onPress={() => alert("sas")}>Пропустить</Text>
+                                <Text style={[cs.fwBold, cs.fzXL, styles.welcomeStepTitle]}>{title}</Text>
                             </View>
 
 
@@ -39,21 +46,21 @@ const WelcomeStep: FC<WelcomeStepProps> = ({title, step, features, buttonContent
             </View>
 
             <AppContainer style={{flex: 1, flexDirection: "column", justifyContent: "space-between"}}>
-                <View style={[commonStyles.fColumn, styles.welcomeStepFeatures]}>
+                <View style={[cs.fColumn, styles.welcomeStepFeatures]}>
                     {features.map(item => (
-                        <View style={[commonStyles.dF, {flexDirection: "row", gap: 8}]}>
+                        <View key={item} style={[cs.dF, {flexDirection: "row", gap: 8}]}>
                             <CheckboxIcon/>
-                            <Text style={[commonStyles.fzM, styles.welcomeStepFeatureText]}>{item}</Text>
+                            <Text style={[cs.fzM, styles.welcomeStepFeatureText]}>{item}</Text>
                         </View>
                     ))}
 
 
-
                 </View>
-                <View style={[commonStyles.fCenterCol, {flexDirection: "row", gap: 13}]}>
+                <View style={[cs.fCenterCol, {flexDirection: "row", gap: 13}]}>
                     {
                         Array(3).fill(0).map((item, index) => (
-                            <View style={[styles.sliderDot, (index === step ? styles.sliderDotActive : null)]}></View>
+                            <View key={index}
+                                  style={[styles.sliderDot, (index === step ? styles.sliderDotActive : null)]}></View>
                         ))
                     }
                 </View>
@@ -76,7 +83,7 @@ const styles = StyleSheet.create({
         marginTop: -3,
         flex: 1
     },
-    textSkip:{
+    textSkip: {
         fontFamily: "MontserratBold",
         paddingBottom: 40
     },
@@ -93,7 +100,6 @@ const styles = StyleSheet.create({
         },
         shadowOpacity: 0.23,
         shadowRadius: 2.62,
-
         elevation: 4,
     },
     welcomeStepTitle: {
@@ -118,4 +124,4 @@ const styles = StyleSheet.create({
     },
 
 });
-export default WelcomeStep;
+export default FeauturesLayout;
