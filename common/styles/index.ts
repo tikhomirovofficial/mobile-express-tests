@@ -50,6 +50,9 @@ const cs = StyleSheet.create({
     fzXL: {
         fontSize: 20
     },
+    fwMedium: {
+        fontWeight: "500"
+    },
     yellowBtn: {
         padding: 15,
         borderRadius: 6,
@@ -92,6 +95,9 @@ const cs = StyleSheet.create({
     },
     spaceM: {
         gap: 16
+    },
+    spaceS: {
+        gap: 8
     },
     statusGray: {
         borderRadius: 2,

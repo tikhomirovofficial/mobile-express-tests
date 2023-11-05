@@ -1,9 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit'
 import {welcomeReducer} from "../features/welcome/welcomeSlice";
+import {modalsReducer} from "../features/modals/modalsSlice";
 
 export const store = configureStore({
     reducer: {
-        welcome: welcomeReducer
+        welcome: welcomeReducer,
+        modals: modalsReducer
     }
 })
 
