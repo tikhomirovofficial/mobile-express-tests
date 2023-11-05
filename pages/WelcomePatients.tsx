@@ -5,6 +5,7 @@ import {LinearGradient} from "expo-linear-gradient";
 import {cs} from "../common/styles";
 import {useAppDispatch} from "../app/base/hooks";
 import {setWelcomeStep} from "../app/features/welcome/welcomeSlice";
+import ButtonYellow from "../components/Buttons/ButtonYellow";
 const WelcomePatients = () => {
     const dispatch = useAppDispatch()
 
@@ -22,12 +23,9 @@ const WelcomePatients = () => {
                          image={"step_1.jpg"}
                          title={"Работа с вашими пациентами"}
                          buttonContent={
-                         <TouchableOpacity onPress={nextStep}>
-                             <LinearGradient style={[cs.yellowBtn, cs.fCenterCol]}
-                                             colors={["#FB0", "#FFCB3D", "#FFDA75"]}>
+                             <ButtonYellow handlePress={nextStep}>
                                  <Text style={[cs.fzM, cs.yellowBtnText]}>Далее</Text>
-                             </LinearGradient>
-                         </TouchableOpacity>
+                             </ButtonYellow>
                      }/>
     );
 };

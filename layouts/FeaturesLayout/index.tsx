@@ -19,6 +19,7 @@ const FeauturesLayout: FC<WelcomeStepProps> = ({title, image, step, features, bu
 
     }, [])
     return (
+
         <View style={{flex: 1}}>
             <View style={styles.backgroundWrapper}>
                 <ImageBackground style={[styles.background]} resizeMode={"cover"}

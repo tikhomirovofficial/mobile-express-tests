@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect} from 'react';
 import WhiteBordered from "../../../layouts/WhiteBordered";
 import WhiteBorderedLayout from "../../../layouts/WhiteBordered";
 import {Animated, Modal, StyleSheet, Text, TouchableOpacity, View} from "react-native";
@@ -21,6 +21,18 @@ const analysisData: OrderAnalysisType[] = [
         date: "25.09.2023",
         orderNumber: "02-016",
         status: "NOT_PAID"
+    },
+    {
+        customer: "Артём Тихомиров",
+        date: "25.09.2023",
+        orderNumber: "02-016",
+        status: "NOT_PAID"
+    },
+    {
+        customer: "Дмитрий Тихомиров",
+        date: "25.09.2023",
+        orderNumber: "02-016",
+        status: "NOT_PAID"
     }
 ]
 const Main = () => {
@@ -31,7 +43,7 @@ const Main = () => {
     useEffect(() => {
         if (orderInfoModal) {
             Animated.spring(scaleValue, {
-                toValue: .8,
+                toValue: .84,
                 useNativeDriver: true,
             }).start();
         } else {
@@ -122,24 +134,25 @@ const Main = () => {
                             <View style={[cs.spaceM]}>
                                 <Text style={[cs.fzXL, cs.fwBold]}>Результаты анализов</Text>
                                 <Text style={[cs.colorGray, cs.fzM]}>
-                                    Здесь появится возможность скачать результаты анализов после того, как пациент оплатит и сдаст анализы в нашей лаборатории.
+                                    Здесь появится возможность скачать результаты анализов после того, как пациент
+                                    оплатит и сдаст анализы в нашей лаборатории.
                                 </Text>
                             </View>
                             <View style={[cs.spaceM]}>
                                 <View style={[cs.dF, cs.fRow, cs.fAlCenter, cs.spaceS]}>
                                     <Text style={[cs.fzXL, cs.fwBold]}>Список анализов</Text>
-                                    <Text style={[styles.analysisCount]}>2</Text>
+                                    <Text style={[styles.analysisCount, cs.bgYellow]}>2</Text>
                                 </View>
 
                                 <View style={[cs.fColumn]}>
-                                    <Text style={[cs.fwMedium, cs.colorDark, cs.fzM]}>1. Бактериальная панель (IgE) (П)</Text>
+                                    <Text style={[cs.fwMedium, cs.colorDark, cs.fzM]}>1. Бактериальная панель (IgE)
+                                        (П)</Text>
                                     <Text style={[cs.fwMedium, cs.colorDark, cs.fzM]}>2. Т3 свободный (П)</Text>
-                                    <Text style={[cs.fwMedium, cs.colorDark, cs.fzM]}>3. ФСГ (фолликулостимулирующий гормон) (П)</Text>
+                                    <Text style={[cs.fwMedium, cs.colorDark, cs.fzM]}>3. ФСГ (фолликулостимулирующий
+                                        гормон) (П)</Text>
                                 </View>
                             </View>
-
                         </View>
-
                     </View>
                 </WhiteBordered>
             </Modal>
@@ -159,9 +172,8 @@ const styles = StyleSheet.create({
         paddingVertical: 2,
         marginTop: 3,
         borderRadius: 1000,
-        backgroundColor: "#FFCF00",
         fontSize: 11,
-        fontWeight:"600"
+        fontWeight: "600"
     },
     orderInfo: {
         maxWidth: 240,

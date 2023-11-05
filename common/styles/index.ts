@@ -2,6 +2,7 @@ import {CSSProperties} from "react";
 import {StyleSheet} from "react-native";
 
 const cs = StyleSheet.create({
+
     dF: {
         display: "flex",
     },
@@ -36,7 +37,8 @@ const cs = StyleSheet.create({
         color: "#FFCF00"
     },
     fwBold: {
-        fontWeight: "bold"
+        fontWeight: "bold",
+        fontFamily: "MontserratBold",
     },
     fzXS: {
       fontSize: 12
@@ -51,7 +53,22 @@ const cs = StyleSheet.create({
         fontSize: 20
     },
     fwMedium: {
-        fontWeight: "500"
+        fontWeight: "500",
+        fontFamily: "MontserratMedium",
+    },
+    fwSemi: {
+        fontWeight: "600"
+    },
+    wBlockShadow: {
+        shadowColor: "rgba(19, 101, 101, 0.3)",
+        shadowOffset: {
+            width: 0,
+            height: 0,
+        },
+        shadowOpacity: 30,
+        shadowRadius: 10,
+        backgroundColor: "white",
+        elevation: 10,
     },
     yellowBtn: {
         padding: 15,
@@ -70,6 +87,9 @@ const cs = StyleSheet.create({
     flexOne: {
         flex: 1
     },
+    bgYellow: {
+        backgroundColor: "#FFCF00",
+    },
     fClickableGray: {
         fontWeight: "500",
         color: "#D7D7D7"
@@ -84,11 +104,20 @@ const cs = StyleSheet.create({
     colorDark: {
       color: "#4D4D4D"
     },
+    colorRed: {
+        color: "#F40F0F"
+    },
     colorGray: {
         color: "#A9A9A9"
     },
     txtCenter: {
         textAlign: "center"
+    },
+    spaceXXL: {
+        gap: 40
+    },
+    spaceXL: {
+        gap: 32
     },
     spaceL: {
         gap: 24
@@ -98,6 +127,9 @@ const cs = StyleSheet.create({
     },
     spaceS: {
         gap: 8
+    },
+    circle: {
+        borderRadius: 1000
     },
     statusGray: {
         borderRadius: 2,
