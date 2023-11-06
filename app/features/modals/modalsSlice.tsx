@@ -2,10 +2,12 @@ import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 
 type ModalsSliceState = {
     orderInfoModal: boolean
+    profileEditModal: boolean
 }
 
 const initialState: ModalsSliceState = {
-    orderInfoModal: false
+    orderInfoModal: false,
+    profileEditModal: false
 }
 export const ModalsSlice = createSlice({
     name: "modals",
@@ -13,12 +15,16 @@ export const ModalsSlice = createSlice({
     reducers: {
         handleOrderInfoModal: (state) => {
             state.orderInfoModal = !state.orderInfoModal
+        },
+        handleProfileEditModal: (state) => {
+            state.profileEditModal = !state.profileEditModal
         }
     }
 })
 
 export const {
-    handleOrderInfoModal
+    handleOrderInfoModal,
+    handleProfileEditModal
 } = ModalsSlice.actions
 
 

@@ -1,16 +1,23 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import WhiteBorderedLayout from "../../../layouts/WhiteBordered";
-import {Animated, Modal, StyleSheet, Text, TouchableOpacity, View} from "react-native";
+import {Animated, Modal, ScrollView, StyleSheet, Text, TouchableOpacity, View, ViewProps} from "react-native";
 import {cs} from "../../../common/styles";
 import {useAppDispatch, useAppSelector} from "../../../app/base/hooks";
 import {HeartIcon, Logo, PhotoIcon, ProfileIcon, ProfilesIcon, WalletIcon} from "../../../icons";
 import {fs} from "../../../navigation/AppNavigator";
+import WhiteBordered from "../../../layouts/WhiteBordered";
+import {handleOrderInfoModal, handleProfileEditModal} from "../../../app/features/modals/modalsSlice";
+import ButtonYellow from "../../../components/Buttons/ButtonYellow";
+import ProfileEditModal from "../../../components/Modals/ProfileEditModal";
 
 
 const Profile = () => {
     const dispatch = useAppDispatch()
     const {orderInfoModal} = useAppSelector(state => state.modals)
     const scaleValue = new Animated.Value(1);
+    const handleProfileDataModal = () => {
+        dispatch(handleProfileEditModal())
+    }
 
     useEffect(() => {
         if (orderInfoModal) {
@@ -25,6 +32,7 @@ const Profile = () => {
             }).start();
         }
     }, [orderInfoModal, scaleValue]);
+
     return (
         <Animated.ScrollView style={{transform: [{scale: scaleValue}]}}>
             <WhiteBorderedLayout style={{
@@ -47,7 +55,7 @@ const Profile = () => {
                     </View>
                     <View style={[cs.fColumn, cs.spaceM]}>
                         <View style={[cs.fRowBetw, cs.spaceM, {flexWrap: "wrap"}]}>
-                            <TouchableOpacity style={[styles.profileHubItem, cs.wBlockShadow, cs.fAlCenter, cs.flexOne]}>
+                            <TouchableOpacity onPress={handleProfileDataModal} style={[styles.profileHubItem, cs.wBlockShadow, cs.fAlCenter, cs.flexOne]}>
                                 <View style={[styles.profileItemIcon, cs.rootBg, cs.circle, cs.fCenterCol]}>
                                     <ProfileIcon/>
                                 </View>
@@ -95,10 +103,8 @@ const Profile = () => {
                     </View>
 
                 </View>
-
-
-
             </WhiteBorderedLayout>
+           <ProfileEditModal/>
         </Animated.ScrollView>
 
     );
@@ -126,6 +132,13 @@ const styles = StyleSheet.create({
     profileItemIcon:{
         height: 64,
         width: 64
+    },
+    profileDataBlock: {
+        backgroundColor: "blue",
+        minHeight: "100%"
+    },
+    profileDataContent: {
+        backgroundColor: "red"
     }
 })
 export default Profile;

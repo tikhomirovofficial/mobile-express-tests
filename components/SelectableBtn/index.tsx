@@ -3,13 +3,13 @@ import {cs} from "../../common/styles";
 import {LinearGradient} from "expo-linear-gradient";
 import {StyleSheet, Text, TouchableOpacity, ViewStyle} from "react-native";
 
-type ButtonYellowProps = {
-    children: ReactNode,
+type SelectableBtnProps = {
     isFilled?: boolean,
-    style?: ViewStyle
+    style?: ViewStyle,
+    text: string
     handlePress: () => any
 }
-const ButtonYellow: FC<ButtonYellowProps> = ({children, handlePress, style, isFilled = true}) => {
+const ButtonYellow: FC<SelectableBtnProps> = ({handlePress, text, style, isFilled = true}) => {
 
     if(isFilled) {
         return (
@@ -18,14 +18,14 @@ const ButtonYellow: FC<ButtonYellowProps> = ({children, handlePress, style, isFi
                                 end={{x: 0.24, y: -0.4}}
                                 style={[cs.yellowBtn, cs.fCenterCol, style]}
                                 colors={["#FB0", "#FFCB3D", "#FFDA75"]}>
-                    {children}
+                    <Text style={[cs.fzM, cs.yellowBtnText]}>{text}</Text>
                 </LinearGradient>
             </TouchableOpacity>
         );
     }
     return (
         <TouchableOpacity onPress={handlePress}  style={[cs.yellowBtn, cs.fCenterCol, styles.unfilledButton, style]}>
-            {children}
+            <Text style={[cs.fzM, cs.yellowBtnText, cs.textYellow]}>{text}</Text>
         </TouchableOpacity>
     )
 

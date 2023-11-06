@@ -28,7 +28,7 @@ const AppNavigator = () => {
     return (
         <NavigationContainer>
             <View style={styles.main}>
-                <Stack.Navigator initialRouteName={"register"}
+                <Stack.Navigator initialRouteName={"home"}
                                  screenOptions={{headerShown: false, contentStyle: cs.rootBg}}>
                     <Stack.Screen name="home" component={AppTabs}/>
                     <Stack.Screen name="register" component={WelcomeContainer}/>
