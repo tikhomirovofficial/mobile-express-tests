@@ -11,7 +11,7 @@ interface WelcomeStepProps {
     features: Array<string>
     step?: number,
     buttonContent: ReactNode
-    image: string
+    image: ImageBitmap
 }
 
 const FeauturesLayout: FC<WelcomeStepProps> = ({title, image, step, features, buttonContent}) => {
@@ -23,7 +23,7 @@ const FeauturesLayout: FC<WelcomeStepProps> = ({title, image, step, features, bu
         <View style={{flex: 1}}>
             <View style={styles.backgroundWrapper}>
                 <ImageBackground style={[styles.background]} resizeMode={"cover"}
-                                 source={require(`../../assets/step_1.jpg`)}>
+                                 source={image}>
                     <LinearGradient start={{x: 0.18, y: 0}}
                                     end={{x: 0, y: 0.8}}
                                     style={{height: "80%", position: "absolute", bottom: 0, left: 0, width: "100%"}}
@@ -61,7 +61,7 @@ const FeauturesLayout: FC<WelcomeStepProps> = ({title, image, step, features, bu
                     {
                         Array(3).fill(0).map((item, index) => (
                             <View key={index}
-                                  style={[styles.sliderDot, (index === step ? styles.sliderDotActive : null)]}></View>
+                                  style={[cs.sliderDot, (index === step ? cs.sliderDotActive : null)]}></View>
                         ))
                     }
                 </View>
@@ -113,16 +113,7 @@ const styles = StyleSheet.create({
     },
     contentWelcome: {
         backgroundColor: "red"
-    },
-    sliderDot: {
-        height: 6,
-        width: 6,
-        borderRadius: 3,
-        backgroundColor: "rgba(54, 202, 203, 1)"
-    },
-    sliderDotActive: {
-        transform: "scale(1.8)"
-    },
+    }
 
 });
 export default FeauturesLayout;

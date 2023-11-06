@@ -1,19 +1,21 @@
 import React, {FC, ReactNode} from 'react';
-import {Dimensions, ScrollView, StyleSheet, View, ViewStyle} from "react-native";
+import {Dimensions, ScrollView, StyleSheet, View, ViewStyle, Text} from "react-native";
 import AppContainer from "../../components/AppContainer";
 import {cs} from "../../common/styles";
 
 type WhiteBorderedProps = {
     children: ReactNode,
-    style?: ViewStyle
+    style?: ViewStyle,
+    topContent?: ReactNode
 }
 const minContainerHeight = Dimensions.get("window").height - 60
 
-const WhiteBorderedLayout: FC<WhiteBorderedProps> = ({children, style}) => {
+const WhiteBorderedLayout: FC<WhiteBorderedProps> = ({children, topContent, style}) => {
     return (
         <View style={styles.baseView}>
             <ScrollView contentContainerStyle={styles.scrollContainer} style={cs.flexOne}>
                 <View style={styles.containerWrapperScroll}>
+                    {topContent}
                     <View style={[styles.whiteContainer, style]}>
                         <AppContainer>
                             {children}
@@ -45,6 +47,7 @@ const styles = StyleSheet.create({
     containerWrapperScroll: {
         display: "flex",
         minHeight: "100%",
+        gap: 16,
         flex: 1,
         paddingTop: 80,
         justifyContent: "flex-end",

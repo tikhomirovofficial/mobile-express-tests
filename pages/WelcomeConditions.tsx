@@ -5,6 +5,7 @@ import {LinearGradient} from "expo-linear-gradient";
 import {cs} from "../common/styles";
 import {useAppDispatch} from "../app/base/hooks";
 import {setWelcomeStep} from "../app/features/welcome/welcomeSlice";
+const WelcomeConditionsImage = require('../assets/welcome_conditions.jpg')
 
 const WelcomePatients = () => {
     const dispatch = useAppDispatch()
@@ -19,7 +20,7 @@ const WelcomePatients = () => {
                         "Удобный и понятный интерфейс приложения",
                     ]}
                          step={1}
-                         image={"step_1.jpg"}
+                         image={WelcomeConditionsImage}
                          title={"Комфортные условия вашей работы"}
                          buttonContent={
                             <View style={[cs.fRowBetw, cs.fAlCenter]}>

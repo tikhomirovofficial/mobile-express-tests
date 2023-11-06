@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {FC, useEffect, useRef, useState} from 'react';
 import WhiteBorderedLayout from "../../../layouts/WhiteBordered";
 import {Animated, Modal, ScrollView, StyleSheet, Text, TouchableOpacity, View, ViewProps} from "react-native";
 import {cs} from "../../../common/styles";
@@ -6,19 +6,25 @@ import {useAppDispatch, useAppSelector} from "../../../app/base/hooks";
 import {HeartIcon, Logo, PhotoIcon, ProfileIcon, ProfilesIcon, WalletIcon} from "../../../icons";
 import {fs} from "../../../navigation/AppNavigator";
 import WhiteBordered from "../../../layouts/WhiteBordered";
-import {handleOrderInfoModal, handleProfileEditModal} from "../../../app/features/modals/modalsSlice";
+import {
+    handleOrderInfoModal,
+    handlePatientsModal,
+    handleProfileEditModal
+} from "../../../app/features/modals/modalsSlice";
 import ButtonYellow from "../../../components/Buttons/ButtonYellow";
 import ProfileEditModal from "../../../components/Modals/ProfileEditModal";
+import PatientsModal from "../../../components/Modals/PatientsModal";
+import {NavProps} from "../../../types/common.types";
 
 
-const Profile = () => {
+const Profile: FC<NavProps> = ({navigation}) => {
     const dispatch = useAppDispatch()
     const {orderInfoModal} = useAppSelector(state => state.modals)
     const scaleValue = new Animated.Value(1);
     const handleProfileDataModal = () => {
         dispatch(handleProfileEditModal())
     }
-
+    const handlePatients = () => dispatch(handlePatientsModal())
     useEffect(() => {
         if (orderInfoModal) {
             Animated.spring(scaleValue, {
@@ -74,7 +80,7 @@ const Profile = () => {
                                 </View>
 
                             </TouchableOpacity>
-                            <TouchableOpacity style={[styles.profileHubItem, cs.wBlockShadow, cs.fAlCenter, cs.flexOne]}>
+                            <TouchableOpacity onPress={handlePatients} style={[styles.profileHubItem, cs.wBlockShadow, cs.fAlCenter, cs.flexOne]}>
                                 <View style={[styles.profileItemIcon, cs.rootBg, cs.circle, cs.fCenterCol]}>
                                     <ProfilesIcon/>
                                 </View>
@@ -104,6 +110,7 @@ const Profile = () => {
                 </View>
             </WhiteBorderedLayout>
            <ProfileEditModal/>
+           <PatientsModal navigation={navigation}/>
         </Animated.ScrollView>
 
     );

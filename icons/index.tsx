@@ -57,6 +57,60 @@ export const WhatsappIcon: FC<IconProps> = ({width = 64, height = 64}) => {
 
     )
 }
+export const ArrowLeft: FC<IconProps> = ({width = 10, height = 16, stroke = "#FFCF00"}) => {
+    return (
+        <Svg width={width} height={height} viewBox="0 0 10 16" fill="none">
+            <Path d="M8.5 15L1.5 8L8.5 1" stroke={stroke} strokeWidth="1.5" strokeLinecap="round"
+                  strokeLinejoin="round"/>
+        </Svg>
+
+    )
+}
+export const SearchIcon: FC<IconProps> = ({width = 17, height = 18}) => {
+    return (
+        <Svg width="17" height="18" viewBox="0 0 17 18" fill="none">
+            <Path
+                d="M0 7.43555C0 6.52246 0.171549 5.66748 0.514648 4.87061C0.857747 4.0682 1.33366 3.36263 1.94238 2.75391C2.55111
+                2.14518 3.25391 1.66927 4.05078 1.32617C4.85319 0.983073 5.71094 0.811523 6.62402 0.811523C7.53711 0.811523 8.39209 0.983073 9.18896 1.32617C9.99137 1.66927 10.6969 2.14518 11.3057
+                2.75391C11.9144 3.36263 12.3903 4.0682 12.7334 4.87061C13.0765 5.66748 13.248 6.52246 13.248 7.43555C13.248 8.19369 13.1263
+                8.91309 12.8828 9.59375C12.6449 10.2744 12.3128 10.8914 11.8867 11.4448L15.9458 15.5288C16.0343 15.6174 16.1007 15.7197
+                16.145 15.8359C16.1948 15.9521 16.2197 16.0767 16.2197 16.2095C16.2197 16.3921 16.1782 16.5581 16.0952 16.7075C16.0177 16.8569
+                15.9071 16.9731 15.7632 17.0562C15.6193 17.1447 15.4533 17.189 15.2651 17.189C15.1323 17.189 15.005 17.1641 14.8833
+                17.1143C14.7671 17.07 14.6592 17.0008 14.5596 16.9067L10.4756 12.8145C9.93327 13.2018 9.33561 13.5062 8.68262 13.7275C8.02962
+                13.9489 7.34342 14.0596 6.62402 14.0596C5.71094 14.0596 4.85319 13.888 4.05078 13.5449C3.25391 13.2018 2.55111 12.7259 1.94238 12.1172C1.33366 11.5085
+                0.857747 10.8057 0.514648 10.0088C0.171549 9.20638 0 8.34863 0 7.43555ZM1.41943 7.43555C1.41943 8.15495 1.55225 8.83008 1.81787 9.46094C2.08903 10.0863 2.46257 10.6369 2.93848 11.1128C3.41992 11.5887 3.97331 11.9622 4.59863 12.2334C5.22949 12.5046 5.90462 12.6401 6.62402 12.6401C7.34342 12.6401 8.01579 12.5046 8.64111 12.2334C9.27197 11.9622 9.82536 11.5887 10.3013 11.1128C10.7772 10.6369 11.1507 10.0863 11.4219 9.46094C11.693 8.83008 11.8286 8.15495 11.8286 7.43555C11.8286 6.71615 11.693 6.04378 11.4219 5.41846C11.1507 4.7876 10.7772 4.23421 10.3013 3.7583C9.82536 3.27686 9.27197 2.90332 8.64111 2.6377C8.01579 2.36654 7.34342 2.23096 6.62402 2.23096C5.90462 2.23096 5.22949 2.36654 4.59863 2.6377C3.97331 2.90332 3.41992 3.27686 2.93848 3.7583C2.46257 4.23421 2.08903 4.7876 1.81787 5.41846C1.55225 6.04378 1.41943 6.71615 1.41943 7.43555Z"
+                fill="#3C3C43" fillOpacity="0.6"/>
+        </Svg>
+
+    )
+}
+
+
+export const CheckedBorderedIcon: FC<IconProps> = ({width = 20, height = 20}) => {
+    return (
+        <Svg width={width} height={height} viewBox="0 0 20 20" fill="none">
+            <Path fill-rule="evenodd" clip-rule="evenodd"
+                  d="M14.3344 0.75H5.66543C2.64443 0.75 0.750427 2.889 0.750427 5.916V14.084C0.750427 17.111 2.63543 19.25 5.66543 19.25H14.3334C17.3644 19.25 19.2504 17.111 19.2504 14.084V5.916C19.2504 2.889 17.3644 0.75 14.3344 0.75Z"
+                  fill="url(#paint0_linear_819_387)" stroke="url(#paint1_linear_819_387)" strokeWidth="1.5"
+                  strokeLinecap="round" strokeLinejoin="round"/>
+            <Path d="M6.43994 9.99995L8.81394 12.373L13.5599 7.62695" stroke="white" stroke-width="1.5"
+                  stroke-linecap="round" stroke-linejoin="round"/>
+            <Defs>
+                <LinearGradient id="paint0_linear_819_387" x1="0.750427" y1="19.25" x2="19.2504" y2="0.750002"
+                                gradientUnits="userSpaceOnUse">
+                    <Stop stopColor="#12B2B3"/>
+                    <Stop offset="1" stopColor="#56E0E0"/>
+                </LinearGradient>
+                <LinearGradient id="paint1_linear_819_387" x1="0.750427" y1="19.25" x2="19.2504" y2="0.750002"
+                                gradientUnits="userSpaceOnUse">
+                    <Stop stopColor="#12B2B3"/>
+                    <Stop offset="1" stopColor="#56E0E0"/>
+                </LinearGradient>
+            </Defs>
+        </Svg>
+
+    )
+}
 export const PhotoIcon: FC<IconProps> = ({width = 24, height = 22}) => {
     return (
         <Svg width={width} height={height} viewBox="0 0 28 24" fill="none">
@@ -73,6 +127,17 @@ export const PhotoIcon: FC<IconProps> = ({width = 24, height = 22}) => {
 
     )
 }
+export const UncheckedBorderedIcon: FC<IconProps> = ({width = 20, height = 20}) => {
+    return (
+        <Svg width={width} height={height} viewBox="0 0 20 20" fill="none">
+            <Path fillRule="evenodd" clip-rule="evenodd"
+                  d="M14.3344 0.75H5.66543C2.64443 0.75 0.750427 2.889 0.750427 5.916V14.084C0.750427 17.111 2.63543 19.25 5.66543 19.25H14.3334C17.3644 19.25 19.2504 17.111 19.2504 14.084V5.916C19.2504 2.889 17.3644 0.75 14.3344 0.75Z"
+                  fill="white" stroke="#A9A9A9" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+        </Svg>
+
+    )
+}
+
 export const HeartIcon: FC<IconProps> = ({width = 16, height = 16}) => {
     return (
         <Svg width={width} height={height} viewBox="0 0 16 16" fill="none">
@@ -115,7 +180,7 @@ export const WalletIcon: FC<IconProps> = ({width = 22, height = 20, stroke = "#4
         <Svg width={width} height={height} viewBox="0 0 22 20" fill="none">
             <Path
                 d="M20.6389 12.3957H16.5906C15.1042 12.3948 13.8993 11.1909 13.8984 9.70446C13.8984 8.21801 15.1042 7.01409 16.5906 7.01318H20.6389"
-                stroke="#4D4D4D" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                stroke="#4D4D4D" strokeWidth="1.5" stroke-linecap="round" stroke-linejoin="round"/>
             <Path d="M17.0485 9.64294H16.7369" stroke={stroke} strokeWidth="1.5" strokeLinecap="round"
                   stroke-linejoin="round"/>
             <Path fill-rule="evenodd" clip-rule="evenodd"

@@ -11,10 +11,9 @@ const AnalysisCard: FC<OrderAnalysisType> = ({
                                                  orderNumber,
                                                  date,
                                                  customer,
-                                                 status
+                                                 status,
+                                                 handlePress,
                                              }) => {
-    const dispatch = useAppDispatch()
-    const {orderInfoModal} = useAppSelector(state => state.modals)
     const getStatusObj = (status: "PAID" | "NOT_PAID") => {
         const statusObj = {
             styleBlock: cs.statusGray,
@@ -26,11 +25,9 @@ const AnalysisCard: FC<OrderAnalysisType> = ({
         }
         return statusObj
     }
-    const openOrderInfo = () => {
-        dispatch(handleOrderInfoModal())
-    }
+
     return (
-        <TouchableOpacity onPress={openOrderInfo} style={[styles.card, cs.spaceL]}>
+        <TouchableOpacity onPress={handlePress} style={[styles.card, cs.spaceL]}>
             <View style={[cs.fColumn, styles.cardTop]}>
                 <View style={[cs.fRowBetw, cs.fAlCenter]}>
                     <View style={[styles.orderNum, cs.fAlCenter, cs.fRow]}>
@@ -41,7 +38,8 @@ const AnalysisCard: FC<OrderAnalysisType> = ({
                     </View>
                     <Text style={[cs.colorGray, cs.fzS]}>{date}</Text>
                 </View>
-                <Text style={[cs.colorGray, cs.fzXS]}>{customer}</Text>
+                {customer.length ? <Text style={[cs.colorGray, cs.fzXS]}>{customer}</Text> : null}
+
             </View>
             <View style={[cs.fRowBetw, cs.fAlCenter, cs.flexOne, styles.cardBottom]}>
                 <View style={[getStatusObj(status).styleBlock, styles.statusBlock]}>

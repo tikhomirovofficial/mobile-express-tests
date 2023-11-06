@@ -9,28 +9,14 @@ import {TelegramIcon, WhatsappIcon} from "../../../icons";
 
 const Support = () => {
     const dispatch = useAppDispatch()
-    const {orderInfoModal} = useAppSelector(state => state.modals)
-    const scaleValue = new Animated.Value(1);
-
-    const toTelegram = () => Linking.openURL("/")
-    const toWhatsapp= () => Linking.openURL("/")
 
 
-    useEffect(() => {
-        if (orderInfoModal) {
-            Animated.spring(scaleValue, {
-                toValue: .84,
-                useNativeDriver: true,
-            }).start();
-        } else {
-            Animated.spring(scaleValue, {
-                toValue: 1,
-                useNativeDriver: true
-            }).start();
-        }
-    }, [orderInfoModal, scaleValue]);
+    const toTelegram = () => Linking.openURL("https://google.com")
+    const toWhatsapp= () => Linking.openURL("https://google.com")
+
+
     return (
-        <Animated.ScrollView style={{transform: [{scale: scaleValue}]}}>
+        <Animated.ScrollView>
             <WhiteBorderedLayout style={{
                 paddingTop: 32
             }}>

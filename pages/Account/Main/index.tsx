@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {FC} from 'react';
 import WhiteBordered from "../../../layouts/WhiteBordered";
 import WhiteBorderedLayout from "../../../layouts/WhiteBordered";
 import {Animated, Modal, StyleSheet, Text, TouchableOpacity, View} from "react-native";
@@ -8,6 +8,7 @@ import AnalysisCard from "../../../components/Cards/AnalysisCard";
 import {OrderAnalysisType} from "../../../types/analysis.types";
 import {useAppDispatch, useAppSelector} from "../../../app/base/hooks";
 import {handleOrderInfoModal} from "../../../app/features/modals/modalsSlice";
+import {NavProps} from "../../../types/common.types";
 
 const analysisData: OrderAnalysisType[] = [
     {
@@ -35,26 +36,27 @@ const analysisData: OrderAnalysisType[] = [
         status: "NOT_PAID"
     }
 ]
-const Main = () => {
+
+const Main: FC<NavProps> = ({navigation}) => {
     const dispatch = useAppDispatch()
     const {orderInfoModal} = useAppSelector(state => state.modals)
-    const scaleValue = new Animated.Value(1);
-
-    useEffect(() => {
-        if (orderInfoModal) {
-            Animated.spring(scaleValue, {
-                toValue: .84,
-                useNativeDriver: true,
-            }).start();
-        } else {
-            Animated.spring(scaleValue, {
-                toValue: 1,
-                useNativeDriver: true
-            }).start();
-        }
-    }, [orderInfoModal, scaleValue]);
+    //const scaleValue = new Animated.Value(1);
+    //
+    // useEffect(() => {
+    //     if (orderInfoModal) {
+    //         Animated.spring(scaleValue, {
+    //             toValue: .84,
+    //             useNativeDriver: true,
+    //         }).start();
+    //     } else {
+    //         Animated.spring(scaleValue, {
+    //             toValue: 1,
+    //             useNativeDriver: true
+    //         }).start();
+    //     }
+    // }, [orderInfoModal, scaleValue]);
     return (
-        <Animated.ScrollView style={{transform: [{scale: scaleValue}]}}>
+        <Animated.ScrollView>
             <WhiteBorderedLayout style={{
                 paddingTop: 32
             }}>
@@ -62,6 +64,7 @@ const Main = () => {
                     <Text style={cs.title}>Вячеслав, добрый день!</Text>
                     <View style={[cs.fRowBetw, styles.buttonsTopContainer]}>
                         <TouchableOpacity
+                            onPress={() => navigation.navigate("register")}
                             style={[
                                 cs.fColumn,
                                 styles.buttonTop,
@@ -88,16 +91,16 @@ const Main = () => {
                     <View style={[cs.fColumn, cs.spaceM]}>
                         {
                             analysisData.map((item, index) => (
-                                <AnalysisCard key={index} {...item}/>
+                                <AnalysisCard key={index} status={item.status}
+                                              handlePress={() => dispatch(handleOrderInfoModal())}
+                                              date={item.date} orderNumber={item.orderNumber} customer={item.customer}
+                                              analysisList={item.analysisList}/>
                             ))
                         }
                     </View>
                 </View>
             </WhiteBorderedLayout>
-            <Modal style={{
-                backgroundColor: "black",
-
-            }} animationType={"slide"} visible={orderInfoModal} transparent={true}>
+            <Modal animationType={"slide"} visible={orderInfoModal} transparent={true}>
                 <WhiteBordered style={cs.modalSlidedBottom}>
                     <View style={styles.analysisOrderContent}>
                         <View style={[cs.fRowBetw]}>

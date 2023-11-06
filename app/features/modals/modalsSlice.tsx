@@ -2,12 +2,18 @@ import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 
 type ModalsSliceState = {
     orderInfoModal: boolean
-    profileEditModal: boolean
+    profileEditModal: boolean,
+    patientsModal: boolean
+    patientInfoModal: boolean,
+    patientInvitingModal: boolean,
 }
 
 const initialState: ModalsSliceState = {
     orderInfoModal: false,
-    profileEditModal: false
+    patientsModal: false,
+    profileEditModal: false,
+    patientInfoModal: false,
+    patientInvitingModal: false
 }
 export const ModalsSlice = createSlice({
     name: "modals",
@@ -18,13 +24,26 @@ export const ModalsSlice = createSlice({
         },
         handleProfileEditModal: (state) => {
             state.profileEditModal = !state.profileEditModal
+        },
+        handlePatientsModal: (state) => {
+            state.patientsModal = !state.patientsModal
+        },
+        handlePatientInfoModal: (state) => {
+            state.patientInfoModal = !state.patientInfoModal
+        },
+        handlePatientInvitingModal: (state) => {
+            state.patientInvitingModal = !state.patientInvitingModal
         }
     }
 })
 
 export const {
     handleOrderInfoModal,
-    handleProfileEditModal
+    handleProfileEditModal,
+    handlePatientsModal,
+    handlePatientInfoModal,
+    handlePatientInvitingModal,
+
 } = ModalsSlice.actions
 
 

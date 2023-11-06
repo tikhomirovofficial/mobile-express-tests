@@ -1,8 +1,9 @@
-import React, {useEffect} from 'react';
+import React, {FC, useEffect} from 'react';
 import WelcomePatients from "../../pages/WelcomePatients";
 import WelcomeConditions from "../../pages/WelcomeConditions";
 import WelcomeCooperation from "../../pages/WelcomeCooperation";
 import {useAppSelector} from "../../app/base/hooks";
+import {NavProps} from "../../types/common.types";
 
 const welcomeSteps = [
     WelcomePatients,
@@ -10,12 +11,12 @@ const welcomeSteps = [
     WelcomeCooperation,
 ]
 
-const WelcomeContainer = () => {
+const WelcomeContainer: FC<NavProps> = ({navigation}) => {
     const {welcomeStep} = useAppSelector(state => state.welcome)
     const CurrentWelcomeStep = welcomeSteps[welcomeStep]
 
     return (
-        <CurrentWelcomeStep/>
+        <CurrentWelcomeStep navigation={navigation}/>
     );
 };
 

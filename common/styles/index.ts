@@ -140,7 +140,7 @@ const cs = StyleSheet.create({
         backgroundColor: "#7ED321"
     },
     modalSlidedBottom: {
-        flex: .99,
+        flex: 1,
         paddingTop: 24,
         backgroundColor: "white",
         shadowColor: "rgba(19, 101, 101, 0.5)",
@@ -154,7 +154,16 @@ const cs = StyleSheet.create({
     },
     rootBg: {
         backgroundColor: "#F4FAFA"
-    }
+    },
+    sliderDot: {
+        height: 6,
+        width: 6,
+        borderRadius: 3,
+        backgroundColor: "rgba(54, 202, 203, 1)"
+    },
+    sliderDotActive: {
+        transform: "scale(1.8)"
+    },
 
 })
 export {

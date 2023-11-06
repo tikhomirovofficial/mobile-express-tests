@@ -7,6 +7,7 @@ export type OrderAnalysisType = {
     orderNumber: string,
     date: string,
     customer: string,
+    handlePress?: () => void,
     status: "PAID" | "NOT_PAID"
     analysisList?: AnalysisType[]
 }

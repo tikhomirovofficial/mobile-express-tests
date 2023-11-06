@@ -9,13 +9,14 @@ import {createBottomTabNavigator} from "@react-navigation/bottom-tabs";
 import AppTab from "./AppTabs";
 import Profile from "../pages/Account/Profile";
 import Support from "../pages/Account/Support";
+import SelectingPatients from "../pages/Inviting/SelectingPatients";
 
 const Stack = createNativeStackNavigator()
 const Tab = createBottomTabNavigator()
 
-const AppTabs = () => {
+const MainTabs = () => {
     return (
-        <Tab.Navigator initialRouteName={"profile"} tabBar={(props) => <AppTab key={props.state.index} {...props}/>}
+        <Tab.Navigator initialRouteName={"orders"} tabBar={(props) => <AppTab key={props.state.index} {...props}/>}
                        sceneContainerStyle={styles.main}
                        screenOptions={{headerShown: false}}>
             <Tab.Screen name="orders" component={Main}/>
@@ -24,14 +25,14 @@ const AppTabs = () => {
         </Tab.Navigator>
     );
 }
-
 const AppNavigator = () => {
     return (
         <NavigationContainer>
             <View style={styles.main}>
-                <Stack.Navigator initialRouteName={"home"}
+                <Stack.Navigator initialRouteName={"register"}
                                  screenOptions={{headerShown: false, contentStyle: cs.rootBg}}>
-                    <Stack.Screen name="home" component={AppTabs}/>
+                    <Stack.Screen name="home" component={MainTabs}/>
+                    <Stack.Screen name="inviting" component={SelectingPatients}/>
                     <Stack.Screen name="register" component={WelcomeContainer}/>
                 </Stack.Navigator>
             </View>
