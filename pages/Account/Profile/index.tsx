@@ -63,7 +63,6 @@ const Profile = () => {
                                     <Text style={[cs.fzS, fs.montR, cs.txtCenter, cs.fwMedium]}>Личные данные</Text>
                                     <Text style={[cs.fzXS, fs.montR, cs.txtCenter, cs.colorGray]}>ФИО, пол, фото</Text>
                                 </View>
-
                             </TouchableOpacity>
                             <TouchableOpacity style={[styles.profileHubItem, cs.wBlockShadow, cs.fAlCenter, cs.flexOne]}>
                                 <View style={[styles.profileItemIcon, cs.rootBg, cs.circle, cs.fCenterCol]}>

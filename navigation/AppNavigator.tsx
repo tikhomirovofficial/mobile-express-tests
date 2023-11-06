@@ -8,6 +8,7 @@ import WelcomeContainer from "../containers/WelcomeContainer";
 import {createBottomTabNavigator} from "@react-navigation/bottom-tabs";
 import AppTab from "./AppTabs";
 import Profile from "../pages/Account/Profile";
+import Support from "../pages/Account/Support";
 
 const Stack = createNativeStackNavigator()
 const Tab = createBottomTabNavigator()
@@ -18,7 +19,7 @@ const AppTabs = () => {
                        sceneContainerStyle={styles.main}
                        screenOptions={{headerShown: false}}>
             <Tab.Screen name="orders" component={Main}/>
-            <Tab.Screen name="support" component={Main}/>
+            <Tab.Screen name="support" component={Support}/>
             <Tab.Screen name="profile" component={Profile}/>
         </Tab.Navigator>
     );
