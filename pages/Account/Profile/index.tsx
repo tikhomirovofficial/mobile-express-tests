@@ -25,22 +25,9 @@ const Profile: FC<NavProps> = ({navigation}) => {
         dispatch(handleProfileEditModal())
     }
     const handlePatients = () => dispatch(handlePatientsModal())
-    useEffect(() => {
-        if (orderInfoModal) {
-            Animated.spring(scaleValue, {
-                toValue: .8,
-                useNativeDriver: true,
-            }).start();
-        } else {
-            Animated.spring(scaleValue, {
-                toValue: 1,
-                useNativeDriver: true
-            }).start();
-        }
-    }, [orderInfoModal, scaleValue]);
 
     return (
-        <Animated.ScrollView style={{transform: [{scale: scaleValue}]}}>
+        <Animated.ScrollView>
             <WhiteBorderedLayout style={{
                 paddingTop: 32
             }}>
@@ -130,10 +117,10 @@ const styles = StyleSheet.create({
     },
     profileHubItem: {
         paddingVertical: 14,
+        paddingHorizontal: 20,
         borderRadius: 16,
-        overflow: "hidden",
         gap: 18,
-        minWidth: 140
+        minWidth: 140,
     },
     profileItemIcon:{
         height: 64,

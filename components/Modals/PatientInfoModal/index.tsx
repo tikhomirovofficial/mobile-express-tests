@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {useAppDispatch, useAppSelector} from "../../../app/base/hooks";
 import {Modal, StyleSheet, Text, View} from "react-native";
 import WhiteBordered from "../../../layouts/WhiteBordered";
@@ -12,6 +12,10 @@ const PatientInfoModal = () => {
     const dispatch = useAppDispatch()
     const {patientInfoModal} = useAppSelector(state => state.modals)
     const handleModal = () => dispatch(handlePatientInfoModal())
+
+    useEffect(() => {
+        alert(patientInfoModal)
+    }, [patientInfoModal])
 
     return (
         <Modal animationType={"slide"} visible={patientInfoModal} transparent={true}>

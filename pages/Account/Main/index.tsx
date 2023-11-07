@@ -76,7 +76,7 @@ const Main: FC<NavProps> = ({navigation}) => {
                         </TouchableOpacity>
                         <TouchableOpacity
                             style={[
-                                styles.buttonWhite,
+                                cs.wBlockShadow,
                                 cs.fColumn,
                                 styles.buttonTop,
                                 cs.flexOne
@@ -143,8 +143,11 @@ const Main: FC<NavProps> = ({navigation}) => {
                             </View>
                             <View style={[cs.spaceM]}>
                                 <View style={[cs.dF, cs.fRow, cs.fAlCenter, cs.spaceS]}>
-                                    <Text style={[cs.fzXL, cs.fwBold]}>Список анализов</Text>
-                                    <Text style={[styles.analysisCount, cs.bgYellow]}>2</Text>
+                                    <Text style={[styles.analysisCount, cs.fzXL, cs.fwBold]}>Список анализов</Text>
+                                    <View style={[cs.fAlCenter, cs.fRow, styles.analysisCountCircle, cs.bgYellow]}>
+                                        <Text style={[]}>2</Text>
+                                    </View>
+
                                 </View>
 
                                 <View style={[cs.fColumn]}>
@@ -171,12 +174,18 @@ const styles = StyleSheet.create({
         gap: 32
     },
     analysisCount: {
-        paddingHorizontal: 7,
-        paddingVertical: 2,
+
         marginTop: 3,
-        borderRadius: 1000,
+        borderRadius: 50,
         fontSize: 11,
         fontWeight: "600"
+    },
+    analysisCountCircle: {
+      backgroundColor: "orange",
+        borderRadius: 1000,
+        paddingHorizontal: 7,
+        paddingVertical: 2,
+        marginTop: 3
     },
     orderInfo: {
         maxWidth: 240,
@@ -192,9 +201,9 @@ const styles = StyleSheet.create({
     buttonTop: {
         padding: 20,
         alignItems: "center",
-        overflow: "hidden",
         gap: 10,
-        borderRadius: 16
+        borderRadius: 16,
+        height: 150
     },
     labelOrderNum: {
         fontWeight: "500"
@@ -203,15 +212,15 @@ const styles = StyleSheet.create({
         backgroundColor: "#4D4D4D",
     },
     buttonWhite: {
-        shadowColor: "rgb(19, 101, 101)",
+        shadowColor: "black",
         shadowOffset: {
-            width: 4,
-            height: 4,
+            width: 10,
+            height: 10,
         },
-        shadowOpacity: 20,
+        shadowOpacity: 10,
         backgroundColor: "white",
-        shadowRadius: 7,
-        elevation: 7,
+        shadowRadius: 30,
+        elevation: 10,
     }
 })
 export default Main;

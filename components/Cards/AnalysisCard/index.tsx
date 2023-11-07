@@ -67,16 +67,16 @@ const styles = StyleSheet.create({
             width: 4,
             height: 4,
         },
-        shadowOpacity: 10,
+        shadowOpacity: 0.2,
         backgroundColor: "white",
-        shadowRadius: 2,
-        elevation: 5,
+        shadowRadius: 10,
+        elevation: 10,
     },
     cardTop: {
         gap: 8
     },
     cardBottom: {
-        gap: 20
+        gap: 20,
     },
     statusBlock: {
         paddingHorizontal: 15,
@@ -90,11 +90,13 @@ const styles = StyleSheet.create({
     },
     resultsBtn: {
         gap: 10,
-        flex: 1,
-
+        maxWidth: 300,
+        flexWrap: "wrap",
+        justifyContent: "flex-end"
     },
     resultsText: {
-        textDecorationLine: "underline"
+        textDecorationLine: "underline",
+        maxWidth: 140
     }
 })
 export default AnalysisCard;

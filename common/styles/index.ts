@@ -62,13 +62,13 @@ const cs = StyleSheet.create({
     wBlockShadow: {
         shadowColor: "rgba(19, 101, 101, 0.3)",
         shadowOffset: {
-            width: 0,
-            height: 0,
+            width: 4,
+            height: 4,
         },
-        shadowOpacity: 30,
+        shadowOpacity: 0.3,
         shadowRadius: 10,
         backgroundColor: "white",
-        elevation: 10,
+        elevation: 4,
     },
     yellowBtn: {
         padding: 15,

@@ -5,7 +5,11 @@ import WhiteBordered from "../../../layouts/WhiteBordered";
 import {cs} from "../../../common/styles";
 import ButtonYellow from "../../Buttons/ButtonYellow";
 import PatientItem from "../../PatientItem";
-import {handlePatientInfoModal, handlePatientsModal} from "../../../app/features/modals/modalsSlice";
+import {
+    handleOrderInfoModal,
+    handlePatientInfoModal,
+    handlePatientsModal
+} from "../../../app/features/modals/modalsSlice";
 import PatientInfoModal from "../PatientInfoModal";
 import {NavProps} from "../../../types/common.types";
 
@@ -16,6 +20,9 @@ const PatientsModal: FC<NavProps> = ({navigation}) => {
     const toInviting = () => {
         handleModal()
         navigation.navigate('inviting')
+    }
+    const handleInfoOrderModal = () => {
+        dispatch(handleOrderInfoModal())
     }
     return (
         <Modal animationType={"slide"} visible={patientsModal} transparent={true}>
@@ -30,7 +37,7 @@ const PatientsModal: FC<NavProps> = ({navigation}) => {
                     </View>
                     <View style={[styles.patientsContent, cs.fColumnBetw]}>
                         <View style={[cs.fColumn, styles.patientsList]}>
-                            <PatientItem handlePress={() => dispatch(handlePatientInfoModal())} avatarSrc={null}
+                            <PatientItem handlePress={handleInfoOrderModal} avatarSrc={null}
                                          firstName={"Иван"} lastName={"Иванов"} phone={"+7 (951) 735-00-00"}/>
                         </View>
 
