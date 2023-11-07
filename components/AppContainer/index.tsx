@@ -1,5 +1,5 @@
 import React, {FC} from 'react';
-import {StyleSheet, View, ViewStyle} from "react-native";
+import {Dimensions, StyleSheet, View, ViewStyle} from "react-native";
 
 const AppContainer: FC<{children: React.ReactNode, style?: ViewStyle}> = ({children, style = null}) => {
     return (
@@ -12,7 +12,7 @@ const AppContainer: FC<{children: React.ReactNode, style?: ViewStyle}> = ({child
 const styles = StyleSheet.create({
     container: {
         alignSelf: "center",
-        maxWidth: "85.2%",
+        maxWidth: Dimensions.get("window").width - 60,
         width: "100%",
         paddingBottom: 30
     }

@@ -27,7 +27,7 @@ const FeauturesLayout: FC<WelcomeStepProps> = ({title, image, step, features, bu
                     <LinearGradient start={{x: 0.18, y: 0}}
                                     end={{x: 0, y: 0.8}}
                                     style={{height: "80%", position: "absolute", bottom: 0, left: 0, width: "100%"}}
-                                    colors={['rgba(255, 0, 0, 0.0)', 'white']}>
+                                    colors={['rgba(255, 255, 255, 0)', 'white']}>
 
                     </LinearGradient>
                     <ContentWrapper style={{height: "100%"}}>
@@ -90,7 +90,6 @@ const styles = StyleSheet.create({
     },
     backgroundWrapper: {
         borderBottomLeftRadius: 40,
-        backgroundColor: "blue",
         maxHeight: "52%",
         overflow: "hidden",
         position: "relative",
@@ -112,7 +111,6 @@ const styles = StyleSheet.create({
         width: "100%",
     },
     contentWelcome: {
-        backgroundColor: "red"
     }
 
 });

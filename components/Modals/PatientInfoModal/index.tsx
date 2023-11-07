@@ -4,18 +4,20 @@ import {Modal, StyleSheet, Text, View} from "react-native";
 import WhiteBordered from "../../../layouts/WhiteBordered";
 import {cs} from "../../../common/styles";
 import ButtonYellow from "../../Buttons/ButtonYellow";
-import {handleOrderInfoModal, handlePatientInfoModal} from "../../../app/features/modals/modalsSlice";
+import {
+    handleOrderInfoModal,
+    handlePatientInfoModal,
+    handlePatientOrderInfoModal
+} from "../../../app/features/modals/modalsSlice";
 import {PhotoIcon} from "../../../icons";
 import AnalysisCard from "../../Cards/AnalysisCard";
+import OrderInfoModal from "../OrderInfoModal";
 
 const PatientInfoModal = () => {
     const dispatch = useAppDispatch()
-    const {patientInfoModal} = useAppSelector(state => state.modals)
+    const {patientInfoModal, patientOrderInfoModal} = useAppSelector(state => state.modals)
     const handleModal = () => dispatch(handlePatientInfoModal())
 
-    useEffect(() => {
-        alert(patientInfoModal)
-    }, [patientInfoModal])
 
     return (
         <Modal animationType={"slide"} visible={patientInfoModal} transparent={true}>
@@ -56,7 +58,6 @@ const PatientInfoModal = () => {
                                     <Text style={[cs.colorDark, cs.fzM, cs.fwMedium]}>+7 (951) 735-89-45</Text>
                                 </View>
 
-
                             </View>
                         </View>
                         <View style={[cs.spaceM]}>
@@ -74,7 +75,7 @@ const PatientInfoModal = () => {
 
                 </View>
             </WhiteBordered>
-
+            <OrderInfoModal opened={patientOrderInfoModal} handlePopup={() => handlePatientOrderInfoModal()}/>
         </Modal>
     );
 };

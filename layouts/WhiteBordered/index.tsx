@@ -8,7 +8,7 @@ type WhiteBorderedProps = {
     style?: ViewStyle,
     topContent?: ReactNode
 }
-const minContainerHeight = Dimensions.get("window").height - 60
+const minContainerHeight = Dimensions.get("window").height / 100 * 92
 
 const WhiteBorderedLayout: FC<WhiteBorderedProps> = ({children, topContent, style}) => {
     return (
@@ -36,13 +36,10 @@ const styles = StyleSheet.create({
     },
 
     baseView: {
-        flex: 1,
         minHeight: "100%"
-
     },
     containerWrapper: {
         flex: 1,
-
     },
     containerWrapperScroll: {
         display: "flex",
@@ -62,7 +59,7 @@ const styles = StyleSheet.create({
             height: 20,
         },
         shadowOpacity: 0.1,
-        minHeight: minContainerHeight,
+        maxHeight: "100%",
         flex: 1,
         borderTopLeftRadius: 30,
         borderTopRightRadius: 30

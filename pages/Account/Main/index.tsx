@@ -9,6 +9,7 @@ import {OrderAnalysisType} from "../../../types/analysis.types";
 import {useAppDispatch, useAppSelector} from "../../../app/base/hooks";
 import {handleOrderInfoModal} from "../../../app/features/modals/modalsSlice";
 import {NavProps} from "../../../types/common.types";
+import OrderInfoModal from "../../../components/Modals/OrderInfoModal";
 
 const analysisData: OrderAnalysisType[] = [
     {
@@ -40,6 +41,7 @@ const analysisData: OrderAnalysisType[] = [
 const Main: FC<NavProps> = ({navigation}) => {
     const dispatch = useAppDispatch()
     const {orderInfoModal} = useAppSelector(state => state.modals)
+
     //const scaleValue = new Animated.Value(1);
     //
     // useEffect(() => {
@@ -100,68 +102,7 @@ const Main: FC<NavProps> = ({navigation}) => {
                     </View>
                 </View>
             </WhiteBorderedLayout>
-            <Modal animationType={"slide"} visible={orderInfoModal} transparent={true}>
-                <WhiteBordered style={cs.modalSlidedBottom}>
-                    <View style={styles.analysisOrderContent}>
-                        <View style={[cs.fRowBetw]}>
-                            <Text onPress={() => dispatch(handleOrderInfoModal())}
-                                  style={[cs.yellowBtnText, cs.textYellow, cs.fzM]}>Закрыть</Text>
-                            <View style={[cs.fAlCenter]}>
-                                <Text style={[cs.fzM, cs.colorDark, styles.labelOrderNum]}>Заказ №</Text>
-                                <View style={[cs.lightGray]}>
-                                    <Text style={[cs.colorDark, styles.orderNumber]}>102-20</Text>
-                                </View>
-                            </View>
-                            <Text style={[cs.fzM, cs.colorGray]}>25.09.2023</Text>
-                        </View>
-                        <View style={[styles.analysisOrderColumn]}>
-                            <View style={[cs.spaceM]}>
-                                <Text style={[cs.fzXL, cs.fwBold]}>Информация о заказе</Text>
-                                <View style={[styles.orderInfo]}>
-                                    <View style={[cs.fRowBetw]}>
-                                        <Text style={[cs.colorGray, cs.fzM]}>Статус</Text>
-                                        <Text style={[cs.colorDark, cs.fzM, cs.fwMedium]}>Отправлен</Text>
-                                    </View>
-                                    <View style={[cs.fRowBetw]}>
-                                        <Text style={[cs.colorGray, cs.fzM]}>Назначил(а)</Text>
-                                        <Text style={[cs.colorDark, cs.fzM, cs.fwMedium]}>Подосёнов В. С.</Text>
-                                    </View>
-                                    <View style={[cs.fRowBetw]}>
-                                        <Text style={[cs.colorGray, cs.fzM]}>Пациент</Text>
-                                        <Text style={[cs.colorDark, cs.fzM, cs.fwMedium]}>Тузов В.В.</Text>
-                                    </View>
-
-
-                                </View>
-                            </View>
-                            <View style={[cs.spaceM]}>
-                                <Text style={[cs.fzXL, cs.fwBold]}>Результаты анализов</Text>
-                                <Text style={[cs.colorGray, cs.fzM]}>
-                                    Здесь появится возможность скачать результаты анализов после того, как пациент
-                                    оплатит и сдаст анализы в нашей лаборатории.
-                                </Text>
-                            </View>
-                            <View style={[cs.spaceM]}>
-                                <View style={[cs.dF, cs.fRow, cs.fAlCenter, cs.spaceS]}>
-                                    <Text style={[styles.analysisCount, cs.fzXL, cs.fwBold]}>Список анализов</Text>
-                                    <View style={[cs.fAlCenter, cs.fRow, styles.analysisCountCircle, cs.bgYellow]}>
-                                        <Text style={[]}>2</Text>
-                                    </View>
-
-                                </View>
-
-                                <View style={[cs.fColumn]}>
-                                    <Text style={[cs.fwMedium, cs.colorDark, cs.fzM]}>1. Бактериальная панель (IgE)
-                                        (П)</Text>
-                                    <Text style={[cs.fwMedium, cs.colorDark, cs.fzM]}>2. Т3 свободный (П)</Text>
-                                    <Text style={[cs.fwMedium, cs.colorDark, cs.fzM]}>3. ФСГ (фолликулостимулирующий
-                                        гормон) (П)</Text>
-                                </View>
-                            </View>
-                        </View>
-                    </View>
-                </WhiteBordered>
-            </Modal>
+            <OrderInfoModal opened={orderInfoModal} handlePopup={() => dispatch(handleOrderInfoModal())}/>
         </Animated.ScrollView>
 
     );

@@ -31,12 +31,6 @@ const analysisData: OrderAnalysisType[] = [
         date: "25.09.2023",
         orderNumber: "02-016",
         status: "NOT_PAID"
-    },
-    {
-        customer: "Дмитрий Тихомиров",
-        date: "25.09.2023",
-        orderNumber: "02-016",
-        status: "NOT_PAID"
     }
 ]
 
@@ -47,8 +41,8 @@ const SelectingPatients: FC<NavProps> = ({navigation}) => {
     }
     const openNewPatient = () => dispatch(handlePatientInvitingModal())
     return (
-        <Animated.ScrollView>
-            <View style={[cs.fColumn, cs.spaceM]}>
+        <Animated.View>
+            <View style={[cs.fColumn, cs.spaceM, {minHeight: "100%"}]}>
                 <WhiteBorderedLayout
                     topContent={
                         <AppContainer style={{paddingBottom: 0}}>
@@ -62,7 +56,7 @@ const SelectingPatients: FC<NavProps> = ({navigation}) => {
                         </AppContainer>
 
                     }
-                    style={{paddingTop: 40, flex: 1}}>
+                    style={{paddingTop: 40, maxHeight: "100%"}}>
                     <View style={[cs.spaceXL, styles.patientsContent]}>
                         <View style={[cs.spaceL, cs.fColumn]}>
                             <View style={[cs.fRowBetw, cs.spaceM, cs.fAlCenter]}>
@@ -85,7 +79,6 @@ const SelectingPatients: FC<NavProps> = ({navigation}) => {
                             <View>
                                 <PatientItem selected={true} firstName={"Вячеслав"} lastName={"Подосёнов"} phone={"+7 (951) 735-89-45"} avatarSrc={null}/>
                                 <PatientItem selected={false} firstName={"Вячеслав"} lastName={"Подосёнов"} phone={"+7 (951) 735-89-45"} avatarSrc={null}/>
-                                <PatientItem selected={false} firstName={"Вячеслав"} lastName={"Подосёнов"} phone={"+7 (951) 735-89-45"} avatarSrc={null}/>
                             </View>
 
                         </View>
@@ -100,7 +93,7 @@ const SelectingPatients: FC<NavProps> = ({navigation}) => {
                 </WhiteBorderedLayout>
             </View>
             <PatientInvitingModal/>
-        </Animated.ScrollView>
+        </Animated.View>
 
 );
 };
@@ -115,8 +108,7 @@ const styles = StyleSheet.create({
         fontSize: 18
     },
     patientsContent: {
-        paddingBottom: 8,
-        minHeight: "100%"
+        minHeight: "94%"
     },
 })
 export default SelectingPatients;

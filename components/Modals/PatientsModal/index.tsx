@@ -7,7 +7,7 @@ import ButtonYellow from "../../Buttons/ButtonYellow";
 import PatientItem from "../../PatientItem";
 import {
     handleOrderInfoModal,
-    handlePatientInfoModal,
+    handlePatientInfoModal, handlePatientInvitingModal,
     handlePatientsModal
 } from "../../../app/features/modals/modalsSlice";
 import PatientInfoModal from "../PatientInfoModal";
@@ -21,8 +21,8 @@ const PatientsModal: FC<NavProps> = ({navigation}) => {
         handleModal()
         navigation.navigate('inviting')
     }
-    const handleInfoOrderModal = () => {
-        dispatch(handleOrderInfoModal())
+    const handlePatientInfo = () => {
+        dispatch(handlePatientInfoModal())
     }
     return (
         <Modal animationType={"slide"} visible={patientsModal} transparent={true}>
@@ -37,7 +37,7 @@ const PatientsModal: FC<NavProps> = ({navigation}) => {
                     </View>
                     <View style={[styles.patientsContent, cs.fColumnBetw]}>
                         <View style={[cs.fColumn, styles.patientsList]}>
-                            <PatientItem handlePress={handleInfoOrderModal} avatarSrc={null}
+                            <PatientItem handlePress={handlePatientInfo} avatarSrc={null}
                                          firstName={"Иван"} lastName={"Иванов"} phone={"+7 (951) 735-00-00"}/>
                         </View>
 
@@ -76,8 +76,7 @@ const styles = StyleSheet.create({
     },
     patientsList: {},
     patientsModalBlock: {
-        paddingBottom: 24,
-        minHeight: "100%"
+        minHeight: "94%"
     },
     patientsContent: {
         flex: 1
