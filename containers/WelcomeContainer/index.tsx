@@ -1,7 +1,7 @@
 import React, {FC, useEffect} from 'react';
-import WelcomePatients from "../../pages/WelcomePatients";
-import WelcomeConditions from "../../pages/WelcomeConditions";
-import WelcomeCooperation from "../../pages/WelcomeCooperation";
+import WelcomePatients from "../../pages/Welcome/WelcomePatients";
+import WelcomeConditions from "../../pages/Welcome/WelcomeConditions";
+import WelcomeCooperation from "../../pages/Welcome/WelcomeCooperation";
 import {useAppSelector} from "../../app/base/hooks";
 import {NavProps} from "../../types/common.types";
 

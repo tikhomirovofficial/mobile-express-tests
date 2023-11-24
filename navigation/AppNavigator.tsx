@@ -10,6 +10,8 @@ import AppTab from "./AppTabs";
 import Profile from "../pages/Account/Profile";
 import Support from "../pages/Account/Support";
 import SelectingPatients from "../pages/Inviting/SelectingPatients";
+import AccessContacts from '../pages/Informational/AccessContacts';
+import AccessMedia from '../pages/Informational/AccessMedia';
 
 const Stack = createNativeStackNavigator()
 const Tab = createBottomTabNavigator()
@@ -29,11 +31,13 @@ const AppNavigator = () => {
     return (
         <NavigationContainer>
             <View style={styles.main}>
-                <Stack.Navigator initialRouteName={"register"}
+                <Stack.Navigator initialRouteName={"info_media"}
                                  screenOptions={{headerShown: false, contentStyle: cs.rootBg}}>
                     <Stack.Screen name="home" component={MainTabs}/>
                     <Stack.Screen name="inviting" component={SelectingPatients}/>
                     <Stack.Screen name="register" component={WelcomeContainer}/>
+                    <Stack.Screen name="info_contacts" component={AccessContacts}/>
+                    <Stack.Screen name="info_media" component={AccessMedia}/>
                 </Stack.Navigator>
             </View>
 

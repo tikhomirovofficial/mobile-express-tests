@@ -11,33 +11,35 @@ interface WelcomeStepProps {
     step?: number
 }
 
-const FeauturesLayout: FC<WelcomeStepProps> = ({ step, features}) => {
+const FeauturesLayout: FC<WelcomeStepProps> = ({ step, features }) => {
     useEffect(() => {
 
     }, [])
     return (
-        
-        <View style={{ flex: 1, flexDirection: "column", justifyContent: "space-between" }}>
-            <View style={[cs.fColumn, styles.welcomeStepFeatures]}>
-                {features.map(item => (
-                    <View key={item} style={[cs.dF, { flexDirection: "row", gap: 8 }]}>
-                        <CheckboxIcon />
-                        <Text style={[cs.fzM, styles.welcomeStepFeatureText]}>{item}</Text>
-                    </View>
-                ))}
-            </View>
-            {step !== undefined ?
-                <View style={[cs.fCenterCol, { flexDirection: "row", gap: 13 }]}>
-                    {
-                        Array(3).fill(0).map((item, index) => (
-                            <View key={index}
-                                style={[cs.sliderDot, (index === step ? cs.sliderDotActive : null)]}></View>
-                        ))
-                    }
-                </View> : null
-            }
+        <View style={{ flex: 1 }}>
+            <View style={[{ flex: 1, flexDirection: "column", justifyContent: "space-between", gap: 15}]}>
+                <View style={[cs.fColumn, styles.welcomeStepFeatures]}>
+                    {features.map(item => (
+                        <View key={item} style={[cs.dF, { flexDirection: "row", gap: 8 }]}>
+                            <CheckboxIcon />
+                            <Text style={[cs.fzM, styles.welcomeStepFeatureText]}>{item}</Text>
+                        </View>
+                    ))}
+                </View>
+                {step !== undefined ?
+                    <View style={[cs.fCenterCol, { flexDirection: "row", gap: 13 }]}>
+                        {
+                            Array(3).fill(0).map((item, index) => (
+                                <View key={index}
+                                    style={[cs.sliderDot, (index === step ? cs.sliderDotActive : null)]}></View>
+                            ))
+                        }
+                    </View> : null
+                }
 
+            </View>
         </View>
+
     );
 };
 

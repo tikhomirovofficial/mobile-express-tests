@@ -8,26 +8,32 @@ import { cs } from "../../common/styles";
 interface WelcomeStepProps {
     title: string,
     image: ImageBitmap,
-    content: ReactNode
+    content: ReactNode,
+    handleSkip?: () => any
 }
 
-const InfoPageLayout: FC<WelcomeStepProps> = ({ title, image, content }) => {
+const InfoPageLayout: FC<WelcomeStepProps> = ({ title, image, content, handleSkip }) => {
     return (
         <ScrollView contentContainerStyle={{minHeight: "100%"}}>
             <View style={styles.backgroundWrapper}>
                     <ImageBackground style={[styles.background]} resizeMode={"cover"}
                         source={image}>
-                        <LinearGradient start={{ x: 0.18, y: 0 }}
+                        <LinearGradient start={{ x: 0.2, y: 0.09 }}
                             end={{ x: 0, y: 0.8 }}
                             style={{ height: "80%", position: "absolute", bottom: 0, left: 0, width: "100%" }}
                             colors={['rgba(255, 255, 255, 0)', 'white']}>
                         </LinearGradient>
                         <ContentWrapper style={{ height: "100%" }}>
                             <AppContainer style={{ height: "100%" }}>
-                                <View style={[cs.fColumnBetw, { flex: 1, paddingBottom: 30 }]}>
-                                    <Text style={[styles.textSkip, cs.textYellow]}
-                                        onPress={() => alert("sas")}>Пропустить</Text>
+                                <View style={[(handleSkip !== undefined ? {...cs.fColumnBetw} : {justifyContent: 'flex-end'}), { flex: 1}]}>
+                                    {
+                                        handleSkip !== undefined ?
+                                        <Text style={[styles.textSkip, cs.textYellow]}
+                                        onPress={handleSkip}>Пропустить</Text>
+                                        : null
+                                    }
                                     <Text style={[cs.fwBold, cs.fzXL, styles.welcomeStepTitle]}>{title}</Text>
+                            
                                 </View>
                             </AppContainer>
                         </ContentWrapper>
@@ -57,8 +63,8 @@ const styles = StyleSheet.create({
     },
     backgroundWrapper: {
         borderBottomLeftRadius: 40,
-        height: "52%",
-        maxHeight: 460,
+        height: "100%",
+        maxHeight: 420,
         overflow: "hidden",
         position: "relative",
         shadowColor: "rgba(0, 64, 128, 0.3)",
