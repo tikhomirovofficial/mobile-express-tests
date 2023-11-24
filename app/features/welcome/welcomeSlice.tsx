@@ -5,7 +5,7 @@ type WelcomeSliceState = {
 }
 
 const initialState: WelcomeSliceState = {
-    welcomeStep: 0
+    welcomeStep: 2
 }
 export const WelcomeSlice = createSlice({
     name: "welcome",

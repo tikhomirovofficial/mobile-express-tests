@@ -16,12 +16,14 @@ const Support = () => {
 
 
     return (
-        <Animated.ScrollView>
+        <Animated.ScrollView contentContainerStyle={{flex: 1}}>
             <WhiteBorderedLayout style={{
                 paddingTop: 32
             }}>
 
-                <View style={[cs.spaceM, cs.fColumn]}>
+                <View style={[cs.spaceM, cs.fColumn, {
+                    height: "100%"
+                }]}>
                     <Text style={cs.title}>Поддержка</Text>
                     <View style={[styles.supportContent]}>
                         <Text style={[cs.colorGray, cs.fzS, fs.montR]}>Если у вас возникли вопросы или вам нужна помощь

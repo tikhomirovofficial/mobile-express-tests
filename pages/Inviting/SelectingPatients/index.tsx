@@ -40,6 +40,7 @@ const SelectingPatients: FC<NavProps> = ({navigation}) => {
         navigation.navigate("home")
     }
     const openNewPatient = () => dispatch(handlePatientInvitingModal())
+    
     return (
         <Animated.View>
             <View style={[cs.fColumn, cs.spaceM, {minHeight: "100%"}]}>
