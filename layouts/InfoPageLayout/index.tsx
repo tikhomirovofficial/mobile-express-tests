@@ -78,7 +78,7 @@ const styles = StyleSheet.create({
     },
     welcomeStepTitle: {
         fontFamily: "MontserratBold",
-        maxWidth: "90%"
+        maxWidth: "83%"
     },
     background: {
         height: "100%",

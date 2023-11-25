@@ -7,7 +7,7 @@ import { cs } from "../../common/styles";
 import { CheckboxIcon } from "../../icons";
 
 interface WelcomeStepProps {
-    features: Array<string>
+    features: Array<ReactNode>
     step?: number
 }
 
@@ -19,10 +19,12 @@ const FeauturesLayout: FC<WelcomeStepProps> = ({ step, features }) => {
         <View style={{ flex: 1 }}>
             <View style={[{ flex: 1, flexDirection: "column", justifyContent: "space-between", gap: 15}]}>
                 <View style={[cs.fColumn, styles.welcomeStepFeatures]}>
-                    {features.map(item => (
-                        <View key={item} style={[cs.dF, { flexDirection: "row", gap: 8 }]}>
+                    {features.map((item, index) => (
+                        <View key={index} style={[cs.dF, { flexDirection: "row", gap: 8 }]}>
                             <CheckboxIcon />
-                            <Text style={[cs.fzM, styles.welcomeStepFeatureText]}>{item}</Text>
+                            <Text style={[cs.fzM, styles.welcomeStepFeatureText]}>
+                                {item}
+                            </Text>
                         </View>
                     ))}
                 </View>

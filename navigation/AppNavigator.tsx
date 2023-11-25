@@ -12,6 +12,10 @@ import Support from "../pages/Account/Support";
 import SelectingPatients from "../pages/Inviting/SelectingPatients";
 import AccessContacts from '../pages/Informational/AccessContacts';
 import AccessMedia from '../pages/Informational/AccessMedia';
+import AccessNotifications from '../pages/Informational/AccessNotifications';
+import InvitingSent from '../pages/Informational/InvitingSent';
+import OrderSent from '../pages/Informational/OrderSent';
+import HowGetResults from '../pages/Informational/HowGetResults';
 
 const Stack = createNativeStackNavigator()
 const Tab = createBottomTabNavigator()
@@ -31,13 +35,17 @@ const AppNavigator = () => {
     return (
         <NavigationContainer>
             <View style={styles.main}>
-                <Stack.Navigator initialRouteName={"info_media"}
+                <Stack.Navigator initialRouteName={"how_get_results"}
                                  screenOptions={{headerShown: false, contentStyle: cs.rootBg}}>
                     <Stack.Screen name="home" component={MainTabs}/>
                     <Stack.Screen name="inviting" component={SelectingPatients}/>
                     <Stack.Screen name="register" component={WelcomeContainer}/>
                     <Stack.Screen name="info_contacts" component={AccessContacts}/>
                     <Stack.Screen name="info_media" component={AccessMedia}/>
+                    <Stack.Screen name="info_notifications" component={AccessNotifications}/>
+                    <Stack.Screen name="inviting_sent" component={InvitingSent}/>
+                    <Stack.Screen name="order_sent" component={OrderSent}/>
+                    <Stack.Screen name="how_get_results" component={HowGetResults}/>
                 </Stack.Navigator>
             </View>
 

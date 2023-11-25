@@ -164,6 +164,9 @@ const cs = StyleSheet.create({
     sliderDotActive: {
         transform: "scale(1.8)"
     },
+    textBlue: {
+        color: "rgba(18, 178, 179, 1)"
+    }
 
 })
 export {
