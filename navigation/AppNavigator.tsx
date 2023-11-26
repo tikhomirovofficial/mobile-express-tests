@@ -16,6 +16,7 @@ import AccessNotifications from '../pages/Informational/AccessNotifications';
 import InvitingSent from '../pages/Informational/InvitingSent';
 import OrderSent from '../pages/Informational/OrderSent';
 import HowGetResults from '../pages/Informational/HowGetResults';
+import LoginPhone from '../pages/Register/RegisterPhone';
 
 const Stack = createNativeStackNavigator()
 const Tab = createBottomTabNavigator()
@@ -35,7 +36,7 @@ const AppNavigator = () => {
     return (
         <NavigationContainer>
             <View style={styles.main}>
-                <Stack.Navigator initialRouteName={"how_get_results"}
+                <Stack.Navigator initialRouteName={"login_phone"}
                                  screenOptions={{headerShown: false, contentStyle: cs.rootBg}}>
                     <Stack.Screen name="home" component={MainTabs}/>
                     <Stack.Screen name="inviting" component={SelectingPatients}/>
@@ -46,6 +47,7 @@ const AppNavigator = () => {
                     <Stack.Screen name="inviting_sent" component={InvitingSent}/>
                     <Stack.Screen name="order_sent" component={OrderSent}/>
                     <Stack.Screen name="how_get_results" component={HowGetResults}/>
+                    <Stack.Screen name="login_phone" component={LoginPhone}/>
                 </Stack.Navigator>
             </View>
 

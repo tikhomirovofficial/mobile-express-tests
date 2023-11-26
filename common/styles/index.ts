@@ -11,6 +11,14 @@ const cs = StyleSheet.create({
         justifyContent: "space-between",
         flexDirection: "row"
     },
+    inputField: {
+        paddingVertical: 16,
+        paddingHorizontal: 22,
+        borderStyle: "solid",
+        borderRadius: 6,
+        borderWidth: 1,
+        borderColor: "#E2E2E9"
+    },
     fColumn: {
         display: "flex",
         flexDirection: "column"
