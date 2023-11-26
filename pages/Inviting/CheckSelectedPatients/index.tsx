@@ -15,18 +15,15 @@ import { handlePatientInvitingModal } from "../../../app/features/modals/modalsS
 import * as Contacts from 'expo-contacts';
 import * as Permissions from 'expo-permissions';
 
-const SelectingPatients: FC<NavProps> = ({ navigation }) => {
+const CheckSelectedPatients: FC<NavProps> = ({ navigation }) => {
     const dispatch = useAppDispatch()
 
     const [contacts, setContacts] = useState<Array<Contacts.Contact>>([])
     const [contactsLoading, setContactsLoading] = useState(false)
     const [contactsSelected, setContactsSelected] = useState<string[]>([])
 
-    const handleToMyPatients = () => {
-        navigation.navigate("home")
-    }
-    const toCheckInvitingContacts = () => {
-        navigation.navigate("inviting_check")
+    const handleToSelectingPatients = () => {
+        navigation.navigate("inviting")
     }
     useEffect(() => {
 
@@ -46,7 +43,9 @@ const SelectingPatients: FC<NavProps> = ({ navigation }) => {
             }
         })();
     }, []);
-    const openNewPatient = () => dispatch(handlePatientInvitingModal())
+    const sendInvitings = () => {
+        navigation.navigate("inviting_sent")
+    }
 
     return (
         <Animated.View>
@@ -55,7 +54,7 @@ const SelectingPatients: FC<NavProps> = ({ navigation }) => {
                     topContent={
                         <AppContainer style={{ paddingBottom: 0 }}>
                             <View style={[cs.fRow, cs.spaceM, cs.fAlCenter]}>
-                                <TouchableOpacity onPress={handleToMyPatients}>
+                                <TouchableOpacity onPress={handleToSelectingPatients}>
                                     <ArrowLeft />
                                 </TouchableOpacity>
 
@@ -68,19 +67,12 @@ const SelectingPatients: FC<NavProps> = ({ navigation }) => {
                     <View style={[cs.spaceXL, styles.patientsContent]}>
                         <View style={[cs.spaceL, cs.fColumn]}>
                             <View style={[cs.fRowBetw, cs.spaceM, cs.fAlCenter]}>
-                                <Text style={[cs.fwSemi, cs.fwBold, cs.fzXL]}>Выберите пациентов</Text>
+                                <Text style={[cs.fwSemi, cs.fwBold, cs.fzXL]}>Проверьте номера</Text>
                                 <View style={[cs.fRow, cs.fAlCenter, cs.spaceS]}>
-                                    <View style={[cs.sliderDot, cs.sliderDotActive]}></View>
                                     <View style={[cs.sliderDot]}></View>
+                                    <View style={[cs.sliderDot, cs.sliderDotActive]}></View>
                                 </View>
                             </View>
-                            <View style={[cs.fRow, cs.fAlCenter, cs.spaceS, styles.searchInputBlock]}>
-                                <SearchIcon />
-                                <TextInput style={[cs.fzS, fs.montR, cs.flexOne]} placeholder={"Найти по имени или номеру"} />
-                            </View>
-                            <TouchableOpacity onPress={openNewPatient}>
-                                <Text style={[cs.textYellow, cs.fwSemi, { textDecorationLine: "underline" }]}>Новый номер телефона</Text>
-                            </TouchableOpacity>
                         </View>
                         <View style={[cs.flexOne, { position: "relative" }]}>
                             {contactsLoading ? <Text style={[cs.txtCenter]}>Загрузка...</Text> :
@@ -109,9 +101,9 @@ const SelectingPatients: FC<NavProps> = ({ navigation }) => {
                         </View>
 
 
-                        <ButtonYellow disabled={contactsSelected.length < 1} handlePress={toCheckInvitingContacts}>
+                        <ButtonYellow disabled={contactsSelected.length < 1} handlePress={sendInvitings}>
                             <View style={[cs.fRow, cs.fAlCenter, cs.spaceS]}>
-                                <Text style={[cs.fzM, cs.yellowBtnText]}>Далее</Text>
+                                <Text style={[cs.fzM, cs.yellowBtnText]}>Пригласить</Text>
                                 {contactsSelected.length > 0 ? <View style={cs.count}>
                                     <Text style={cs.countText}>{contactsSelected.length}</Text>
                                 </View> : null}
@@ -147,4 +139,4 @@ const styles = StyleSheet.create({
         paddingBottom: 40
     },
 })
-export default SelectingPatients;
+export default CheckSelectedPatients;

@@ -57,6 +57,24 @@ const cs = StyleSheet.create({
         fontWeight: "bold",
         fontFamily: "MontserratBold",
     },
+    bgDisabled: {
+        backgroundColor: "#F0F0F0"
+    },
+    count: {
+        paddingHorizontal: 5,
+        paddingVertical: 0,
+        borderRadius: 50,
+        justifyContent: "center",
+        marginTop: 2,
+        textAlign: "center",
+        alignItems: "center",
+        backgroundColor: "#FFFFFF"
+    },
+    countText: {
+        textAlign: "center",
+        color:"#FFCF00",
+        fontWeight: "600"
+    },
     fzXS: {
       fontSize: 12
     },
