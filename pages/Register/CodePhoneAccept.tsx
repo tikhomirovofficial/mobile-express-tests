@@ -9,14 +9,41 @@ import { LinearGradient } from 'expo-linear-gradient';
 import WhiteBorderedLayout from '../../layouts/WhiteBordered';
 
 const CodePhoneAccept: FC<NavProps> = ({ navigation }) => {
-    const dispatch = useAppDispatch()
     const [code, setCode] = useState<string[]>(["", "", "", ""])
     const inputRefs = useRef<TextInput[]>([]);
 
-    const handleToMyPatients = () => {
-        navigation.navigate("home")
-    }
-   
+    const handleCodeInput = (text: string, index: number) => {
+        if (/^\d*$/.test(text) && text.length <= 1) {
+            setCode(prevCode => {
+                const newCode = [...prevCode];
+                newCode[index] = text;
+
+                if (text !== '' && index < inputRefs.current.length - 1) {
+                    const nextInput = inputRefs.current[index + 1];
+                    nextInput?.focus();
+                } else if (text === '' && index > 0) {
+                    const prevInput = inputRefs.current[index - 1];
+                    prevInput?.focus();
+                }
+
+                return newCode;
+            });
+        }
+    };
+
+    const handleBackspace = (index: number) => {
+        if (index > 0 && code[index] === '') {
+            const prevInput = inputRefs.current[index - 1];
+            prevInput?.focus();
+        }
+
+        setCode(prevCode => {
+            const newCode = [...prevCode];
+            newCode[index] = '';
+            return newCode;
+        });
+    };
+
     const [keyboardStatus, setKeyboardStatus] = useState(false);
 
     useEffect(() => {
@@ -58,7 +85,11 @@ const CodePhoneAccept: FC<NavProps> = ({ navigation }) => {
                                 <View style={[cs.fRowBetw]}>
                                     {
                                         code.map((item, index) => (
-                                            <TextInput  ref={(ref) => (inputRefs.current[index] = ref as TextInput)}  keyboardType={"numeric"} maxLength={1} accessibilityLabelledBy={"labelFirstName"} placeholder={item}
+                                            <TextInput onKeyPress={(e) => {
+                                                if (e.nativeEvent.key === 'Backspace') {
+                                                    handleBackspace(index);
+                                                }
+                                            }} value={item} onChangeText={(text) => handleCodeInput(text, index)} ref={(ref) => (inputRefs.current[index] = ref as TextInput)} keyboardType={"numeric"} maxLength={1} accessibilityLabelledBy={"labelFirstName"} placeholder={item}
                                                 style={[cs.inputField, cs.fzM, fs.montR, cs.txtCenter, styles.smsCodeField, cs.fwBold]} />
                                         ))
                                     }

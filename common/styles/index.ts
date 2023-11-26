@@ -41,8 +41,17 @@ const cs = StyleSheet.create({
     fAlCenter: {
         alignItems: "center"
     },
+    jcCenter: {
+        justifyContent: "center"
+    },
     textYellow: {
         color: "#FFCF00"
+    },
+    textRed: {
+        color: "#F40F0F"
+    },
+    bgRed: {
+        backgroundColor: "#F40F0F"
     },
     fwBold: {
         fontWeight: "bold",

@@ -1,14 +1,14 @@
-import React, {FC} from 'react';
+import React, { FC, useState } from 'react';
 import WhiteBordered from "../../../layouts/WhiteBordered";
 import WhiteBorderedLayout from "../../../layouts/WhiteBordered";
-import {Animated, Modal, StyleSheet, Text, TouchableOpacity, View} from "react-native";
-import {cs} from "../../../common/styles";
-import {Logo} from "../../../icons";
+import { Animated, Modal, StyleSheet, Text, TouchableOpacity, View, RefreshControl } from "react-native";
+import { cs } from "../../../common/styles";
+import { Logo } from "../../../icons";
 import AnalysisCard from "../../../components/Cards/AnalysisCard";
-import {OrderAnalysisType} from "../../../types/analysis.types";
-import {useAppDispatch, useAppSelector} from "../../../app/base/hooks";
-import {handleOrderInfoModal} from "../../../app/features/modals/modalsSlice";
-import {NavProps} from "../../../types/common.types";
+import { OrderAnalysisType } from "../../../types/analysis.types";
+import { useAppDispatch, useAppSelector } from "../../../app/base/hooks";
+import { handleOrderInfoModal } from "../../../app/features/modals/modalsSlice";
+import { NavProps } from "../../../types/common.types";
 import OrderInfoModal from "../../../components/Modals/OrderInfoModal";
 
 const analysisData: OrderAnalysisType[] = [
@@ -38,27 +38,30 @@ const analysisData: OrderAnalysisType[] = [
     }
 ]
 
-const Main: FC<NavProps> = ({navigation}) => {
+const Main: FC<NavProps> = ({ navigation }) => {
     const dispatch = useAppDispatch()
-    const {orderInfoModal} = useAppSelector(state => state.modals)
+    const { orderInfoModal } = useAppSelector(state => state.modals)
+    const [refreshing, setRefreshing] = useState(false);
+    const onRefresh = () => {
+        setRefreshing(true);
+        setTimeout(() => {
+            setRefreshing(false);
+        }, 2000);
+    };
 
-    //const scaleValue = new Animated.Value(1);
-    //
-    // useEffect(() => {
-    //     if (orderInfoModal) {
-    //         Animated.spring(scaleValue, {
-    //             toValue: .84,
-    //             useNativeDriver: true,
-    //         }).start();
-    //     } else {
-    //         Animated.spring(scaleValue, {
-    //             toValue: 1,
-    //             useNativeDriver: true
-    //         }).start();
-    //     }
-    // }, [orderInfoModal, scaleValue]);
     return (
-        <Animated.ScrollView>
+        <Animated.ScrollView
+
+            refreshControl={
+
+                <RefreshControl
+                    refreshing={refreshing}
+                    onRefresh={onRefresh}
+                    tintColor="gray"
+                    colors={['gray']}
+                />
+
+            }>
             <WhiteBorderedLayout style={{
                 paddingTop: 32
             }}>
@@ -73,7 +76,7 @@ const Main: FC<NavProps> = ({navigation}) => {
                                 cs.flexOne,
                                 styles.buttonDark
                             ]}>
-                            <Logo/>
+                            <Logo />
                             <Text style={[cs.fzS, cs.colorWhite, cs.txtCenter]}>Пригласить в Экспресс Тест</Text>
                         </TouchableOpacity>
                         <TouchableOpacity
@@ -83,7 +86,7 @@ const Main: FC<NavProps> = ({navigation}) => {
                                 styles.buttonTop,
                                 cs.flexOne
                             ]}>
-                            <Logo/>
+                            <Logo />
                             <Text style={[cs.fzS, cs.txtCenter]}>Назначить анализы</Text>
                         </TouchableOpacity>
                     </View>
@@ -94,15 +97,15 @@ const Main: FC<NavProps> = ({navigation}) => {
                         {
                             analysisData.map((item, index) => (
                                 <AnalysisCard key={index} status={item.status}
-                                              handlePress={() => dispatch(handleOrderInfoModal())}
-                                              date={item.date} orderNumber={item.orderNumber} customer={item.customer}
-                                              analysisList={item.analysisList}/>
+                                    handlePress={() => dispatch(handleOrderInfoModal())}
+                                    date={item.date} orderNumber={item.orderNumber} customer={item.customer}
+                                    analysisList={item.analysisList} />
                             ))
                         }
                     </View>
                 </View>
             </WhiteBorderedLayout>
-            <OrderInfoModal opened={orderInfoModal} handlePopup={() => dispatch(handleOrderInfoModal())}/>
+            <OrderInfoModal opened={orderInfoModal} handlePopup={() => dispatch(handleOrderInfoModal())} />
         </Animated.ScrollView>
 
     );
@@ -122,7 +125,7 @@ const styles = StyleSheet.create({
         fontWeight: "600"
     },
     analysisCountCircle: {
-      backgroundColor: "orange",
+        backgroundColor: "orange",
         borderRadius: 1000,
         paddingHorizontal: 7,
         paddingVertical: 2,

@@ -7,41 +7,29 @@ import AppNavigator from "./navigation/AppNavigator";
 
 const Root = () => {
     const [fontsLoaded] = useFonts();
-    const [refreshing, setRefreshing] = useState(false);
+    const [refreshing, setRefreshing] = React.useState(false);
 
-    const onRefresh = () => {
+    const onRefresh = React.useCallback(() => {
         setRefreshing(true);
-
-        // Здесь можно выполнить логику обновления данных
-        // Например, запрос к серверу или обновление состояния
-
-        // Предположим, что после выполнения логики обновления данных,
-        // устанавливаем refreshing в false
+        
         setTimeout(() => {
             setRefreshing(false);
-        }, 2000); // Задержка для имитации выполнения запроса
-    };
+        }, 2000);
+    }, []);
     if (fontsLoaded) {
         return (
             <>
                 <StatusBar style={"auto"} />
                 <View style={{ flex: 1 }}>
                     <ScrollView
-                        contentContainerStyle={{ flexGrow: 1 }}
-                        refreshControl={
-                            <RefreshControl
-                                refreshing={refreshing}
-                                onRefresh={onRefresh}
-                                tintColor="gray"
-                                colors={['gray']}
-                            />
-                        }
+                    
+                        contentContainerStyle={{flexGrow: 1}}
+                    
                     >
-                        {/* Ваше содержимое страницы */}
                         <AppNavigator />
                     </ScrollView>
                 </View>
-                
+
             </>
         )
     }
