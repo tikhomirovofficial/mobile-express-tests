@@ -1,17 +1,17 @@
-import React, {FC} from 'react';
+import React, { FC } from 'react';
 import WhiteBorderedLayout from "../../../layouts/WhiteBordered";
-import {Animated, Text, TouchableOpacity, View, StyleSheet, TextInput, ScrollView} from "react-native";
-import {cs} from "../../../common/styles";
-import {ArrowLeft, Logo, SearchIcon} from "../../../icons";
-import {OrderAnalysisType} from "../../../types/analysis.types";
-import {useAppDispatch, useAppSelector} from "../../../app/base/hooks";
-import {NavProps} from "../../../types/common.types";
+import { Animated, Text, TouchableOpacity, View, StyleSheet, TextInput, ScrollView, SectionList, FlatList } from "react-native";
+import { cs } from "../../../common/styles";
+import { ArrowLeft, Logo, SearchIcon } from "../../../icons";
+import { OrderAnalysisType } from "../../../types/analysis.types";
+import { useAppDispatch, useAppSelector } from "../../../app/base/hooks";
+import { NavProps } from "../../../types/common.types";
 import AppContainer from "../../../components/AppContainer";
-import {fs} from "../../../navigation/AppNavigator";
+import { fs } from "../../../navigation/AppNavigator";
 import PatientItem from "../../../components/PatientItem";
 import ButtonYellow from "../../../components/Buttons/ButtonYellow";
 import PatientInvitingModal from "../../../components/Modals/PatientInvitingModal";
-import {handlePatientInvitingModal} from "../../../app/features/modals/modalsSlice";
+import { handlePatientInvitingModal } from "../../../app/features/modals/modalsSlice";
 
 const analysisData: OrderAnalysisType[] = [
     {
@@ -34,22 +34,22 @@ const analysisData: OrderAnalysisType[] = [
     }
 ]
 
-const SelectingPatients: FC<NavProps> = ({navigation}) => {
+const SelectingPatients: FC<NavProps> = ({ navigation }) => {
     const dispatch = useAppDispatch()
     const handleToMyPatients = () => {
         navigation.navigate("home")
     }
     const openNewPatient = () => dispatch(handlePatientInvitingModal())
-    
+    const data = Array.from({ length: 12 }).map((_, index) => ({ key: `Item ${index}` }));
     return (
         <Animated.View>
-            <View style={[cs.fColumn, cs.spaceM, {minHeight: "100%"}]}>
+            <View style={[cs.fColumn, cs.spaceM, { minHeight: "100%" }]}>
                 <WhiteBorderedLayout
                     topContent={
-                        <AppContainer style={{paddingBottom: 0}}>
+                        <AppContainer style={{ paddingBottom: 0 }}>
                             <View style={[cs.fRow, cs.spaceM, cs.fAlCenter]}>
                                 <TouchableOpacity onPress={handleToMyPatients}>
-                                    <ArrowLeft/>
+                                    <ArrowLeft />
                                 </TouchableOpacity>
 
                                 <Text style={[cs.fwSemi, cs.fwSemi, cs.fzXL]}>Приглашение пациентов</Text>
@@ -57,7 +57,7 @@ const SelectingPatients: FC<NavProps> = ({navigation}) => {
                         </AppContainer>
 
                     }
-                    style={{paddingTop: 40, maxHeight: "100%"}}>
+                    style={{ paddingTop: 40, maxHeight: "100%" }}>
                     <View style={[cs.spaceXL, styles.patientsContent]}>
                         <View style={[cs.spaceL, cs.fColumn]}>
                             <View style={[cs.fRowBetw, cs.spaceM, cs.fAlCenter]}>
@@ -68,21 +68,34 @@ const SelectingPatients: FC<NavProps> = ({navigation}) => {
                                 </View>
                             </View>
                             <View style={[cs.fRow, cs.fAlCenter, cs.spaceS, styles.searchInputBlock]}>
-                                <SearchIcon/>
+                                <SearchIcon />
                                 <TextInput style={[cs.fzS, fs.montR, cs.flexOne]} placeholder={"Найти по имени или номеру"} />
                             </View>
                             <TouchableOpacity onPress={openNewPatient}>
-                                <Text style={[cs.textYellow, cs.fwSemi, {textDecorationLine: "underline"}]}>Новый номер телефона</Text>
+                                <Text style={[cs.textYellow, cs.fwSemi, { textDecorationLine: "underline" }]}>Новый номер телефона</Text>
                             </TouchableOpacity>
                         </View>
-                        <View style={[cs.fColumn, cs.spaceM, cs.flexOne]}>
-                            <Text style={[cs.colorGray, cs.fwBold, styles.firstLetterContact]}>В</Text>
-                            <View>
-                                <PatientItem selected={true} firstName={"Вячеслав"} lastName={"Подосёнов"} phone={"+7 (951) 735-89-45"} avatarSrc={null}/>
-                                <PatientItem selected={false} firstName={"Вячеслав"} lastName={"Подосёнов"} phone={"+7 (951) 735-89-45"} avatarSrc={null}/>
+                        <View style={[cs.flexOne, { position: "relative"}]}>
+                            <View style={[{ position: "absolute", height: "100%", width: "100%"}]}>
+                                <ScrollView>
+                                    <View style={[cs.flexOne]}>
+                                        <Text style={[cs.colorGray, cs.fwBold, styles.firstLetterContact]}>В</Text>
+
+                                        <View style={[cs.flexOne]}>
+                                            <PatientItem selected={true} firstName={"Вячеслав"} lastName={"Подосёнов"} phone={"+7 (951) 735-89-45"} avatarSrc={null} />
+                                            <PatientItem selected={true} firstName={"Вячеслав"} lastName={"Подосёнов"} phone={"+7 (951) 735-89-45"} avatarSrc={null} />
+                                            <PatientItem selected={true} firstName={"Вячеслав"} lastName={"Подосёнов"} phone={"+7 (951) 735-89-45"} avatarSrc={null} />
+                                            <PatientItem selected={true} firstName={"Вячеслав"} lastName={"Подосёнов"} phone={"+7 (951) 735-89-45"} avatarSrc={null} />
+                                            <PatientItem selected={true} firstName={"Вячеслав"} lastName={"Подосёнов"} phone={"+7 (951) 735-89-45"} avatarSrc={null} />
+                                            <PatientItem selected={true} firstName={"Вячеслав"} lastName={"Подосёнов"} phone={"+7 (951) 735-89-45"} avatarSrc={null} />
+                                        </View>
+                                    </View>
+                                </ScrollView>
                             </View>
 
                         </View>
+
+
                         <ButtonYellow handlePress={() => {
                         }}>
                             <Text style={[cs.fzM, cs.yellowBtnText]}>Далее</Text>
@@ -92,11 +105,11 @@ const SelectingPatients: FC<NavProps> = ({navigation}) => {
                     </View>
 
                 </WhiteBorderedLayout>
-            </View>
-            <PatientInvitingModal/>
-        </Animated.View>
+            </View >
+            <PatientInvitingModal />
+        </Animated.View >
 
-);
+    );
 };
 const styles = StyleSheet.create({
     searchInputBlock: {
@@ -109,7 +122,9 @@ const styles = StyleSheet.create({
         fontSize: 18
     },
     patientsContent: {
-        minHeight: "94%"
+        flex: 1,
+        minHeight: "100%",
+        paddingBottom: 40
     },
 })
 export default SelectingPatients;

@@ -39,7 +39,7 @@ const AppNavigator = () => {
     return (
         <NavigationContainer>
             <View style={styles.main}>
-                <Stack.Navigator initialRouteName={"bio_connect"}
+                <Stack.Navigator initialRouteName={"inviting"}
                                  screenOptions={{headerShown: false, contentStyle: cs.rootBg}}>
                     <Stack.Screen name="home" component={MainTabs}/>
                     <Stack.Screen name="inviting" component={SelectingPatients}/>
