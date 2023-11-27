@@ -220,13 +220,25 @@ export const UncheckedBorderedIcon: FC<IconProps> = ({ width = 20, height = 20 }
     )
 }
 
-export const HeartIcon: FC<IconProps> = ({ width = 16, height = 16 }) => {
+export const ClearIcon: FC<IconProps> = ({ width = 16, height = 16, stroke = "#4D4D4D" }) => {
+    return (
+        <Svg width={width} height={height} viewBox="0 0 19 20" fill="none">
+            <Path d="M16.3249 7.46777C16.3249 7.46777 15.7819 14.2028 15.4669 17.0398C15.3169 18.3948 14.4799 19.1888 13.1089 19.2138C10.4999 19.2608 7.88791 19.2638 5.27991 19.2088C3.96091 19.1818 3.13791 18.3778 2.99091 17.0468C2.67391 14.1848 2.13391 7.46777 2.13391 7.46777" stroke="#F40F0F" strokeWidth="1.5" stroke-linecap="round" stroke-linejoin="round" />
+            <Path d="M17.7082 4.23926H0.750244" stroke="#F40F0F" strokeWidth="1.5" stroke-linecap="round" stroke-linejoin="round" />
+            <Path d="M14.4407 4.23949C13.6557 4.23949 12.9797 3.68449 12.8257 2.91549L12.5827 1.69949C12.4327 1.13849 11.9247 0.750488 11.3457 0.750488H7.1127C6.5337 0.750488 6.0257 1.13849 5.8757 1.69949L5.6327 2.91549C5.4787 3.68449 4.8027 4.23949 4.0177 4.23949" stroke="#F40F0F" strokeWidth="1.5" stroke-linecap="round" stroke-linejoin="round" />
+        </Svg>
+
+    )
+}
+
+
+export const HeartIcon: FC<IconProps> = ({ width = 16, height = 16, stroke = "#4D4D4D" }) => {
     return (
         <Svg width={width} height={height} viewBox="0 0 16 16" fill="none">
             <Path fill-rule="evenodd" clip-rule="evenodd"
                 d="M7.82076 14.6403C6.1928 13.6384 4.67833 12.4592 3.30447 11.1239C2.33858 10.1622 1.60325 8.98983 1.15482 7.69654C0.347858 5.18773 1.29045 2.31562 3.92834 1.46564C5.31471 1.01933 6.82884 1.27441 7.99707 2.15111C9.16575 1.27548 10.6793 1.02048 12.0658 1.46564C14.7037 2.31562 15.6531 5.18773 14.8461 7.69654C14.3977 8.98983 13.6623 10.1622 12.6965 11.1239C11.3226 12.4592 9.80812 13.6384 8.18016 14.6403L8.00385 14.75L7.82076 14.6403Z"
-                stroke="#4D4D4D" strokeWidth="1.5" strokeLinecap="round" stroke-linejoin="round" />
-            <Path d="M10.8044 4.28979C11.6034 4.54502 12.1711 5.26232 12.2421 6.10628" stroke="#4D4D4D"
+                stroke={stroke} strokeWidth="1.5" strokeLinecap="round" stroke-linejoin="round" />
+            <Path d="M10.8044 4.28979C11.6034 4.54502 12.1711 5.26232 12.2421 6.10628" stroke={stroke}
                 strokeWidth="1.5" strokeLinecap="round" stroke-linejoin="round" />
         </Svg>
 

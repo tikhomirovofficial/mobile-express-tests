@@ -14,11 +14,13 @@ import PatientInvitingModal from "../../../components/Modals/PatientInvitingModa
 import { handlePatientInvitingModal } from "../../../app/features/modals/modalsSlice";
 import * as Contacts from 'expo-contacts';
 import * as Permissions from 'expo-permissions';
+import { setPatients } from '../../../app/features/patients/patientsSlice';
+import { setPatient } from '../../../app/features/order/orderSlice';
 
 const SelectingPatient: FC<NavProps> = ({ navigation }) => {
     const dispatch = useAppDispatch()
     const [searchVal, setSearchVal] = useState("")
-    const [contacts, setContacts] = useState<Array<Contacts.Contact>>([])
+    const contacts = useAppSelector(state => state.patients.items)
     const [contactsLoading, setContactsLoading] = useState(false)
     const [contactsSelected, setContactsSelected] = useState<string[]>([])
 
@@ -26,6 +28,12 @@ const SelectingPatient: FC<NavProps> = ({ navigation }) => {
         navigation.navigate("home")
     }
     const toSelectCategory = () => {
+        const patientData = contacts.filter(item => item.id === contactsSelected[0])[0]
+        dispatch(setPatient({
+            id: contactsSelected[0],
+            firstName: patientData?.firstName || "",
+            lastName: patientData?.lastName || ""
+        }))
         navigation.navigate("order_category")
     }
     
@@ -41,7 +49,7 @@ const SelectingPatient: FC<NavProps> = ({ navigation }) => {
                 const { data } = await Contacts.getContactsAsync();
 
                 if (data.length > 0) {
-                    setContacts(data.slice(0, 3))
+                    dispatch(setPatients(data.slice(0, 3)))
                     setContactsLoading(false)
                 }
             }
@@ -142,8 +150,6 @@ const SelectingPatient: FC<NavProps> = ({ navigation }) => {
                             <View style={[cs.fRow, cs.fAlCenter, cs.spaceS]}>
                                 <Text style={[cs.fzM, cs.yellowBtnText]}>Далее</Text>
                             </View>
-
-
                         </ButtonYellow>
 
 

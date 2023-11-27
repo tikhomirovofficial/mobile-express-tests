@@ -16,8 +16,8 @@ import WhiteBorderedLayout from '../../layouts/WhiteBordered';
 const ConnectBio: FC<NavProps> = ({ navigation }) => {
     const dispatch = useAppDispatch()
 
-    const handleToMyPatients = () => {
-        navigation.navigate("home")
+    const handleToNotifications = () => {
+        navigation.navigate("info_notifications")
     }
     const openNewPatient = () => dispatch(handlePatientInvitingModal())
 
@@ -51,7 +51,7 @@ const ConnectBio: FC<NavProps> = ({ navigation }) => {
                                 </LinearGradient>
                             </TouchableOpacity>
                             <View style={[cs.fCenterCol]}>
-                            <TouchableOpacity>
+                            <TouchableOpacity onPress={handleToNotifications}>
                                 <Text style={[cs.fClickableGray, cs.fzM]}>Пропустить</Text>
                             </TouchableOpacity>
                             </View>

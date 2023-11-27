@@ -14,36 +14,20 @@ import PatientInvitingModal from "../../../components/Modals/PatientInvitingModa
 import { handlePatientInvitingModal } from "../../../app/features/modals/modalsSlice";
 import * as Contacts from 'expo-contacts';
 import * as Permissions from 'expo-permissions';
+import { addInvitingsId, removeInvitingsId, resetInvitingsIds } from '../../../app/features/patients/patientsSlice';
 
 const CheckSelectedPatients: FC<NavProps> = ({ navigation }) => {
     const dispatch = useAppDispatch()
 
-    const [contacts, setContacts] = useState<Array<Contacts.Contact>>([])
+    const contacts = useAppSelector(state => state.patients.items)
     const [contactsLoading, setContactsLoading] = useState(false)
-    const [contactsSelected, setContactsSelected] = useState<string[]>([])
+    const contactsSelected = useAppSelector(state => state.patients.invitingsIds)
 
     const handleToSelectingPatients = () => {
         navigation.navigate("inviting")
     }
-    useEffect(() => {
-
-        (async () => {
-            const contactsPermissions = await Permissions.askAsync(Permissions.CONTACTS);
-            console.log(contactsPermissions.status);
-
-            const { status } = await Contacts.requestPermissionsAsync();
-            if (status === 'granted') {
-                setContactsLoading(true)
-                const { data } = await Contacts.getContactsAsync();
-
-                if (data.length > 0) {
-                    setContacts(data.slice(0, 3))
-                    setContactsLoading(false)
-                }
-            }
-        })();
-    }, []);
     const sendInvitings = () => {
+        dispatch(resetInvitingsIds())
         navigation.navigate("inviting_sent")
     }
 
@@ -83,14 +67,12 @@ const CheckSelectedPatients: FC<NavProps> = ({ navigation }) => {
                                             <PatientItem handlePress={() => {
                                                 const alreadySelected = contactsSelected.some(contact => contact === item.id)
 
-                                                setContactsSelected(prev => {
-                                                    if (!alreadySelected) {
-                                                        const newSelected = item.id
-                                                        return [...prev, item.id]
-                                                    }
-                                                    return prev.filter(contact => contact !== item.id)
-
-                                                })
+                                               
+                                                if(!alreadySelected) {
+                                                    dispatch(addInvitingsId(item.id))
+                                                    return
+                                                } 
+                                                dispatch(removeInvitingsId(item.id))
 
                                             }} key={item.id} selected={contactsSelected.some(contact => contact === item.id)} firstName={item.firstName || ""} lastName={item.lastName || ""} phone={item.phoneNumbers ? item.phoneNumbers[0]?.number || "" : ""} avatarSrc={null} />
                                         )}

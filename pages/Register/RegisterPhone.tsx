@@ -16,10 +16,10 @@ import WhiteBorderedLayout from '../../layouts/WhiteBordered';
 const LoginPhone: FC<NavProps> = ({ navigation }) => {
     const dispatch = useAppDispatch()
 
-    const handleToMyPatients = () => {
-        navigation.navigate("home")
+    const handleToCode = () => {
+        navigation.navigate("sms_login")
     }
-    const openNewPatient = () => dispatch(handlePatientInvitingModal())
+
     const [keyboardStatus, setKeyboardStatus] = useState(false);
 
     useEffect(() => {
@@ -55,10 +55,10 @@ const LoginPhone: FC<NavProps> = ({ navigation }) => {
                             <View style={[cs.fColumn, cs.spaceM]}>
                                 <Text style={[cs.fzS, fs.montR, cs.fwMedium]} aria-label="Label for Usernam"
                                     nativeID="labelFirstName">Введите номер телефона, чтобы войти</Text>
-                                <TextInput accessibilityLabelledBy={"labelFirstName"} placeholder={"+7"}
+                                <TextInput keyboardType={"number-pad"} accessibilityLabelledBy={"labelFirstName"} placeholder={"+7"}
                                     style={[cs.inputField, cs.fzM, fs.montR]} />
                             </View>
-                            <TouchableOpacity>
+                            <TouchableOpacity onPress={handleToCode}>
                                 <LinearGradient style={[cs.yellowBtn, cs.fCenterCol]}
                                     colors={["#FB0", "#FFCB3D", "#FFDA75"]}>
                                     <Text style={[cs.fzM, cs.yellowBtnText]}>Продолжить</Text>

@@ -11,65 +11,26 @@ import { handleOrderInfoModal } from "../../../app/features/modals/modalsSlice";
 import { NavProps } from "../../../types/common.types";
 import OrderInfoModal from "../../../components/Modals/OrderInfoModal";
 
-const analysisData: OrderAnalysisType[] = [
-    {
-        customer: "Владислав Тузов",
-        date: "25.09.2023",
-        orderNumber: "02-014",
-        status: "PAID"
-    },
-    {
-        customer: "Александр Тузов",
-        date: "25.09.2023",
-        orderNumber: "02-016",
-        status: "NOT_PAID"
-    },
-    {
-        customer: "Артём Тихомиров",
-        date: "25.09.2023",
-        orderNumber: "02-016",
-        status: "NOT_PAID"
-    },
-    {
-        customer: "Дмитрий Тихомиров",
-        date: "25.09.2023",
-        orderNumber: "02-016",
-        status: "NOT_PAID"
-    }
-]
 
 const Main: FC<NavProps> = ({ navigation }) => {
     const dispatch = useAppDispatch()
     const { orderInfoModal } = useAppSelector(state => state.modals)
+    const orders = useAppSelector(state => state.orders.items)
     const [refreshing, setRefreshing] = useState(false);
-    const onRefresh = () => {
-        setRefreshing(true);
-        setTimeout(() => {
-            setRefreshing(false);
-        }, 2000);
-    };
+
 
     return (
         <Animated.ScrollView
-
-            refreshControl={
-
-                <RefreshControl
-                    refreshing={refreshing}
-                    onRefresh={onRefresh}
-                    tintColor="gray"
-                    colors={['gray']}
-                />
-
-            }>
+            contentContainerStyle={{ flex: 1 }}
+        >
             <WhiteBorderedLayout style={{
-                paddingTop: 32
+                paddingTop: 32,
             }}>
                 <View style={[cs.spaceL, cs.fColumn]}>
                     <Text style={cs.title}>Вячеслав, добрый день!</Text>
                     <View style={[cs.fRowBetw, styles.buttonsTopContainer]}>
                         <TouchableOpacity
-                            onPress={() => navigation.navigate("register")}
+                            onPress={() => navigation.navigate("info_contacts")}
                             style={[
                                 cs.fColumn,
                                 styles.buttonTop,
@@ -80,7 +41,7 @@ const Main: FC<NavProps> = ({ navigation }) => {
                             <Text style={[cs.fzS, cs.colorWhite, cs.txtCenter]}>Пригласить в Экспресс Тест</Text>
                         </TouchableOpacity>
                         <TouchableOpacity
-                        onPress={() => navigation.navigate("order_patient")}
+                            onPress={() => navigation.navigate("order_patient")}
                             style={[
                                 cs.wBlockShadow,
                                 cs.fColumn,
@@ -96,12 +57,14 @@ const Main: FC<NavProps> = ({ navigation }) => {
                     <Text style={cs.title}>Заказы анализов</Text>
                     <View style={[cs.fColumn, cs.spaceM]}>
                         {
-                            analysisData.map((item, index) => (
-                                <AnalysisCard key={index} status={item.status}
-                                    handlePress={() => dispatch(handleOrderInfoModal())}
-                                    date={item.date} orderNumber={item.orderNumber} customer={item.customer}
-                                    analysisList={item.analysisList} />
-                            ))
+                            orders.length > 0 ?
+                                orders.map((item, index) => (
+                                    <AnalysisCard key={item.id} paid={item.isPaid}
+                                        handlePress={() => dispatch(handleOrderInfoModal())}
+                                        date={item.date} orderNumber={item.id.toString()} customer={`${item.patientFirstName || ""} ${item.patientLastName || ""}`}
+                                        analysisList={[]} />
+                                ))
+                                : <Text>Пока пусто.</Text>
                         }
                     </View>
                 </View>

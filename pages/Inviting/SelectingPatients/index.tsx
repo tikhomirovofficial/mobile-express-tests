@@ -14,14 +14,15 @@ import PatientInvitingModal from "../../../components/Modals/PatientInvitingModa
 import { handlePatientInvitingModal } from "../../../app/features/modals/modalsSlice";
 import * as Contacts from 'expo-contacts';
 import * as Permissions from 'expo-permissions';
+import { addInvitingsId, removeInvitingsId, setPatients } from '../../../app/features/patients/patientsSlice';
 
 const SelectingPatients: FC<NavProps> = ({ navigation }) => {
     const dispatch = useAppDispatch()
-
-    const [contacts, setContacts] = useState<Array<Contacts.Contact>>([])
+    const contacts = useAppSelector(state => state.patients.items)
     const [contactsLoading, setContactsLoading] = useState(false)
-    const [contactsSelected, setContactsSelected] = useState<string[]>([])
+    const contactsSelected = useAppSelector(state => state.patients.invitingsIds)
 
+    
     const handleToMyPatients = () => {
         navigation.navigate("home")
     }
@@ -40,13 +41,17 @@ const SelectingPatients: FC<NavProps> = ({ navigation }) => {
                 const { data } = await Contacts.getContactsAsync();
 
                 if (data.length > 0) {
-                    setContacts(data.slice(0, 3))
+                    dispatch(setPatients(data.slice(0, 3)))
                     setContactsLoading(false)
                 }
             }
         })();
     }, []);
     const openNewPatient = () => dispatch(handlePatientInvitingModal())
+
+    function setInvigitingsIds(arg0: (prev: any) => any): any {
+        throw new Error('Function not implemented.');
+    }
 
     return (
         <Animated.View>
@@ -91,14 +96,11 @@ const SelectingPatients: FC<NavProps> = ({ navigation }) => {
                                             <PatientItem handlePress={() => {
                                                 const alreadySelected = contactsSelected.some(contact => contact === item.id)
 
-                                                setContactsSelected(prev => {
-                                                    if (!alreadySelected) {
-                                                        const newSelected = item.id
-                                                        return [...prev, item.id]
-                                                    }
-                                                    return prev.filter(contact => contact !== item.id)
-
-                                                })
+                                                if(!alreadySelected) {
+                                                    dispatch(addInvitingsId(item.id))
+                                                    return
+                                                } 
+                                                dispatch(removeInvitingsId(item.id))
 
                                             }} key={item.id} selected={contactsSelected.some(contact => contact === item.id)} firstName={item.firstName || ""} lastName={item.lastName || ""} phone={item.phoneNumbers ? item.phoneNumbers[0]?.number || "" : ""} avatarSrc={null} />
                                         )}

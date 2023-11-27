@@ -18,7 +18,7 @@ const CreatePinCode: FC<NavProps> = ({ navigation }) => {
     const [incorrectAccept, setIncorrectAccept] = useState("")
 
     const nextStep = () => {
-        alert("Дальше")
+        navigation.navigate("bio_connect")
     }
 
     const handlePin = (digit: string) => {
@@ -88,6 +88,7 @@ const CreatePinCode: FC<NavProps> = ({ navigation }) => {
     }, [acceptPin])
 
     useEffect(() => {
+        Keyboard.dismiss()
         const keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', () => {
             setKeyboardStatus(true);
         });
@@ -115,7 +116,7 @@ const CreatePinCode: FC<NavProps> = ({ navigation }) => {
                         </AppContainer>
                     }
                     style={{ paddingTop: 40, maxHeight: "100%" }}>
-                    <View style={[cs.fColumnBetw, cs.flexOne, { minHeight: !keyboardStatus ? "100%" : "99%", paddingBottom: 32 }]}>
+                    <View style={[cs.fColumnBetw, cs.flexOne, { minHeight: !keyboardStatus ? "100%" : "99%", paddingBottom: 32}]}>
                         <View style={[cs.spaceXXL]}>
                             <View style={[cs.spaceM]}>
                                 <View style={[cs.fColumn, cs.spaceM, cs.fAlCenter]}>

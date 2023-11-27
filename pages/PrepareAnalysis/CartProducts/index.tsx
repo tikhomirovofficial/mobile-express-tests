@@ -2,7 +2,7 @@ import React, { FC, useEffect, useState } from 'react';
 import WhiteBorderedLayout from "../../../layouts/WhiteBordered";
 import { Animated, Text, TouchableOpacity, View, StyleSheet, TextInput, ScrollView, SectionList, FlatList, Keyboard } from "react-native";
 import { cs } from "../../../common/styles";
-import { ArrowLeft, ArrowRightIcon, Logo, SearchIcon } from "../../../icons";
+import { AddIcon, ArrowLeft, ArrowRightIcon, ClearIcon, HeartIcon, Logo, RemoveIcon, SearchIcon } from "../../../icons";
 import { OrderAnalysisType } from "../../../types/analysis.types";
 import { useAppDispatch, useAppSelector } from "../../../app/base/hooks";
 import { NavProps } from "../../../types/common.types";
@@ -11,34 +11,43 @@ import { fs } from "../../../navigation/AppNavigator";
 import PatientItem from "../../../components/PatientItem";
 import ButtonYellow from "../../../components/Buttons/ButtonYellow";
 import PatientInvitingModal from "../../../components/Modals/PatientInvitingModal";
-import { handlePatientInvitingModal } from "../../../app/features/modals/modalsSlice";
-import * as Contacts from 'expo-contacts';
-import * as Permissions from 'expo-permissions';
-import { setCurrentCategory } from '../../../app/features/order/orderSlice';
+import { addToCart, clearCart, removeProduct } from '../../../app/features/cart/cartSlice';
+import { resetPatient, setCurrentCategory, setPatient } from '../../../app/features/order/orderSlice';
+import { addOrder } from '../../../app/features/orders/ordersSlice';
 
-const SelectingCategory: FC<NavProps> = ({navigation }) => {
+const CartProducts: FC<NavProps> = ({ navigation }) => {
     const dispatch = useAppDispatch()
-    const cart = useAppSelector(state => state.cart)
-    const patients = useAppSelector(state => state.patients.items)
-
-    const [searchVal, setSearchVal] = useState("")
     const [categoriesLoading, setCategoriesLoading] = useState(false)
-    const patient = useAppSelector(state => state.order.patientData)
-    const categories = useAppSelector(state => state.categories.items)
+    const orderData = useAppSelector(state => state.order.patientData)
     const products = useAppSelector(state => state.products.items)
-    const patientFullName = `${patient?.firstName || ""} ${patient?.lastName || ""} ${patient?.firstName === undefined && patient?.lastName === undefined ? "Пациент" : ""}`
-    
+    const cartProducts = useAppSelector(state => state.cart.items)
 
-    const handleToSelectingPatient = () => {
-        navigation.navigate("order_patient")
+
+    const handleClearCart = () => {
+        dispatch(clearCart())
     }
-    const toProducts = (categoryId: number) => {
-        dispatch(setCurrentCategory(categoryId))
-        navigation.navigate("order_products")
+    const handleOrder = () => {
+        const dateNow = new Date()
+        dispatch(addOrder({
+            id: 1,
+            patientFirstName: orderData.firstName,
+            patientLastName: orderData.lastName,
+            isPaid: false,
+            date: `${dateNow.getDate()}.${dateNow.getMonth() + 1}.${dateNow.getFullYear()}`,
+            title: ""
+        }))
+        handleClearCart()
+        dispatch(setCurrentCategory(-1))
+        dispatch(resetPatient())
+
+        navigation.navigate("order_sent")
+        
     }
-    const toCart = () => {
-        navigation.navigate("order_cart")
+    const handleToSelectingCategory = () => {
+        navigation.navigate("order_category")
     }
+
+
     const [keyboardStatus, setKeyboardStatus] = useState(false);
 
     useEffect(() => {
@@ -63,11 +72,10 @@ const SelectingCategory: FC<NavProps> = ({navigation }) => {
                     topContent={
                         <AppContainer style={{ paddingBottom: 0 }}>
                             <View style={[cs.fRowBetw, cs.spaceM, cs.fAlCenter]}>
-                                <TouchableOpacity onPress={handleToSelectingPatient}>
+                                <TouchableOpacity onPress={handleToSelectingCategory}>
                                     <ArrowLeft />
                                 </TouchableOpacity>
-
-                                <Text style={[cs.fwSemi, cs.fwSemi, cs.fzXL]}>{patientFullName}</Text>
+                                <Text style={[cs.fwSemi, cs.fwSemi, cs.fzXL]}>Корзина</Text>
                                 <View></View>
                             </View>
                         </AppContainer>
@@ -77,17 +85,17 @@ const SelectingCategory: FC<NavProps> = ({navigation }) => {
                     <View style={[cs.spaceXL, styles.patientsContent, { minHeight: keyboardStatus ? "99%" : "100%" }]}>
                         <View style={[cs.spaceL, cs.fColumn]}>
                             <View style={[cs.fRowBetw, cs.spaceM, cs.fAlCenter]}>
-                                <Text style={[cs.fwSemi, cs.fwBold, cs.fzXL]}>Выберите категорию</Text>
-                                <View style={[cs.fRow, cs.fAlCenter, cs.spaceS]}>
-                                    <View style={[cs.sliderDot]}></View>
-                                    <View style={[cs.sliderDot, , cs.sliderDotActive]}></View>
-                                    <View style={[cs.sliderDot]}></View>
+                                <Text style={[cs.fwSemi, cs.fwBold, cs.fzXL]}>Всего анализов: {cartProducts.length}</Text>
+                                <View style={[cs.fRow, cs.fAlCenter, cs.spaceS,{backgroundColor: "#36CACB", paddingHorizontal: 15, paddingVertical: 6, borderRadius: 300}]}>
+                                    <HeartIcon stroke={"#ffffff"}/>
+                                    <Text style={[cs.fwSemi, cs.colorWhite]}>{cartProducts.length * 3}</Text>
                                 </View>
+
                             </View>
-                            <View style={[cs.fRow, cs.fAlCenter, cs.spaceS, styles.searchInputBlock]}>
-                                <SearchIcon />
-                                <TextInput value={searchVal} onChangeText={(text) => setSearchVal(text)} style={[cs.fzS, fs.montR, cs.flexOne]} placeholder={"Название категории"} />
-                            </View>
+                            <TouchableOpacity onPress={handleClearCart} style={[cs.fRow, cs.fAlCenter, cs.spaceS]}>
+                                <ClearIcon/>
+                                <Text style={[cs.textRed, cs.fwMedium, fs.montR, cs.fzM]}>Очистить</Text>
+                            </TouchableOpacity>
 
                         </View>
                         <View style={[cs.flexOne, { position: "relative" }]}>
@@ -96,25 +104,29 @@ const SelectingCategory: FC<NavProps> = ({navigation }) => {
                                     <FlatList
 
                                         contentContainerStyle={[cs.fColumn, cs.spaceS]}
-                                        data={searchVal.length > 0 ? categories.filter(category => {
-                                            if(category.title.toLocaleLowerCase().includes(searchVal.toLocaleLowerCase())) {
-                                                return category
+                                        data={cartProducts}
+                                        renderItem={({ item }) => {
+                                        
+                                        
+                                            const removeItem = () => {
+                                                dispatch(removeProduct(item.id))
                                             }
 
-                                        }) : categories}
-                                        renderItem={({ item }) => (
-                                            <TouchableOpacity onPress={() => toProducts(item.id)} style={[cs.fRowBetw, cs.spaceS]}>
+                                            return (<TouchableOpacity style={[cs.fRowBetw, cs.spaceS, cs.fAlCenter]} >
                                                 <View key={item.id} style={[cs.fRow, cs.spaceS, { maxWidth: "90%" }]}>
-                                                    <Text style={[cs.fwMedium, fs.montR, cs.fzS, cs.colorDark]}>{item.title}</Text>
-                                                    <Text style={[cs.fwMedium, fs.montR, cs.fzS, cs.colorDark, cs.colorGray]}>{products.filter(product => product.category_id === item.id).length}</Text>
+                                                    <View style={[cs.fColumn]}>
+                                                        <Text style={[cs.fwMedium, fs.montR, cs.fzS, cs.colorDark]}>{products.filter(product => product.id === item.id)[0].title}</Text>
+                                                        <Text style={[cs.fwBold, fs.montR, cs.fzS, cs.colorDark]}>{item.price} ₽</Text>
+                                                    </View>
                                                 </View>
-                                                <View style={[{ marginTop: 3 }]}>
-                                                    <ArrowRightIcon />
-                                                </View>
+                                                <TouchableOpacity onPress={removeItem}>
+                                                    <RemoveIcon />
+
+                                                </TouchableOpacity>
 
 
-                                            </TouchableOpacity>
-                                        )}
+                                            </TouchableOpacity>)
+                                        }}
                                     />
 
                                 </View>}
@@ -122,25 +134,18 @@ const SelectingCategory: FC<NavProps> = ({navigation }) => {
                         </View>
 
 
-                        <ButtonYellow handlePress={toCart}>
+                        <ButtonYellow disabled={cartProducts.length < 1} handlePress={handleOrder}>
                             <View style={[cs.fRow, cs.fAlCenter, cs.spaceS]}>
-                                <Text style={[cs.fzM, cs.yellowBtnText]}>Корзина</Text>
-                                {14 > 0 ? <View style={cs.count}>
-                                    <Text style={cs.countText}>{cart.items.length}</Text>
-                                </View> : null}
-
+                                <Text style={[cs.fzM, cs.yellowBtnText]}>Отправить заказ</Text>
                             </View>
-
-
-
                         </ButtonYellow>
+
 
 
                     </View>
 
                 </WhiteBorderedLayout>
             </View >
-            
         </Animated.View >
 
     );
@@ -161,4 +166,4 @@ const styles = StyleSheet.create({
         paddingBottom: 40
     },
 })
-export default SelectingCategory;
+export default CartProducts;

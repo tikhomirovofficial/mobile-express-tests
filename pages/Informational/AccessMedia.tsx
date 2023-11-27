@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC } from 'react';
 import FeauturesLayout from "../../layouts/FeaturesLayout";
 import { Text, TouchableOpacity, View, Linking } from "react-native";
 import { cs } from "../../common/styles";
@@ -9,13 +9,14 @@ import InfoPageLayout from '../../layouts/InfoPageLayout';
 import AppContainer from '../../components/AppContainer';
 import { LinearGradient } from 'expo-linear-gradient';
 import { fs } from '../../navigation/AppNavigator';
+import { NavProps } from '../../types/common.types';
 const InfoMediaImage = require('../../assets/info_media.jpg')
 
-const AccessMedia = () => {
+const AccessMedia:FC<NavProps> = ({navigation})  => {
     const dispatch = useAppDispatch()
 
     const nextStep = () => {
-        dispatch(setWelcomeStep(1))
+        navigation.navigate("home")
     }
     return (
         <InfoPageLayout title='Разрешите доступ к медиа' image={InfoMediaImage} content={

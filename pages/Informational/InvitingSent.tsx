@@ -22,8 +22,11 @@ const InvitingSent: FC<NavProps> = ({navigation}) => {
             screen: "profile"
         })
     }
+
     const toHome = () => {
-        navigation.navigate("home")
+        navigation.navigate("home", {
+            screen: "orders"
+        })
     }
     return (
         <InfoPageLayout title='Приглашения отправлены' image={InfoInvitingSentImage} content={

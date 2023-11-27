@@ -13,8 +13,7 @@ const WelcomeCooperationImage = require('../../assets/welcome_cooperative.jpg')
 const WelcomePatients: FC<NavProps> = ({ navigation }) => {
     const dispatch = useAppDispatch()
     const toLoginStep = () => {
-        //ВРЕМЕННАЯ НАВИГАЦИЯ
-        navigation.navigate("home")
+        navigation.navigate("login_phone")
     }
     const toPrevStep = () => {
         dispatch(setWelcomeStep(1))

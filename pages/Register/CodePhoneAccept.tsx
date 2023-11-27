@@ -65,6 +65,13 @@ const CodePhoneAccept: FC<NavProps> = ({ navigation }) => {
         inputRefs.current[0].focus()
     }, [])
     
+    useEffect(() => {
+        if(code.filter(item => item !== "").length === 4) {
+            Keyboard.dismiss()
+            navigation.navigate("pin_create")
+        }
+    }, [code])
+    
 
 
     return (
@@ -101,7 +108,7 @@ const CodePhoneAccept: FC<NavProps> = ({ navigation }) => {
                             <TouchableOpacity>
                                 <LinearGradient style={[cs.yellowBtn, cs.fCenterCol]}
                                     colors={["#FB0", "#FFCB3D", "#FFDA75"]}>
-                                    <Text style={[cs.fzM, cs.yellowBtnText]}>Отправить код</Text>
+                                    <Text style={[cs.fzM, cs.yellowBtnText]}>Отправить код еще раз</Text>
                                 </LinearGradient>
                             </TouchableOpacity>
                         </View>

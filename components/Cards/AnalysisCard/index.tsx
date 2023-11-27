@@ -11,15 +11,15 @@ const AnalysisCard: FC<OrderAnalysisType> = ({
                                                  orderNumber,
                                                  date,
                                                  customer,
-                                                 status,
+                                                 paid,
                                                  handlePress,
                                              }) => {
-    const getStatusObj = (status: "PAID" | "NOT_PAID") => {
+    const getStatusObj = (status: boolean) => {
         const statusObj = {
             styleBlock: cs.statusGray,
             text: "Не оплачен"
         }
-        if(status == "PAID") {
+        if(status) {
             statusObj.styleBlock = cs.statusGreen
             statusObj.text = "Оплачен"
         }
@@ -42,8 +42,8 @@ const AnalysisCard: FC<OrderAnalysisType> = ({
 
             </View>
             <View style={[cs.fRowBetw, cs.fAlCenter, cs.flexOne, styles.cardBottom]}>
-                <View style={[getStatusObj(status).styleBlock, styles.statusBlock]}>
-                    <Text style={[cs.fwBold, cs.colorWhite]}>{getStatusObj(status).text}</Text>
+                <View style={[getStatusObj(paid).styleBlock, styles.statusBlock]}>
+                    <Text style={[cs.fwBold, cs.colorWhite]}>{getStatusObj(paid).text}</Text>
                 </View>
                 <TouchableOpacity style={[cs.fAlCenter, cs.fRow, styles.resultsBtn]}>
                     <DownloadIcon/>
