@@ -96,6 +96,7 @@ export const SearchIcon: FC<IconProps> = ({ width = 17, height = 18 }) => {
 
     )
 }
+
 export const CheckedCircleIcon: FC<IconProps> = ({ width = 22, height = 22 }) => {
     return (
         <Svg width={width} height={height} viewBox="0 0 24 24" fill="none">
@@ -123,6 +124,47 @@ export const UncheckedCircleIcon: FC<IconProps> = ({ width = 22, height = 22 }) 
 
     )
 }
+export const ArrowRightIcon: FC<IconProps> = ({ width = 10, height = 16 }) => {
+    return (
+        <Svg width={width} height={height} viewBox="0 0 10 16" fill="none">
+            <Path d="M1.5 1L8.5 8L1.5 15" stroke="#A9A9A9" strokeWidth="1.5" stroke-linecap="round" stroke-linejoin="round" />
+        </Svg>
+
+
+    )
+}
+export const AddIcon: FC<IconProps> = ({ width = 10, height = 16 }) => {
+    return (
+        <Svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+            <Path fill-rule="evenodd" clip-rule="evenodd" d="M15.6857 1H6.31429C3.04762 1 1 3.31208 1 6.58516V15.4148C1 18.6879 3.0381 21 6.31429 21H15.6857C18.9619 21 21 18.6879 21 15.4148V6.58516C21 3.31208 18.9619 1 15.6857 1Z" fill="#FFCF00" stroke="#FFCF00" strokeWidth="1.5" stroke-linecap="round" stroke-linejoin="round" />
+            <Path d="M11 7.32715V14.6535" stroke="white" strokeWidth="1.5" stroke-linecap="round" stroke-linejoin="round" />
+            <Path d="M14.6667 10.9904H7.33337" stroke="white" strokeWidth="1.5" stroke-linecap="round" stroke-linejoin="round" />
+        </Svg>
+
+
+    )
+}
+export const RemoveIcon: FC<IconProps> = ({ width = 10, height = 16 }) => {
+    return (
+        <Svg width="22" height="23" viewBox="0 0 22 23" fill="none">
+            <Path fill-rule="evenodd" clip-rule="evenodd" d="M15.6857 1.5H6.31429C3.04762 1.5 1 3.81208 1 7.08516V15.9148C1 19.1879 3.0381 21.5 6.31429 21.5H15.6857C18.9619 21.5 21 19.1879 21 15.9148V7.08516C21 3.81208 18.9619 1.5 15.6857 1.5Z" fill="url(#paint0_linear_1161_252)" stroke="url(#paint1_linear_1161_252)" strokeWidth="1.5" stroke-linecap="round" stroke-linejoin="round" />
+            <Path d="M14.6667 11.4904H7.33337" stroke="white" strokeWidth="1.5" stroke-linecap="round" stroke-linejoin="round" />
+            <Defs>
+                <LinearGradient id="paint0_linear_1161_252" x1="0.999999" y1="21.5" x2="21" y2="1.5" gradientUnits="userSpaceOnUse">
+                    <Stop stopColor="#12B2B3" />
+                    <Stop offset="1" stopColor="#56E0E0" />
+                </LinearGradient>
+                <LinearGradient id="paint1_linear_1161_252" x1="0.999999" y1="21.5" x2="21" y2="1.5" gradientUnits="userSpaceOnUse">
+                    <Stop stopColor="#12B2B3" />
+                    <Stop offset="1" stopColor="#56E0E0" />
+                </LinearGradient>
+            </Defs>
+        </Svg>
+
+
+    )
+}
+
 
 
 export const CheckedBorderedIcon: FC<IconProps> = ({ width = 20, height = 20 }) => {
@@ -132,7 +174,7 @@ export const CheckedBorderedIcon: FC<IconProps> = ({ width = 20, height = 20 }) 
                 d="M14.3344 0.75H5.66543C2.64443 0.75 0.750427 2.889 0.750427 5.916V14.084C0.750427 17.111 2.63543 19.25 5.66543 19.25H14.3334C17.3644 19.25 19.2504 17.111 19.2504 14.084V5.916C19.2504 2.889 17.3644 0.75 14.3344 0.75Z"
                 fill="url(#paint0_linear_819_387)" stroke="url(#paint1_linear_819_387)" strokeWidth="1.5"
                 strokeLinecap="round" strokeLinejoin="round" />
-            <Path d="M6.43994 9.99995L8.81394 12.373L13.5599 7.62695" stroke="white" stroke-width="1.5"
+            <Path d="M6.43994 9.99995L8.81394 12.373L13.5599 7.62695" stroke="white" strokeWidth="1.5"
                 stroke-linecap="round" stroke-linejoin="round" />
             <Defs>
                 <LinearGradient id="paint0_linear_819_387" x1="0.750427" y1="19.25" x2="19.2504" y2="0.750002"

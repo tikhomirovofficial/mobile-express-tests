@@ -80,6 +80,7 @@ const Main: FC<NavProps> = ({ navigation }) => {
                             <Text style={[cs.fzS, cs.colorWhite, cs.txtCenter]}>Пригласить в Экспресс Тест</Text>
                         </TouchableOpacity>
                         <TouchableOpacity
+                        onPress={() => navigation.navigate("order_patient")}
                             style={[
                                 cs.wBlockShadow,
                                 cs.fColumn,

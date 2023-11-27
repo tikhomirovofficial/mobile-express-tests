@@ -1,6 +1,6 @@
 import React, { FC, useEffect, useState } from 'react';
 import WhiteBorderedLayout from "../../../layouts/WhiteBordered";
-import { Animated, Text, TouchableOpacity, View, StyleSheet, TextInput, ScrollView, SectionList, FlatList } from "react-native";
+import { Animated, Text, TouchableOpacity, View, StyleSheet, TextInput, ScrollView, SectionList, FlatList, Keyboard } from "react-native";
 import { cs } from "../../../common/styles";
 import { ArrowLeft, Logo, SearchIcon } from "../../../icons";
 import { OrderAnalysisType } from "../../../types/analysis.types";
@@ -17,7 +17,7 @@ import * as Permissions from 'expo-permissions';
 
 const SelectingPatient: FC<NavProps> = ({ navigation }) => {
     const dispatch = useAppDispatch()
-
+    const [searchVal, setSearchVal] = useState("")
     const [contacts, setContacts] = useState<Array<Contacts.Contact>>([])
     const [contactsLoading, setContactsLoading] = useState(false)
     const [contactsSelected, setContactsSelected] = useState<string[]>([])
@@ -25,9 +25,10 @@ const SelectingPatient: FC<NavProps> = ({ navigation }) => {
     const handleToMyPatients = () => {
         navigation.navigate("home")
     }
-    const toCheckInvitingContacts = () => {
-        navigation.navigate("inviting_check")
+    const toSelectCategory = () => {
+        navigation.navigate("order_category")
     }
+    
     useEffect(() => {
 
         (async () => {
@@ -47,10 +48,27 @@ const SelectingPatient: FC<NavProps> = ({ navigation }) => {
         })();
     }, []);
     const openNewPatient = () => dispatch(handlePatientInvitingModal())
+    
+    const [keyboardStatus, setKeyboardStatus] = useState(false);
+
+    useEffect(() => {
+        const keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', () => {
+            setKeyboardStatus(true);
+        });
+
+        const keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', () => {
+            setKeyboardStatus(false);
+        });
+
+        return () => {
+            keyboardDidShowListener.remove();
+            keyboardDidHideListener.remove();
+        };
+    }, []);
 
     return (
         <Animated.View>
-            <View style={[cs.fColumn, cs.spaceM, { minHeight: "100%" }]}>
+            <View style={[cs.fColumn, cs.spaceM, { minHeight: keyboardStatus ? "99%" : "100%" }]}>
                 <WhiteBorderedLayout
                     topContent={
                         <AppContainer style={{ paddingBottom: 0 }}>
@@ -77,7 +95,7 @@ const SelectingPatient: FC<NavProps> = ({ navigation }) => {
                             </View>
                             <View style={[cs.fRow, cs.fAlCenter, cs.spaceS, styles.searchInputBlock]}>
                                 <SearchIcon />
-                                <TextInput style={[cs.fzS, fs.montR, cs.flexOne]} placeholder={"Найти по имени или номеру"} />
+                                <TextInput value={searchVal} onChangeText={(text) => setSearchVal(text)} style={[cs.fzS, fs.montR, cs.flexOne]} placeholder={"Найти по имени или номеру"} />
                             </View>
                             <TouchableOpacity onPress={openNewPatient}>
                                 <Text style={[cs.textYellow, cs.fwSemi, { textDecorationLine: "underline" }]}>Новый номер телефона</Text>
@@ -87,7 +105,15 @@ const SelectingPatient: FC<NavProps> = ({ navigation }) => {
                             {contactsLoading ? <Text style={[cs.txtCenter]}>Загрузка...</Text> :
                                 <View style={[{ position: "absolute", height: "100%", width: "100%" }]}>
                                     <FlatList
-                                        data={contacts}
+                                        data={searchVal.length > 0 ? contacts.filter(contact => {
+                                            const matchFirstName = contact.firstName?.toLocaleLowerCase().includes(searchVal.toLocaleLowerCase())
+                                            const matchLastName = contact.lastName?.toLocaleLowerCase().includes(searchVal.toLocaleLowerCase())
+                                            if(matchFirstName || matchLastName) {
+                                                return contact
+                                            }
+
+                                    
+                                        }): contacts}
                                         renderItem={({ item }) => (
                                             <PatientItem isRadio={true} handlePress={() => {
                                                 
@@ -112,7 +138,7 @@ const SelectingPatient: FC<NavProps> = ({ navigation }) => {
                         </View>
 
 
-                        <ButtonYellow disabled={contactsSelected.length < 1} handlePress={toCheckInvitingContacts}>
+                        <ButtonYellow disabled={contactsSelected.length < 1} handlePress={toSelectCategory}>
                             <View style={[cs.fRow, cs.fAlCenter, cs.spaceS]}>
                                 <Text style={[cs.fzM, cs.yellowBtnText]}>Далее</Text>
                             </View>

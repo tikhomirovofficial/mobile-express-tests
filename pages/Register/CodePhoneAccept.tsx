@@ -11,6 +11,7 @@ import WhiteBorderedLayout from '../../layouts/WhiteBordered';
 const CodePhoneAccept: FC<NavProps> = ({ navigation }) => {
     const [code, setCode] = useState<string[]>(["", "", "", ""])
     const inputRefs = useRef<TextInput[]>([]);
+    
 
     const handleCodeInput = (text: string, index: number) => {
         if (/^\d*$/.test(text) && text.length <= 1) {
@@ -63,6 +64,7 @@ const CodePhoneAccept: FC<NavProps> = ({ navigation }) => {
     useEffect(() => {
         inputRefs.current[0].focus()
     }, [])
+    
 
 
     return (
