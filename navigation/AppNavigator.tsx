@@ -21,6 +21,7 @@ import CodePhoneAccept from '../pages/Register/CodePhoneAccept';
 import CreatePinCode from '../pages/Register/CreatePinCode';
 import ConnectBio from '../pages/Register/ConnectBio';
 import CheckSelectedPatients from '../pages/Inviting/CheckSelectedPatients';
+import SelectingPatient from '../pages/PrepareAnalysis/SelectingPatient';
 
 const Stack = createNativeStackNavigator()
 const Tab = createBottomTabNavigator()
@@ -40,7 +41,7 @@ const AppNavigator = () => {
     return (
         <NavigationContainer>
             <View style={styles.main}>
-                <Stack.Navigator initialRouteName={"inviting_check"}
+                <Stack.Navigator initialRouteName={"order_patient"}
                                  screenOptions={{headerShown: false, contentStyle: cs.rootBg}}>
                     <Stack.Screen name="home" component={MainTabs}/>
                     <Stack.Screen name="inviting" component={SelectingPatients}/>
@@ -56,6 +57,7 @@ const AppNavigator = () => {
                     <Stack.Screen name="pin_create" component={CreatePinCode}/>
                     <Stack.Screen name="bio_connect" component={ConnectBio}/>
                     <Stack.Screen name="inviting_check" component={CheckSelectedPatients}/>
+                    <Stack.Screen name="order_patient" component={SelectingPatient}/>
                 </Stack.Navigator>
             </View>
 

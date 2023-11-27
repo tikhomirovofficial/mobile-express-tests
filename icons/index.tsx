@@ -96,6 +96,33 @@ export const SearchIcon: FC<IconProps> = ({ width = 17, height = 18 }) => {
 
     )
 }
+export const CheckedCircleIcon: FC<IconProps> = ({ width = 22, height = 22 }) => {
+    return (
+        <Svg width={width} height={height} viewBox="0 0 24 24" fill="none">
+            <Circle cx="12" cy="12" r="9.25" fill="url(#paint0_linear_502_751)" stroke="url(#paint1_linear_502_751)" strokeWidth="1.5" />
+            <Path d="M8.43994 12L10.8139 14.373L15.5599 9.62695" stroke="white" strokeWidth="1.5" stroke-linecap="round" stroke-linejoin="round" />
+            <Defs>
+                <LinearGradient id="paint0_linear_502_751" x1="2.75" y1="21.25" x2="21.25" y2="2.75" gradientUnits="userSpaceOnUse">
+                    <Stop stopColor="#12B2B3" />
+                    <Stop offset="1" stopColor="#56E0E0" />
+                </LinearGradient>
+                <LinearGradient id="paint1_linear_502_751" x1="2.75" y1="21.25" x2="21.25" y2="2.75" gradientUnits="userSpaceOnUse">
+                    <Stop stopColor="#12B2B3" />
+                    <Stop offset="1" stopColor="#56E0E0" />
+                </LinearGradient>
+            </Defs>
+        </Svg>
+
+    )
+}
+export const UncheckedCircleIcon: FC<IconProps> = ({ width = 22, height = 22 }) => {
+    return (
+        <Svg width={width} height={height} viewBox="0 0 24 24" fill="none">
+            <Circle cx="12" cy="12" r="9.25" fill="white" stroke="#4D4D4D" strokeWidth="1.5" />
+        </Svg>
+
+    )
+}
 
 
 export const CheckedBorderedIcon: FC<IconProps> = ({ width = 20, height = 20 }) => {

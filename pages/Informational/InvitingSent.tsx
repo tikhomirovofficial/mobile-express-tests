@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC } from 'react';
 import FeauturesLayout from "../../layouts/FeaturesLayout";
 import { Text, TouchableOpacity, View, Linking } from "react-native";
 import { cs } from "../../common/styles";
@@ -9,19 +9,27 @@ import InfoPageLayout from '../../layouts/InfoPageLayout';
 import AppContainer from '../../components/AppContainer';
 import { LinearGradient } from 'expo-linear-gradient';
 import { fs } from '../../navigation/AppNavigator';
+import { NavProps } from '../../types/common.types';
+import { handlePatientsModal } from '../../app/features/modals/modalsSlice';
 const InfoInvitingSentImage = require('../../assets/info_inviting_sent.jpg')
 
-const InvitingSent = () => {
+const InvitingSent: FC<NavProps> = ({navigation}) => {
     const dispatch = useAppDispatch()
 
-    const nextStep = () => {
-        dispatch(setWelcomeStep(1))
+    const toMyPatients = () => {
+        dispatch(handlePatientsModal())
+        navigation.navigate("home", {
+            screen: "profile"
+        })
+    }
+    const toHome = () => {
+        navigation.navigate("home")
     }
     return (
         <InfoPageLayout title='Приглашения отправлены' image={InfoInvitingSentImage} content={
             <AppContainer style={{ flex: 1, ...cs.spaceXXL }}>
                 <FeauturesLayout features={[
-                    <Text>После перехода по ссылке и регистрации, пациент появится в разделе <Text style={cs.textYellow}>«Мои пациенты»</Text> в вашем профиле</Text>
+                    <Text>После перехода по ссылке и регистрации, пациент появится в разделе <Text onPress={toMyPatients} style={cs.textYellow}>«Мои пациенты»</Text> в вашем профиле</Text>
                 ]} />
 
                 <View style={[cs.fColumn, cs.flexOne, cs.spaceM, {
@@ -29,7 +37,7 @@ const InvitingSent = () => {
                 }]}>
 
                     <View style={[cs.fColumn, cs.spaceXL]}>
-                        <TouchableOpacity style={[cs.flexOne]} onPress={nextStep}>
+                        <TouchableOpacity style={[cs.flexOne]} onPress={toHome}>
                             <LinearGradient style={[cs.yellowBtn, cs.fCenterCol]}
                                 colors={["#FB0", "#FFCB3D", "#FFDA75"]}>
                                 <Text style={[cs.fzM, cs.yellowBtnText]}>Закрыть</Text>

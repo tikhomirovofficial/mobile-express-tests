@@ -1,21 +1,22 @@
 import React, {FC} from 'react';
 import {StyleSheet, TouchableOpacity, View, Text} from "react-native";
 import {cs} from "../../common/styles";
-import {CheckedBorderedIcon, ProfileIcon, UncheckedBorderedIcon} from "../../icons";
+import {CheckedBorderedIcon, CheckedCircleIcon, ProfileIcon, UncheckedBorderedIcon, UncheckedCircleIcon} from "../../icons";
 import {fs} from "../../navigation/AppNavigator";
 import {PatientType} from "../../types/patients.types";
 
 type PatientItemProps = {
-    selected?: boolean
+    selected?: boolean,
+    isRadio?: boolean
     handlePress?: () => any,
 } & PatientType
-const PatientItem: FC<PatientItemProps> = ({selected, handlePress, firstName, lastName, phone, avatarSrc}) => {
+const PatientItem: FC<PatientItemProps> = ({selected, handlePress, isRadio, firstName, lastName, phone, avatarSrc}) => {
     const GetSelectedIcon = () => {
         if(selected !== undefined) {
             if(!selected) {
-                return <UncheckedBorderedIcon/>
+                return !isRadio ? <UncheckedBorderedIcon/> : <UncheckedCircleIcon/>
             }
-            return  <CheckedBorderedIcon/>
+            return !isRadio ? <CheckedBorderedIcon/> : <CheckedCircleIcon/>
         }
         return null
     }
