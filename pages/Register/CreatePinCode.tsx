@@ -88,6 +88,7 @@ const CreatePinCode: FC<NavProps> = ({ navigation }) => {
     }, [acceptPin])
 
     useEffect(() => {
+        alert(keyboardStatus)
         Keyboard.dismiss()
         const keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', () => {
             setKeyboardStatus(true);
@@ -106,7 +107,7 @@ const CreatePinCode: FC<NavProps> = ({ navigation }) => {
 
     return (
         <Animated.ScrollView contentContainerStyle={{ minHeight: "100%" }}>
-            <View style={[cs.fColumn, cs.spaceM, { minHeight: "100%" }]}>
+            <View style={[cs.fColumn, cs.spaceM, { minHeight: "100%", }]}>
                 <WhiteBorderedLayout
                     topContent={
                         <AppContainer style={{ paddingBottom: 0 }}>
@@ -115,9 +116,9 @@ const CreatePinCode: FC<NavProps> = ({ navigation }) => {
                             </View>
                         </AppContainer>
                     }
-                    style={{ paddingTop: 40, maxHeight: "100%" }}>
-                    <View style={[cs.fColumnBetw, cs.flexOne, { minHeight: !keyboardStatus ? "100%" : "99%", paddingBottom: 32}]}>
-                        <View style={[cs.spaceXXL]}>
+                    style={{ paddingTop: 40, maxHeight: "100%", backgroundColor: "blue" }}>
+                    <View style={[cs.fColumnBetw, cs.flexOne, { minHeight: !keyboardStatus ? "99.5%" : "99.1%", paddingBottom: 32, backgroundColor: "red"}]}>
+                        <View style={[cs.spaceXXL, cs.flexOne]}>
                             <View style={[cs.spaceM]}>
                                 <View style={[cs.fColumn, cs.spaceM, cs.fAlCenter]}>
                                     <Text style={[cs.fzS, fs.montR, cs.fwMedium, cs.txtCenter, styles.pinLabel]} aria-label="Label for Usernam"
@@ -153,8 +154,8 @@ const CreatePinCode: FC<NavProps> = ({ navigation }) => {
 
                         </View>
                         <View style={[cs.fColumn, cs.spaceXXL, styles.pinTable]}>
-                            <View style={[cs.fColumn, cs.spaceXL]}>
-                                <View style={[cs.fRowBetw]}>
+                            <View style={[cs.fColumn, cs.spaceL]}>
+                                <View style={[cs.fCenterRow, cs.spaceXXL]}>
                                     <TouchableOpacity onPress={() => handlePin("1")} style={[styles.pinKeyBtn, cs.fCenterCol]}>
                                         <Text style={[styles.pinKey, cs.textYellow, fs.montR]}>1</Text>
                                     </TouchableOpacity>
@@ -165,7 +166,7 @@ const CreatePinCode: FC<NavProps> = ({ navigation }) => {
                                         <Text style={[styles.pinKey, cs.textYellow, fs.montR]}>3</Text>
                                     </TouchableOpacity>
                                 </View>
-                                <View style={[cs.fRowBetw]}>
+                                <View style={[cs.fCenterRow, cs.spaceXXL]}>
                                     <TouchableOpacity onPress={() => handlePin("4")} style={[styles.pinKeyBtn, cs.fCenterCol]}>
                                         <Text style={[styles.pinKey, cs.textYellow, fs.montR]}>4</Text>
                                     </TouchableOpacity>
@@ -176,7 +177,7 @@ const CreatePinCode: FC<NavProps> = ({ navigation }) => {
                                         <Text style={[styles.pinKey, cs.textYellow, fs.montR]}>6</Text>
                                     </TouchableOpacity>
                                 </View>
-                                <View style={[cs.fRowBetw]}>
+                                <View style={[cs.fCenterRow, cs.spaceXXL]}>
                                     <TouchableOpacity onPress={() => handlePin("7")} style={[styles.pinKeyBtn, cs.fCenterCol]}>
                                         <Text style={[styles.pinKey, cs.textYellow, fs.montR]}>7</Text>
                                     </TouchableOpacity>
@@ -187,7 +188,7 @@ const CreatePinCode: FC<NavProps> = ({ navigation }) => {
                                         <Text style={[styles.pinKey, cs.textYellow, fs.montR]}>9</Text>
                                     </TouchableOpacity>
                                 </View>
-                                <View style={[cs.fRowBetw]}>
+                                <View style={[cs.fCenterRow, cs.spaceXXL]}>
                                     <TouchableOpacity onPress={() => handlePin("reset")} style={[styles.pinKeyBtn, cs.fCenterCol]}>
                                         <CloseIcon width={30} height={27} />
                                     </TouchableOpacity>
@@ -211,7 +212,7 @@ const CreatePinCode: FC<NavProps> = ({ navigation }) => {
 
 const styles = StyleSheet.create({
     pinTable: {
-        paddingBottom: 40
+        paddingBottom: 40,
     },
     pinLabel: {
         maxWidth: 254

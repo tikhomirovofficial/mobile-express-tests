@@ -3,7 +3,7 @@ import {StyleSheet, TouchableOpacity, View, Text} from "react-native";
 import {cs} from "../../common/styles";
 import {CheckedBorderedIcon, CheckedCircleIcon, ProfileIcon, UncheckedBorderedIcon, UncheckedCircleIcon} from "../../icons";
 import {fs} from "../../navigation/AppNavigator";
-import {PatientType} from "../../types/patients.types";
+import {PatientType} from "../../types/entities/patients.types";
 
 type PatientItemProps = {
     selected?: boolean,

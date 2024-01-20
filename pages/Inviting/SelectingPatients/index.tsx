@@ -3,7 +3,7 @@ import WhiteBorderedLayout from "../../../layouts/WhiteBordered";
 import { Animated, Text, TouchableOpacity, View, StyleSheet, TextInput, ScrollView, SectionList, FlatList } from "react-native";
 import { cs } from "../../../common/styles";
 import { ArrowLeft, Logo, SearchIcon } from "../../../icons";
-import { OrderAnalysisType } from "../../../types/analysis.types";
+import { OrderAnalysisType } from "../../../types/entities/analysis.types";
 import { useAppDispatch, useAppSelector } from "../../../app/base/hooks";
 import { NavProps } from "../../../types/common.types";
 import AppContainer from "../../../components/AppContainer";

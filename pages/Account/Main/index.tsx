@@ -5,7 +5,7 @@ import { Animated, Modal, StyleSheet, Text, TouchableOpacity, View, RefreshContr
 import { cs } from "../../../common/styles";
 import { Logo } from "../../../icons";
 import AnalysisCard from "../../../components/Cards/AnalysisCard";
-import { OrderAnalysisType } from "../../../types/analysis.types";
+import { OrderAnalysisType } from "../../../types/entities/analysis.types";
 import { useAppDispatch, useAppSelector } from "../../../app/base/hooks";
 import { handleOrderInfoModal } from "../../../app/features/modals/modalsSlice";
 import { NavProps } from "../../../types/common.types";

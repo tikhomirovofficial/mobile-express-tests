@@ -11,7 +11,7 @@ import WhiteBorderedLayout from '../../layouts/WhiteBordered';
 const CodePhoneAccept: FC<NavProps> = ({ navigation }) => {
     const [code, setCode] = useState<string[]>(["", "", "", ""])
     const inputRefs = useRef<TextInput[]>([]);
-    
+    const [keyboardStatus, setKeyboardStatus] = useState(false);
 
     const handleCodeInput = (text: string, index: number) => {
         if (/^\d*$/.test(text) && text.length <= 1) {
@@ -45,7 +45,7 @@ const CodePhoneAccept: FC<NavProps> = ({ navigation }) => {
         });
     };
 
-    const [keyboardStatus, setKeyboardStatus] = useState(false);
+
 
     useEffect(() => {
         const keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', () => {
@@ -61,17 +61,21 @@ const CodePhoneAccept: FC<NavProps> = ({ navigation }) => {
             keyboardDidHideListener.remove();
         };
     }, []);
+
     useEffect(() => {
         inputRefs.current[0].focus()
     }, [])
-    
+
     useEffect(() => {
-        if(code.filter(item => item !== "").length === 4) {
+        if (code.filter(item => item !== "").length === 4) {
             Keyboard.dismiss()
-            navigation.navigate("pin_create")
+            if (!keyboardStatus) {
+                navigation.navigate("pin_create")
+            }
+
         }
-    }, [code])
-    
+    }, [code, keyboardStatus])
+
 
 
     return (

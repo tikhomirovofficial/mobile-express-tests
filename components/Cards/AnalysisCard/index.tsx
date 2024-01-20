@@ -2,7 +2,7 @@ import React, {FC} from 'react';
 import {StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import {cs} from "../../../common/styles";
 import {DownloadIcon} from "../../../icons";
-import {OrderAnalysisType} from "../../../types/analysis.types";
+import {OrderAnalysisType} from "../../../types/entities/analysis.types";
 import {useAppDispatch, useAppSelector} from "../../../app/base/hooks";
 import {handleOrderInfoModal} from "../../../app/features/modals/modalsSlice";
 

@@ -30,6 +30,13 @@ const cs = StyleSheet.create({
     fCenterCol: {
         display: "flex",
         alignItems: "center",
+        flexDirection: "column",
+        justifyContent: "center"
+    },
+    fCenterRow: {
+        display: "flex",
+        flexDirection:"row",
+        alignItems: "center",
         justifyContent: "center"
     },
 
