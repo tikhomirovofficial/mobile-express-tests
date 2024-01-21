@@ -5,6 +5,7 @@ export type AnalysisGetRes = {
 
 }
 
+
 export type AnalysisGetByIdReq = {
 
 }

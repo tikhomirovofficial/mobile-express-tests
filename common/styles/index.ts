@@ -1,10 +1,14 @@
-import {CSSProperties} from "react";
-import {StyleSheet} from "react-native";
+import { CSSProperties } from "react";
+import { StyleSheet } from "react-native";
 
 const cs = StyleSheet.create({
 
     dF: {
         display: "flex",
+    },
+    bottomBorder: {
+        borderBottomWidth: 1,
+        borderBottomColor: "#F3F3F3",
     },
     fRowBetw: {
         display: "flex",
@@ -23,7 +27,7 @@ const cs = StyleSheet.create({
         display: "flex",
         flexDirection: "column"
     },
-    fRow:{
+    fRow: {
         display: "flex",
         flexDirection: "row"
     },
@@ -35,7 +39,7 @@ const cs = StyleSheet.create({
     },
     fCenterRow: {
         display: "flex",
-        flexDirection:"row",
+        flexDirection: "row",
         alignItems: "center",
         justifyContent: "center"
     },
@@ -79,14 +83,14 @@ const cs = StyleSheet.create({
     },
     countText: {
         textAlign: "center",
-        color:"#FFCF00",
+        color: "#FFCF00",
         fontWeight: "600"
     },
     fzXS: {
-      fontSize: 12
+        fontSize: 12
     },
     fzS: {
-       fontSize: 14
+        fontSize: 14
     },
     fzM: {
         fontSize: 16
@@ -143,8 +147,11 @@ const cs = StyleSheet.create({
     colorWhite: {
         color: "#fff"
     },
+    colorBlack: {
+        color: "black"
+    },
     colorDark: {
-      color: "#4D4D4D"
+        color: "#4D4D4D"
     },
     colorRed: {
         color: "#F40F0F"
