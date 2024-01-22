@@ -1,10 +1,11 @@
-import {createSlice, PayloadAction} from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 type ModalsSliceState = {
     orderInfoModal: boolean
     profileEditModal: boolean,
     patientsModal: boolean
     aboutAppModal: boolean
+    ordersFinancesModal: boolean,
     patientInfoModal: boolean,
     patientInvitingModal: boolean,
     patientOrderInfoModal: boolean
@@ -14,6 +15,7 @@ const initialState: ModalsSliceState = {
     orderInfoModal: false,
     patientsModal: false,
     aboutAppModal: false,
+    ordersFinancesModal: false,
     profileEditModal: false,
     patientInfoModal: false,
     patientInvitingModal: false,
@@ -44,7 +46,11 @@ export const ModalsSlice = createSlice({
         },
         handlePatientOrderInfoModal: (state) => {
             state.patientInvitingModal = !state.patientInvitingModal
+        },
+        handleOrdersFinancesModal: (state) => {
+            state.ordersFinancesModal = !state.ordersFinancesModal
         }
+
     }
 })
 
@@ -55,8 +61,8 @@ export const {
     handlePatientInfoModal,
     handleAboutModal,
     handlePatientInvitingModal,
-    handlePatientOrderInfoModal
-
+    handlePatientOrderInfoModal,
+    handleOrdersFinancesModal
 } = ModalsSlice.actions
 
 

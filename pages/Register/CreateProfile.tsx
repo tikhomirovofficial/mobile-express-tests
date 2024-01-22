@@ -37,7 +37,7 @@ const CreateProfile: FC<NavProps> = ({ navigation }) => {
                             <ScrollView>
                                 <View style={[cs.spaceXL]}>
                                     <View style={[cs.fColumn, cs.spaceXXL]}>
-                                        <Text style={[cs.title]}>Укажите</Text>
+                                        <Text style={[cs.title, styles.title]}>Укажите информацию о себе для пациентов</Text>
                                         <View style={[cs.spaceXL]}>
                                             <View style={[cs.fCenterCol, cs.spaceM]}>
                                                 <View style={[styles.avatarBlock, cs.circle, cs.fCenterCol]}>
@@ -50,39 +50,67 @@ const CreateProfile: FC<NavProps> = ({ navigation }) => {
 
                                             </View>
                                             <View style={[cs.fColumn, cs.spaceM]}>
-                                                <Text style={[cs.fzS, fs.montR]} aria-label="Label for Username"
+                                                <Text style={[cs.fzS, fs.montR, cs.fwMedium]} aria-label="Label for Username"
                                                     nativeID="labelLastName">Фамилия</Text>
                                                 <TextInput accessibilityLabelledBy={"labelLastName"} placeholder={"Фамилия"}
                                                     style={[styles.inputField, cs.fzM, fs.montR]} />
                                             </View>
                                             <View style={[cs.fColumn, cs.spaceM]}>
-                                                <Text style={[cs.fzS, fs.montR]} aria-label="Label for Username"
+                                                <Text style={[cs.fzS, fs.montR, cs.fwMedium]} aria-label="Label for Username"
                                                     nativeID="labelFirstName">Имя</Text>
                                                 <TextInput accessibilityLabelledBy={"labelFirstName"} placeholder={"Имя"}
                                                     style={[styles.inputField, cs.fzM, fs.montR]} />
                                             </View>
                                             <View style={[cs.fColumn, cs.spaceM]}>
-                                                <Text style={[cs.fzS, fs.montR]} aria-label="Label for Username"
+                                                <Text style={[cs.fzS, fs.montR, cs.fwMedium]} aria-label="Label for Username"
                                                     nativeID="labelMiddleName">Отчество</Text>
                                                 <TextInput accessibilityLabelledBy={"labelMiddleName"} placeholder={"Отчество"}
                                                     style={[styles.inputField, cs.fzM, fs.montR]} />
                                             </View>
                                             <View style={[cs.fColumn, cs.spaceM]}>
-                                                <Text style={[cs.fzS, fs.montR]} aria-label="Label for Username"
+                                                <Text style={[cs.fzS, fs.montR, cs.fwMedium]} aria-label="Label for Username"
                                                     nativeID="labelFirstName">Пол</Text>
                                                 <View style={[cs.dF, cs.fRowBetw, cs.spaceS, cs.flexOne]}>
                                                     <SelectableBtn isFilled={true} style={styles.selectableBtn} text={"Мужской"} handlePress={() => { }} />
                                                     <SelectableBtn isFilled={false} style={styles.selectableBtn} text={"Женский"} handlePress={() => { }} />
                                                 </View>
                                             </View>
-
+                                            <View style={[cs.fColumn, cs.spaceM]}>
+                                                <Text style={[cs.fzS, fs.montR, cs.fwMedium]} aria-label="Label for Username"
+                                                    nativeID="labelMiddleName">Дата рождения</Text>
+                                                <TextInput accessibilityLabelledBy={"labelMiddleName"} placeholder={"ДД.ММ.ГГГГ"}
+                                                    style={[styles.inputField, cs.fzM, fs.montR]} />
+                                            </View>
+                                            <View style={[cs.fColumn, cs.spaceM]}>
+                                                <Text style={[cs.fzS, fs.montR, cs.fwMedium]} aria-label="Label for Username"
+                                                    nativeID="labelMiddleName">Серия и номер паспорта</Text>
+                                                <TextInput accessibilityLabelledBy={"labelMiddleName"} placeholder={"СССС НННННН"}
+                                                    style={[styles.inputField, cs.fzM, fs.montR]} />
+                                            </View>
+                                            <View style={[cs.fColumn, cs.spaceM]}>
+                                                <Text style={[cs.fzS, fs.montR, cs.fwMedium]} aria-label="Label for Username"
+                                                    nativeID="labelMiddleName">Когда выдан</Text>
+                                                <TextInput accessibilityLabelledBy={"labelMiddleName"} placeholder={"ДД.ММ.ГГГГ"}
+                                                    style={[styles.inputField, cs.fzM, fs.montR]} />
+                                            </View>
+                                            <View style={[cs.fColumn, cs.spaceM]}>
+                                                <Text style={[cs.fzS, fs.montR, cs.fwMedium]} aria-label="Label for Username"
+                                                    nativeID="labelMiddleName">Кем выдан</Text>
+                                                <TextInput accessibilityLabelledBy={"labelMiddleName"} placeholder={"Кем выдан паспорт"}
+                                                    style={[styles.inputField, cs.fzM, fs.montR]} />
+                                            </View>
+                                            <View style={[cs.fColumn, cs.spaceM]}>
+                                                <Text style={[cs.fzS, fs.montR, cs.fwMedium]} aria-label="Label for Username"
+                                                    nativeID="labelMiddleName">E-mail</Text>
+                                                <TextInput accessibilityLabelledBy={"labelMiddleName"} placeholder={"E-mail"}
+                                                    style={[styles.inputField, cs.fzM, fs.montR]} />
+                                            </View>
                                         </View>
                                     </View>
                                 </View>
                             </ScrollView>
 
-                            <ButtonYellow handlePress={() => {
-                            }}>
+                            <ButtonYellow handlePress={() => {}}>
                                 <Text style={[cs.fzM, cs.yellowBtnText]}>Сохранить</Text>
                             </ButtonYellow>
                         </View>
@@ -116,6 +144,9 @@ const styles = StyleSheet.create({
     },
     block: {
         height: 80,
+    },
+    title: {
+        maxWidth: 220
     },
     bonuses: {
         paddingHorizontal: 15,

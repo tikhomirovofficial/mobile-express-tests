@@ -32,7 +32,7 @@ const Tab = createBottomTabNavigator()
 
 const MainTabs = () => {
     return (
-        <Tab.Navigator initialRouteName={"orders"} tabBar={(props) => <AppTab key={props.state.index} {...props} />}
+        <Tab.Navigator initialRouteName={"profile"} tabBar={(props) => <AppTab key={props.state.index} {...props} />}
             sceneContainerStyle={styles.main}
             screenOptions={{ headerShown: false }}>
             <Tab.Screen name="orders" component={Main} />
@@ -45,15 +45,15 @@ const AppNavigator = () => {
     return (
         <NavigationContainer>
             <View style={styles.main}>
-                <Stack.Navigator initialRouteName={"profile_create"}
+                <Stack.Navigator initialRouteName={"home"}
                     screenOptions={{ headerShown: false, contentStyle: cs.rootBg }}>
                     {/* //Профиль */}
-                    <Stack.Screen name="home" component={MainTabs} /> 
+                    <Stack.Screen name="home" component={MainTabs} />
                     {/* //Приглашение */}
-                    <Stack.Screen name="inviting" component={SelectingPatients} /> 
+                    <Stack.Screen name="inviting" component={SelectingPatients} />
                     <Stack.Screen name="inviting_check" component={CheckSelectedPatients} />
                     {/* //Регистрация */}
-                    <Stack.Screen name="register" component={WelcomeContainer} /> 
+                    <Stack.Screen name="register" component={WelcomeContainer} />
                     <Stack.Screen name="pin_create" component={CreatePinCode} />
                     <Stack.Screen name="profile_create" component={CreateProfile} />
                     {/* //Логин */}

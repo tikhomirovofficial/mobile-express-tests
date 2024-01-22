@@ -11,6 +11,7 @@ import PatientsModal from "../../../components/Modals/PatientsModal";
 import AboutAppModal from "../../../components/Modals/AboutAppModal";
 import { NavProps } from "../../../types/common.types";
 import Constants from 'expo-constants';
+import OrdersFinancesModal from '../../../components/Modals/OrdersFinancesModal';
 
 const Profile: FC<NavProps> = ({ navigation }) => {
     const dispatch = useAppDispatch()
@@ -103,6 +104,7 @@ const Profile: FC<NavProps> = ({ navigation }) => {
             </WhiteBorderedLayout>
             <ProfileEditModal />
             <AboutAppModal />
+            <OrdersFinancesModal />
             <PatientsModal navigation={navigation} />
         </Animated.ScrollView>
 

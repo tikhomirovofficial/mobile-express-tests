@@ -86,6 +86,9 @@ const cs = StyleSheet.create({
         color: "#FFCF00",
         fontWeight: "600"
     },
+    fzXXS: {
+        fontSize: 10
+    },
     fzXS: {
         fontSize: 12
     },
