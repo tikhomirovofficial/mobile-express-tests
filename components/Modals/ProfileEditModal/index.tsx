@@ -71,8 +71,7 @@ const ProfileEditModal = () => {
                             </View>
                         </ScrollView>
 
-                        <ButtonYellow handlePress={() => {
-                        }}>
+                        <ButtonYellow handlePress={() => {}}>
                             <Text style={[cs.fzM, cs.yellowBtnText]}>Сохранить</Text>
                         </ButtonYellow>
                     </View>

@@ -25,6 +25,7 @@ import SelectingPatient from '../pages/PrepareAnalysis/SelectingPatient';
 import SelectingCategory from '../pages/PrepareAnalysis/SelectingCategory';
 import SelectingProducts from '../pages/PrepareAnalysis/SelectingProducts';
 import CartProducts from '../pages/PrepareAnalysis/CartProducts';
+import CreateProfile from '../pages/Register/CreateProfile';
 
 const Stack = createNativeStackNavigator()
 const Tab = createBottomTabNavigator()
@@ -44,7 +45,7 @@ const AppNavigator = () => {
     return (
         <NavigationContainer>
             <View style={styles.main}>
-                <Stack.Navigator initialRouteName={"home"}
+                <Stack.Navigator initialRouteName={"profile_create"}
                     screenOptions={{ headerShown: false, contentStyle: cs.rootBg }}>
                     {/* //Профиль */}
                     <Stack.Screen name="home" component={MainTabs} /> 
@@ -54,6 +55,7 @@ const AppNavigator = () => {
                     {/* //Регистрация */}
                     <Stack.Screen name="register" component={WelcomeContainer} /> 
                     <Stack.Screen name="pin_create" component={CreatePinCode} />
+                    <Stack.Screen name="profile_create" component={CreateProfile} />
                     {/* //Логин */}
                     <Stack.Screen name="login_phone" component={LoginPhone} />
                     <Stack.Screen name="sms_login" component={CodePhoneAccept} />
