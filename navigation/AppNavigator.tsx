@@ -45,7 +45,7 @@ const AppNavigator = () => {
     return (
         <NavigationContainer>
             <View style={styles.main}>
-                <Stack.Navigator initialRouteName={"home"}
+                <Stack.Navigator initialRouteName={"login_phone"}
                     screenOptions={{ headerShown: false, contentStyle: cs.rootBg }}>
                     {/* //Профиль */}
                     <Stack.Screen name="home" component={MainTabs} />

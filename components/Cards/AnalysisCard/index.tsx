@@ -1,25 +1,25 @@
-import React, {FC} from 'react';
-import {StyleSheet, Text, TouchableOpacity, View} from "react-native";
-import {cs} from "../../../common/styles";
-import {DownloadIcon} from "../../../icons";
-import {OrderAnalysisType} from "../../../types/entities/analysis.types";
-import {useAppDispatch, useAppSelector} from "../../../app/base/hooks";
-import {handleOrderInfoModal} from "../../../app/features/modals/modalsSlice";
+import React, { FC } from 'react';
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { cs } from "../../../common/styles";
+import { DownloadIcon } from "../../../icons";
+import { OrderAnalysisType } from "../../../types/entities/analysis.types";
+import { useAppDispatch, useAppSelector } from "../../../app/base/hooks";
+import { handleOrderInfoModal } from "../../../app/features/modals/modalsSlice";
 
 
 const AnalysisCard: FC<OrderAnalysisType> = ({
-                                                 orderNumber,
-                                                 date,
-                                                 customer,
-                                                 paid,
-                                                 handlePress,
-                                             }) => {
+    orderNumber,
+    date,
+    customer,
+    paid,
+    handlePress,
+}) => {
     const getStatusObj = (status: boolean) => {
         const statusObj = {
             styleBlock: cs.statusGray,
             text: "Не оплачен"
         }
-        if(status) {
+        if (status) {
             statusObj.styleBlock = cs.statusGreen
             statusObj.text = "Оплачен"
         }
@@ -46,7 +46,7 @@ const AnalysisCard: FC<OrderAnalysisType> = ({
                     <Text style={[cs.fwBold, cs.colorWhite]}>{getStatusObj(paid).text}</Text>
                 </View>
                 <TouchableOpacity style={[cs.fAlCenter, cs.fRow, styles.resultsBtn]}>
-                    <DownloadIcon/>
+                    <DownloadIcon />
                     <Text style={[cs.colorGray, cs.fwBold, cs.fzXS, styles.resultsText]}>
                         Скачать результаты анализов
                     </Text>

@@ -3,6 +3,8 @@ import useFonts from "./hooks/useFonts";
 import { StyleSheet, Text, View, ScrollView, RefreshControl } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import AppNavigator from "./navigation/AppNavigator";
+import { Logo } from './icons';
+import { cs } from './common/styles';
 
 
 const Root = () => {
@@ -11,7 +13,7 @@ const Root = () => {
 
     const onRefresh = React.useCallback(() => {
         setRefreshing(true);
-        
+
         setTimeout(() => {
             setRefreshing(false);
         }, 2000);
@@ -21,11 +23,7 @@ const Root = () => {
             <>
                 <StatusBar style={"auto"} />
                 <View style={{ flex: 1 }}>
-                    <ScrollView
-                    
-                        contentContainerStyle={{flexGrow: 1}}
-                    
-                    >
+                    <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
                         <AppNavigator />
                     </ScrollView>
                 </View>
@@ -34,7 +32,9 @@ const Root = () => {
         )
     }
     return (
-        <Text>Загрузка</Text>
+        <View style={[cs.flexOne, cs.fCenterCol]}>
+            <Logo height={100} width={70}/>
+        </View>
 
     );
 };

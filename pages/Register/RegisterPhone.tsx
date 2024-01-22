@@ -1,5 +1,5 @@
-import React, { FC, useEffect, useState} from 'react';
-import { Animated, Text, TouchableOpacity, View, StyleSheet, TextInput, ScrollView, Keyboard} from "react-native";
+import React, { FC, useEffect, useState } from 'react';
+import { Animated, Text, TouchableOpacity, View, StyleSheet, TextInput, ScrollView, Keyboard } from "react-native";
 import { useAppDispatch } from '../../app/base/hooks';
 import { handlePatientInvitingModal } from '../../app/features/modals/modalsSlice';
 import { cs } from '../../common/styles';
@@ -12,31 +12,35 @@ import { fs } from '../../navigation/AppNavigator';
 import { NavProps } from '../../types/common.types';
 import { LinearGradient } from 'expo-linear-gradient';
 import WhiteBorderedLayout from '../../layouts/WhiteBordered';
+import MaskInput from 'react-native-mask-input';
+import { createNumberMask, Masks } from 'react-native-mask-input';
 
 const LoginPhone: FC<NavProps> = ({ navigation }) => {
     const dispatch = useAppDispatch()
-
+    const [phone, setPhone] = React.useState('+7');
     const handleToCode = () => {
         navigation.navigate("sms_login")
     }
 
+
     const [keyboardStatus, setKeyboardStatus] = useState(false);
+    const phoneMask = ["+", /\d/, '(', /\d/, /\d/, /\d/, ')', ' ', /\d/, /\d/, /\d/, ' ', /\d/, /\d/, '-', /\d/, /\d/];
 
     useEffect(() => {
-      const keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', () => {
-        setKeyboardStatus(true);
-      });
-  
-      const keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', () => {
-        setKeyboardStatus(false);
-      });
-  
-      return () => {
-        keyboardDidShowListener.remove();
-        keyboardDidHideListener.remove();
-      };
+        const keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', () => {
+            setKeyboardStatus(true);
+        });
+
+        const keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', () => {
+            setKeyboardStatus(false);
+        });
+
+        return () => {
+            keyboardDidShowListener.remove();
+            keyboardDidHideListener.remove();
+        };
     }, []);
-    
+
 
     return (
         <Animated.ScrollView contentContainerStyle={{ minHeight: "100%" }}>
@@ -49,14 +53,25 @@ const LoginPhone: FC<NavProps> = ({ navigation }) => {
                             </View>
                         </AppContainer>
                     }
-                    style={{ paddingTop: 40, maxHeight: "100%"}}>
-                    <View style={[cs.fColumnBetw, cs.flexOne, {minHeight: !keyboardStatus ? "100%" : "99%", paddingBottom: 32}]}>
+                    style={{ paddingTop: 40, maxHeight: "100%" }}>
+                    <View style={[cs.fColumnBetw, cs.flexOne, { minHeight: !keyboardStatus ? "100%" : "99%", paddingBottom: 32 }]}>
                         <View style={[cs.spaceM]}>
                             <View style={[cs.fColumn, cs.spaceM]}>
                                 <Text style={[cs.fzS, fs.montR, cs.fwMedium]} aria-label="Label for Usernam"
                                     nativeID="labelFirstName">Введите номер телефона, чтобы войти</Text>
-                                <TextInput keyboardType={"number-pad"} accessibilityLabelledBy={"labelFirstName"} placeholder={"+7"}
-                                    style={[cs.inputField, cs.fzM, fs.montR]} />
+                                <MaskInput
+                                    value={phone}
+                                    placeholder={"+7"}
+                                    keyboardType={"number-pad"}
+                                    style={[cs.inputField, cs.fzM, fs.montR]}
+                                    onChangeText={(masked: string, unmasked: string) => {
+                                        if (masked.startsWith("+7")) {
+                                            setPhone(masked)
+                                        }
+
+                                    }}
+                                    mask={phoneMask}
+                                />
                             </View>
                             <TouchableOpacity onPress={handleToCode}>
                                 <LinearGradient style={[cs.yellowBtn, cs.fCenterCol]}
@@ -66,7 +81,7 @@ const LoginPhone: FC<NavProps> = ({ navigation }) => {
                             </TouchableOpacity>
                         </View>
                         <Text style={[fs.montR, cs.fzXS, cs.fwMedium, cs.colorGray]}>
-                            Нажав кнопку «Продолжить», вы соглашаетесь с <Text onPress={() => { }} style={cs.textYellow}>пользовательским соглашением </Text> 
+                            Нажав кнопку «Продолжить», вы соглашаетесь с <Text onPress={() => { }} style={cs.textYellow}>пользовательским соглашением </Text>
                             и подтверждаете, что ознакомились с <Text onPress={() => { }} style={cs.textYellow}>политикой конфиденциальности, </Text>
                             а также даёте <Text onPress={() => { }} style={cs.textYellow}>согласие на обработку своих персональных данных</Text>
                         </Text>

@@ -5,7 +5,7 @@ import { cs } from "../../../common/styles";
 import { useAppDispatch, useAppSelector } from "../../../app/base/hooks";
 import { HeartIcon, Logo, PhotoIcon, ProfileIcon, ProfilesIcon, WalletIcon } from "../../../icons";
 import { fs } from "../../../navigation/AppNavigator";
-import { handleAboutModal, handlePatientsModal, handleProfileEditModal } from "../../../app/features/modals/modalsSlice";
+import { handleAboutModal, handleOrdersFinancesModal, handlePatientsModal, handleProfileEditModal } from "../../../app/features/modals/modalsSlice";
 import ProfileEditModal from "../../../components/Modals/ProfileEditModal";
 import PatientsModal from "../../../components/Modals/PatientsModal";
 import AboutAppModal from "../../../components/Modals/AboutAppModal";
@@ -22,6 +22,8 @@ const Profile: FC<NavProps> = ({ navigation }) => {
     }
     const handlePatients = () => dispatch(handlePatientsModal())
     const handleAbout = () => dispatch(handleAboutModal())
+    const handleFinances = () => dispatch(handleOrdersFinancesModal())
+
     const appVersion = Constants?.manifest?.version;
     return (
         <Animated.ScrollView>
@@ -55,7 +57,7 @@ const Profile: FC<NavProps> = ({ navigation }) => {
                                     <Text style={[cs.fzXS, fs.montR, cs.txtCenter, cs.colorGray]}>ФИО, пол, фото</Text>
                                 </View>
                             </TouchableOpacity>
-                            <TouchableOpacity
+                            <TouchableOpacity onPress={handleFinances}
                                 style={[styles.profileHubItem, cs.wBlockShadow, cs.fAlCenter, cs.flexOne]}>
                                 <View style={[styles.profileItemIcon, cs.rootBg, cs.circle, cs.fCenterCol]}>
                                     <WalletIcon />
