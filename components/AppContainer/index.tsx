@@ -3,13 +3,13 @@ import {Dimensions, StyleSheet, View, ViewStyle} from "react-native";
 
 const AppContainer: FC<{children: React.ReactNode, style?: ViewStyle}> = ({children, style = null}) => {
     return (
-        <View style={[styles.container, style]}>
+        <View style={[containerStyles.container, style]}>
             {children}
         </View>
     );
 };
 
-const styles = StyleSheet.create({
+export const containerStyles = StyleSheet.create({
     container: {
         alignSelf: "center",
         maxWidth: Dimensions.get("window").width - 60,
