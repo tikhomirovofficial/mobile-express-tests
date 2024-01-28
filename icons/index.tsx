@@ -23,6 +23,20 @@ export const CheckboxIcon: FC<IconProps> = ({ width = 18, height = 18 }) => {
 
     )
 }
+export const BorderedProfileIcon: FC<IconProps> = ({ width = 82, height = 82 }) => {
+    return (
+        <Svg width={width} height={height} viewBox="0 0 82 82" fill="none" >
+            < Circle cx={height / 2
+            } cy={width / 2} r="38.5" fill="#F4FAFA" stroke="white" strokeWidth="5" />
+            <Circle cx="40.4386" cy="34.7042" r="6.37071" stroke="#4D4D4D" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+            <Path fill-rule="evenodd" clip-rule="evenodd" d="M30.3335 49.9354C30.3318 49.4876 30.432 49.0452 30.6264 48.6417C31.2366 47.4213 32.9575 46.7745 34.3854 46.4816C35.4152 46.2618 36.4592 46.115 37.5097 46.0422C39.4546 45.8714 41.4107 45.8714 43.3556 46.0422C44.406 46.1158 45.45 46.2626 46.48 46.4816C47.9079 46.7745 49.6287 47.3603 50.2389 48.6417C50.63 49.4641 50.63 50.4189 50.2389 51.2413C49.6287 52.5227 47.9079 53.1086 46.48 53.3893C45.4514 53.6181 44.407 53.7691 43.3556 53.8408C41.7727 53.975 40.1823 53.9995 38.5959 53.914C38.2298 53.914 37.8759 53.914 37.5097 53.8408C36.4623 53.77 35.4219 53.619 34.3976 53.3893C32.9575 53.1086 31.2488 52.5227 30.6264 51.2413C30.433 50.8332 30.3329 50.3871 30.3335 49.9354Z" stroke="#4D4D4D" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+        </Svg >
+
+
+    )
+}
+
+
 
 export const BackspaceIcon: FC<IconProps> = ({ width = 18, height = 18 }) => {
     return (
@@ -288,7 +302,7 @@ export const MinusIcon: FC<IconProps> = ({ width = 10, height = 1, stroke = "whi
 }
 export const PlusIcon: FC<IconProps> = ({ width = 12, height = 13, stroke = "#4D4D4D" }) => {
     return (
-        <Svg  width="12" height="13" viewBox="0 0 12 13" fill="none">
+        <Svg width="12" height="13" viewBox="0 0 12 13" fill="none">
             <Path d="M6.00005 1.50488V11.4953" stroke={stroke} strokeWidth="1.5" stroke-linecap="round" stroke-linejoin="round" />
             <Path d="M11 6.50029H1.00012" stroke={stroke} strokeWidth="1.5" stroke-linecap="round" stroke-linejoin="round" />
         </Svg>

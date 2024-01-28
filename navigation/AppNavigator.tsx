@@ -41,11 +41,11 @@ const MainTabs = () => {
         </Tab.Navigator>
     );
 }
-const AppNavigator = () => {
+const AppNavigator = () => {    
     return (
         <NavigationContainer>
             <View style={styles.main}>
-                <Stack.Navigator initialRouteName={"order_products"}
+                <Stack.Navigator initialRouteName={"home"}
                     screenOptions={{ headerShown: false, contentStyle: cs.rootBg }}>
                     {/* //Профиль */}
                     <Stack.Screen name="home" component={MainTabs} />

@@ -2,7 +2,9 @@ import { CSSProperties } from "react";
 import { StyleSheet } from "react-native";
 
 const cs = StyleSheet.create({
-
+    pRel: {
+        position: "relative"
+    },
     dF: {
         display: "flex",
     },
