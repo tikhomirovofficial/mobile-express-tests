@@ -1,46 +1,44 @@
-import React, {FC} from 'react';
-import {StyleSheet, TouchableOpacity, View, Text} from "react-native";
-import {cs} from "../../common/styles";
-import {CheckedBorderedIcon, CheckedCircleIcon, ProfileIcon, UncheckedBorderedIcon, UncheckedCircleIcon} from "../../icons";
-import {fs} from "../../navigation/AppNavigator";
-import {PatientType} from "../../types/entities/patients.types";
+import React, { FC } from 'react';
+import { StyleSheet, TouchableOpacity, View, Text } from "react-native";
+import { cs } from "../../common/styles";
+import { CheckedBorderedIcon, CheckedCircleIcon, ProfileIcon, UncheckedBorderedIcon, UncheckedCircleIcon } from "../../icons";
+import { fs } from "../../navigation/AppNavigator";
+import { PatientType } from "../../types/entities/patients.types";
 
 type PatientItemProps = {
     selected?: boolean,
-    isRadio?: boolean
+    isRadio?: boolean,
+    neededBottomBorder?: boolean
     handlePress?: () => any,
 } & PatientType
-const PatientItem: FC<PatientItemProps> = ({selected, handlePress, isRadio, firstName, lastName, phone, avatarSrc}) => {
+const PatientItem: FC<PatientItemProps> = ({ selected, handlePress, neededBottomBorder = true, isRadio, firstName, lastName, phone, avatarSrc }) => {
     const GetSelectedIcon = () => {
-        if(selected !== undefined) {
-            if(!selected) {
-                return !isRadio ? <UncheckedBorderedIcon/> : <UncheckedCircleIcon/>
+        if (selected !== undefined) {
+            if (!selected) {
+                return !isRadio ? <UncheckedBorderedIcon /> : <UncheckedCircleIcon />
             }
-            return !isRadio ? <CheckedBorderedIcon/> : <CheckedCircleIcon/>
+            return !isRadio ? <CheckedBorderedIcon /> : <CheckedCircleIcon />
         }
         return null
     }
     return (
-        <TouchableOpacity onPress={handlePress} style={[styles.patientCard, cs.fRowBetw, cs.fAlCenter]}>
+        <TouchableOpacity onPress={handlePress} style={[styles.patientCard, cs.fRowBetw, cs.fAlCenter, (neededBottomBorder ? cs.bottomBorder : null)]}>
             <View style={[cs.fRow, cs.fAlCenter, cs.spaceM]}>
                 <View style={[styles.patientAvatar, styles.patientAvatarEmpty, cs.circle, cs.fCenterCol]}>
-                    <ProfileIcon height={12}/>
+                    <ProfileIcon height={12} />
                 </View>
                 <View style={[cs.fColumn]}>
                     <Text style={[cs.fzS, cs.fwSemi, cs.colorDark]}>{`${firstName} ${lastName}`}</Text>
                     <Text style={[cs.colorGray, fs.montR, cs.fzXS]}>{phone}</Text>
                 </View>
             </View>
-            <GetSelectedIcon/>
+            <GetSelectedIcon />
         </TouchableOpacity>
     );
 };
 const styles = StyleSheet.create({
     patientCard: {
         paddingVertical: 16,
-        borderBottomColor: "#F3F3F3",
-        borderBottomWidth: 1,
-        borderStyle: "solid"
 
     },
     patientAvatarEmpty: {

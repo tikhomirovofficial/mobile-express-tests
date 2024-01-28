@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import { useAppDispatch, useAppSelector } from "../../../app/base/hooks";
-import { Modal, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { FlatList, Modal, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import WhiteBordered from "../../../layouts/WhiteBordered";
 import { cs } from "../../../common/styles";
 import ButtonYellow from "../../Buttons/ButtonYellow";
@@ -8,7 +8,7 @@ import { DocumentIcon, HeartIcon, LogoLong, PhotoIcon } from "../../../icons";
 import { fs } from "../../../navigation/AppNavigator";
 import SelectableBtn from "../../SelectableBtn";
 import { handleAboutModal, handleBonusesModal, handleOrdersFinancesModal, handleProfileEditModal } from "../../../app/features/modals/modalsSlice";
-import BonusesModal from '../BonusesModal';
+import PatientItem from '../../PatientItem';
 
 
 const OrderItem = () => {
@@ -42,55 +42,44 @@ const OrdersDateGroup = () => {
 
 const OrdersFinancesModal = () => {
     const dispatch = useAppDispatch()
-    const { ordersFinancesModal } = useAppSelector(state => state.modals)
+    const { bonusesModal } = useAppSelector(state => state.modals)
 
     const handleModal = () => {
-        dispatch(handleOrdersFinancesModal())
+        dispatch(handleBonusesModal())
     }
 
     return (
-        <Modal animationType={"slide"} visible={ordersFinancesModal} transparent={true}>
+        <Modal animationType={"slide"} visible={bonusesModal} transparent={true}>
             <WhiteBordered style={{ ...cs.modalSlidedBottom, paddingBottom: 20 }}>
                 <View style={[cs.flexOne, cs.fColumnBetw, cs.spaceXXL]}>
                     <View style={[cs.fRowBetw]}>
                         <Text onPress={handleModal}
                             style={[cs.yellowBtnText, cs.textYellow, cs.fzM]}>Закрыть</Text>
                         <View style={[cs.fAlCenter]}>
-                            <Text style={[cs.fzM, cs.colorDark, cs.fzM, cs.colorDark, cs.fwSemi]}>Финансы</Text>
+                            <Text style={[cs.fzM, cs.colorDark, cs.fzM, cs.colorDark, cs.fwSemi]}>Бонусы</Text>
                         </View>
                         <View style={{ flex: 0.4 }}></View>
                     </View>
-                    <View style={[cs.flexOne, cs.spaceXL]}>
-                        <TouchableOpacity onPress={() => dispatch(handleBonusesModal())} style={[styles.bonusesBlock, cs.wBlockShadow]}>
-                            <View style={[cs.fColumn, cs.spaceM, styles.bonusesBlockContent]}>
-                                <View style={[cs.fColumn, cs.spaceS,]}>
-                                    <View style={[cs.dF, cs.fAlCenter, cs.fRow, cs.spaceS]}>
-                                        <View style={[cs.dF, cs.fAlCenter, cs.fRow, cs.spaceS]}>
-                                            <HeartIcon height={18} width={18} />
-                                            <Text style={[cs.colorDark, cs.fwSemi, cs.fzM]}>Бонусы</Text>
-                                        </View>
-                                        <Text style={[cs.colorGray, cs.fzS]}>1 ед. = 1 ₽</Text>
-                                    </View>
-                                    <View style={[cs.fColumn]}>
-                                        <Text style={[cs.colorBlack, cs.fzS, cs.fwBold]}>34 из 545 </Text>
-                                        <Text style={[cs.colorGray, cs.fzXS, fs.montR]}>Доступно для вывода</Text>
-                                    </View>
-                                    <View style={[styles.progressBonuses]}>
-                                        <View style={[styles.progressBonusesFilled, { width: "30%" }]}></View>
-                                    </View>
-                                </View>
-                                <Text style={[cs.fzXXS, fs.montR, cs.colorGray]}>Мин. сумма для вывода 500 бонусов</Text>
-                            </View>
+                    <View style={[cs.flexOne, cs.spaceM]}>
+                        <View style={[cs.fColumn, cs.spaceM]}>
+                            <View style={[styles.bonusesBlock, cs.wBlockShadow]}>
 
-                        </TouchableOpacity>
-                        <View style={[cs.fColumn, cs.spaceL]}>
-                            <OrdersDateGroup />
-                            <OrdersDateGroup />
+                            </View>
+                            <ButtonYellow style={[cs.fCenterRow, cs.spaceS]} handlePress={() => { }}>
+                                <HeartIcon/>
+                                <Text style={[cs.colorDark, cs.fwSemi, cs.fzM]}>Вывести бонусы</Text>
+                            </ButtonYellow>
                         </View>
+                        <View style={[cs.fColumn]}>
+                            <PatientItem firstName={'Ахмед'} lastName={'Ахматов'} phone={'775 Бонусов'} avatarSrc={null} />
+                            <PatientItem firstName={'Ахмед'} lastName={'Ахматов'} phone={'775 Бонусов'} avatarSrc={null} />
+                            <PatientItem neededBottomBorder={false} firstName={'Ахмед'} lastName={'Ахматов'} phone={'775 Бонусов'} avatarSrc={null} />
+
+                        </View>
+
                     </View>
                 </View>
             </WhiteBordered>
-            <BonusesModal />
         </Modal>
     );
 };

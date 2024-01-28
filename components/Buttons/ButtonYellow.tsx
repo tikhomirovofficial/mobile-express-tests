@@ -6,7 +6,7 @@ import { StyleSheet, Text, TouchableOpacity, ViewStyle, View } from "react-nativ
 type ButtonYellowProps = {
     children: ReactNode,
     isFilled?: boolean,
-    style?: ViewStyle,
+    style?: ViewStyle | ViewStyle[],
     disabled?: boolean,
     handlePress: () => any
 }
