@@ -40,7 +40,6 @@ const PatientsModal: FC<NavProps> = ({navigation}) => {
                             <PatientItem handlePress={handlePatientInfo} avatarSrc={null}
                                          firstName={"Иван"} lastName={"Иванов"} phone={"+7 (951) 735-00-00"}/>
                         </View>
-
                         <ButtonYellow handlePress={toInviting}>
                             <Text style={[cs.fzM, cs.yellowBtnText]}>Пригласить пациентов</Text>
                         </ButtonYellow>
@@ -76,7 +75,8 @@ const styles = StyleSheet.create({
     },
     patientsList: {},
     patientsModalBlock: {
-        minHeight: "94%"
+        minHeight: "100%",
+        paddingBottom: 32
     },
     patientsContent: {
         flex: 1

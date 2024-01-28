@@ -76,7 +76,7 @@ const styles = StyleSheet.create({
     },
     patientsList: {},
     patientsModalBlock: {
-        paddingBottom: 24,
+        paddingBottom: 32,
         minHeight: "100%"
     },
     patientsContent: {

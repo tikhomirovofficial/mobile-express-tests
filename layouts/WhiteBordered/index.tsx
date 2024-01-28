@@ -5,7 +5,7 @@ import {cs} from "../../common/styles";
 
 type WhiteBorderedProps = {
     children: ReactNode,
-    style?: ViewStyle,
+    style?: ViewStyle | ViewStyle[],
     topContent?: ReactNode
 }
 const minContainerHeight = Dimensions.get("window").height / 100 * 92

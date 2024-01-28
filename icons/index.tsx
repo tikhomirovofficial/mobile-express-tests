@@ -279,6 +279,22 @@ export const LogoLong: FC<IconProps> = ({ width = 160, height = 40 }) => {
 }
 
 
+export const MinusIcon: FC<IconProps> = ({ width = 10, height = 1, stroke = "white" }) => {
+    return (
+        <Svg width={width} height={height} viewBox="0 0 12 3" fill="none">
+            <Path d="M10.9999 1.4998H1" stroke={stroke} strokeWidth="1.5" stroke-linecap="round" stroke-linejoin="round" />
+        </Svg>
+    )
+}
+export const PlusIcon: FC<IconProps> = ({ width = 12, height = 13, stroke = "#4D4D4D" }) => {
+    return (
+        <Svg  width="12" height="13" viewBox="0 0 12 13" fill="none">
+            <Path d="M6.00005 1.50488V11.4953" stroke={stroke} strokeWidth="1.5" stroke-linecap="round" stroke-linejoin="round" />
+            <Path d="M11 6.50029H1.00012" stroke={stroke} strokeWidth="1.5" stroke-linecap="round" stroke-linejoin="round" />
+        </Svg>
+    )
+}
+
 export const ProfileIcon: FC<IconProps> = ({ width = 17, height = 21, stroke = "#4D4D4D" }) => {
     return (
         <Svg width={width} height={height} viewBox="0 0 17 22" fill="none">

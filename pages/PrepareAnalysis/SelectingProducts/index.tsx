@@ -12,11 +12,13 @@ import PatientItem from "../../../components/PatientItem";
 import ButtonYellow from "../../../components/Buttons/ButtonYellow";
 import PatientInvitingModal from "../../../components/Modals/PatientInvitingModal";
 import { addToCart, removeProduct } from '../../../app/features/cart/cartSlice';
+import AnalysisInfoModal from '../../../components/Modals/AnalysisInfoModal';
+import { handleAnalysisInfoModal } from '../../../app/features/modals/modalsSlice';
 
 const SelectingProducts: FC<NavProps> = ({ navigation }) => {
     const dispatch = useAppDispatch()
     const cart = useAppSelector(state => state.cart)
-
+    const [keyboardStatus, setKeyboardStatus] = useState(false);
     const [searchVal, setSearchVal] = useState("")
     const [categoriesLoading, setCategoriesLoading] = useState(false)
     const products = useAppSelector(state => state.products.items)
@@ -31,8 +33,12 @@ const SelectingProducts: FC<NavProps> = ({ navigation }) => {
     const handleToSelectingCategory = () => {
         navigation.navigate("order_category")
     }
+    const handleOpenProductInfo = () => {
+        console.log("Текущий продукт");
+        
+        dispatch(handleAnalysisInfoModal())
+    }
 
-    const [keyboardStatus, setKeyboardStatus] = useState(false);
 
     useEffect(() => {
         const keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', () => {
@@ -59,7 +65,7 @@ const SelectingProducts: FC<NavProps> = ({ navigation }) => {
                                 <TouchableOpacity onPress={handleToSelectingCategory}>
                                     <ArrowLeft />
                                 </TouchableOpacity>
-                                <Text style={[cs.fwSemi, cs.fwSemi, cs.fzXL]}>{currentCategory !== undefined ? currentCategory.title.slice(0,17) : ""}</Text>
+                                <Text style={[cs.fwSemi, cs.fwSemi, cs.fzXL]}>{currentCategory !== undefined ? currentCategory.title.slice(0, 17) : ""}</Text>
                                 <View></View>
                             </View>
                         </AppContainer>
@@ -90,14 +96,14 @@ const SelectingProducts: FC<NavProps> = ({ navigation }) => {
                                         contentContainerStyle={[cs.fColumn, cs.spaceS]}
                                         data={searchVal.length > 0 ? products.filter(product => {
                                             if (product.title.toLocaleLowerCase().includes(searchVal.toLocaleLowerCase())) {
-                                                if(product.category_id === currentCategoryId) {
+                                                if (product.category_id === currentCategoryId) {
                                                     return product
                                                 }
-                                                
+
                                             }
 
                                         }) : products.filter(product => product.category_id === currentCategoryId)}
-                                        renderItem={({ item, index}) => {
+                                        renderItem={({ item, index }) => {
                                             const isInCart = cartProducts.some(cartProduct => cartProduct.id === item.id)
                                             const addProduct = () => {
                                                 dispatch(addToCart({
@@ -110,7 +116,7 @@ const SelectingProducts: FC<NavProps> = ({ navigation }) => {
                                                 dispatch(removeProduct(item.id))
                                             }
 
-                                            return (<TouchableOpacity style={[cs.fRowBetw, cs.spaceS, cs.fAlCenter, {paddingBottom: 16, paddingTop: index ? 16 : 0, borderBottomWidth: 1, borderBottomColor: "#f3f3f3"}]} >
+                                            return (<TouchableOpacity onPress={handleOpenProductInfo} style={[cs.fRowBetw, cs.spaceS, cs.fAlCenter, { paddingBottom: 16, paddingTop: index ? 16 : 0, borderBottomWidth: 1, borderBottomColor: "#f3f3f3" }]} >
                                                 <View key={item.id} style={[cs.fRow, cs.spaceS, { maxWidth: "90%" }]}>
                                                     <View style={[cs.fColumn]}>
                                                         <Text style={[cs.fwMedium, fs.montR, cs.fzS, cs.colorDark]}>{item.title}</Text>
@@ -141,18 +147,12 @@ const SelectingProducts: FC<NavProps> = ({ navigation }) => {
                                 {14 > 0 ? <View style={cs.count}>
                                     <Text style={cs.countText}>{cart.items.length}</Text>
                                 </View> : null}
-
                             </View>
-
-
-
                         </ButtonYellow>
-
-
                     </View>
-
                 </WhiteBorderedLayout>
-            </View >
+            </View>
+            <AnalysisInfoModal />
         </Animated.View >
 
     );

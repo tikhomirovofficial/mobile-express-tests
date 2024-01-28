@@ -22,8 +22,8 @@ const ButtonYellow: FC<ButtonYellowProps> = ({ children, handlePress, style, isF
     if (isFilled) {
         return (
             <TouchableOpacity onPress={handlePress}>
-                <LinearGradient start={{ x: 0.2, y: 1 }}
-                    end={{ x: 0.24, y: -0.4 }}
+                <LinearGradient start={{ x: -1, y: -0.3 }}
+                    end={{ x: 1.7, y: .3 }}
                     style={[cs.yellowBtn, cs.fCenterCol, style]}
                     colors={["#FB0", "#FFCB3D", "#FFDA75"]}>
                     {children}

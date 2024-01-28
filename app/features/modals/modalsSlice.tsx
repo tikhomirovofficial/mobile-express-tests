@@ -5,6 +5,7 @@ type ModalsSliceState = {
     profileEditModal: boolean,
     patientsModal: boolean
     aboutAppModal: boolean
+    analysisInfoModal: boolean
     bonusesModal: boolean
     ordersFinancesModal: boolean,
     patientInfoModal: boolean,
@@ -18,6 +19,7 @@ const initialState: ModalsSliceState = {
     bonusesModal: false,
     aboutAppModal: false,
     ordersFinancesModal: false,
+    analysisInfoModal: false,
     profileEditModal: false,
     patientInfoModal: false,
     patientInvitingModal: false,
@@ -54,6 +56,9 @@ export const ModalsSlice = createSlice({
         },
         handleOrdersFinancesModal: (state) => {
             state.ordersFinancesModal = !state.ordersFinancesModal
+        },
+        handleAnalysisInfoModal: (state) => {
+            state.analysisInfoModal = !state.analysisInfoModal
         }
 
     }
@@ -67,6 +72,7 @@ export const {
     handleBonusesModal,
     handleAboutModal,
     handlePatientInvitingModal,
+    handleAnalysisInfoModal,
     handlePatientOrderInfoModal,
     handleOrdersFinancesModal
 } = ModalsSlice.actions
