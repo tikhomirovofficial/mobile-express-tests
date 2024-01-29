@@ -2,6 +2,9 @@ import { CSSProperties } from "react";
 import { StyleSheet } from "react-native";
 
 const cs = StyleSheet.create({
+    modal: {
+        position: "absolute", height: "100%", top: 0, width: "100%"
+    },
     pRel: {
         position: "relative"
     },

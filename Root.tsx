@@ -27,6 +27,7 @@ const Root = () => {
                         <AppNavigator />
                     </ScrollView>
                 </View>
+                
 
             </>
         )

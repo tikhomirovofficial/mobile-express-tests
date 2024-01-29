@@ -1,37 +1,71 @@
 import { LinearGradient } from 'expo-linear-gradient'
-import React, { useState } from 'react'
-import { View, Text, StyleSheet, Dimensions, useAnimatedValue } from 'react-native'
+import React, { useEffect, useState } from 'react'
+import { View, Text, StyleSheet, Dimensions, useAnimatedValue, Touchable, TouchableOpacity } from 'react-native'
 import { cs } from '../../common/styles'
 import AppContainer from '../AppContainer'
 import { BorderedProfileIcon } from '../../icons'
-import { Gesture, GestureDetector } from 'react-native-gesture-handler'
-import Animated, { useAnimatedStyle, useSharedValue } from 'react-native-reanimated'
+import { Gesture, GestureDetector, ScrollView, TouchableWithoutFeedback } from 'react-native-gesture-handler'
+import Animated, { SlideInDown, SlideOutDown, runOnJS, useAnimatedStyle, useSharedValue, withSpring, withTiming } from 'react-native-reanimated'
+import { OrderItem } from '../OrderItem'
+import { useAppDispatch, useAppSelector } from '../../app/base/hooks'
+import { handleBonusesBottomSheet } from '../../app/features/modals/modalsSlice'
 
 
 
 const { width, height } = Dimensions.get("screen")
 
 export const BottomSheet = () => {
-    const translateY = useSharedValue(0)
+    const dispatch = useAppDispatch()
+    const translateY = useSharedValue(1)
+    const ctx = useSharedValue({ y: 1 })
+    const closeSheet = () => {
+        dispatch(handleBonusesBottomSheet())
+    }
 
-    const ctx = useSharedValue({ y: 0 })
     const gesture = Gesture.Pan()
         .onStart(e => {
+            console.log(e);
+
             ctx.value = { y: translateY.value }
         }).
         onUpdate(e => {
             translateY.value = e.translationY + ctx.value.y
+            console.log("sas");
+            translateY.value = Math.max(translateY.value, -height + 40)
+        }).
+        onFinalize(() => {
+            if (translateY.value > -height / 4) {
+                translateY.value = withSpring(0, { damping: 50 }, () => {
+                    runOnJS(closeSheet)()
+                })
+            } else if (translateY.value < -height / 2) {
+                translateY.value = withSpring(-height + 40, { damping: 50 })
+            }
+
         })
+
+
     const bSheetStyle = useAnimatedStyle(() => {
         return {
             transform: [{ translateY: translateY.value }]
         }
     })
 
+    useEffect(() => {
+        translateY.value = withTiming(-height / 3)
+    }, [])
+
+
     return (
         <GestureDetector gesture={gesture}>
-            <View style={[styles.bottomSheetContainer,]}>
-                <Animated.View style={[styles.bottomSheetBlock, bSheetStyle]}>
+            <View style={[styles.bottomSheetContainer]}>
+                <TouchableWithoutFeedback style={{ backgroundColor: "rgba(1,1,1, 0.4)", height: "100%" }}>
+                </TouchableWithoutFeedback>
+                <Animated.View
+                    entering={SlideInDown.springify().damping(10)}
+                    exiting={SlideOutDown.springify().damping(10)}
+                    style={[styles.bottomSheetBlock, bSheetStyle]}>
+
                     <View style={[styles.bottomSheetHeader]}>
                         <LinearGradient start={{ x: 0.2, y: 1 }}
                             end={{ x: 0.24, y: -0.4 }}
@@ -54,23 +88,28 @@ export const BottomSheet = () => {
                     <View style={[styles.patientSheetContent]}>
 
                         <AppContainer>
-                            <Text>sasa</Text>
+                            <View style={[cs.fRowBetw]}>
+                                <Text style={[cs.title]}>Всего</Text>
+                                <Text style={[cs.title]}>7865</Text>
+                            </View>
+                            <ScrollView contentContainerStyle={[cs.fColumn, cs.spaceM]}>
+                                <OrderItem codeText={'sas'} bottomLeftText={'dsadas'} bottomRightText={'asdsa'} topRightText={'asd'} />
+                            </ScrollView>
+
                         </AppContainer>
                     </View>
                 </Animated.View>
-
             </View>
-
-
-        </GestureDetector>
+        </GestureDetector >
     )
 }
+
 const styles = StyleSheet.create({
     bottomSheetContainer: {
         top: 0,
         position: "absolute",
+        zIndex: 3,
         height: "100%",
-        backgroundColor: "rgba(1,1,1, 0.4)",
         width: "100%"
     },
     bottomSheetBlock: {
@@ -79,7 +118,7 @@ const styles = StyleSheet.create({
         width: "100%",
         backgroundColor: "white",
         overflow: 'hidden',
-        top: height / 1.5,
+        top: height,
         borderRadius: 25
     },
     bottomSheetHeader: {
@@ -102,7 +141,7 @@ const styles = StyleSheet.create({
         alignSelf: "center"
     },
     patientSheetContent: {
-        paddingTop: 32
+        paddingTop: 40
     }
 
 })

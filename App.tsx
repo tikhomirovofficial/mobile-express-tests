@@ -9,12 +9,13 @@ import { BottomSheet } from "./components/BottomSheet";
 
 function App() {
     return (
-        <GestureHandlerRootView style={[cs.flexOne]}>
+       
             <Provider store={store}>
+               
                 <Root />
+
             </Provider>
-            <BottomSheet/>
-        </GestureHandlerRootView>
+       
 
 
     )

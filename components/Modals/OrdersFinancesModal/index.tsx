@@ -42,7 +42,7 @@ const OrdersDateGroup = () => {
 
 const OrdersFinancesModal = () => {
     const dispatch = useAppDispatch()
-    const { ordersFinancesModal } = useAppSelector(state => state.modals)
+    const { ordersFinancesModal, bonusesModal } = useAppSelector(state => state.modals)
 
     const handleModal = () => {
         dispatch(handleOrdersFinancesModal())
@@ -90,7 +90,11 @@ const OrdersFinancesModal = () => {
                     </View>
                 </View>
             </WhiteBordered>
-            <BonusesModal />
+            {
+                bonusesModal ? <BonusesModal /> : null
+            }
+            
+            
         </Modal>
     );
 };
