@@ -1,43 +1,52 @@
-import React, {useEffect} from 'react';
-import {useAppDispatch, useAppSelector} from "../../../app/base/hooks";
-import {Modal, StyleSheet, Text, View} from "react-native";
+import React, { FC, useEffect } from 'react';
+import { useAppDispatch, useAppSelector } from "../../../app/base/hooks";
+import { Modal, StyleSheet, Text, View } from "react-native";
 import WhiteBordered from "../../../layouts/WhiteBordered";
-import {cs} from "../../../common/styles";
+import { cs } from "../../../common/styles";
 import ButtonYellow from "../../Buttons/ButtonYellow";
 import {
     handleOrderInfoModal,
     handlePatientInfoModal,
     handlePatientOrderInfoModal
 } from "../../../app/features/modals/modalsSlice";
-import {PhotoIcon} from "../../../icons";
+import { PhotoIcon } from "../../../icons";
 import AnalysisCard from "../../Cards/AnalysisCard";
 import OrderInfoModal from "../OrderInfoModal";
+import { setPatient } from '../../../app/features/order/orderSlice';
+import { NavProps } from '../../../types/common.types';
 
-const PatientInfoModal = () => {
+const PatientInfoModal: FC<NavProps> = ({navigation}) => {
     const dispatch = useAppDispatch()
-    const {patientInfoModal, patientOrderInfoModal} = useAppSelector(state => state.modals)
+    const { patientInfoModal, patientOrderInfoModal } = useAppSelector(state => state.modals)
     const handleModal = () => dispatch(handlePatientInfoModal())
 
-
+    const handleToOrder = () => {
+        dispatch(setPatient({
+            id: "1",
+            firstName: "Борис",
+            lastName: "Борисов"
+        }))
+        navigation.navigate("order_category")
+    }
     return (
         <Modal animationType={"slide"} visible={patientInfoModal} transparent={true}>
-            <WhiteBordered style={{...cs.modalSlidedBottom}}>
+            <WhiteBordered style={{ ...cs.modalSlidedBottom }}>
                 <View style={[cs.spaceXXL, styles.patientsModalBlock]}>
                     <View style={[cs.fRowBetw]}>
                         <Text onPress={handleModal} style={[cs.yellowBtnText, cs.textYellow, cs.fzM]}>Закрыть</Text>
                         <View style={[cs.fAlCenter]}>
                             <Text style={[cs.fzM, cs.colorDark, cs.fzM, cs.colorDark, cs.fwSemi]}>Пациент</Text>
                         </View>
-                        <View style={{flex: 0.4}}></View>
+                        <View style={{ flex: 0.4 }}></View>
                     </View>
                     <View style={[cs.fColumn, cs.spaceM, cs.fAlCenter]}>
                         <View style={[styles.avatarBlock, cs.circle, cs.fCenterCol]}>
-                            <PhotoIcon/>
+                            <PhotoIcon />
                         </View>
                         <Text style={[cs.fwBold, cs.fzXL, cs.txtCenter, styles.name]}>
                             Подосёнов Вячеслав Сергеевич
                         </Text>
-                        <ButtonYellow style={{minWidth: "100%"}} handlePress={() => alert("В разработке")}>
+                        <ButtonYellow style={{ minWidth: "100%" }} handlePress={handleToOrder}>
                             <Text style={[cs.fzM, cs.yellowBtnText, cs.colorDark]}>Заказать анализы</Text>
                         </ButtonYellow>
                     </View>
@@ -64,18 +73,18 @@ const PatientInfoModal = () => {
                             <Text style={[cs.fzXL, cs.fwBold]}>Анализы</Text>
                             <View style={[cs.spaceS]}>
                                 <AnalysisCard handlePress={() => dispatch(handleOrderInfoModal())}
-                                              orderNumber={"02-014"} date={"25.09.2023"} customer={""} status={"PAID"}/>
+                                    orderNumber={"02-014"} date={"25.09.2023"} customer={""} status={"PAID"} />
                                 <AnalysisCard handlePress={() => dispatch(handleOrderInfoModal())}
-                                              orderNumber={"02-014"} date={"25.09.2023"} customer={""} status={"PAID"}/>
+                                    orderNumber={"02-014"} date={"25.09.2023"} customer={""} status={"PAID"} />
                                 <AnalysisCard handlePress={() => dispatch(handleOrderInfoModal())}
-                                              orderNumber={"02-014"} date={"25.09.2023"} customer={""} status={"PAID"}/>
+                                    orderNumber={"02-014"} date={"25.09.2023"} customer={""} status={"PAID"} />
                             </View>
                         </View>
                     </View>
 
                 </View>
             </WhiteBordered>
-            <OrderInfoModal opened={patientOrderInfoModal} handlePopup={() => handlePatientOrderInfoModal()}/>
+            <OrderInfoModal opened={patientOrderInfoModal} handlePopup={() => handlePatientOrderInfoModal()} />
         </Modal>
     );
 };

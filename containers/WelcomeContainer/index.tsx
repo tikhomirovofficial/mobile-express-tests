@@ -10,7 +10,11 @@ const welcomeSteps = [
     WelcomeConditions,
     WelcomeCooperation,
 ]
-
+// const WelcomeRoute: FC<NavProps> = ({navigation}) => {
+//     return (
+        
+//     )
+// }
 const WelcomeContainer: FC<NavProps> = ({navigation}) => {
     const {welcomeStep} = useAppSelector(state => state.welcome)
     const CurrentWelcomeStep = welcomeSteps[welcomeStep]

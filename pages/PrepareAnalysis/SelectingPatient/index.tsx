@@ -19,8 +19,9 @@ import { setPatient } from '../../../app/features/order/orderSlice';
 
 const SelectingPatient: FC<NavProps> = ({ navigation }) => {
     const dispatch = useAppDispatch()
-    const [searchVal, setSearchVal] = useState("")
     const contacts = useAppSelector(state => state.patients.items)
+    
+    const [searchVal, setSearchVal] = useState("")
     const [contactsLoading, setContactsLoading] = useState(false)
     const [contactsSelected, setContactsSelected] = useState<string[]>([])
 
@@ -36,27 +37,27 @@ const SelectingPatient: FC<NavProps> = ({ navigation }) => {
         }))
         navigation.navigate("order_category")
     }
-    
+
     useEffect(() => {
 
         (async () => {
-            const contactsPermissions = await Permissions.askAsync(Permissions.CONTACTS);
-            console.log(contactsPermissions.status);
+            // const contactsPermissions = await Permissions.askAsync(Permissions.CONTACTS);
+            // console.log(contactsPermissions.status);
 
-            const { status } = await Contacts.requestPermissionsAsync();
-            if (status === 'granted') {
-                setContactsLoading(true)
-                const { data } = await Contacts.getContactsAsync();
+            // const { status } = await Contacts.requestPermissionsAsync();
+            // if (status === 'granted') {
+            //     setContactsLoading(true)
+            //     const { data } = await Contacts.getContactsAsync();
 
-                if (data.length > 0) {
-                    dispatch(setPatients(data.slice(0, 3)))
-                    setContactsLoading(false)
-                }
-            }
+            //     if (data.length > 0) {
+            //         dispatch(setPatients(data.slice(0, 3)))
+            //         setContactsLoading(false)
+            //     }
+            // }
         })();
     }, []);
     const openNewPatient = () => dispatch(handlePatientInvitingModal())
-    
+
     const [keyboardStatus, setKeyboardStatus] = useState(false);
 
     useEffect(() => {
@@ -116,21 +117,21 @@ const SelectingPatient: FC<NavProps> = ({ navigation }) => {
                                         data={searchVal.length > 0 ? contacts.filter(contact => {
                                             const matchFirstName = contact.firstName?.toLocaleLowerCase().includes(searchVal.toLocaleLowerCase())
                                             const matchLastName = contact.lastName?.toLocaleLowerCase().includes(searchVal.toLocaleLowerCase())
-                                            if(matchFirstName || matchLastName) {
+                                            if (matchFirstName || matchLastName) {
                                                 return contact
                                             }
 
-                                    
-                                        }): contacts}
+
+                                        }) : contacts}
                                         renderItem={({ item }) => (
                                             <PatientItem isRadio={true} handlePress={() => {
-                                                
+
 
                                                 setContactsSelected(prev => {
-                
+
                                                     const alreadySelected = contactsSelected.some(contact => contact === item.id)
                                                     if (!alreadySelected) {
-                                                            
+
                                                         return [item.id]
                                                     }
                                                     return prev.filter(contact => contact !== item.id)

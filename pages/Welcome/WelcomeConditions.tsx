@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC } from 'react';
 import FeauturesLayout from "../../layouts/FeaturesLayout";
 import { Text, TouchableOpacity, View } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
@@ -7,9 +7,10 @@ import { useAppDispatch } from "../../app/base/hooks";
 import { setWelcomeStep } from "../../app/features/welcome/welcomeSlice";
 import AppContainer from '../../components/AppContainer';
 import InfoPageLayout from '../../layouts/InfoPageLayout';
+import { NavProps } from '../../types/common.types';
 const WelcomeConditionsImage = require('../../assets/welcome_conditions.jpg')
 
-const WelcomePatients = () => {
+const WelcomePatients: FC<NavProps> = ({ navigation }) => {
     const dispatch = useAppDispatch()
     const toPrevStep = () => {
         dispatch(setWelcomeStep(0))
@@ -17,9 +18,12 @@ const WelcomePatients = () => {
     const toNextStep = () => {
         dispatch(setWelcomeStep(2))
     }
+    const toLoginStep = () => {
+        navigation.navigate("login_phone")
+    }
 
     return (
-        <InfoPageLayout handleSkip={() => { alert("skip") }} title='Комфортные условия вашей работы' image={WelcomeConditionsImage} content={
+        <InfoPageLayout handleSkip={toLoginStep} title='Комфортные условия вашей работы' image={WelcomeConditionsImage} content={
             <AppContainer style={{ flex: 1, ...cs.spaceXXL }}>
                 <FeauturesLayout step={1} features={[
                     "Конфиденциальность ваших контактных данных",

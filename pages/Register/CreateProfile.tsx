@@ -1,9 +1,9 @@
 import React, { FC, useEffect, useState } from 'react';
-import { Animated, Text, TouchableOpacity, View, StyleSheet, TextInput, ScrollView, Keyboard } from "react-native";
+import { Animated, Text, TouchableOpacity, View, StyleSheet, TextInput, ScrollView, Keyboard, Dimensions } from "react-native";
 import { useAppDispatch } from '../../app/base/hooks';
 import { handlePatientInvitingModal } from '../../app/features/modals/modalsSlice';
 import { cs } from '../../common/styles';
-import AppContainer from '../../components/AppContainer';
+import AppContainer, { containerStyles } from '../../components/AppContainer';
 import PatientInvitingModal from '../../components/Modals/PatientInvitingModal';
 import PatientItem from '../../components/PatientItem';
 import ButtonYellow from "../../components/Buttons/ButtonYellow";
@@ -71,8 +71,8 @@ const CreateProfile: FC<NavProps> = ({ navigation }) => {
                                                 <Text style={[cs.fzS, fs.montR, cs.fwMedium]} aria-label="Label for Username"
                                                     nativeID="labelFirstName">Пол</Text>
                                                 <View style={[cs.dF, cs.fRowBetw, cs.spaceS, cs.flexOne]}>
-                                                    <SelectableBtn isFilled={true} style={styles.selectableBtn} text={"Мужской"} handlePress={() => { }} />
-                                                    <SelectableBtn isFilled={false} style={styles.selectableBtn} text={"Женский"} handlePress={() => { }} />
+                                                    <SelectableBtn isFilled={false} style={[styles.selectableBtn]} text={"Мужской"} handlePress={() => { }} />
+                                                    <SelectableBtn isFilled={true} style={[styles.selectableBtn]} text={"Женский"} handlePress={() => { }} />
                                                 </View>
                                             </View>
                                             <View style={[cs.fColumn, cs.spaceM]}>
@@ -110,7 +110,7 @@ const CreateProfile: FC<NavProps> = ({ navigation }) => {
                                 </View>
                             </ScrollView>
 
-                            <ButtonYellow handlePress={() => {}}>
+                            <ButtonYellow isFilled={true} handlePress={() => { }}>
                                 <Text style={[cs.fzM, cs.yellowBtnText]}>Сохранить</Text>
                             </ButtonYellow>
                         </View>
@@ -131,8 +131,8 @@ const styles = StyleSheet.create({
         borderColor: "#E2E2E9"
     },
     selectableBtn: {
-        minWidth: 144,
-        height: 52
+        height: 52,
+        width: (containerStyles.container.maxWidth / 2) - 10
     },
     profileInfo: {
         maxWidth: 228

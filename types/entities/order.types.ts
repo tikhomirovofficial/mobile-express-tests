@@ -11,9 +11,9 @@ export type OrderDetailsApi = {
         doctor: string,
         pacient: string,
         status: string,
-        date:string,
+        date: string,
         order_id: number
     },
     results: string[]
-    analiz_list: Array<{title: string} & HasId>
+    analiz_list: Array<{ title: string } & HasId>
 }

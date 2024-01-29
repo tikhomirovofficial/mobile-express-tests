@@ -45,7 +45,7 @@ const PatientsModal: FC<NavProps> = ({navigation}) => {
                         </ButtonYellow>
                     </View>
                 </View>
-                <PatientInfoModal/>
+                <PatientInfoModal navigation={navigation}/>
             </WhiteBordered>
 
         </Modal>

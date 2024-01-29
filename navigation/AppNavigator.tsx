@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack"
 import Main from "../pages/Account/Main";
@@ -26,6 +26,7 @@ import SelectingCategory from '../pages/PrepareAnalysis/SelectingCategory';
 import SelectingProducts from '../pages/PrepareAnalysis/SelectingProducts';
 import CartProducts from '../pages/PrepareAnalysis/CartProducts';
 import CreateProfile from '../pages/Register/CreateProfile';
+import { checkIfFirstTimeUser } from '../utils/checkFirstTime';
 
 const Stack = createNativeStackNavigator()
 const Tab = createBottomTabNavigator()
@@ -42,10 +43,13 @@ const MainTabs = () => {
     );
 }
 const AppNavigator = () => {    
+    useEffect(() => {
+        checkIfFirstTimeUser()
+    }, [])
     return (
         <NavigationContainer>
             <View style={styles.main}>
-                <Stack.Navigator initialRouteName={"home"}
+                <Stack.Navigator initialRouteName={"register"}
                     screenOptions={{ headerShown: false, contentStyle: cs.rootBg }}>
                     {/* //Профиль */}
                     <Stack.Screen name="home" component={MainTabs} />

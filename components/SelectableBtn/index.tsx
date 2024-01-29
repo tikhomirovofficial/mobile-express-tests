@@ -1,30 +1,26 @@
-import React, {FC, ReactNode} from 'react';
-import {cs} from "../../common/styles";
-import {LinearGradient} from "expo-linear-gradient";
-import {StyleSheet, Text, TouchableOpacity, ViewStyle} from "react-native";
+import React, { FC, ReactNode } from 'react';
+import { cs } from "../../common/styles";
+import { LinearGradient } from "expo-linear-gradient";
+import { StyleSheet, Text, TouchableOpacity, ViewStyle } from "react-native";
+import ButtonYellow from '../Buttons/ButtonYellow';
 
 type SelectableBtnProps = {
     isFilled?: boolean,
-    style?: ViewStyle,
+    style?: ViewStyle[],
     text: string
     handlePress: () => any
 }
-const ButtonYellow: FC<SelectableBtnProps> = ({handlePress, text, style, isFilled = true}) => {
+const SelectableBtn: FC<SelectableBtnProps> = ({ handlePress, text, style, isFilled = true }) => {
 
-    if(isFilled) {
+    if (isFilled) {
         return (
-            <TouchableOpacity onPress={handlePress}>
-                <LinearGradient start={{x: 0.2, y: 1}}
-                                end={{x: 0.24, y: -0.4}}
-                                style={[cs.yellowBtn, cs.fCenterCol, style]}
-                                colors={["#FB0", "#FFCB3D", "#FFDA75"]}>
-                    <Text style={[cs.fzM, cs.yellowBtnText]}>{text}</Text>
-                </LinearGradient>
-            </TouchableOpacity>
+            <ButtonYellow isFilled={true} handlePress={handlePress} style={[cs.flexOne, {width: "100%"}, style as ViewStyle]}>
+                <Text style={[cs.fzM, cs.yellowBtnText, cs.colorBlack]}>{text}</Text>
+            </ButtonYellow>
         );
     }
     return (
-        <TouchableOpacity onPress={handlePress}  style={[cs.yellowBtn, cs.fCenterCol, styles.unfilledButton, style]}>
+        <TouchableOpacity onPress={handlePress} style={[cs.yellowBtn, cs.fCenterCol, styles.unfilledButton, style]}>
             <Text style={[cs.fzM, cs.yellowBtnText, cs.textYellow]}>{text}</Text>
         </TouchableOpacity>
     )
@@ -38,4 +34,4 @@ const styles = StyleSheet.create({
         borderWidth: 1
     }
 })
-export default ButtonYellow;
+export default SelectableBtn;

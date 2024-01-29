@@ -21,7 +21,7 @@ const WelcomePatients: FC<NavProps> = ({ navigation }) => {
 
     return (
         <InfoPageLayout title='Ваше сотрудничество с нашей лабораторией' image={WelcomeCooperationImage} content={
-            <AppContainer style={{flex: 1, ...cs.spaceXXL}}>
+            <AppContainer style={{ flex: 1, ...cs.spaceXXL }}>
                 <FeauturesLayout step={2} features={[
                     "Бонусная программа для вас и выгодные условия для ваших клиентов",
                     "Сдача анализов происходит в нашей лабораторной службе",

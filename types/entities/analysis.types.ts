@@ -1,3 +1,4 @@
+import { HasId } from "../common.types"
 
 export type AnalysisType = {
     id: number,
@@ -16,3 +17,17 @@ export type OrderAnalysisDetails = {
     customerFull: string
     results: string
 } & OrderAnalysisType
+
+
+export type AnalysisApi = {
+    cat: number,
+    code: string,
+    cost: number,
+    info: string,
+    maxdur: number,
+    mindur: number,
+    name: string,
+    prepare: any[],
+    tags: any[],
+    templates: any[]
+} & HasId
