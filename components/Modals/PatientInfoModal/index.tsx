@@ -15,9 +15,9 @@ import OrderInfoModal from "../OrderInfoModal";
 import { setPatient } from '../../../app/features/order/orderSlice';
 import { NavProps } from '../../../types/common.types';
 
-const PatientInfoModal: FC<NavProps> = ({navigation}) => {
+const PatientInfoModal: FC<NavProps> = ({ navigation }) => {
     const dispatch = useAppDispatch()
-    const { patientInfoModal, patientOrderInfoModal } = useAppSelector(state => state.modals)
+    const { patientInfoModal, patientOrderInfoModal, orderInfoModal } = useAppSelector(state => state.modals)
     const handleModal = () => dispatch(handlePatientInfoModal())
 
     const handleToOrder = () => {
@@ -28,6 +28,7 @@ const PatientInfoModal: FC<NavProps> = ({navigation}) => {
         }))
         navigation.navigate("order_category")
     }
+
     return (
         <Modal animationType={"slide"} visible={patientInfoModal} transparent={true}>
             <WhiteBordered style={{ ...cs.modalSlidedBottom }}>
@@ -84,7 +85,9 @@ const PatientInfoModal: FC<NavProps> = ({navigation}) => {
 
                 </View>
             </WhiteBordered>
-            <OrderInfoModal opened={patientOrderInfoModal} handlePopup={() => handlePatientOrderInfoModal()} />
+            {
+                orderInfoModal ? <OrderInfoModal /> : null
+            }
         </Modal>
     );
 };

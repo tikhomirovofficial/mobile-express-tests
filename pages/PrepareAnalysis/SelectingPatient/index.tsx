@@ -20,7 +20,8 @@ import { setPatient } from '../../../app/features/order/orderSlice';
 const SelectingPatient: FC<NavProps> = ({ navigation }) => {
     const dispatch = useAppDispatch()
     const contacts = useAppSelector(state => state.patients.items)
-    
+    const { patientInvitingModal } = useAppSelector(state => state.modals)
+
     const [searchVal, setSearchVal] = useState("")
     const [contactsLoading, setContactsLoading] = useState(false)
     const [contactsSelected, setContactsSelected] = useState<string[]>([])
@@ -152,13 +153,12 @@ const SelectingPatient: FC<NavProps> = ({ navigation }) => {
                                 <Text style={[cs.fzM, cs.yellowBtnText]}>Далее</Text>
                             </View>
                         </ButtonYellow>
-
-
                     </View>
 
                 </WhiteBorderedLayout>
             </View >
-            <PatientInvitingModal />
+            {patientInvitingModal ? <PatientInvitingModal /> : null}
+
         </Animated.View >
 
     );

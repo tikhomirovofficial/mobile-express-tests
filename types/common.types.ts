@@ -1,7 +1,10 @@
-import {NavigationProp, ParamListBase, RouteProp} from "@react-navigation/native";
+import { NavigationProp, ParamListBase, RouteProp } from "@react-navigation/native";
 
 export type HasId = {
     id: number
+}
+export type HasLoading = {
+    loading: boolean
 }
 
 export type NavProps = {

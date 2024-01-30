@@ -20,6 +20,7 @@ const CheckSelectedPatients: FC<NavProps> = ({ navigation }) => {
     const dispatch = useAppDispatch()
 
     const contacts = useAppSelector(state => state.patients.items)
+    const { patientInvitingModal } = useAppSelector(state => state.modals)
     const [contactsLoading, setContactsLoading] = useState(false)
     const contactsSelected = useAppSelector(state => state.patients.invitingsIds)
 
@@ -67,11 +68,11 @@ const CheckSelectedPatients: FC<NavProps> = ({ navigation }) => {
                                             <PatientItem handlePress={() => {
                                                 const alreadySelected = contactsSelected.some(contact => contact === item.id)
 
-                                               
-                                                if(!alreadySelected) {
+
+                                                if (!alreadySelected) {
                                                     dispatch(addInvitingsId(item.id))
                                                     return
-                                                } 
+                                                }
                                                 dispatch(removeInvitingsId(item.id))
 
                                             }} key={item.id} selected={contactsSelected.some(contact => contact === item.id)} firstName={item.firstName || ""} lastName={item.lastName || ""} phone={item.phoneNumbers ? item.phoneNumbers[0]?.number || "" : ""} avatarSrc={null} />
@@ -100,7 +101,10 @@ const CheckSelectedPatients: FC<NavProps> = ({ navigation }) => {
 
                 </WhiteBorderedLayout>
             </View >
-            <PatientInvitingModal />
+            {
+                patientInvitingModal ? <PatientInvitingModal /> : null
+            }
+
         </Animated.View >
 
     );

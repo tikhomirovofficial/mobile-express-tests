@@ -1,17 +1,24 @@
-import React, {FC} from 'react';
+import React, { FC } from 'react';
 import WhiteBordered from "../../../layouts/WhiteBordered";
-import {cs} from "../../../common/styles";
-import {Modal, StyleSheet, Text, View} from "react-native";
-import {PopupProps} from "../../../types/common.types";
+import { cs } from "../../../common/styles";
+import { Modal, StyleSheet, Text, View } from "react-native";
+import { PopupProps } from "../../../types/common.types";
+import { ModalContainer } from '../../ModalContainer';
+import { useAppDispatch, useAppSelector } from '../../../app/base/hooks';
+import { handleOrderInfoModal } from '../../../app/features/modals/modalsSlice';
 
-const OrderInfoModal: FC<PopupProps> = ({opened, handlePopup}) => {
+const OrderInfoModal = () => {
+    const dispatch = useAppDispatch()
+    const handleModal = () => dispatch(handleOrderInfoModal())
+    const { orderInfoModal } = useAppSelector(state => state.modals)
+
     return (
-        <Modal animationType={"slide"} visible={opened} transparent={true}>
+        <Modal animationType={"slide"} visible={orderInfoModal} transparent={true}>
             <WhiteBordered style={cs.modalSlidedBottom}>
                 <View style={styles.analysisOrderContent}>
                     <View style={[cs.fRowBetw]}>
-                        <Text onPress={handlePopup}
-                              style={[cs.yellowBtnText, cs.textYellow, cs.fzM]}>Закрыть</Text>
+                        <Text onPress={handleModal}
+                            style={[cs.yellowBtnText, cs.textYellow, cs.fzM]}>Закрыть</Text>
                         <View style={[cs.fAlCenter]}>
                             <Text style={[cs.fzM, cs.colorDark, styles.labelOrderNum]}>Заказ №</Text>
                             <View style={[cs.lightGray]}>
@@ -60,6 +67,10 @@ const OrderInfoModal: FC<PopupProps> = ({opened, handlePopup}) => {
                                 <Text style={[cs.fwMedium, cs.colorDark, cs.fzM]}>1. Бактериальная панель (IgE)
                                     (П)</Text>
                                 <Text style={[cs.fwMedium, cs.colorDark, cs.fzM]}>2. Т3 свободный (П)</Text>
+                                <Text style={[cs.fwMedium, cs.colorDark, cs.fzM]}>3. ФСГ (фолликулостимулирующий
+                                    гормон) (П)</Text>
+                                <Text style={[cs.fwMedium, cs.colorDark, cs.fzM]}>3. ФСГ (фолликулостимулирующий
+                                    гормон) (П)</Text>
                                 <Text style={[cs.fwMedium, cs.colorDark, cs.fzM]}>3. ФСГ (фолликулостимулирующий
                                     гормон) (П)</Text>
                             </View>

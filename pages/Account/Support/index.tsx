@@ -10,7 +10,6 @@ import { TelegramIcon, WhatsappIcon } from "../../../icons";
 const Support = () => {
     const dispatch = useAppDispatch()
 
-
     const toTelegram = () => Linking.openURL("https://google.com")
     const toWhatsapp = () => Linking.openURL("https://google.com")
 
@@ -20,7 +19,6 @@ const Support = () => {
             <WhiteBorderedLayout style={{
                 paddingTop: 32
             }}>
-
                 <View style={[cs.spaceM, cs.fColumn, {
                     height: "100%"
                 }]}>
@@ -61,9 +59,7 @@ const Support = () => {
                                 </LinearGradient>
                             </TouchableOpacity>
                         </View>
-
                     </View>
-
                 </View>
             </WhiteBorderedLayout>
         </Animated.ScrollView>

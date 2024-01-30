@@ -18,7 +18,6 @@ const Main: FC<NavProps> = ({ navigation }) => {
     const orders = useAppSelector(state => state.orders.items)
     const [refreshing, setRefreshing] = useState(false);
 
-
     return (
         <Animated.ScrollView
             contentContainerStyle={{ flex: 1 }}
@@ -69,9 +68,8 @@ const Main: FC<NavProps> = ({ navigation }) => {
                     </View>
                 </View>
             </WhiteBorderedLayout>
-            <OrderInfoModal opened={orderInfoModal} handlePopup={() => dispatch(handleOrderInfoModal())} />
+            {orderInfoModal ? <OrderInfoModal /> : null}
         </Animated.ScrollView>
-
     );
 };
 const styles = StyleSheet.create({

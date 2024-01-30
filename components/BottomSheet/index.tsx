@@ -57,9 +57,10 @@ export const BottomSheet = () => {
 
 
     return (
+
         <GestureDetector gesture={gesture}>
             <View style={[styles.bottomSheetContainer]}>
-                <TouchableWithoutFeedback style={{ backgroundColor: "rgba(1,1,1, 0.4)", height: "100%" }}>
+                <TouchableWithoutFeedback onPress={closeSheet} style={{ backgroundColor: "rgba(1,1,1, 0.4)", height: "100%" }}>
                 </TouchableWithoutFeedback>
                 <Animated.View
                     entering={SlideInDown.springify().damping(10)}
@@ -108,7 +109,7 @@ const styles = StyleSheet.create({
     bottomSheetContainer: {
         top: 0,
         position: "absolute",
-        zIndex: 3,
+        zIndex: 10,
         height: "100%",
         width: "100%"
     },

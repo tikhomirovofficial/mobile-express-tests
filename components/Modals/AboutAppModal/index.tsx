@@ -8,6 +8,7 @@ import { DocumentIcon, LogoLong, PhotoIcon } from "../../../icons";
 import { fs } from "../../../navigation/AppNavigator";
 import SelectableBtn from "../../SelectableBtn";
 import { handleAboutModal, handleProfileEditModal } from "../../../app/features/modals/modalsSlice";
+import { ModalContainer } from '../../ModalContainer';
 
 
 type DocumentItemProps = {
@@ -24,7 +25,9 @@ const DocumentItem: FC<DocumentItemProps> = ({ neededBorder = true }) => {
         </TouchableOpacity>
     )
 }
+
 const docsArr = [1, 3, 34, 5]
+
 const AboutAppModal = () => {
     const dispatch = useAppDispatch()
     const { aboutAppModal } = useAppSelector(state => state.modals)

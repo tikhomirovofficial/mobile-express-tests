@@ -20,51 +20,57 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import Animated, { SlideInDown, SlideOutDown } from 'react-native-reanimated';
 import { ModalContainer } from '../../ModalContainer';
 
-const OrdersFinancesModal = () => {
+const BonusesModal = () => {
     const dispatch = useAppDispatch()
-    const { bonusesModal, bonusesBottomSheet } = useAppSelector(state => state.modals)
+    const { bonusesModal, bonusesBottomSheet, analysisInfoModal } = useAppSelector(state => state.modals)
+
     const openBonusesDetails = () => dispatch(handleBonusesBottomSheet())
+
     const handleModal = () => {
         dispatch(handleBonusesModal())
     }
 
     return (
-        <ModalContainer>
-            <GestureHandlerRootView style={[cs.flexOne]}>
-                <WhiteBordered style={{ ...cs.modalSlidedBottom, paddingBottom: 20 }}>
-                    <View style={[cs.flexOne, cs.fColumnBetw, cs.spaceXXL]}>
-                        <View style={[cs.fRowBetw]}>
-                            <Text onPress={handleModal}
-                                style={[cs.yellowBtnText, cs.textYellow, cs.fzM]}>Закрыть</Text>
-                            <View style={[cs.fAlCenter]}>
-                                <Text style={[cs.fzM, cs.colorDark, cs.fzM, cs.colorDark, cs.fwSemi]}>Бонусы</Text>
-                            </View>
-                            <View style={{ flex: 0.4 }}></View>
-                        </View>
-                        <View style={[cs.flexOne, cs.spaceM]}>
-                            <View style={[cs.fColumn, cs.spaceM]}>
-                                <View style={[cs.wBlockShadow, cs.fCenterCol, { borderRadius: 16, paddingVertical: 10 }]}>
-                                    {/* <BonusesChart /> */}
+        <>
+            <Modal animationType={"slide"} visible={bonusesModal} transparent={true}>
+                <GestureHandlerRootView style={[cs.flexOne]}>
+                    <WhiteBordered style={{ ...cs.modalSlidedBottom, paddingBottom: 20 }}>
+                        <View style={[cs.flexOne, cs.fColumnBetw, cs.spaceXXL]}>
+                            <View style={[cs.fRowBetw]}>
+                                <Text onPress={handleModal}
+                                    style={[cs.yellowBtnText, cs.textYellow, cs.fzM]}>Закрыть</Text>
+                                <View style={[cs.fAlCenter]}>
+                                    <Text style={[cs.fzM, cs.colorDark, cs.fzM, cs.colorDark, cs.fwSemi]}>Бонусы</Text>
                                 </View>
-                                <ButtonYellow style={[cs.fCenterRow, cs.spaceS]} handlePress={() => { }}>
-                                    <HeartIcon />
-                                    <Text style={[cs.colorDark, cs.fwSemi, cs.fzM]}>Вывести бонусы</Text>
-                                </ButtonYellow>
+                                <View style={{ flex: 0.4 }}></View>
                             </View>
-                            <View style={[cs.fColumn]}>
-                                <PatientItem handlePress={openBonusesDetails} firstName={'Ахмед'} lastName={'Ахматов'} phone={'775 Бонусов'} avatarSrc={null} />
-                                <PatientItem handlePress={openBonusesDetails} firstName={'Ахмед'} lastName={'Ахматов'} phone={'775 Бонусов'} avatarSrc={null} />
-                                <PatientItem handlePress={openBonusesDetails} firstName={'Ахмед'} lastName={'Ахматов'} phone={'775 Бонусов'} avatarSrc={null} />
-                                <PatientItem neededBottomBorder={false} firstName={'Ахмед'} lastName={'Ахматов'} phone={'775 Бонусов'} avatarSrc={null} />
-                            </View>
+                            <View style={[cs.flexOne, cs.spaceM]}>
+                                <View style={[cs.fColumn, cs.spaceM]}>
+                                    <View style={[cs.wBlockShadow, cs.fCenterCol, { borderRadius: 16, paddingVertical: 10 }]}>
+                                        <BonusesChart />
+                                    </View>
+                                    <ButtonYellow style={[cs.fCenterRow, cs.spaceS]} handlePress={() => { }}>
+                                        <HeartIcon />
+                                        <Text style={[cs.colorDark, cs.fwSemi, cs.fzM]}>Вывести бонусы</Text>
+                                    </ButtonYellow>
+                                </View>
+                                <View style={[cs.fColumn]}>
+                                    <PatientItem handlePress={openBonusesDetails} firstName={'Ахмед'} lastName={'Ахматов'} phone={'775 Бонусов'} avatarSrc={null} />
+                                    <PatientItem handlePress={openBonusesDetails} firstName={'Ахмед'} lastName={'Ахматов'} phone={'775 Бонусов'} avatarSrc={null} />
+                                    <PatientItem handlePress={openBonusesDetails} firstName={'Ахмед'} lastName={'Ахматов'} phone={'775 Бонусов'} avatarSrc={null} />
+                                    <PatientItem neededBottomBorder={false} firstName={'Ахмед'} lastName={'Ахматов'} phone={'775 Бонусов'} avatarSrc={null} />
+                                </View>
 
+                            </View>
                         </View>
-                    </View>
 
-                </WhiteBordered>
-                {bonusesBottomSheet ? <BottomSheet /> : null}
-            </GestureHandlerRootView >
-        </ModalContainer>
+                    </WhiteBordered>
+                    {bonusesBottomSheet ? <BottomSheet /> : null}
+                </GestureHandlerRootView>
+            </Modal>
+
+        </>
+
     );
 };
 
@@ -94,4 +100,4 @@ const styles = StyleSheet.create({
         height: "100%",
     },
 })
-export default OrdersFinancesModal;
+export default BonusesModal;

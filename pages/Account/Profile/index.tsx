@@ -17,19 +17,20 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 const Profile: FC<NavProps> = ({ navigation }) => {
     const dispatch = useAppDispatch()
-    const { orderInfoModal, bonusesBottomSheet } = useAppSelector(state => state.modals)
+    const profile = useAppSelector(state => state.profile)
+    const { orderInfoModal, bonusesBottomSheet, ordersFinancesModal, patientsModal, aboutAppModal, profileEditModal } = useAppSelector(state => state.modals)
     const scaleValue = new Animated.Value(1);
-    const handleProfileDataModal = () => {
-        dispatch(handleProfileEditModal())
-    }
+
+    const handleProfileDataModal = () => dispatch(handleProfileEditModal())
+
     const handlePatients = () => dispatch(handlePatientsModal())
+
     const handleAbout = () => dispatch(handleAboutModal())
+
     const handleFinances = () => dispatch(handleOrdersFinancesModal())
 
-    const appVersion = Constants?.manifest?.version;
     return (
         <>
-
             <Animated.ScrollView>
                 <WhiteBorderedLayout style={{
                     paddingTop: 32
@@ -41,11 +42,11 @@ const Profile: FC<NavProps> = ({ navigation }) => {
                                     <PhotoIcon />
                                 </View>
                                 <Text style={[cs.fwBold, cs.fzXL, cs.txtCenter]}>
-                                    Подосёнов Вячеслав Сергеевич
+                                    {profile.data.first_name} {profile.data.last_name} {profile.data.subname}
                                 </Text>
                                 <View style={[styles.bonuses, cs.bgYellow, cs.fAlCenter, cs.fRow, cs.spaceS, cs.circle]}>
                                     <HeartIcon />
-                                    <Text style={[cs.fwSemi, cs.colorDark]}>54 бонуса</Text>
+                                    <Text style={[cs.fwSemi, cs.colorDark]}>{profile.data.bonus} бонуса</Text>
                                 </View>
                             </View>
                         </View>
@@ -96,30 +97,22 @@ const Profile: FC<NavProps> = ({ navigation }) => {
                                         <Text style={[cs.fzXS, fs.montR, cs.txtCenter, cs.colorGray]}>Правовая
                                             информация</Text>
                                     </View>
-
                                 </TouchableOpacity>
                             </View>
                             <TouchableOpacity>
                                 <Text style={[cs.fzM, fs.montR, cs.fwMedium, cs.txtCenter, cs.colorRed]}>Выйти из
                                     приложения</Text>
                             </TouchableOpacity>
-
                         </View>
-
                     </View>
-                    
                 </WhiteBorderedLayout>
-                <ProfileEditModal />
-                <AboutAppModal />
-                <OrdersFinancesModal />
-                <PatientsModal navigation={navigation} />
+                {profileEditModal ? <ProfileEditModal /> : null}
+                {aboutAppModal ? <AboutAppModal /> : null}
+                {ordersFinancesModal ? <OrdersFinancesModal /> : null}
+                {patientsModal ? <PatientsModal navigation={navigation} /> : null}
             </Animated.ScrollView>
 
         </>
-
-
-
-
     );
 };
 const styles = StyleSheet.create({

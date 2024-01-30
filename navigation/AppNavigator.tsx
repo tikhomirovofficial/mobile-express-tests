@@ -27,6 +27,8 @@ import SelectingProducts from '../pages/PrepareAnalysis/SelectingProducts';
 import CartProducts from '../pages/PrepareAnalysis/CartProducts';
 import CreateProfile from '../pages/Register/CreateProfile';
 import { checkIfFirstTimeUser } from '../utils/checkFirstTime';
+import AcceptPinCode from '../pages/Register/AcceptPinCode';
+import { useAccess } from '../hooks/useAccess';
 
 const Stack = createNativeStackNavigator()
 const Tab = createBottomTabNavigator()
@@ -42,14 +44,28 @@ const MainTabs = () => {
         </Tab.Navigator>
     );
 }
-const AppNavigator = () => {    
-    useEffect(() => {
-        checkIfFirstTimeUser()
-    }, [])
+const AppNavigator = () => {
+    //Тут нужно получить состояния авторизованности пользователя, наличия пин-кода, первый ли раз заходит чел
+    const { isFirstTime, authorized, pinAccepted } = useAccess()
+    const getInitialRoute = () => {
+        if (isFirstTime) {
+            return "welcome"
+        }
+        if (authorized) {
+            if (pinAccepted) {
+                return "home"
+            }
+            return "pin_accept"
+        }
+        return "login_phone"
+    }
+    // useEffect(() => {
+    //     checkIfFirstTimeUser()
+    // }, [])
     return (
         <NavigationContainer>
             <View style={styles.main}>
-                <Stack.Navigator initialRouteName={"register"}
+                <Stack.Navigator initialRouteName={getInitialRoute()}
                     screenOptions={{ headerShown: false, contentStyle: cs.rootBg }}>
                     {/* //Профиль */}
                     <Stack.Screen name="home" component={MainTabs} />
@@ -57,12 +73,13 @@ const AppNavigator = () => {
                     <Stack.Screen name="inviting" component={SelectingPatients} />
                     <Stack.Screen name="inviting_check" component={CheckSelectedPatients} />
                     {/* //Регистрация */}
-                    <Stack.Screen name="register" component={WelcomeContainer} />
+                    <Stack.Screen name="welcome" component={WelcomeContainer} />
                     <Stack.Screen name="pin_create" component={CreatePinCode} />
                     <Stack.Screen name="profile_create" component={CreateProfile} />
                     {/* //Логин */}
                     <Stack.Screen name="login_phone" component={LoginPhone} />
                     <Stack.Screen name="sms_login" component={CodePhoneAccept} />
+                    <Stack.Screen name="pin_accept" component={AcceptPinCode} />
                     {/* //Доступы */}
                     <Stack.Screen name="info_contacts" component={AccessContacts} />
                     <Stack.Screen name="info_media" component={AccessMedia} />
