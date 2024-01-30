@@ -10,12 +10,13 @@ import { useAppDispatch, useAppSelector } from "../../../app/base/hooks";
 import { handleOrderInfoModal } from "../../../app/features/modals/modalsSlice";
 import { NavProps } from "../../../types/common.types";
 import OrderInfoModal from "../../../components/Modals/OrderInfoModal";
+import { getGreeting } from '../../../utils/getGreeting';
 
 
 const Main: FC<NavProps> = ({ navigation }) => {
     const dispatch = useAppDispatch()
     const { orderInfoModal } = useAppSelector(state => state.modals)
-    const orders = useAppSelector(state => state.orders.items)
+    const profile = useAppSelector(state => state.profile)
     const [refreshing, setRefreshing] = useState(false);
 
     return (
@@ -26,7 +27,7 @@ const Main: FC<NavProps> = ({ navigation }) => {
                 paddingTop: 32,
             }}>
                 <View style={[cs.spaceL, cs.fColumn]}>
-                    <Text style={cs.title}>Вячеслав, добрый день!</Text>
+                    <Text style={cs.title}>{profile.data.first_name}, {getGreeting()}!</Text>
                     <View style={[cs.fRowBetw, styles.buttonsTopContainer]}>
                         <TouchableOpacity
                             onPress={() => navigation.navigate("info_contacts")}
@@ -56,11 +57,15 @@ const Main: FC<NavProps> = ({ navigation }) => {
                     <Text style={cs.title}>Заказы анализов</Text>
                     <View style={[cs.fColumn, cs.spaceM]}>
                         {
-                            orders.length > 0 ?
-                                orders.map((item, index) => (
-                                    <AnalysisCard key={item.id} paid={item.isPaid}
+                            profile.orders.length > 0 ?
+                                profile.orders.map((item, index) => (
+                                    <AnalysisCard
                                         handlePress={() => dispatch(handleOrderInfoModal())}
-                                        date={item.date} orderNumber={item.id.toString()} customer={`${item.patientFirstName || ""} ${item.patientLastName || ""}`}
+                                        key={item.id}
+                                        paid={true}
+                                        date={item.date}
+                                        id={item.id}
+                                        customer={`Имя Фамилия`}
                                         analysisList={[]} />
                                 ))
                                 : <Text>Пока пусто.</Text>

@@ -70,7 +70,6 @@ const cs = StyleSheet.create({
         backgroundColor: "#F40F0F"
     },
     fwBold: {
-        fontWeight: "bold",
         fontFamily: "MontserratBold",
     },
     bgDisabled: {
@@ -111,7 +110,7 @@ const cs = StyleSheet.create({
         fontFamily: "MontserratMedium",
     },
     fwSemi: {
-        fontWeight: "600"
+        fontFamily: "MontserratSemi",
     },
     wBlockShadow: {
         shadowColor: "rgba(19, 101, 101, 0.3)",
@@ -150,7 +149,7 @@ const cs = StyleSheet.create({
     },
     title: {
         fontSize: 20,
-        fontWeight: "bold"
+        fontFamily: "MontserratBold",
     },
     colorWhite: {
         color: "#fff"

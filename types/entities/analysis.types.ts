@@ -5,7 +5,7 @@ export type AnalysisType = {
     name: string
 }
 export type OrderAnalysisType = {
-    orderNumber: string,
+    id: number,
     date: string,
     customer: string,
     handlePress?: () => void,

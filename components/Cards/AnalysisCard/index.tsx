@@ -5,15 +5,18 @@ import { DownloadIcon } from "../../../icons";
 import { OrderAnalysisType } from "../../../types/entities/analysis.types";
 import { useAppDispatch, useAppSelector } from "../../../app/base/hooks";
 import { handleOrderInfoModal } from "../../../app/features/modals/modalsSlice";
+import { fs } from '../../../navigation/AppNavigator';
+import { getOrderById } from '../../../app/features/current-data/currentData';
 
 
 const AnalysisCard: FC<OrderAnalysisType> = ({
-    orderNumber,
+    id,
     date,
     customer,
     paid,
     handlePress,
 }) => {
+    const dispatch = useAppDispatch()
     const getStatusObj = (status: boolean) => {
         const statusObj = {
             styleBlock: cs.statusGray,
@@ -25,20 +28,25 @@ const AnalysisCard: FC<OrderAnalysisType> = ({
         }
         return statusObj
     }
+    
+    const handleOpenInfo = () => {
+        dispatch(handleOrderInfoModal())
+        dispatch(getOrderById(id))
+    }
 
     return (
-        <TouchableOpacity onPress={handlePress} style={[styles.card, cs.spaceL]}>
+        <TouchableOpacity onPress={handleOpenInfo} style={[styles.card, cs.spaceL]}>
             <View style={[cs.fColumn, styles.cardTop]}>
                 <View style={[cs.fRowBetw, cs.fAlCenter]}>
                     <View style={[styles.orderNum, cs.fAlCenter, cs.fRow]}>
-                        <Text style={[cs.fzS, cs.colorDark, styles.orderNumText]}>Заказ №</Text>
+                        <Text style={[cs.fzS, cs.colorDark, styles.orderNumText, cs.fwMedium]}>Заказ №</Text>
                         <View style={[cs.lightGray]}>
-                            <Text>{orderNumber}</Text>
+                            <Text style={[fs.montR]}>{id}</Text>
                         </View>
                     </View>
-                    <Text style={[cs.colorGray, cs.fzS]}>{date}</Text>
+                    <Text style={[cs.colorGray, cs.fzS, fs.montR]}>{date}</Text>
                 </View>
-                {customer.length ? <Text style={[cs.colorGray, cs.fzXS]}>{customer}</Text> : null}
+                {customer.length ? <Text style={[cs.colorGray, cs.fzXS, fs.montR]}>{customer}</Text> : null}
 
             </View>
             <View style={[cs.fRowBetw, cs.fAlCenter, cs.flexOne, styles.cardBottom]}>

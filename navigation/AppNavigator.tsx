@@ -29,13 +29,22 @@ import CreateProfile from '../pages/Register/CreateProfile';
 import { checkIfFirstTimeUser } from '../utils/checkFirstTime';
 import AcceptPinCode from '../pages/Register/AcceptPinCode';
 import { useAccess } from '../hooks/useAccess';
+import { useAppDispatch } from '../app/base/hooks';
+import { getAllOrders, getProfile } from '../app/features/profile/profileSlice';
 
 const Stack = createNativeStackNavigator()
 const Tab = createBottomTabNavigator()
 
 const MainTabs = () => {
+    const dispatch = useAppDispatch()
+
+    useEffect(() => {
+        dispatch(getProfile())
+        dispatch(getAllOrders())
+    }, [])
+
     return (
-        <Tab.Navigator initialRouteName={"profile"} tabBar={(props) => <AppTab key={props.state.index} {...props} />}
+        <Tab.Navigator initialRouteName={"orders"} tabBar={(props) => <AppTab key={props.state.index} {...props} />}
             sceneContainerStyle={styles.main}
             screenOptions={{ headerShown: false }}>
             <Tab.Screen name="orders" component={Main} />
@@ -62,6 +71,7 @@ const AppNavigator = () => {
     // useEffect(() => {
     //     checkIfFirstTimeUser()
     // }, [])
+
     return (
         <NavigationContainer>
             <View style={styles.main}>
