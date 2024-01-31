@@ -1,9 +1,9 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import WhiteBordered from "../../../layouts/WhiteBordered";
 import WhiteBorderedLayout from "../../../layouts/WhiteBordered";
 import { Animated, Modal, StyleSheet, Text, TouchableOpacity, View, RefreshControl } from "react-native";
 import { cs } from "../../../common/styles";
-import { Logo } from "../../../icons";
+import { AnalysisIcon, Logo } from "../../../icons";
 import AnalysisCard from "../../../components/Cards/AnalysisCard";
 import { OrderAnalysisType } from "../../../types/entities/analysis.types";
 import { useAppDispatch, useAppSelector } from "../../../app/base/hooks";
@@ -11,13 +11,19 @@ import { handleOrderInfoModal } from "../../../app/features/modals/modalsSlice";
 import { NavProps } from "../../../types/common.types";
 import OrderInfoModal from "../../../components/Modals/OrderInfoModal";
 import { getGreeting } from '../../../utils/getGreeting';
-
+import { SkeletonContainer, Skeleton } from 'react-native-skeleton-component';
+import { SkeletonView } from '../../../components/SkeletonView';
+import { getAllOrders } from '../../../app/features/profile/profileSlice';
+import { normalizeDate } from '../../../utils/normalizeDate';
 
 const Main: FC<NavProps> = ({ navigation }) => {
     const dispatch = useAppDispatch()
     const { orderInfoModal } = useAppSelector(state => state.modals)
     const profile = useAppSelector(state => state.profile)
-    const [refreshing, setRefreshing] = useState(false);
+
+    useEffect(() => {
+        dispatch(getAllOrders())
+    }, [])
 
     return (
         <Animated.ScrollView
@@ -26,55 +32,71 @@ const Main: FC<NavProps> = ({ navigation }) => {
             <WhiteBorderedLayout style={{
                 paddingTop: 32,
             }}>
-                <View style={[cs.spaceL, cs.fColumn]}>
-                    <Text style={cs.title}>{profile.data.first_name}, {getGreeting()}!</Text>
-                    <View style={[cs.fRowBetw, styles.buttonsTopContainer]}>
-                        <TouchableOpacity
-                            onPress={() => navigation.navigate("info_contacts")}
-                            style={[
-                                cs.fColumn,
-                                styles.buttonTop,
-                                cs.flexOne,
-                                styles.buttonDark
-                            ]}>
-                            <Logo />
-                            <Text style={[cs.fzS, cs.colorWhite, cs.txtCenter]}>Пригласить в Экспресс Тест</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity
-                            onPress={() => navigation.navigate("order_patient")}
-                            style={[
-                                cs.wBlockShadow,
-                                cs.fColumn,
-                                styles.buttonTop,
-                                cs.flexOne
-                            ]}>
-                            <Logo />
-                            <Text style={[cs.fzS, cs.txtCenter]}>Назначить анализы</Text>
-                        </TouchableOpacity>
-                    </View>
-                </View>
-                <View style={[cs.spaceL, cs.fColumn]}>
-                    <Text style={cs.title}>Заказы анализов</Text>
-                    <View style={[cs.fColumn, cs.spaceM]}>
+                <SkeletonContainer>
+                    <View style={[cs.spaceL, cs.fColumn]}>
                         {
-                            profile.orders.length > 0 ?
-                                profile.orders.map((item, index) => (
-                                    <AnalysisCard
-                                        handlePress={() => dispatch(handleOrderInfoModal())}
-                                        key={item.id}
-                                        paid={true}
-                                        date={item.date}
-                                        id={item.id}
-                                        customer={`Имя Фамилия`}
-                                        analysisList={[]} />
-                                ))
-                                : <Text>Пока пусто.</Text>
+                            profile.loadings.profile ? <SkeletonView height={30} width={'100%'} /> :
+                                <Text style={cs.title}>{profile.data.first_name}, {getGreeting()}!</Text>
                         }
+                        <View style={[cs.fRowBetw, styles.buttonsTopContainer]}>
+                            <TouchableOpacity
+                                onPress={() => navigation.navigate("info_contacts")}
+                                style={[
+                                    cs.fColumn,
+                                    styles.buttonTop,
+                                    cs.flexOne,
+                                    styles.buttonDark
+                                ]}>
+                                <Logo />
+                                <Text style={[cs.fzS, cs.colorWhite, cs.txtCenter]}>Пригласить в Экспресс Тест</Text>
+
+                            </TouchableOpacity>
+                            <TouchableOpacity
+                                onPress={() => navigation.navigate("order_patient")}
+                                style={[
+                                    cs.wBlockShadow,
+                                    cs.fColumn,
+                                    styles.buttonTop,
+                                    cs.flexOne
+                                ]}>
+                                <AnalysisIcon />
+                                <Text style={[cs.fzS, cs.txtCenter]}>Назначить анализы</Text>
+                            </TouchableOpacity>
+                        </View>
                     </View>
-                </View>
+                    <View style={[cs.spaceL, cs.fColumn]}>
+                        <Text style={cs.title}>Заказы анализов</Text>
+
+                        <View style={[cs.fColumn, cs.spaceM]}>
+                            {
+                                profile.loadings.orders ?
+                                    Array(3).fill("").map(item => (
+                                        <SkeletonView height={100} width={"100%"} />
+                                    )) :
+
+                                    profile.orders.length > 0 ?
+                                        profile.orders.map((item, index) => (
+                                            <AnalysisCard
+                                                handlePress={() => dispatch(handleOrderInfoModal())}
+                                                key={item.id}
+                                                paid={true}
+                                                date={normalizeDate(item.date)}
+                                                id={item.id}
+                                                customer={`Имя Фамилия`}
+                                                analysisList={[]} />
+                                        ))
+                                        : <Text>Пока пусто.</Text>
+
+                            }
+
+                        </View>
+                    </View>
+                </SkeletonContainer>
             </WhiteBorderedLayout>
             {orderInfoModal ? <OrderInfoModal /> : null}
-        </Animated.ScrollView>
+
+
+        </Animated.ScrollView >
     );
 };
 const styles = StyleSheet.create({

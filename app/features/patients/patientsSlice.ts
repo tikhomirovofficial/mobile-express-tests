@@ -1,15 +1,43 @@
-import {createSlice, PayloadAction} from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { Contact } from "expo-contacts";
+import { PatientApi } from "../../../types/entities/patients.types";
 
 type PatientsSliceState = {
     items: Contact[],
-    invitingsIds: string[]
+    invitingsIds: string[],
+    list: PatientApi[]
+    loadings: {
+        patients: boolean
+    }
 }
 
 const initialState: PatientsSliceState = {
     items: [],
-    invitingsIds: []
+    invitingsIds: [],
+    list: [],
+    loadings: {
+        patients: true
+    }
 }
+export const getAllPatients = createAsyncThunk(
+    'patients/get',
+    async (req, { dispatch }) => {
+        return new Promise<PatientApi[]>((res, rej) => {
+            setTimeout(() => {
+                res([
+                    {
+                        id: 1,
+                        bonus: 10,
+                        date: "2024-01-22",
+                        first_name: "Артём",
+                        last_name: "Тихомиров",
+                        phone: "+79005001849"
+                    }
+                ])
+            }, 1000)
+        })
+    }
+)
 export const PatientsSlice = createSlice({
     name: "patients",
     initialState,
@@ -26,11 +54,25 @@ export const PatientsSlice = createSlice({
         removeInvitingsId(state, action: PayloadAction<string>) {
             state.invitingsIds = state.invitingsIds.filter(item => item !== action.payload)
         },
-        resetInvitingsIds(state)  {
+        resetInvitingsIds(state) {
             state.invitingsIds = []
         }
-        
-    }
+
+    },
+    extraReducers: (builder) => {
+        //DOCTOR PATIENTS
+        builder.addCase(getAllPatients.pending, (state, action) => {
+            state.loadings.patients = true
+        })
+        builder.addCase(getAllPatients.fulfilled, (state, action) => {
+            state.list = action.payload
+            state.loadings.patients = false
+        })
+        builder.addCase(getAllPatients.rejected, (state, action) => {
+            state.loadings.patients = false
+        })
+
+    },
 })
 
 export const {

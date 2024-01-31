@@ -35,7 +35,7 @@ export const OrderItem: FC<OrderItemProps> = ({ codeText = "code", bottomLeftTex
 }
 const styles = StyleSheet.create({
     orderItem: {
-        paddingBottom: 16
+        paddingVertical: 16
     },
     bonusesBlock: {
         paddingVertical: 27,

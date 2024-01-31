@@ -10,5 +10,6 @@ export type PatientApi = {
     first_name: string
     last_name: string
     bonus: number
-    date: string
+    date: string,
+    phone: string
 } & HasId

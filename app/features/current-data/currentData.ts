@@ -2,17 +2,25 @@ import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { ProfileData } from "../../../types/entities/user.types";
 import { HasLoading } from "../../../types/common.types";
 import { OrderApi, OrderDetailsApi } from "../../../types/entities/order.types";
+import { PatientDoctorGetRes } from "../../../types/api/patients.api.types";
+import { PatientApi } from "../../../types/entities/patients.types";
 
 type CurrentData = {
     loadings: {
-        order: boolean
+        order: boolean,
+        patient_orders: boolean
     },
-    orderInfo: OrderDetailsApi
+    orderInfo: OrderDetailsApi,
+    patientInfo: {
+        data: Pick<PatientApi, "first_name" | "last_name" | "id" | "bonus">,
+        orders: OrderApi[]
+    }
 }
 
 const initialState: CurrentData = {
     loadings: {
-        order: false
+        order: true,
+        patient_orders: true
     },
     orderInfo: {
         info_order: {
@@ -29,6 +37,15 @@ const initialState: CurrentData = {
                 title: ""
             }
         ]
+    },
+    patientInfo: {
+        data: {
+            id: 0,
+            first_name: "",
+            last_name: "",
+            bonus: 0
+        },
+        orders: []
     }
 }
 
@@ -57,13 +74,36 @@ export const getOrderById = createAsyncThunk(
         })
     }
 )
+export const getOrdersByPatientId = createAsyncThunk(
+    'patient/orders/get',
+    async (id: number, { dispatch }) => {
+        return new Promise<OrderApi[]>((res, rej) => {
+            setTimeout(() => {
+                res([
+                    {
+                        id: 1,
+                        date: "2023-07-25",
+                        status: "Зачислено",
+                        bonus: 500
+                    }
+                ])
+            }, 1000)
+        })
+    }
+)
 
 export const CurrentDataSlice = createSlice({
     name: "current-data",
     initialState,
     reducers: {
+        setPatientData: (state, action: PayloadAction<PatientApi>) => {
+            state.patientInfo.data = action.payload
+        },
         resetOrderInfo: (state) => {
             state.orderInfo = initialState.orderInfo
+        },
+        resetPatientInfo: (state) => {
+            state.patientInfo = initialState.patientInfo
         }
     },
     extraReducers: (builder) => {
@@ -78,12 +118,25 @@ export const CurrentDataSlice = createSlice({
         builder.addCase(getOrderById.rejected, (state, action) => {
             state.loadings.order = false
         })
+        //ORDERS BY PATIENT ID
+        builder.addCase(getOrdersByPatientId.pending, (state, action) => {
+            state.loadings.patient_orders = true
+        })
+        builder.addCase(getOrdersByPatientId.fulfilled, (state, action) => {
+            state.patientInfo.orders = action.payload
+            state.loadings.patient_orders = false
+        })
+        builder.addCase(getOrdersByPatientId.rejected, (state, action) => {
+            state.loadings.patient_orders = false
+        })
 
     },
 })
 
 export const {
-    resetOrderInfo
+    resetOrderInfo,
+    setPatientData,
+    resetPatientInfo
 } = CurrentDataSlice.actions
 
 

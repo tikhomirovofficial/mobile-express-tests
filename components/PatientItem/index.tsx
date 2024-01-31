@@ -3,15 +3,15 @@ import { StyleSheet, TouchableOpacity, View, Text } from "react-native";
 import { cs } from "../../common/styles";
 import { CheckedBorderedIcon, CheckedCircleIcon, ProfileIcon, UncheckedBorderedIcon, UncheckedCircleIcon } from "../../icons";
 import { fs } from "../../navigation/AppNavigator";
-import { PatientType } from "../../types/entities/patients.types";
+import { PatientApi, PatientType } from "../../types/entities/patients.types";
 
 type PatientItemProps = {
     selected?: boolean,
     isRadio?: boolean,
     neededBottomBorder?: boolean
     handlePress?: () => any,
-} & PatientType
-const PatientItem: FC<PatientItemProps> = ({ selected, handlePress, neededBottomBorder = true, isRadio, firstName, lastName, phone, avatarSrc }) => {
+} & PatientApi
+const PatientItem: FC<PatientItemProps> = ({ selected, handlePress, neededBottomBorder = true, isRadio, first_name, last_name, bonus, phone, id }) => {
     const GetSelectedIcon = () => {
         if (selected !== undefined) {
             if (!selected) {
@@ -28,7 +28,7 @@ const PatientItem: FC<PatientItemProps> = ({ selected, handlePress, neededBottom
                     <ProfileIcon height={12} />
                 </View>
                 <View style={[cs.fColumn]}>
-                    <Text style={[cs.fzS, cs.fwSemi, cs.colorDark]}>{`${firstName} ${lastName}`}</Text>
+                    <Text style={[cs.fzS, cs.fwSemi, cs.colorDark]}>{`${first_name} ${last_name}`}</Text>
                     <Text style={[cs.colorGray, fs.montR, cs.fzXS]}>{phone}</Text>
                 </View>
             </View>

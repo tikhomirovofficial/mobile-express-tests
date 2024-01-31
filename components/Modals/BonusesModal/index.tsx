@@ -19,15 +19,21 @@ import { BottomSheet } from '../../BottomSheet';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import Animated, { SlideInDown, SlideOutDown } from 'react-native-reanimated';
 import { ModalContainer } from '../../ModalContainer';
+import { getOrdersByPatientId, setPatientData } from '../../../app/features/current-data/currentData';
+import { PatientApi } from '../../../types/entities/patients.types';
 
 const BonusesModal = () => {
     const dispatch = useAppDispatch()
     const { bonusesModal, bonusesBottomSheet, analysisInfoModal } = useAppSelector(state => state.modals)
-
-    const openBonusesDetails = () => dispatch(handleBonusesBottomSheet())
+    const patients = useAppSelector(state => state.patients)
 
     const handleModal = () => {
         dispatch(handleBonusesModal())
+    }
+    const handleOpenPatientInfo = (patient: PatientApi) => {
+        dispatch(setPatientData(patient))
+        dispatch(getOrdersByPatientId(patient.id))
+        dispatch(handleBonusesBottomSheet())
     }
 
     return (
@@ -54,12 +60,12 @@ const BonusesModal = () => {
                                         <Text style={[cs.colorDark, cs.fwSemi, cs.fzM]}>Вывести бонусы</Text>
                                     </ButtonYellow>
                                 </View>
-                                <View style={[cs.fColumn]}>
-                                    <PatientItem handlePress={openBonusesDetails} firstName={'Ахмед'} lastName={'Ахматов'} phone={'775 Бонусов'} avatarSrc={null} />
-                                    <PatientItem handlePress={openBonusesDetails} firstName={'Ахмед'} lastName={'Ахматов'} phone={'775 Бонусов'} avatarSrc={null} />
-                                    <PatientItem handlePress={openBonusesDetails} firstName={'Ахмед'} lastName={'Ахматов'} phone={'775 Бонусов'} avatarSrc={null} />
-                                    <PatientItem neededBottomBorder={false} firstName={'Ахмед'} lastName={'Ахматов'} phone={'775 Бонусов'} avatarSrc={null} />
-                                </View>
+                                <FlatList data={patients.list} style={[cs.fColumn]} renderItem={({ item, index }) => (
+                                    <PatientItem
+                                        handlePress={() => handleOpenPatientInfo(item)}
+                                        neededBottomBorder={index !== patients.list.length - 1}
+                                        {...item} />
+                                )} />
 
                             </View>
                         </View>

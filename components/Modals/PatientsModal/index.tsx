@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import { useAppDispatch, useAppSelector } from "../../../app/base/hooks";
-import { Modal, StyleSheet, Text, View } from "react-native";
+import { Modal, StyleSheet, Text, View, FlatList } from "react-native";
 import WhiteBordered from "../../../layouts/WhiteBordered";
 import { cs } from "../../../common/styles";
 import ButtonYellow from "../../Buttons/ButtonYellow";
@@ -17,8 +17,10 @@ import { ModalContainer } from '../../ModalContainer';
 const PatientsModal: FC<NavProps> = ({ navigation }) => {
     const dispatch = useAppDispatch()
     const { patientsModal, patientInfoModal } = useAppSelector(state => state.modals)
+    const patients = useAppSelector(state => state.patients)
+
     const handleModal = () => dispatch(handlePatientsModal())
-    
+
     const toInviting = () => {
         handleModal()
         navigation.navigate('inviting')
@@ -39,10 +41,12 @@ const PatientsModal: FC<NavProps> = ({ navigation }) => {
                         <View style={{ flex: 0.4 }}></View>
                     </View>
                     <View style={[styles.patientsContent, cs.fColumnBetw]}>
-                        <View style={[cs.fColumn, styles.patientsList]}>
-                            <PatientItem handlePress={handlePatientInfo} avatarSrc={null}
-                                firstName={"Иван"} lastName={"Иванов"} phone={"+7 (951) 735-00-00"} />
-                        </View>
+                        <FlatList
+                            data={patients.list}
+                            style={[cs.fColumn, styles.patientsList]}
+                            renderItem={({ item }) => (
+                                <PatientItem {...item} />
+                            )} />
                         <ButtonYellow handlePress={toInviting}>
                             <Text style={[cs.fzM, cs.yellowBtnText]}>Пригласить пациентов</Text>
                         </ButtonYellow>

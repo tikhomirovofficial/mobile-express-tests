@@ -110,7 +110,7 @@ const cs = StyleSheet.create({
         fontFamily: "MontserratMedium",
     },
     fwSemi: {
-        fontFamily: "MontserratSemi",
+        fontFamily: "MontserratSemiBold"
     },
     wBlockShadow: {
         shadowColor: "rgba(19, 101, 101, 0.3)",
@@ -135,7 +135,6 @@ const cs = StyleSheet.create({
         paddingVertical: 3
     },
     yellowBtnText: {
-        fontFamily: "MontserratSemiBold",
     },
     flexOne: {
         flex: 1

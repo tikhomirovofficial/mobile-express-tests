@@ -1,6 +1,6 @@
 import { LinearGradient } from 'expo-linear-gradient'
 import React, { useEffect, useState } from 'react'
-import { View, Text, StyleSheet, Dimensions, useAnimatedValue, Touchable, TouchableOpacity } from 'react-native'
+import { View, Text, StyleSheet, Dimensions, useAnimatedValue, Touchable, TouchableOpacity, FlatList } from 'react-native'
 import { cs } from '../../common/styles'
 import AppContainer from '../AppContainer'
 import { BorderedProfileIcon } from '../../icons'
@@ -9,6 +9,7 @@ import Animated, { SlideInDown, SlideOutDown, runOnJS, useAnimatedStyle, useShar
 import { OrderItem } from '../OrderItem'
 import { useAppDispatch, useAppSelector } from '../../app/base/hooks'
 import { handleBonusesBottomSheet } from '../../app/features/modals/modalsSlice'
+import { normalizeDate } from '../../utils/normalizeDate'
 
 
 
@@ -16,6 +17,7 @@ const { width, height } = Dimensions.get("screen")
 
 export const BottomSheet = () => {
     const dispatch = useAppDispatch()
+    const { patientInfo } = useAppSelector(state => state.currentData)
     const translateY = useSharedValue(1)
     const ctx = useSharedValue({ y: 1 })
     const closeSheet = () => {
@@ -24,13 +26,10 @@ export const BottomSheet = () => {
 
     const gesture = Gesture.Pan()
         .onStart(e => {
-            console.log(e);
-
             ctx.value = { y: translateY.value }
         }).
         onUpdate(e => {
             translateY.value = e.translationY + ctx.value.y
-            console.log("sas");
             translateY.value = Math.max(translateY.value, -height + 40)
         }).
         onFinalize(() => {
@@ -75,7 +74,7 @@ export const BottomSheet = () => {
                             <AppContainer>
                                 <View style={[cs.fColumn, cs.spaceS]}>
                                     <View style={[styles.line]}></View>
-                                    <Text style={[cs.title, cs.txtCenter, cs.colorWhite]}>Ахмет Ахматович</Text>
+                                    <Text style={[cs.title, cs.txtCenter, cs.colorWhite]}>{patientInfo.data.first_name} {patientInfo.data.last_name}</Text>
                                     <View style={[cs.flexOne, { backgroundColor: "black", position: "relative" }]}>
                                         <View style={[styles.avatar, cs.fCenterCol]}>
                                             <BorderedProfileIcon />
@@ -88,14 +87,43 @@ export const BottomSheet = () => {
                     </View>
                     <View style={[styles.patientSheetContent]}>
 
-                        <AppContainer>
+                        <AppContainer style={cs.flexOne}>
                             <View style={[cs.fRowBetw]}>
                                 <Text style={[cs.title]}>Всего</Text>
-                                <Text style={[cs.title]}>7865</Text>
+                                <Text style={[cs.title]}>{patientInfo.data.bonus}</Text>
                             </View>
-                            <ScrollView contentContainerStyle={[cs.fColumn, cs.spaceM]}>
-                                <OrderItem codeText={'sas'} bottomLeftText={'dsadas'} bottomRightText={'asdsa'} topRightText={'asd'} />
+                            <ScrollView showsVerticalScrollIndicator={false} style={cs.flexOne}>
+                                {
+                                    patientInfo.orders.map(item => (
+                                        <OrderItem
+                                            codeText={String(item.id)}
+                                            bottomLeftText={`От ${normalizeDate(item.date)}`}
+                                            bottomRightText={item.status}
+                                            topRightText={String(item.bonus)}
+                                        />
+                                    ))
+                                }
+
                             </ScrollView>
+                            {/* <FlatList
+                                    scrollEnabled={true}
+                                    style={{flex: 1}}
+                                    contentContainerStyle={[cs.fColumn]}
+                                    data={patientInfo.orders}
+                                    renderItem={({ item }) => (
+                                        <OrderItem
+                                            codeText={String(item.id)}
+                                            bottomLeftText={`От ${normalizeDate(item.date)}`}
+                                            bottomRightText={item.status}
+                                            topRightText={String(item.bonus)}
+                                        />)}
+                                /> */}
+                            {/* <View style={[cs.fColumn, cs.flexOne, { backgroundColor: "blue" }]}>
+                                
+
+                            </View> */}
+
+
 
                         </AppContainer>
                     </View>
@@ -142,7 +170,9 @@ const styles = StyleSheet.create({
         alignSelf: "center"
     },
     patientSheetContent: {
-        paddingTop: 40
+        paddingTop: 40,
+        paddingBottom: 60,
+        flex: 1
     }
 
 })

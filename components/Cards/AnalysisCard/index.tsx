@@ -51,11 +51,11 @@ const AnalysisCard: FC<OrderAnalysisType> = ({
             </View>
             <View style={[cs.fRowBetw, cs.fAlCenter, cs.flexOne, styles.cardBottom]}>
                 <View style={[getStatusObj(paid).styleBlock, styles.statusBlock]}>
-                    <Text style={[cs.fwBold, cs.colorWhite]}>{getStatusObj(paid).text}</Text>
+                    <Text style={[cs.fwSemi, cs.colorWhite]}>{getStatusObj(paid).text}</Text>
                 </View>
                 <TouchableOpacity style={[cs.fAlCenter, cs.fRow, styles.resultsBtn]}>
                     <DownloadIcon />
-                    <Text style={[cs.colorGray, cs.fwBold, cs.fzXS, styles.resultsText]}>
+                    <Text style={[cs.colorGray, cs.fwSemi, cs.fzXS, styles.resultsText]}>
                         Скачать результаты анализов
                     </Text>
                 </TouchableOpacity>
@@ -84,7 +84,7 @@ const styles = StyleSheet.create({
         gap: 8
     },
     cardBottom: {
-        gap: 20,
+        gap: 10,
     },
     statusBlock: {
         paddingHorizontal: 15,
@@ -97,14 +97,15 @@ const styles = StyleSheet.create({
         fontWeight: "500"
     },
     resultsBtn: {
-        gap: 10,
+        gap: 8,
         maxWidth: 300,
         flexWrap: "wrap",
         justifyContent: "flex-end"
     },
     resultsText: {
         textDecorationLine: "underline",
-        maxWidth: 140
+        maxWidth: 128
+        
     }
 })
 export default AnalysisCard;

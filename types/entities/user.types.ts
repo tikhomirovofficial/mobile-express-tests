@@ -4,6 +4,7 @@ export type ProfileData = {
     subname: string
     dob: string
     image: string
+    gender: number,
     bonus: number
 }
 export type ProfilePersonData = {
@@ -14,3 +15,4 @@ export type ProfilePersonData = {
     passport_id: string,
     email: string
 }
+export type ProfileEditTextFields = Pick<ProfileData, | "first_name" | "last_name" | "subname" | "gender">

@@ -1,38 +1,51 @@
-import React from 'react';
-import {useAppDispatch, useAppSelector} from "../../../app/base/hooks";
-import {Modal, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View} from "react-native";
+import React, { useEffect } from 'react';
+import { useAppDispatch, useAppSelector } from "../../../app/base/hooks";
+import { Modal, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import WhiteBordered from "../../../layouts/WhiteBordered";
-import {cs} from "../../../common/styles";
+import { cs } from "../../../common/styles";
 import ButtonYellow from "../../Buttons/ButtonYellow";
-import {PhotoIcon} from "../../../icons";
-import {fs} from "../../../navigation/AppNavigator";
+import { PhotoIcon } from "../../../icons";
+import { fs } from "../../../navigation/AppNavigator";
 import SelectableBtn from "../../SelectableBtn";
-import {handleProfileEditModal} from "../../../app/features/modals/modalsSlice";
+import { handleProfileEditModal } from "../../../app/features/modals/modalsSlice";
+import { handleProfileForm, setDefaultProfileForm } from '../../../app/features/profile/profileSlice';
+import { ProfileData, ProfileEditTextFields } from '../../../types/entities/user.types';
 
 const ProfileEditModal = () => {
     const dispatch = useAppDispatch()
-    const {profileEditModal} = useAppSelector(state => state.modals)
+    const { profileEditModal } = useAppSelector(state => state.modals)
+    const { form, data } = useAppSelector(state => state.profile)
+
+    const formAndDataEqual = Object.keys(form).every((key) => form[key as keyof ProfileEditTextFields] === data[key as keyof ProfileData])
+
     const handleModal = () => {
         dispatch(handleProfileEditModal())
     }
+
+    useEffect(() => {
+        return () => {
+            dispatch(setDefaultProfileForm())
+        }
+    }, [])
+
     return (
         <Modal animationType={"slide"} visible={profileEditModal} transparent={true}>
-            <WhiteBordered style={{...cs.modalSlidedBottom, paddingBottom: 20}}>
+            <WhiteBordered style={{ ...cs.modalSlidedBottom, paddingBottom: 20 }}>
                 <View style={[cs.flexOne, styles.profileDataBlock, cs.fColumnBetw, cs.spaceXXL]}>
                     <View style={[cs.fRowBetw]}>
                         <Text onPress={handleModal}
-                              style={[cs.yellowBtnText, cs.textYellow, cs.fzM]}>Закрыть</Text>
+                            style={[cs.yellowBtnText, cs.textYellow, cs.fzM]}>Закрыть</Text>
                         <View style={[cs.fAlCenter]}>
                             <Text style={[cs.fzM, cs.colorDark, cs.fzM, cs.colorDark, cs.fwSemi]}>Личные данные</Text>
                         </View>
-                        <View style={{flex: 0.4}}></View>
+                        <View style={{ flex: 0.4 }}></View>
                     </View>
                     <View style={[styles.profileDataContent, cs.spaceM]}>
                         <ScrollView>
                             <View style={[cs.spaceXL]}>
                                 <View style={[cs.fCenterCol, cs.spaceM]}>
                                     <View style={[styles.avatarBlock, cs.circle, cs.fCenterCol]}>
-                                        <PhotoIcon/>
+                                        <PhotoIcon />
                                     </View>
                                     <TouchableOpacity>
                                         <Text style={[cs.fwBold, cs.textYellow, cs.fzS, cs.txtCenter]}>Добавить
@@ -42,36 +55,34 @@ const ProfileEditModal = () => {
                                 </View>
                                 <View style={[cs.fColumn, cs.spaceM]}>
                                     <Text style={[cs.fzS, fs.montR]} aria-label="Label for Username"
-                                          nativeID="labelLastName">Фамилия</Text>
-                                    <TextInput accessibilityLabelledBy={"labelLastName"} placeholder={"Фамилия"}
-                                               style={[styles.inputField, cs.fzM, fs.montR]}/>
+                                        nativeID="labelLastName">Фамилия</Text>
+                                    <TextInput onChangeText={val => dispatch(handleProfileForm({ key: "last_name", val }))} value={form.last_name} accessibilityLabelledBy={"labelLastName"} placeholder={"Фамилия"}
+                                        style={[styles.inputField, cs.fzM, fs.montR]} />
                                 </View>
                                 <View style={[cs.fColumn, cs.spaceM]}>
                                     <Text style={[cs.fzS, fs.montR]} aria-label="Label for Username"
-                                          nativeID="labelFirstName">Имя</Text>
-                                    <TextInput accessibilityLabelledBy={"labelFirstName"} placeholder={"Имя"}
-                                               style={[styles.inputField, cs.fzM, fs.montR]}/>
+                                        nativeID="labelFirstName">Имя</Text>
+                                    <TextInput onChangeText={val => dispatch(handleProfileForm({ key: "first_name", val }))} value={form.first_name} accessibilityLabelledBy={"labelFirstName"} placeholder={"Имя"}
+                                        style={[styles.inputField, cs.fzM, fs.montR]} />
                                 </View>
                                 <View style={[cs.fColumn, cs.spaceM]}>
                                     <Text style={[cs.fzS, fs.montR]} aria-label="Label for Username"
-                                          nativeID="labelMiddleName">Отчество</Text>
-                                    <TextInput accessibilityLabelledBy={"labelMiddleName"} placeholder={"Отчество"}
-                                               style={[styles.inputField, cs.fzM, fs.montR]}/>
+                                        nativeID="labelMiddleName">Отчество</Text>
+                                    <TextInput onChangeText={val => dispatch(handleProfileForm({ key: "subname", val }))} value={form.subname} accessibilityLabelledBy={"labelMiddleName"} placeholder={"Отчество"}
+                                        style={[styles.inputField, cs.fzM, fs.montR]} />
                                 </View>
                                 <View style={[cs.fColumn, cs.spaceM]}>
                                     <Text style={[cs.fzS, fs.montR]} aria-label="Label for Username"
-                                          nativeID="labelFirstName">Пол</Text>
+                                        nativeID="labelFirstName">Пол</Text>
                                     <View style={[cs.dF, cs.fRowBetw, cs.spaceS, cs.flexOne]}>
-                                        <SelectableBtn isFilled={true} style={styles.selectableBtn}  text={"Мужской"} handlePress={() => {}}/>
-                                        <SelectableBtn isFilled={false} style={styles.selectableBtn}  text={"Женский"} handlePress={() => {}}/>
+                                        <SelectableBtn isFilled={form.gender === 1} style={[styles.selectableBtn]} text={"Мужской"} handlePress={() => dispatch(handleProfileForm({ key: "gender", val: "1" }))} />
+                                        <SelectableBtn isFilled={form.gender === 0} style={[styles.selectableBtn]} text={"Женский"} handlePress={() => dispatch(handleProfileForm({ key: "gender", val: "0" }))} />
                                     </View>
                                 </View>
-
-
                             </View>
                         </ScrollView>
 
-                        <ButtonYellow handlePress={() => {}}>
+                        <ButtonYellow disabled={formAndDataEqual} handlePress={() => { }}>
                             <Text style={[cs.fzM, cs.yellowBtnText]}>Сохранить</Text>
                         </ButtonYellow>
                     </View>

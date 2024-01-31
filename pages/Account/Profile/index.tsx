@@ -14,6 +14,8 @@ import Constants from 'expo-constants';
 import OrdersFinancesModal from '../../../components/Modals/OrdersFinancesModal';
 import { BottomSheet } from '../../../components/BottomSheet';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { SkeletonView } from '../../../components/SkeletonView';
+import { SkeletonContainer } from 'react-native-skeleton-component';
 
 const Profile: FC<NavProps> = ({ navigation }) => {
     const dispatch = useAppDispatch()
@@ -38,16 +40,32 @@ const Profile: FC<NavProps> = ({ navigation }) => {
                     <View style={[cs.fColumn, cs.spaceXXL]}>
                         <View style={[cs.fCenterCol,]}>
                             <View style={[cs.spaceM, cs.fAlCenter, styles.profileInfo]}>
-                                <View style={[styles.avatarBlock, cs.circle, cs.fCenterCol]}>
-                                    <PhotoIcon />
-                                </View>
-                                <Text style={[cs.fwBold, cs.fzXL, cs.txtCenter]}>
-                                    {profile.data.first_name} {profile.data.last_name} {profile.data.subname}
-                                </Text>
-                                <View style={[styles.bonuses, cs.bgYellow, cs.fAlCenter, cs.fRow, cs.spaceS, cs.circle]}>
-                                    <HeartIcon />
-                                    <Text style={[cs.fwSemi, cs.colorDark]}>{profile.data.bonus} бонуса</Text>
-                                </View>
+                                <SkeletonContainer>
+                                    {
+                                        profile.loadings.profile ?
+                                            <SkeletonView circle height={styles.avatarBlock.height} width={styles.avatarBlock.width} /> : <View style={[styles.avatarBlock, cs.circle, cs.fCenterCol]}>
+                                                <PhotoIcon />
+                                            </View>
+                                    }
+                                    {
+                                        profile.loadings.profile ?
+                                            <SkeletonView height={50} width={180} /> :
+                                            <Text style={[cs.fwBold, cs.fzXL, cs.txtCenter]}>
+                                                {profile.data.first_name} {profile.data.last_name} {profile.data.subname}
+                                            </Text>
+                                    }
+                                    {
+                                        profile.loadings.profile ?
+                                            <SkeletonView height={30} width={110} /> :
+                                            <View style={[styles.bonuses, cs.bgYellow, cs.fAlCenter, cs.fRow, cs.spaceS, cs.circle]}>
+                                                <HeartIcon />
+                                                <Text style={[cs.fwSemi, cs.colorDark]}>{profile.data.bonus} бонуса</Text>
+                                            </View>
+                                    }
+                                </SkeletonContainer>
+
+
+
                             </View>
                         </View>
                         <View style={[cs.fColumn, cs.spaceM]}>
@@ -106,10 +124,11 @@ const Profile: FC<NavProps> = ({ navigation }) => {
                         </View>
                     </View>
                 </WhiteBorderedLayout>
+                {patientsModal ? <PatientsModal navigation={navigation} /> : null}
                 {profileEditModal ? <ProfileEditModal /> : null}
                 {aboutAppModal ? <AboutAppModal /> : null}
                 {ordersFinancesModal ? <OrdersFinancesModal /> : null}
-                {patientsModal ? <PatientsModal navigation={navigation} /> : null}
+
             </Animated.ScrollView>
 
         </>

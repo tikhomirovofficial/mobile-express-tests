@@ -31,6 +31,7 @@ import AcceptPinCode from '../pages/Register/AcceptPinCode';
 import { useAccess } from '../hooks/useAccess';
 import { useAppDispatch } from '../app/base/hooks';
 import { getAllOrders, getProfile } from '../app/features/profile/profileSlice';
+import { getAllPatients } from '../app/features/patients/patientsSlice';
 
 const Stack = createNativeStackNavigator()
 const Tab = createBottomTabNavigator()
@@ -40,7 +41,7 @@ const MainTabs = () => {
 
     useEffect(() => {
         dispatch(getProfile())
-        dispatch(getAllOrders())
+        dispatch(getAllPatients())
     }, [])
 
     return (
