@@ -10,6 +10,8 @@ import { OrderItem } from '../OrderItem'
 import { useAppDispatch, useAppSelector } from '../../app/base/hooks'
 import { handleBonusesBottomSheet } from '../../app/features/modals/modalsSlice'
 import { normalizeDate } from '../../utils/normalizeDate'
+import { SkeletonContainer } from 'react-native-skeleton-component'
+import { SkeletonView } from '../SkeletonView'
 
 
 
@@ -17,7 +19,7 @@ const { width, height } = Dimensions.get("screen")
 
 export const BottomSheet = () => {
     const dispatch = useAppDispatch()
-    const { patientInfo } = useAppSelector(state => state.currentData)
+    const { patientInfo, loadings } = useAppSelector(state => state.currentData)
     const translateY = useSharedValue(1)
     const ctx = useSharedValue({ y: 1 })
     const closeSheet = () => {
@@ -30,15 +32,15 @@ export const BottomSheet = () => {
         }).
         onUpdate(e => {
             translateY.value = e.translationY + ctx.value.y
-            translateY.value = Math.max(translateY.value, -height + 40)
+            translateY.value = Math.max(translateY.value, -height)
         }).
         onFinalize(() => {
-            if (translateY.value > -height / 4) {
-                translateY.value = withSpring(0, { damping: 50 }, () => {
-                    runOnJS(closeSheet)()
+            if (translateY.value > -height / 1.5) {
+                runOnJS(closeSheet)()
+                translateY.value = withTiming(0, { duration: 500 }, () => {
                 })
-            } else if (translateY.value < -height / 2) {
-                translateY.value = withSpring(-height + 40, { damping: 50 })
+            } else if (translateY.value < -height / 1.5) {
+                translateY.value = withSpring(-height + 20, { damping: 50 })
             }
 
         })
@@ -51,7 +53,7 @@ export const BottomSheet = () => {
     })
 
     useEffect(() => {
-        translateY.value = withTiming(-height / 3)
+        translateY.value = withTiming(-height / 1.5)
     }, [])
 
 
@@ -87,24 +89,35 @@ export const BottomSheet = () => {
                     </View>
                     <View style={[styles.patientSheetContent]}>
 
-                        <AppContainer style={cs.flexOne}>
+                        <AppContainer style={[cs.flexOne, cs.spaceM]}>
                             <View style={[cs.fRowBetw]}>
                                 <Text style={[cs.title]}>Всего</Text>
                                 <Text style={[cs.title]}>{patientInfo.data.bonus}</Text>
                             </View>
-                            <ScrollView showsVerticalScrollIndicator={false} style={cs.flexOne}>
-                                {
-                                    patientInfo.orders.map(item => (
-                                        <OrderItem
-                                            codeText={String(item.id)}
-                                            bottomLeftText={`От ${normalizeDate(item.date)}`}
-                                            bottomRightText={item.status}
-                                            topRightText={String(item.bonus)}
-                                        />
-                                    ))
-                                }
+                            {
+                                loadings.patient_orders ?
+                                    <SkeletonContainer>
+                                        <View style={[cs.fColumn, cs.spaceS]}>
+                                            <SkeletonView width={"100%"} height={80} />
+                                            <SkeletonView width={"100%"} height={80} />
+                                        </View>
+                                    </SkeletonContainer>
 
-                            </ScrollView>
+                                    :
+                                    <ScrollView showsVerticalScrollIndicator={false} style={cs.flexOne}>
+                                        {
+                                            patientInfo.orders.map(item => (
+                                                <OrderItem
+                                                    codeText={String(item.id)}
+                                                    bottomLeftText={`От ${normalizeDate(item.date)}`}
+                                                    bottomRightText={item.status}
+                                                    topRightText={String(item.bonus)}
+                                                />
+                                            ))
+                                        }
+                                    </ScrollView>
+                            }
+
                             {/* <FlatList
                                     scrollEnabled={true}
                                     style={{flex: 1}}

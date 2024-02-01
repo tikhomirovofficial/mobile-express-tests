@@ -1,12 +1,12 @@
 import React, { FC, useEffect, useState } from 'react';
 import { Animated, Text, TouchableOpacity, View, StyleSheet, TextInput, ScrollView, Keyboard } from "react-native";
-import { useAppDispatch } from '../../app/base/hooks';
+import { useAppDispatch, useAppSelector } from '../../app/base/hooks';
 import { handlePatientInvitingModal } from '../../app/features/modals/modalsSlice';
 import { cs } from '../../common/styles';
 import AppContainer from '../../components/AppContainer';
 import PatientInvitingModal from '../../components/Modals/PatientInvitingModal';
 import PatientItem from '../../components/PatientItem';
-import ButtonYellow from '../../components/SelectableBtn';
+import ButtonYellow from '../../components/Buttons/ButtonYellow';
 import { SearchIcon } from '../../icons';
 import { fs } from '../../navigation/AppNavigator';
 import { NavProps } from '../../types/common.types';
@@ -14,17 +14,25 @@ import { LinearGradient } from 'expo-linear-gradient';
 import WhiteBorderedLayout from '../../layouts/WhiteBordered';
 import MaskInput from 'react-native-mask-input';
 import { createNumberMask, Masks } from 'react-native-mask-input';
+import { handleLoginForm, sendAuthPhone } from '../../app/features/login/loginSlice';
+
+const phoneMask = ["+", /\d/, '(', /\d/, /\d/, /\d/, ')', ' ', /\d/, /\d/, /\d/, ' ', /\d/, /\d/, '-', /\d/, /\d/];
 
 const LoginPhone: FC<NavProps> = ({ navigation }) => {
     const dispatch = useAppDispatch()
-    const [phone, setPhone] = React.useState('+7');
-    const handleToCode = () => {
-        navigation.navigate("sms_login")
+    const { auth } = useAppSelector(state => state.login)
+    const [keyboardStatus, setKeyboardStatus] = useState(false);
+    const disabledBtn = auth.form.phone.length < 11
+
+    const handleSendPhone = () => {
+        dispatch(sendAuthPhone({ phone: auth.form.phone }))
     }
 
-
-    const [keyboardStatus, setKeyboardStatus] = useState(false);
-    const phoneMask = ["+", /\d/, '(', /\d/, /\d/, /\d/, ')', ' ', /\d/, /\d/, /\d/, ' ', /\d/, /\d/, '-', /\d/, /\d/];
+    useEffect(() => {
+        if (auth.success.phone) {
+            navigation.navigate("sms_login")
+        }
+    }, [auth.success.phone])
 
     useEffect(() => {
         const keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', () => {
@@ -60,25 +68,23 @@ const LoginPhone: FC<NavProps> = ({ navigation }) => {
                                 <Text style={[cs.fzS, fs.montR, cs.fwMedium]} aria-label="Label for Usernam"
                                     nativeID="labelFirstName">Введите номер телефона, чтобы войти</Text>
                                 <MaskInput
-                                    value={phone}
+                                    value={auth.form.maskedPhone}
                                     placeholder={"+7"}
                                     keyboardType={"number-pad"}
                                     style={[cs.inputField, cs.fzM, fs.montR]}
                                     onChangeText={(masked: string, unmasked: string) => {
                                         if (masked.startsWith("+7")) {
-                                            setPhone(masked)
+                                            dispatch(handleLoginForm({ key: "maskedPhone", val: masked }))
+                                            dispatch(handleLoginForm({ key: "phone", val: unmasked }))
                                         }
 
                                     }}
                                     mask={phoneMask}
                                 />
                             </View>
-                            <TouchableOpacity onPress={handleToCode}>
-                                <LinearGradient style={[cs.yellowBtn, cs.fCenterCol]}
-                                    colors={["#FB0", "#FFCB3D", "#FFDA75"]}>
-                                    <Text style={[cs.fzM, cs.yellowBtnText]}>Продолжить</Text>
-                                </LinearGradient>
-                            </TouchableOpacity>
+                            <ButtonYellow disabled={disabledBtn} handlePress={handleSendPhone}>
+                                <Text style={[cs.fzM, cs.yellowBtnText]}>Продолжить</Text>
+                            </ButtonYellow>
                         </View>
                         <Text style={[fs.montR, cs.fzXS, cs.fwMedium, cs.colorGray]}>
                             Нажав кнопку «Продолжить», вы соглашаетесь с <Text onPress={() => { }} style={cs.textYellow}>пользовательским соглашением </Text>

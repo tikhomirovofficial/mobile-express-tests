@@ -1,7 +1,7 @@
 import React, {FC} from 'react';
 import {Dimensions, StyleSheet, View, ViewStyle} from "react-native";
 
-const AppContainer: FC<{children: React.ReactNode, style?: ViewStyle}> = ({children, style = null}) => {
+const AppContainer: FC<{children: React.ReactNode, style?: ViewStyle | ViewStyle[]}> = ({children, style = null}) => {
     return (
         <View style={[containerStyles.container, style]}>
             {children}

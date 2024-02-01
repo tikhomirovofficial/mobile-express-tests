@@ -1,17 +1,21 @@
 import React, { ChangeEvent, FC, useEffect, useState, useRef } from 'react';
 import { Animated, Text, TouchableOpacity, View, StyleSheet, TextInput, ScrollView, Keyboard } from "react-native";
-import { useAppDispatch } from '../../app/base/hooks';
+import { useAppDispatch, useAppSelector } from '../../app/base/hooks';
 import { cs } from '../../common/styles';
 import AppContainer from '../../components/AppContainer';
 import { fs } from '../../navigation/AppNavigator';
 import { NavProps } from '../../types/common.types';
 import { LinearGradient } from 'expo-linear-gradient';
 import WhiteBorderedLayout from '../../layouts/WhiteBordered';
+import { sendAuthCode } from '../../app/features/login/loginSlice';
 
 const CodePhoneAccept: FC<NavProps> = ({ navigation }) => {
+    const dispatch = useAppDispatch()
+    const { auth } = useAppSelector(state => state.login)
     const [code, setCode] = useState<string[]>(["", "", "", ""])
-    const inputRefs = useRef<TextInput[]>([]);
     const [keyboardStatus, setKeyboardStatus] = useState(false);
+    const [sended, setSended] = useState(false);
+    const inputRefs = useRef<TextInput[]>([]);
 
     const handleCodeInput = (text: string, index: number) => {
         if (/^\d*$/.test(text) && text.length <= 1) {
@@ -45,6 +49,12 @@ const CodePhoneAccept: FC<NavProps> = ({ navigation }) => {
         });
     };
 
+    const handleSendCode = () => {
+        dispatch(sendAuthCode({
+            username: auth.form.phone,
+            password: code.join("")
+        }))
+    }
 
 
     useEffect(() => {
@@ -68,13 +78,19 @@ const CodePhoneAccept: FC<NavProps> = ({ navigation }) => {
 
     useEffect(() => {
         if (code.filter(item => item !== "").length === 4) {
-            Keyboard.dismiss()
-            if (!keyboardStatus) {
-                navigation.navigate("pin_create")
+            if (!sended) {
+                if (keyboardStatus) {
+                    Keyboard.dismiss()
+                }
+                if (!keyboardStatus) {
+                    setSended(true)
+                    handleSendCode()
+                }
             }
-
+            return
         }
-    }, [code, keyboardStatus])
+        setSended(false)
+    }, [code, keyboardStatus, sended])
 
 
 

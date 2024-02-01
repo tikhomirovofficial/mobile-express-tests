@@ -9,6 +9,8 @@ import { orderReducer } from '../features/order/orderSlice';
 import { categoriesReducer } from '../features/categories/categoriesSlice';
 import { ordersReducer } from '../features/orders/ordersSlice';
 import { currentDataReducer } from '../features/current-data/currentData';
+import { bonusesReducer } from '../features/bonuses/bonusesSlice';
+import { loginReducer } from '../features/login/loginSlice';
 
 export const store = configureStore({
     reducer: {
@@ -21,7 +23,9 @@ export const store = configureStore({
         categories: categoriesReducer,
         order: orderReducer,
         orders: ordersReducer,
-        currentData: currentDataReducer
+        currentData: currentDataReducer,
+        bonuses: bonusesReducer,
+        login: loginReducer
     }
 })
 

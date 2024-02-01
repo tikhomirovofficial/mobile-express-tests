@@ -21,11 +21,15 @@ import Animated, { SlideInDown, SlideOutDown } from 'react-native-reanimated';
 import { ModalContainer } from '../../ModalContainer';
 import { getOrdersByPatientId, setPatientData } from '../../../app/features/current-data/currentData';
 import { PatientApi } from '../../../types/entities/patients.types';
+import { SkeletonContainer } from 'react-native-skeleton-component';
+import { SkeletonView } from '../../SkeletonView';
+import { getChartBonusesData } from '../../../app/features/bonuses/bonusesSlice';
 
 const BonusesModal = () => {
     const dispatch = useAppDispatch()
     const { bonusesModal, bonusesBottomSheet, analysisInfoModal } = useAppSelector(state => state.modals)
     const patients = useAppSelector(state => state.patients)
+    const bonuses = useAppSelector(state => state.bonuses)
 
     const handleModal = () => {
         dispatch(handleBonusesModal())
@@ -35,47 +39,60 @@ const BonusesModal = () => {
         dispatch(getOrdersByPatientId(patient.id))
         dispatch(handleBonusesBottomSheet())
     }
+    useEffect(() => {
+        dispatch(getChartBonusesData())
+    }, [])
 
     return (
-        <>
-            <Modal animationType={"slide"} visible={bonusesModal} transparent={true}>
-                <GestureHandlerRootView style={[cs.flexOne]}>
-                    <WhiteBordered style={{ ...cs.modalSlidedBottom, paddingBottom: 20 }}>
-                        <View style={[cs.flexOne, cs.fColumnBetw, cs.spaceXXL]}>
-                            <View style={[cs.fRowBetw]}>
-                                <Text onPress={handleModal}
-                                    style={[cs.yellowBtnText, cs.textYellow, cs.fzM]}>Закрыть</Text>
-                                <View style={[cs.fAlCenter]}>
-                                    <Text style={[cs.fzM, cs.colorDark, cs.fzM, cs.colorDark, cs.fwSemi]}>Бонусы</Text>
-                                </View>
-                                <View style={{ flex: 0.4 }}></View>
+
+        <Modal animationType={"slide"} visible={bonusesModal} transparent={true}>
+            <GestureHandlerRootView style={[cs.flexOne]}>
+                <WhiteBordered style={{ ...cs.modalSlidedBottom, paddingBottom: 20 }}>
+                    <View style={[cs.flexOne, cs.fColumnBetw, cs.spaceXXL]}>
+                        <View style={[cs.fRowBetw]}>
+                            <Text onPress={handleModal}
+                                style={[cs.yellowBtnText, cs.textYellow, cs.fzM]}>Закрыть</Text>
+                            <View style={[cs.fAlCenter]}>
+                                <Text style={[cs.fzM, cs.colorDark, cs.fzM, cs.colorDark, cs.fwSemi]}>Бонусы</Text>
                             </View>
-                            <View style={[cs.flexOne, cs.spaceM]}>
-                                <View style={[cs.fColumn, cs.spaceM]}>
+                            <View style={{ flex: 0.4 }}></View>
+                        </View>
+                        <View style={[cs.flexOne, cs.spaceM]}>
+                            <View style={[cs.fColumn, cs.spaceM]}>
+                                {bonuses.loadings.chart ?
+                                    <SkeletonContainer>
+                                        <SkeletonView width={"100%"} height={170} />
+                                    </SkeletonContainer>
+                                    :
+
                                     <View style={[cs.wBlockShadow, cs.fCenterCol, { borderRadius: 16, paddingVertical: 10 }]}>
                                         <BonusesChart />
                                     </View>
-                                    <ButtonYellow style={[cs.fCenterRow, cs.spaceS]} handlePress={() => { }}>
-                                        <HeartIcon />
-                                        <Text style={[cs.colorDark, cs.fwSemi, cs.fzM]}>Вывести бонусы</Text>
-                                    </ButtonYellow>
-                                </View>
-                                <FlatList data={patients.list} style={[cs.fColumn]} renderItem={({ item, index }) => (
-                                    <PatientItem
-                                        handlePress={() => handleOpenPatientInfo(item)}
-                                        neededBottomBorder={index !== patients.list.length - 1}
-                                        {...item} />
-                                )} />
 
+
+
+                                }
+                                <ButtonYellow style={[cs.fCenterRow, cs.spaceS]} handlePress={() => { }}>
+                                    <HeartIcon />
+                                    <Text style={[cs.colorDark, cs.fwSemi, cs.fzM]}>Вывести бонусы</Text>
+                                </ButtonYellow>
                             </View>
+                            <FlatList data={patients.list} style={[cs.fColumn]} renderItem={({ item, index }) => (
+                                <PatientItem
+                                    handlePress={() => handleOpenPatientInfo(item)}
+                                    neededBottomBorder={index !== patients.list.length - 1}
+                                    {...item} />
+                            )} />
+
                         </View>
+                    </View>
 
-                    </WhiteBordered>
-                    {bonusesBottomSheet ? <BottomSheet /> : null}
-                </GestureHandlerRootView>
-            </Modal>
+                </WhiteBordered>
+                {bonusesBottomSheet ? <BottomSheet /> : null}
+            </GestureHandlerRootView>
+        </Modal>
 
-        </>
+
 
     );
 };

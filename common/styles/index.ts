@@ -135,6 +135,7 @@ const cs = StyleSheet.create({
         paddingVertical: 3
     },
     yellowBtnText: {
+        fontFamily: "MontserratSemiBold"
     },
     flexOne: {
         flex: 1

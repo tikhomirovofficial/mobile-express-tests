@@ -12,7 +12,7 @@ export type AuthAcceptReq = {
     username: string
     password: string
 }
-export type AuthAcceptRes = JWT
+export type AuthAcceptRes = JWT & ResponseStatus
 
 // Перевыпустить refresh токен
 export type AuthRefreshReq = Pick<JWT, "refresh">
