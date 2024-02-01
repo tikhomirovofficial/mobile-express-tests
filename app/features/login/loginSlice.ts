@@ -1,7 +1,13 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { AuthAcceptReq, AuthAcceptRes, AuthReq, AuthRes } from "../../../types/api/user.api.types";
+import { storeTokens } from "../../../utils/storeTokens";
+import { checkIsValid } from "../../../utils/checkToken";
 
 type LoginSliceType = {
+    token: {
+        valid: boolean,
+        checking: boolean
+    },
     auth: {
         loading: boolean,
         success: {
@@ -21,6 +27,10 @@ type LoginSliceType = {
 }
 
 const initialState: LoginSliceType = {
+    token: {
+        checking: true,
+        valid: false
+    },
     auth: {
         loading: false,
         success: {
@@ -38,6 +48,22 @@ const initialState: LoginSliceType = {
         }
     }
 }
+export const checkToken = createAsyncThunk(
+    'login/token-check',
+    async (_, { dispatch }) => {
+        console.log("sas");
+        const isValidToken = await checkIsValid()
+
+        if (!isValidToken) {
+
+            throw isValidToken
+        }
+        return new Promise<boolean>((res, rej) => {
+            res(isValidToken)
+        })
+
+    }
+)
 
 export const sendAuthPhone = createAsyncThunk(
     'login/phone',
@@ -57,22 +83,25 @@ export const sendAuthPhone = createAsyncThunk(
         })
     }
 )
+
 export const sendAuthCode = createAsyncThunk(
     'login/code',
     async (req: AuthAcceptReq, { dispatch }) => {
         const resp: AuthAcceptRes = {
-            refresh: "",
+            refresh: "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJPbmxpbmUgSldUIEJ1aWxkZXIiLCJpYXQiOjE3MDY4MjM3MTUsImV4cCI6MTczODM1OTcxNSwiYXVkIjoid3d3LmV4YW1wbGUuY29tIiwic3ViIjoianJvY2tldEBleGFtcGxlLmNvbSIsIkdpdmVuTmFtZSI6IkpvaG5ueSIsIlN1cm5hbWUiOiJSb2NrZXQiLCJFbWFpbCI6Impyb2NrZXRAZXhhbXBsZS5jb20iLCJSb2xlIjpbIk1hbmFnZXIiLCJQcm9qZWN0IEFkbWluaXN0cmF0b3IiXX0.XIwgkYXEV4jr8ykkkPq196lsIDOw9V05lysW4DswROM",
             access: "",
-            status: false
+            status: true
         }
         if (!resp.status) {
             throw new Error("Некорректный код")
         }
+        await storeTokens({ refresh: resp.refresh, access: resp.access })
         return new Promise<AuthRes>((res, rej) => {
             setTimeout(() => {
                 res(resp)
             }, 1000)
         })
+
     }
 )
 
@@ -85,7 +114,7 @@ export const LoginSlice = createSlice({
         },
         resetLoginForm: (state) => {
             state.auth = initialState.auth
-        }
+        },
 
     },
     extraReducers: (builder) => {
@@ -118,6 +147,7 @@ export const LoginSlice = createSlice({
             //SAVE TOKENS
             state.auth.loading = false
             state.auth.success.code = true
+            state.token.valid = true
             console.log("Успех");
 
         })
@@ -126,6 +156,22 @@ export const LoginSlice = createSlice({
             state.auth.success.code = false
             state.auth.errors.code = "Номер телефона плохой!"
             console.log("Плохо");
+        })
+        //CHECK TOKEN IS VALID
+        builder.addCase(checkToken.pending, (state, action) => {
+
+
+            state.token.checking = true
+
+        })
+        builder.addCase(checkToken.fulfilled, (state, action) => {
+            state.token.checking = false
+            state.token.valid = action.payload
+
+        })
+        builder.addCase(checkToken.rejected, (state, action) => {
+            state.token.valid = false
+            state.token.checking = false
         })
 
     },

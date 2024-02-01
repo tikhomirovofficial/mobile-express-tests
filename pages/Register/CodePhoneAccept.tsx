@@ -56,6 +56,11 @@ const CodePhoneAccept: FC<NavProps> = ({ navigation }) => {
         }))
     }
 
+    useEffect(() => {
+        if (auth.success.code) {
+            navigation.navigate("home")
+        }
+    }, [auth.success.code])
 
     useEffect(() => {
         const keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', () => {
