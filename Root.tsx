@@ -11,11 +11,13 @@ import { checkPinCodeExists, checkFirstTime } from './app/features/access/access
 import { deleteTokens } from './utils/storeTokens';
 import { deleteAlreadyBeen } from './utils/storeFirstTime';
 import { deleteAccessed } from './utils/storeAccessed';
+import { getHasProfile } from './app/features/profile/profileSlice';
 
 
 const Root = () => {
     const dispatch = useAppDispatch()
     const { token } = useAppSelector(state => state.login)
+    const { has_profile } = useAppSelector(state => state.profile)
     const { pin, alreadyBeen } = useAppSelector(state => state.access)
     const [fontsLoaded] = useFonts();
     const [refreshing, setRefreshing] = React.useState(false);
@@ -32,6 +34,11 @@ const Root = () => {
         console.log(`token: ${token.valid}, pin exists: ${pin.exists}, already been: ${alreadyBeen.valid}`);
     }, [pin.exists, alreadyBeen.valid, token.valid])
 
+    useEffect(() => {
+        if (token.valid) {
+            dispatch(getHasProfile())
+        }
+    }, [token.valid])
     useEffect(() => {
         // deleteTokens()
         // deleteAlreadyBeen()

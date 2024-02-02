@@ -54,12 +54,13 @@ const MainTabs = () => {
         </Tab.Navigator>
     );
 }
+
 const AppNavigator = () => {
     const dispatch = useAppDispatch()
     //Тут нужно получить состояния авторизованности пользователя, наличия пин-кода, первый ли раз заходит чел
     const { token } = useAppSelector(state => state.login)
-    const { data, loadings } = useAppSelector(state => state.profile)
-    const { alreadyBeen, accepted, pin } = useAppSelector(state => state.access)
+    const { data, loadings, has_profile } = useAppSelector(state => state.profile)
+    const { alreadyBeen, accepted, pin, faceId } = useAppSelector(state => state.access)
 
     const getInitialRoute = () => {
         if (token.valid) {
@@ -82,9 +83,7 @@ const AppNavigator = () => {
                     {
                         !token.valid ?
                             <>
-                                {
-                                    !alreadyBeen.valid ? <Stack.Screen name="welcome" component={WelcomeContainer} /> : null
-                                }
+                                {!alreadyBeen.valid ? <Stack.Screen name="welcome" component={WelcomeContainer} /> : null}
                                 <Stack.Screen name="login_phone" component={LoginPhone} />
                                 <Stack.Screen name="sms_login" component={CodePhoneAccept} />
                             </>
@@ -98,27 +97,30 @@ const AppNavigator = () => {
                                             :
                                             <Stack.Screen name="pin_accept" component={AcceptPinCode} /> :
                                         <>
-                                            {/* //Профиль */}
+                                            {!faceId.connected ?
+                                                !faceId.asked ?
+                                                    <Stack.Screen name="bio_connect" component={ConnectBio} /> : null
+                                                : null
+                                            }
                                             {
-                                                !data.first_name.length ?
+                                                has_profile ?
                                                     <Stack.Screen name="home" component={MainTabs} /> :
                                                     <Stack.Screen name="profile_create" component={CreateProfile} />
                                             }
-
                                             {/* //Приглашение */}
                                             <Stack.Screen name="inviting" component={SelectingPatients} />
                                             <Stack.Screen name="inviting_check" component={CheckSelectedPatients} />
-                                            {/* //Регистрация */}
-                                            {/* //Логин */}
-                                            {/* //Доступы */}
+
                                             <Stack.Screen name="info_contacts" component={AccessContacts} />
                                             <Stack.Screen name="info_media" component={AccessMedia} />
                                             <Stack.Screen name="info_notifications" component={AccessNotifications} />
-                                            <Stack.Screen name="bio_connect" component={ConnectBio} />
+
+
                                             {/* //Информативные экраны */}
                                             <Stack.Screen name="inviting_sent" component={InvitingSent} />
                                             <Stack.Screen name="order_sent" component={OrderSent} />
                                             <Stack.Screen name="how_get_results" component={HowGetResults} />
+
                                             {/* //Создание заказа */}
                                             <Stack.Screen name="order_patient" component={SelectingPatient} />
                                             <Stack.Screen name="order_category" component={SelectingCategory} />

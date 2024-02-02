@@ -4,6 +4,7 @@ import { HasLoading } from "../../../types/common.types";
 import { OrderApi } from "../../../types/entities/order.types";
 
 type ProfileSliceState = {
+    has_profile: boolean | null
     orders: OrderApi[],
     data: ProfileData,
     form: Omit<ProfileData, "bonus">,
@@ -14,6 +15,7 @@ type ProfileSliceState = {
 }
 
 const initialState: ProfileSliceState = {
+    has_profile: null,
     orders: [
 
     ],
@@ -58,6 +60,16 @@ export const getProfile = createAsyncThunk(
         })
     }
 )
+export const getHasProfile = createAsyncThunk(
+    'has-profile/get',
+    async (req, { dispatch }) => {
+        return new Promise<boolean>((res, rej) => {
+            setTimeout(() => {
+                res(true)
+            }, 1000)
+        })
+    }
+)
 
 export const getAllOrders = createAsyncThunk(
     'profile/orders/get',
@@ -94,6 +106,12 @@ export const ProfileSlice = createSlice({
         }
     },
     extraReducers: (builder) => {
+        //HAS PROFILE
+        builder.addCase(getHasProfile.fulfilled, (state, action) => {
+            console.log(`Профиль заполнен: ${action.payload}`);
+            
+            state.has_profile = action.payload
+        })
         //PROFILE
         builder.addCase(getProfile.pending, (state, action) => {
             state.loadings.profile = true

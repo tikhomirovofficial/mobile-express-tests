@@ -2,6 +2,7 @@ import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { AuthAcceptReq, AuthAcceptRes, AuthReq, AuthRes } from "../../../types/api/user.api.types";
 import { deleteTokens, storeTokens } from "../../../utils/storeTokens";
 import { checkIsValid } from "../../../utils/checkToken";
+import { getHasProfile } from "../profile/profileSlice";
 
 type LoginSliceType = {
     token: {
@@ -103,6 +104,7 @@ export const sendAuthCode = createAsyncThunk(
             throw new Error("Невалидный токен пришёл")
         }
         await storeTokens({ refresh: resp.refresh, access: resp.access })
+       
         return new Promise<AuthRes>((res, rej) => {
             setTimeout(() => {
                 res(resp)

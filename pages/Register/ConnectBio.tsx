@@ -12,6 +12,7 @@ import { fs } from '../../navigation/AppNavigator';
 import { NavProps } from '../../types/common.types';
 import { LinearGradient } from 'expo-linear-gradient';
 import WhiteBorderedLayout from '../../layouts/WhiteBordered';
+import { setFaceIdAsked } from '../../app/features/access/accessSlice';
 
 const ConnectBio: FC<NavProps> = ({ navigation }) => {
     const dispatch = useAppDispatch()
@@ -19,6 +20,7 @@ const ConnectBio: FC<NavProps> = ({ navigation }) => {
     const handleToNotifications = () => {
         navigation.navigate("info_notifications")
     }
+    const handleSkip = () => dispatch(setFaceIdAsked(true))
     const openNewPatient = () => dispatch(handlePatientInvitingModal())
 
 
@@ -52,11 +54,10 @@ const ConnectBio: FC<NavProps> = ({ navigation }) => {
                             </TouchableOpacity>
                             <View style={[cs.fCenterCol]}>
                             <TouchableOpacity onPress={handleToNotifications}>
-                                <Text style={[cs.fClickableGray, cs.fzM]}>Пропустить</Text>
+                                <Text onPress={handleSkip} style={[cs.fClickableGray, cs.fzM]}>Пропустить</Text>
                             </TouchableOpacity>
                             </View>
-                            
-
+                        
                         </View>
                     </View>
                 </WhiteBorderedLayout>

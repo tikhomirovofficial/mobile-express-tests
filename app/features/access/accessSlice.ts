@@ -9,6 +9,11 @@ import { checkEnteredPin } from "../../../utils/checkEnteredPin";
 import { deletePin, storePin } from "../../../utils/storePin";
 
 type AcecssSliceType = {
+    faceId: {
+        connected: boolean,
+        asked: boolean,
+        checking: boolean
+    }
     alreadyBeen: {
         valid: boolean,
         checking: boolean
@@ -26,6 +31,11 @@ type AcecssSliceType = {
 }
 
 const initialState: AcecssSliceType = {
+    faceId: {
+        connected: true,
+        asked: false,
+        checking: true,
+    },
     alreadyBeen: {
         checking: true,
         valid: false
@@ -88,6 +98,7 @@ export const checkValidEnteredPin = createAsyncThunk(
         if (!isEntered) {
             throw isEntered
         }
+        //Выполним отделную функцию для проверки заполненности профиля
         return new Promise<boolean>((res, rej) => {
             res(isEntered)
         })
@@ -99,6 +110,9 @@ export const accessSlice = createSlice({
     name: "access",
     initialState,
     reducers: {
+        setFaceIdAsked: (state, action: PayloadAction<boolean>) => {
+            state.faceId.asked = action.payload
+        },
         resetAcceptedErr: (state) => {
             state.accepted.error = ""
         },
@@ -155,7 +169,8 @@ export const accessSlice = createSlice({
 
 export const {
     resetAcceptedErr,
-    resetAccess
+    resetAccess,
+    setFaceIdAsked,
 } = accessSlice.actions
 
 
