@@ -1,6 +1,6 @@
 import React, { ChangeEvent, FC, useEffect, useState, useRef } from 'react';
 import { Animated, Text, TouchableOpacity, View, StyleSheet, TextInput, ScrollView, Keyboard } from "react-native";
-import { useAppDispatch } from '../../app/base/hooks';
+import { useAppDispatch, useAppSelector } from '../../app/base/hooks';
 import { cs } from '../../common/styles';
 import AppContainer from '../../components/AppContainer';
 import { fs } from '../../navigation/AppNavigator';
@@ -8,16 +8,17 @@ import { NavProps } from '../../types/common.types';
 import { LinearGradient } from 'expo-linear-gradient';
 import WhiteBorderedLayout from '../../layouts/WhiteBordered';
 import { BackspaceIcon, CloseIcon } from '../../icons';
+import { checkValidEnteredPin, resetAcceptedErr} from '../../app/features/access/accessSlice';
 
 const AcceptPinCode: FC<NavProps> = ({ navigation }) => {
     const dispatch = useAppDispatch()
     const [pin, setPin] = useState<string[]>(["", "", "", ""])
     const [keyboardStatus, setKeyboardStatus] = useState(false);
-    const [incorrectAccept, setIncorrectAccept] = useState("")
+    const { error } = useAppSelector(state => state.access.accepted)
 
     const handlePin = (digit: string) => {
         setPin((prev) => {
-            if(digit === "reset") {
+            if (digit === "reset") {
                 return ["", "", "", ""]
             }
             const filledCount = pin.filter(item => item !== "").length
@@ -37,6 +38,14 @@ const AcceptPinCode: FC<NavProps> = ({ navigation }) => {
         })
     }
 
+    useEffect(() => {
+        if (pin.filter(item => item !== "").length === 4) {
+            const pinStr = pin.join("")
+            dispatch(checkValidEnteredPin(pinStr))
+            return
+        }
+        dispatch(resetAcceptedErr())
+    }, [pin])
 
     useEffect(() => {
         Keyboard.dismiss()
@@ -66,13 +75,13 @@ const AcceptPinCode: FC<NavProps> = ({ navigation }) => {
                             </View>
                         </AppContainer>
                     }
-                    style={{ paddingTop: 40, maxHeight: "100%"}}>
-                    <View style={[cs.fColumnBetw, cs.flexOne, { minHeight: !keyboardStatus ? "100%" : "99.9%", paddingBottom: 32}]}>
+                    style={{ paddingTop: 40, maxHeight: "100%" }}>
+                    <View style={[cs.fColumnBetw, cs.flexOne, { minHeight: !keyboardStatus ? "100%" : "99.9%", paddingBottom: 32 }]}>
                         <View style={[cs.spaceXXL, cs.flexOne]}>
                             <View style={[cs.spaceM]}>
                                 <View style={[cs.fColumn, cs.spaceM, cs.fAlCenter]}>
                                     <Text style={[cs.fzS, fs.montR, cs.fwMedium, cs.txtCenter, styles.pinLabel]} aria-label="Label for Usernam"
-                                        nativeID="labelFirstName">Чтобы войти, введите пин-код</Text>
+                                        nativeID="labelFirstName">{error || "Чтобы войти, введите пин-код"}</Text>
 
                                 </View>
                                 <View style={[cs.fRow, cs.spaceXL, cs.jcCenter]}>

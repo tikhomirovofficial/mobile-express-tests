@@ -16,12 +16,16 @@ import { BottomSheet } from '../../../components/BottomSheet';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { SkeletonView } from '../../../components/SkeletonView';
 import { SkeletonContainer } from 'react-native-skeleton-component';
+import { logout } from '../../../app/features/login/loginSlice';
+import { resetAccess } from '../../../app/features/access/accessSlice';
+
 
 const Profile: FC<NavProps> = ({ navigation }) => {
     const dispatch = useAppDispatch()
     const profile = useAppSelector(state => state.profile)
     const { orderInfoModal, bonusesBottomSheet, ordersFinancesModal, patientsModal, aboutAppModal, profileEditModal } = useAppSelector(state => state.modals)
     const scaleValue = new Animated.Value(1);
+
 
     const handleProfileDataModal = () => dispatch(handleProfileEditModal())
 
@@ -30,6 +34,11 @@ const Profile: FC<NavProps> = ({ navigation }) => {
     const handleAbout = () => dispatch(handleAboutModal())
 
     const handleFinances = () => dispatch(handleOrdersFinancesModal())
+
+    const handleLogout = () => {
+        dispatch(logout())
+        dispatch(resetAccess())
+    }
 
     return (
         <>
@@ -63,9 +72,6 @@ const Profile: FC<NavProps> = ({ navigation }) => {
                                             </View>
                                     }
                                 </SkeletonContainer>
-
-
-
                             </View>
                         </View>
                         <View style={[cs.fColumn, cs.spaceM]}>
@@ -118,7 +124,7 @@ const Profile: FC<NavProps> = ({ navigation }) => {
                                 </TouchableOpacity>
                             </View>
                             <TouchableOpacity>
-                                <Text style={[cs.fzM, fs.montR, cs.fwMedium, cs.txtCenter, cs.colorRed]}>Выйти из
+                                <Text onPress={handleLogout} style={[cs.fzM, fs.montR, cs.fwMedium, cs.txtCenter, cs.colorRed]}>Выйти из
                                     приложения</Text>
                             </TouchableOpacity>
                         </View>

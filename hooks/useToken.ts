@@ -10,28 +10,10 @@ const useToken = () => {
         const tokens = await getTokens();
         if (tokens) {
             const refresh: string | undefined = tokens?.refresh;
-            if (refresh.length) {
-                const decodedToken: { exp: number } = jwtDecode(refresh);
-
-                const currentTimestamp = Math.floor(Date.now() / 1000);
-                const isExpiredToken = decodedToken.exp < currentTimestamp
-
-                if (isExpiredToken) {
-                    await deleteTokens()
-                    return false
-                }
-
-                const hasUserId = "user_id" in decodedToken;
-
-                return !!(refresh && hasUserId);
-            }
-            return false;
-
+            return refresh.length > 20
         } else {
             return false;
         }
-
-
     }
 
     useEffect(() => {

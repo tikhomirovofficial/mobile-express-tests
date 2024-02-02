@@ -26,7 +26,6 @@ import SelectingCategory from '../pages/PrepareAnalysis/SelectingCategory';
 import SelectingProducts from '../pages/PrepareAnalysis/SelectingProducts';
 import CartProducts from '../pages/PrepareAnalysis/CartProducts';
 import CreateProfile from '../pages/Register/CreateProfile';
-import { checkIfFirstTimeUser } from '../utils/checkFirstTime';
 import AcceptPinCode from '../pages/Register/AcceptPinCode';
 import { useAccess } from '../hooks/useAccess';
 import { useAppDispatch, useAppSelector } from '../app/base/hooks';
@@ -59,23 +58,21 @@ const AppNavigator = () => {
     const dispatch = useAppDispatch()
     //Тут нужно получить состояния авторизованности пользователя, наличия пин-кода, первый ли раз заходит чел
     const { token } = useAppSelector(state => state.login)
-    const { isFirstTime, pinAccepted } = useAccess()
-    console.log(token);
-    
+    const { data, loadings } = useAppSelector(state => state.profile)
+    const { alreadyBeen, accepted, pin } = useAppSelector(state => state.access)
+
     const getInitialRoute = () => {
         if (token.valid) {
-            if (pinAccepted) {
+            if (accepted.valid) {
                 return "home"
             }
             return "pin_accept"
         }
-        if (isFirstTime) {
+        if (!alreadyBeen.valid) {
             return "welcome"
         }
         return "login_phone"
     }
-
-
 
     return (
         <NavigationContainer>
@@ -85,38 +82,50 @@ const AppNavigator = () => {
                     {
                         !token.valid ?
                             <>
-                                <Stack.Screen name="welcome" component={WelcomeContainer} />
+                                {
+                                    !alreadyBeen.valid ? <Stack.Screen name="welcome" component={WelcomeContainer} /> : null
+                                }
                                 <Stack.Screen name="login_phone" component={LoginPhone} />
                                 <Stack.Screen name="sms_login" component={CodePhoneAccept} />
                             </>
                             :
                             <>
-                                {/* //Профиль */}
-                                < Stack.Screen name="home" component={MainTabs} />
-                                {/* //Приглашение */}
-                                <Stack.Screen name="inviting" component={SelectingPatients} />
-                                <Stack.Screen name="inviting_check" component={CheckSelectedPatients} />
-                                {/* //Регистрация */}
 
-                                <Stack.Screen name="pin_create" component={CreatePinCode} />
-                                <Stack.Screen name="profile_create" component={CreateProfile} />
-                                {/* //Логин */}
+                                {
+                                    !accepted.valid ?
+                                        !pin.exists ?
+                                            <Stack.Screen name="pin_create" component={CreatePinCode} />
+                                            :
+                                            <Stack.Screen name="pin_accept" component={AcceptPinCode} /> :
+                                        <>
+                                            {/* //Профиль */}
+                                            {
+                                                !data.first_name.length ?
+                                                    <Stack.Screen name="home" component={MainTabs} /> :
+                                                    <Stack.Screen name="profile_create" component={CreateProfile} />
+                                            }
 
-                                <Stack.Screen name="pin_accept" component={AcceptPinCode} />
-                                {/* //Доступы */}
-                                <Stack.Screen name="info_contacts" component={AccessContacts} />
-                                <Stack.Screen name="info_media" component={AccessMedia} />
-                                <Stack.Screen name="info_notifications" component={AccessNotifications} />
-                                <Stack.Screen name="bio_connect" component={ConnectBio} />
-                                {/* //Информативные экраны */}
-                                <Stack.Screen name="inviting_sent" component={InvitingSent} />
-                                <Stack.Screen name="order_sent" component={OrderSent} />
-                                <Stack.Screen name="how_get_results" component={HowGetResults} />
-                                {/* //Создание заказа */}
-                                <Stack.Screen name="order_patient" component={SelectingPatient} />
-                                <Stack.Screen name="order_category" component={SelectingCategory} />
-                                <Stack.Screen name="order_products" component={SelectingProducts} />
-                                <Stack.Screen name="order_cart" component={CartProducts} />
+                                            {/* //Приглашение */}
+                                            <Stack.Screen name="inviting" component={SelectingPatients} />
+                                            <Stack.Screen name="inviting_check" component={CheckSelectedPatients} />
+                                            {/* //Регистрация */}
+                                            {/* //Логин */}
+                                            {/* //Доступы */}
+                                            <Stack.Screen name="info_contacts" component={AccessContacts} />
+                                            <Stack.Screen name="info_media" component={AccessMedia} />
+                                            <Stack.Screen name="info_notifications" component={AccessNotifications} />
+                                            <Stack.Screen name="bio_connect" component={ConnectBio} />
+                                            {/* //Информативные экраны */}
+                                            <Stack.Screen name="inviting_sent" component={InvitingSent} />
+                                            <Stack.Screen name="order_sent" component={OrderSent} />
+                                            <Stack.Screen name="how_get_results" component={HowGetResults} />
+                                            {/* //Создание заказа */}
+                                            <Stack.Screen name="order_patient" component={SelectingPatient} />
+                                            <Stack.Screen name="order_category" component={SelectingCategory} />
+                                            <Stack.Screen name="order_products" component={SelectingProducts} />
+                                            <Stack.Screen name="order_cart" component={CartProducts} />
+                                        </>
+                                }
                             </>
 
                     }

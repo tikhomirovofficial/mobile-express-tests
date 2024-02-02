@@ -8,6 +8,8 @@ import { NavProps } from '../../types/common.types';
 import { LinearGradient } from 'expo-linear-gradient';
 import WhiteBorderedLayout from '../../layouts/WhiteBordered';
 import { BackspaceIcon, CloseIcon } from '../../icons';
+import { storePin } from '../../utils/storePin';
+import { setPinCode } from '../../app/features/access/accessSlice';
 
 const CreatePinCode: FC<NavProps> = ({ navigation }) => {
     const dispatch = useAppDispatch()
@@ -25,7 +27,7 @@ const CreatePinCode: FC<NavProps> = ({ navigation }) => {
         if (isAccepting) {
             setAcceptPin((prev) => {
                 const filledCount = acceptPin.filter(item => item !== "").length
-                if(digit === "reset") {
+                if (digit === "reset") {
                     if (filledCount) {
                         return ["", "", "", ""]
                     }
@@ -77,18 +79,19 @@ const CreatePinCode: FC<NavProps> = ({ navigation }) => {
         const lengthsEquals = pin.filter(item => item !== "").length === acceptPin.filter(item => item !== "").length && acceptPin.filter(item => item !== "").length === 4
         if (lengthsEquals) {
             const pinsEquals = pin.join(",") === acceptPin.join(",")
-            if(!pinsEquals) {
+            if (!pinsEquals) {
                 setIncorrectAccept("Пин-код не совпадает!")
                 return;
             }
-            nextStep()
+            (async () => {
+                dispatch(setPinCode(pin.join("")))
+            })()
             return;
         }
         setIncorrectAccept("")
     }, [acceptPin])
 
     useEffect(() => {
-        alert(keyboardStatus)
         Keyboard.dismiss()
         const keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', () => {
             setKeyboardStatus(true);
@@ -117,7 +120,7 @@ const CreatePinCode: FC<NavProps> = ({ navigation }) => {
                         </AppContainer>
                     }
                     style={{ paddingTop: 40, maxHeight: "100%", backgroundColor: "blue" }}>
-                    <View style={[cs.fColumnBetw, cs.flexOne, { minHeight: !keyboardStatus ? "99.5%" : "99.1%", paddingBottom: 32, backgroundColor: "red"}]}>
+                    <View style={[cs.fColumnBetw, cs.flexOne, { minHeight: !keyboardStatus ? "99.5%" : "99.1%", paddingBottom: 32, backgroundColor: "red" }]}>
                         <View style={[cs.spaceXXL, cs.flexOne]}>
                             <View style={[cs.spaceM]}>
                                 <View style={[cs.fColumn, cs.spaceM, cs.fAlCenter]}>
@@ -143,11 +146,11 @@ const CreatePinCode: FC<NavProps> = ({ navigation }) => {
 
                                         </View>
                                         <View style={[cs.fRow, cs.spaceXL, cs.jcCenter]}>
-                                        {
-                                        acceptPin.map(item => (
-                                            <View style={[styles.pinDot, (item !== "" ? cs.bgYellow : null), (incorrectAccept ? cs.bgRed : null)]}></View>
-                                        ))
-                                    }
+                                            {
+                                                acceptPin.map(item => (
+                                                    <View style={[styles.pinDot, (item !== "" ? cs.bgYellow : null), (incorrectAccept ? cs.bgRed : null)]}></View>
+                                                ))
+                                            }
                                         </View>
                                     </View> : null
                             }

@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { AuthAcceptReq, AuthAcceptRes, AuthReq, AuthRes } from "../../../types/api/user.api.types";
-import { storeTokens } from "../../../utils/storeTokens";
+import { deleteTokens, storeTokens } from "../../../utils/storeTokens";
 import { checkIsValid } from "../../../utils/checkToken";
 
 type LoginSliceType = {
@@ -51,17 +51,21 @@ const initialState: LoginSliceType = {
 export const checkToken = createAsyncThunk(
     'login/token-check',
     async (_, { dispatch }) => {
-        console.log("sas");
         const isValidToken = await checkIsValid()
 
         if (!isValidToken) {
-
             throw isValidToken
         }
         return new Promise<boolean>((res, rej) => {
             res(isValidToken)
         })
 
+    }
+)
+export const logout = createAsyncThunk(
+    'logout',
+    async (_, { dispatch }) => {
+        await deleteTokens()
     }
 )
 
@@ -83,17 +87,20 @@ export const sendAuthPhone = createAsyncThunk(
         })
     }
 )
-
+const token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJPbmxpbmUgSldUIEJ1aWxkZXIiLCJpYXQiOjE3MDY4MjM3MTUsImV4cCI6MTczODM1OTcxNSwiYXVkIjoid3d3LmV4YW1wbGUuY29tIiwic3ViIjoianJvY2tldEBleGFtcGxlLmNvbSIsIkdpdmVuTmFtZSI6IkpvaG5ueSIsIlN1cm5hbWUiOiJSb2NrZXQiLCJFbWFpbCI6Impyb2NrZXRAZXhhbXBsZS5jb20iLCJSb2xlIjpbIk1hbmFnZXIiLCJQcm9qZWN0IEFkbWluaXN0cmF0b3IiXX0.XIwgkYXEV4jr8ykkkPq196lsIDOw9V05lysW4DswROM"
 export const sendAuthCode = createAsyncThunk(
     'login/code',
     async (req: AuthAcceptReq, { dispatch }) => {
         const resp: AuthAcceptRes = {
-            refresh: "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJPbmxpbmUgSldUIEJ1aWxkZXIiLCJpYXQiOjE3MDY4MjM3MTUsImV4cCI6MTczODM1OTcxNSwiYXVkIjoid3d3LmV4YW1wbGUuY29tIiwic3ViIjoianJvY2tldEBleGFtcGxlLmNvbSIsIkdpdmVuTmFtZSI6IkpvaG5ueSIsIlN1cm5hbWUiOiJSb2NrZXQiLCJFbWFpbCI6Impyb2NrZXRAZXhhbXBsZS5jb20iLCJSb2xlIjpbIk1hbmFnZXIiLCJQcm9qZWN0IEFkbWluaXN0cmF0b3IiXX0.XIwgkYXEV4jr8ykkkPq196lsIDOw9V05lysW4DswROM",
+            refresh: token,
             access: "",
             status: true
         }
         if (!resp.status) {
             throw new Error("Некорректный код")
+        }
+        if (!resp?.refresh.length) {
+            throw new Error("Невалидный токен пришёл")
         }
         await storeTokens({ refresh: resp.refresh, access: resp.access })
         return new Promise<AuthRes>((res, rej) => {
@@ -124,12 +131,11 @@ export const LoginSlice = createSlice({
             state.auth.success.phone = null
             state.auth.errors.phone = ""
         })
+        //SAVE TOKENS
         builder.addCase(sendAuthPhone.fulfilled, (state, action) => {
-            //SAVE TOKENS
             state.auth.loading = false
             state.auth.success.phone = true
             console.log("Успех");
-
         })
         builder.addCase(sendAuthPhone.rejected, (state, action) => {
             state.auth.loading = false
@@ -143,12 +149,12 @@ export const LoginSlice = createSlice({
             state.auth.success.code = null
             state.auth.errors.code = ""
         })
+        //SAVE TOKENS
         builder.addCase(sendAuthCode.fulfilled, (state, action) => {
-            //SAVE TOKENS
             state.auth.loading = false
             state.auth.success.code = true
-            state.token.valid = true
-            console.log("Успех");
+            state.token.valid = true,
+            state.auth.form = initialState.auth.form
 
         })
         builder.addCase(sendAuthCode.rejected, (state, action) => {
@@ -159,10 +165,7 @@ export const LoginSlice = createSlice({
         })
         //CHECK TOKEN IS VALID
         builder.addCase(checkToken.pending, (state, action) => {
-
-
             state.token.checking = true
-
         })
         builder.addCase(checkToken.fulfilled, (state, action) => {
             state.token.checking = false
@@ -173,7 +176,17 @@ export const LoginSlice = createSlice({
             state.token.valid = false
             state.token.checking = false
         })
-
+        //LOGOUT
+        builder.addCase(logout.pending, (state, action) => {
+            state.token.checking = true
+        })
+        builder.addCase(logout.fulfilled, (state, action) => {
+            state.token.valid = false
+            state.token.checking = false
+        })
+        builder.addCase(logout.rejected, (state, action) => {
+            state.token.checking = false
+        })
     },
 })
 

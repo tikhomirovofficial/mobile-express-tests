@@ -21,6 +21,7 @@ const phoneMask = ["+", /\d/, '(', /\d/, /\d/, /\d/, ')', ' ', /\d/, /\d/, /\d/,
 const LoginPhone: FC<NavProps> = ({ navigation }) => {
     const dispatch = useAppDispatch()
     const { auth } = useAppSelector(state => state.login)
+    const { alreadyBeen } = useAppSelector(state => state.access)
     const [keyboardStatus, setKeyboardStatus] = useState(false);
     const disabledBtn = auth.form.phone.length < 11
 
@@ -33,6 +34,7 @@ const LoginPhone: FC<NavProps> = ({ navigation }) => {
             navigation.navigate("sms_login")
         }
     }, [auth.success.phone])
+
 
     useEffect(() => {
         const keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', () => {

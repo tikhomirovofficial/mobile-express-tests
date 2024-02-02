@@ -17,7 +17,6 @@ export const getStorage = async (key: string) => {
 
         if (jsonString) {
             const myObject = JSON.parse(jsonString);
-            console.log('Полученный объект:', myObject);
             return myObject;
         } else {
             console.log('Объект отсутствует');

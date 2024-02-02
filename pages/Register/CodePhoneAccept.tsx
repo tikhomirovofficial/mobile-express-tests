@@ -7,7 +7,7 @@ import { fs } from '../../navigation/AppNavigator';
 import { NavProps } from '../../types/common.types';
 import { LinearGradient } from 'expo-linear-gradient';
 import WhiteBorderedLayout from '../../layouts/WhiteBordered';
-import { sendAuthCode } from '../../app/features/login/loginSlice';
+import { checkToken, sendAuthCode } from '../../app/features/login/loginSlice';
 
 const CodePhoneAccept: FC<NavProps> = ({ navigation }) => {
     const dispatch = useAppDispatch()
@@ -58,7 +58,7 @@ const CodePhoneAccept: FC<NavProps> = ({ navigation }) => {
 
     useEffect(() => {
         if (auth.success.code) {
-            navigation.navigate("home")
+            //dispatch(checkToken())
         }
     }, [auth.success.code])
 
@@ -115,7 +115,7 @@ const CodePhoneAccept: FC<NavProps> = ({ navigation }) => {
                         <View style={[cs.spaceM]}>
                             <View style={[cs.fColumn, cs.spaceM]}>
                                 <Text style={[cs.fzS, fs.montR, cs.fwMedium]} aria-label="Label for Usernam"
-                                    nativeID="labelFirstName">Введите код из СМС +7 951 735-89-45</Text>
+                                    nativeID="labelFirstName">Введите код из СМС {auth.form.maskedPhone}</Text>
                                 <View style={[cs.fRowBetw]}>
                                     {
                                         code.map((item, index) => (
