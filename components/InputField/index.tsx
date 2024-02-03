@@ -1,13 +1,38 @@
-import React from 'react'
-import { View, StyleSheet } from 'react-native'
+import React, { FC } from 'react'
+import { View, StyleSheet, TextInput } from 'react-native'
+import { cs } from '../../common/styles'
+import { fs } from '../../navigation/AppNavigator'
+import MaskInput from 'react-native-mask-input'
 
-type InputFieldProps = () => {
+type InputFieldProps = {
     mask?: string,
-    
+    idInput?: string,
+    placeholder?: string
+    type?: string
+    val: string,
+    onChange: (val: string, unmasked?: string) => void
+
 }
-export const InputField = () => {
+export const InputField: FC<InputFieldProps> = ({ mask, placeholder, val, onChange, idInput, }) => {
+    if (mask) {
+        return (
+            <MaskInput
+                value={val}
+                nativeID={idInput}
+                onChangeText={onChange}
+                accessibilityLabelledBy={idInput}
+                placeholder={placeholder}
+                style={[styles.inputField, cs.fzM, fs.montR]} />
+        )
+    }
     return (
-        <View></View>
+        <TextInput
+            value={val}
+            nativeID={idInput}
+            onChangeText={onChange}
+            accessibilityLabelledBy={idInput}
+            placeholder={placeholder}
+            style={[styles.inputField, cs.fzM, fs.montR]} />
     )
 }
 const styles = StyleSheet.create({
