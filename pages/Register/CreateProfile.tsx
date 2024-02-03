@@ -1,6 +1,6 @@
 import React, { FC, useEffect, useState } from 'react';
 import { Animated, Text, TouchableOpacity, View, StyleSheet, TextInput, ScrollView, Keyboard, Dimensions } from "react-native";
-import { useAppDispatch } from '../../app/base/hooks';
+import { useAppDispatch, useAppSelector } from '../../app/base/hooks';
 import { handlePatientInvitingModal } from '../../app/features/modals/modalsSlice';
 import { cs } from '../../common/styles';
 import AppContainer, { containerStyles } from '../../components/AppContainer';
@@ -15,12 +15,20 @@ import WhiteBorderedLayout from '../../layouts/WhiteBordered';
 import SelectableBtn from '../../components/SelectableBtn';
 import MaskInput from 'react-native-mask-input';
 import { dateMask, phoneMask } from '../../rules/masks.rules';
+import { handleCreateProfileForm } from '../../app/features/profile/profileSlice';
 
 const CreateProfile: FC<NavProps> = ({ navigation }) => {
     const dispatch = useAppDispatch()
+    const { text_fields } = useAppSelector(state => state.profile.creating_form)
+    
     const handleCreateProfile = () => {
 
     }
+
+    useEffect(() => {
+        console.log(text_fields);
+
+    }, [text_fields])
 
     return (
         <Animated.ScrollView contentContainerStyle={{ minHeight: "100%" }}>
@@ -54,7 +62,7 @@ const CreateProfile: FC<NavProps> = ({ navigation }) => {
                                             <View style={[cs.fColumn, cs.spaceM]}>
                                                 <Text style={[cs.fzS, fs.montR, cs.fwMedium]} aria-label="Label for Username"
                                                     nativeID="labelLastName">Фамилия</Text>
-                                                <TextInput accessibilityLabelledBy={"labelLastName"} placeholder={"Фамилия"}
+                                                <TextInput value={text_fields.last_name} onChangeText={val => dispatch(handleCreateProfileForm({ key: "last_name", val }))} accessibilityLabelledBy={"labelLastName"} placeholder={"Фамилия"}
                                                     style={[styles.inputField, cs.fzM, fs.montR]} />
                                             </View>
                                             <View style={[cs.fColumn, cs.spaceM]}>

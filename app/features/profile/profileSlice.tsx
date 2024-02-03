@@ -1,12 +1,14 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { ProfileData, ProfileEditTextFields } from "../../../types/entities/user.types";
+import { ProfileCreateForm, ProfileData, ProfileEditTextFields } from "../../../types/entities/user.types";
 import { HasLoading } from "../../../types/common.types";
 import { OrderApi } from "../../../types/entities/order.types";
+import { ProfileCreateReq } from "../../../types/api/user.api.types";
 
 type ProfileSliceState = {
     creating_form: {
-
-    },
+        gender: number,
+        text_fields: ProfileCreateForm
+    }
     has_profile: boolean | null
     orders: OrderApi[],
     data: ProfileData,
@@ -19,7 +21,18 @@ type ProfileSliceState = {
 
 const initialState: ProfileSliceState = {
     creating_form: {
-
+        gender: 0,
+        text_fields: {
+            passport_numbers: "",
+            first_name: "",
+            last_name: "",
+            subname: "",
+            dob: "", // Дата рождения
+            pob: "", // Место рождения
+            passport_issue_date: "", // Дата выдачи паспорта
+            passport_issued_by: "", // Кем выдан паспорт
+            email: ""
+        }
     },
     has_profile: null,
     orders: [
@@ -107,6 +120,11 @@ export const ProfileSlice = createSlice({
             }
             state.form[key] = val
         },
+        handleCreateProfileForm: (state, action: PayloadAction<{ key: keyof typeof initialState.creating_form.text_fields, val: string }>) => {
+            const key = action.payload.key
+            const val = action.payload.val
+            state.creating_form.text_fields[key] = val
+        },
         setDefaultProfileForm: state => {
             state.form = state.data
         }
@@ -115,7 +133,6 @@ export const ProfileSlice = createSlice({
         //HAS PROFILE
         builder.addCase(getHasProfile.fulfilled, (state, action) => {
             console.log(`Профиль заполнен: ${action.payload}`);
-            
             state.has_profile = action.payload
         })
         //PROFILE
@@ -141,12 +158,12 @@ export const ProfileSlice = createSlice({
         builder.addCase(getAllOrders.rejected, (state, action) => {
             state.loadings.orders = false
         })
-
     },
 })
 
 export const {
     handleProfileForm,
+    handleCreateProfileForm,
     setDefaultProfileForm
 } = ProfileSlice.actions
 

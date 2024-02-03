@@ -1,3 +1,5 @@
+import { ProfileCreateReq } from "../api/user.api.types"
+
 export type ProfileData = {
     first_name: string
     last_name: string
@@ -16,3 +18,6 @@ export type ProfilePersonData = {
     email: string
 }
 export type ProfileEditTextFields = Pick<ProfileData, | "first_name" | "last_name" | "subname" | "gender">
+export type ProfileCreateForm = Omit<ProfileCreateReq, "passport_series" | "passport_id" | "image" | "gender"> & {
+    passport_numbers: string
+}
