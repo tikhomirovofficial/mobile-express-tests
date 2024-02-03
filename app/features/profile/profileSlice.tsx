@@ -4,6 +4,9 @@ import { HasLoading } from "../../../types/common.types";
 import { OrderApi } from "../../../types/entities/order.types";
 
 type ProfileSliceState = {
+    creating_form: {
+
+    },
     has_profile: boolean | null
     orders: OrderApi[],
     data: ProfileData,
@@ -15,6 +18,9 @@ type ProfileSliceState = {
 }
 
 const initialState: ProfileSliceState = {
+    creating_form: {
+
+    },
     has_profile: null,
     orders: [
 
@@ -65,7 +71,7 @@ export const getHasProfile = createAsyncThunk(
     async (req, { dispatch }) => {
         return new Promise<boolean>((res, rej) => {
             setTimeout(() => {
-                res(true)
+                res(false)
             }, 1000)
         })
     }

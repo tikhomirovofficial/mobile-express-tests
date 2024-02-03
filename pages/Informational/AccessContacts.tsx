@@ -16,7 +16,7 @@ const AccessContacts: FC<NavProps> = ({navigation}) => {
     const dispatch = useAppDispatch()
 
     const nextStep = () => {
-        navigation.navigate("inviting")
+        
     }
     return (
         <InfoPageLayout title='Разрешите доступ к своим контактам' image={InfoContactsImage} content={

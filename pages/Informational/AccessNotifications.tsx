@@ -13,23 +13,21 @@ import { NavProps } from '../../types/common.types';
 import * as Notifications from 'expo-notifications'
 const InfoNotificationsImage = require('../../assets/info_notifications.jpg')
 
-const AccessNotifications:FC<NavProps> = ({navigation}) => {
+const AccessNotifications: FC<NavProps> = ({ navigation }) => {
     const dispatch = useAppDispatch()
     const getNotificationPermission = async () => {
-        // Запрашиваем разрешение на уведомления
-        const { status } = await Notifications.requestPermissionsAsync();
-        console.log(status);
-    
-        if (status === 'granted') {
-            navigation.navigate("info_media")
-        } else {
-          // Разрешение на уведомления не получено
-          alert('Не удалось получить разрешение на уведомления');
-        }
-      };
-    const nextStep = () => {
-        navigation.navigate("info_media")
-    }
+        // // Запрашиваем разрешение на уведомления
+        // const { status } = await Notifications.requestPermissionsAsync();
+        // console.log(status);
+
+        // if (status === 'granted') {
+        //     navigation.navigate("info_media")
+        // } else {
+        //   // Разрешение на уведомления не получено
+        //   alert('Не удалось получить разрешение на уведомления');
+        // }
+    };
+
     return (
         <InfoPageLayout title='Разрешите присылать уведомления' image={InfoNotificationsImage} content={
             <AppContainer style={{ flex: 1, ...cs.spaceXXL }}>
@@ -44,7 +42,7 @@ const AccessNotifications:FC<NavProps> = ({navigation}) => {
                             Нажав кнопку «Разрешить», вы соглашаетесь с <Text onPress={() => { }} style={cs.textYellow}>пользовательским соглашением</Text> и подтверждаете, что ознакомились с <Text onPress={() => { }} style={cs.textYellow}>политикой конфиденциальности</Text>
                         </Text>
                     </View>
-                    <TouchableOpacity style={[cs.flexOne]} onPress={async() => await getNotificationPermission()}>
+                    <TouchableOpacity style={[cs.flexOne]} onPress={getNotificationPermission}>
                         <LinearGradient style={[cs.yellowBtn, cs.fCenterCol]}
                             colors={["#FB0", "#FFCB3D", "#FFDA75"]}>
                             <Text style={[cs.fzM, cs.yellowBtnText]}>Разрешить</Text>

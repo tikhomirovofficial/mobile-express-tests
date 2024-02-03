@@ -32,7 +32,7 @@ type AcecssSliceType = {
 
 const initialState: AcecssSliceType = {
     faceId: {
-        connected: true,
+        connected: false,
         asked: false,
         checking: true,
     },

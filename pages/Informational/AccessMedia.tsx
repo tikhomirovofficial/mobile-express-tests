@@ -16,7 +16,7 @@ const AccessMedia:FC<NavProps> = ({navigation})  => {
     const dispatch = useAppDispatch()
 
     const nextStep = () => {
-        navigation.navigate("home")
+        //navigation.navigate("home")
     }
     return (
         <InfoPageLayout title='Разрешите доступ к медиа' image={InfoMediaImage} content={

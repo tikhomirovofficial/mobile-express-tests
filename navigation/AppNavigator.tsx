@@ -61,10 +61,23 @@ const AppNavigator = () => {
     const { token } = useAppSelector(state => state.login)
     const { data, loadings, has_profile } = useAppSelector(state => state.profile)
     const { alreadyBeen, accepted, pin, faceId } = useAppSelector(state => state.access)
+    const { contacts, media, notifications } = useAppSelector(state => state.permissions)
 
     const getInitialRoute = () => {
         if (token.valid) {
             if (accepted.valid) {
+                if (!faceId.connected && !faceId.asked) {
+                    return 'bio_connect'
+                }
+                if (!notifications.granted) {
+                    return "info_notifications"
+                }
+                if (!media.granted) {
+                    return "info_media"
+                }
+                if (!contacts.granted) {
+                    return "info_contacts"
+                }
                 return "home"
             }
             return "pin_accept"
@@ -102,20 +115,19 @@ const AppNavigator = () => {
                                                     <Stack.Screen name="bio_connect" component={ConnectBio} /> : null
                                                 : null
                                             }
+                                            {!notifications.granted ? <Stack.Screen name="info_notifications" component={AccessNotifications} /> : null}
+                                            {!media.granted ? <Stack.Screen name="info_media" component={AccessMedia} /> : null}
+                                            {!contacts.granted ? <Stack.Screen name="info_contacts" component={AccessContacts} /> : null}
                                             {
                                                 has_profile ?
-                                                    <Stack.Screen name="home" component={MainTabs} /> :
+                                                    <Stack.Screen name="home" component={MainTabs} />
+                                                    :
                                                     <Stack.Screen name="profile_create" component={CreateProfile} />
                                             }
+
                                             {/* //Приглашение */}
                                             <Stack.Screen name="inviting" component={SelectingPatients} />
                                             <Stack.Screen name="inviting_check" component={CheckSelectedPatients} />
-
-                                            <Stack.Screen name="info_contacts" component={AccessContacts} />
-                                            <Stack.Screen name="info_media" component={AccessMedia} />
-                                            <Stack.Screen name="info_notifications" component={AccessNotifications} />
-
-
                                             {/* //Информативные экраны */}
                                             <Stack.Screen name="inviting_sent" component={InvitingSent} />
                                             <Stack.Screen name="order_sent" component={OrderSent} />

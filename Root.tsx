@@ -12,33 +12,48 @@ import { deleteTokens } from './utils/storeTokens';
 import { deleteAlreadyBeen } from './utils/storeFirstTime';
 import { deleteAccessed } from './utils/storeAccessed';
 import { getHasProfile } from './app/features/profile/profileSlice';
+import { checkContactsPerm, checkMediaPerm, checkNotificationsPerm } from './app/features/permissions/permissionsSlice';
 
 
 const Root = () => {
     const dispatch = useAppDispatch()
     const { token } = useAppSelector(state => state.login)
     const { has_profile } = useAppSelector(state => state.profile)
-    const { pin, alreadyBeen } = useAppSelector(state => state.access)
+    const { pin, alreadyBeen, faceId } = useAppSelector(state => state.access)
+    const { notifications, media, contacts } = useAppSelector(state => state.permissions)
     const [fontsLoaded] = useFonts();
     const [refreshing, setRefreshing] = React.useState(false);
+    const allAccessesAndPermissionsDefined = !token.checking && !pin.checking && !alreadyBeen.checking && !notifications.checking && !contacts.checking && !media.checking
 
     const onRefresh = React.useCallback(() => {
         setRefreshing(true);
-
         setTimeout(() => {
             setRefreshing(false);
         }, 2000);
     }, []);
 
     useEffect(() => {
-        console.log(`token: ${token.valid}, pin exists: ${pin.exists}, already been: ${alreadyBeen.valid}`);
-    }, [pin.exists, alreadyBeen.valid, token.valid])
+        if (allAccessesAndPermissionsDefined) {
+            console.log(`
+            token: ${token.valid},\n 
+            pin exists: ${pin.exists},\n 
+            already been: ${alreadyBeen.valid},\n
+            face id connected: ${faceId.connected},\n
+            face id asked: ${faceId.asked},\n
+            notifications_perm: ${notifications.granted},\n
+            contacts_perm: ${contacts.granted},\n
+            media_perm: ${media.granted},\n
+            `);
+        }
+
+    }, [pin.checking, token.checking, pin.checking, alreadyBeen.checking, notifications.checking, contacts.checking, media.checking])
 
     useEffect(() => {
         if (token.valid) {
             dispatch(getHasProfile())
         }
     }, [token.valid])
+
     useEffect(() => {
         // deleteTokens()
         // deleteAlreadyBeen()
@@ -46,9 +61,13 @@ const Root = () => {
         dispatch(checkToken())
         dispatch(checkPinCodeExists())
         dispatch(checkFirstTime())
+
+        dispatch(checkNotificationsPerm())
+        dispatch(checkContactsPerm())
+        dispatch(checkMediaPerm())
     }, [])
 
-    if (fontsLoaded && !token.checking && !pin.checking && !alreadyBeen.checking) {
+    if (fontsLoaded && allAccessesAndPermissionsDefined) {
         return (
             <>
                 <StatusBar style={"auto"} />

@@ -8,7 +8,7 @@ import { NavProps } from '../../types/common.types';
 import { LinearGradient } from 'expo-linear-gradient';
 import WhiteBorderedLayout from '../../layouts/WhiteBordered';
 import { BackspaceIcon, CloseIcon } from '../../icons';
-import { checkValidEnteredPin, resetAcceptedErr} from '../../app/features/access/accessSlice';
+import { checkValidEnteredPin, resetAcceptedErr } from '../../app/features/access/accessSlice';
 
 const AcceptPinCode: FC<NavProps> = ({ navigation }) => {
     const dispatch = useAppDispatch()
@@ -66,17 +66,17 @@ const AcceptPinCode: FC<NavProps> = ({ navigation }) => {
 
     return (
         <Animated.ScrollView contentContainerStyle={{ minHeight: "100%" }}>
-            <View style={[cs.fColumn, cs.spaceM, { minHeight: "100%", }]}>
+            <View style={[cs.fColumn, cs.spaceM, { minHeight: "100%"}]}>
                 <WhiteBorderedLayout
                     topContent={
                         <AppContainer style={{ paddingBottom: 0 }}>
                             <View style={[cs.fCenterCol]}>
-                                <Text style={[cs.fwSemi, cs.fwSemi, cs.fzXL]}>Введите пин-код</Text>
+                                <Text style={[cs.fwSemi, cs.fwSemi, cs.fzXL]}>Подтвердите вход</Text>
                             </View>
                         </AppContainer>
                     }
-                    style={{ paddingTop: 40, maxHeight: "100%" }}>
-                    <View style={[cs.fColumnBetw, cs.flexOne, { minHeight: !keyboardStatus ? "100%" : "99.9%", paddingBottom: 32 }]}>
+                    style={{ paddingTop: 40, maxHeight: "100%", flex: 1}}>
+                    <View style={[cs.fColumnBetw, {paddingBottom: 32, height: "100%"}]}>
                         <View style={[cs.spaceXXL, cs.flexOne]}>
                             <View style={[cs.spaceM]}>
                                 <View style={[cs.fColumn, cs.spaceM, cs.fAlCenter]}>
@@ -94,7 +94,7 @@ const AcceptPinCode: FC<NavProps> = ({ navigation }) => {
                                 </View>
                             </View>
                         </View>
-                        <View style={[cs.fColumn, cs.spaceXXL, styles.pinTable]}>
+                        <View style={[cs.fColumn, cs.spaceXXL]}>
                             <View style={[cs.fColumn, cs.spaceL]}>
                                 <View style={[cs.fCenterRow, cs.spaceXXL]}>
                                     <TouchableOpacity onPress={() => handlePin("1")} style={[styles.pinKeyBtn, cs.fCenterCol]}>
@@ -152,9 +152,6 @@ const AcceptPinCode: FC<NavProps> = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
-    pinTable: {
-        paddingBottom: 40,
-    },
     pinLabel: {
         maxWidth: 254
     },

@@ -15,8 +15,9 @@ import WhiteBorderedLayout from '../../layouts/WhiteBordered';
 import MaskInput from 'react-native-mask-input';
 import { createNumberMask, Masks } from 'react-native-mask-input';
 import { handleLoginForm, sendAuthPhone } from '../../app/features/login/loginSlice';
+import { phoneMask } from '../../rules/masks.rules';
 
-const phoneMask = ["+", /\d/, '(', /\d/, /\d/, /\d/, ')', ' ', /\d/, /\d/, /\d/, ' ', /\d/, /\d/, '-', /\d/, /\d/];
+
 
 const LoginPhone: FC<NavProps> = ({ navigation }) => {
     const dispatch = useAppDispatch()

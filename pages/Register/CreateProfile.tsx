@@ -13,6 +13,8 @@ import { NavProps } from '../../types/common.types';
 import { LinearGradient } from 'expo-linear-gradient';
 import WhiteBorderedLayout from '../../layouts/WhiteBordered';
 import SelectableBtn from '../../components/SelectableBtn';
+import MaskInput from 'react-native-mask-input';
+import { dateMask, phoneMask } from '../../rules/masks.rules';
 
 const CreateProfile: FC<NavProps> = ({ navigation }) => {
     const dispatch = useAppDispatch()
@@ -44,7 +46,7 @@ const CreateProfile: FC<NavProps> = ({ navigation }) => {
                                                     <PhotoIcon />
                                                 </View>
                                                 <TouchableOpacity>
-                                                    <Text style={[cs.fwBold, cs.textYellow, cs.fzS, cs.txtCenter]}>Добавить
+                                                    <Text onPress={() => alert("Будет доступно в следующих версиях.")} style={[cs.fwBold, cs.textYellow, cs.fzS, cs.txtCenter]}>Добавить
                                                         фото</Text>
                                                 </TouchableOpacity>
 
@@ -78,8 +80,15 @@ const CreateProfile: FC<NavProps> = ({ navigation }) => {
                                             <View style={[cs.fColumn, cs.spaceM]}>
                                                 <Text style={[cs.fzS, fs.montR, cs.fwMedium]} aria-label="Label for Username"
                                                     nativeID="labelMiddleName">Дата рождения</Text>
-                                                <TextInput accessibilityLabelledBy={"labelMiddleName"} placeholder={"ДД.ММ.ГГГГ"}
-                                                    style={[styles.inputField, cs.fzM, fs.montR]} />
+                                                <MaskInput
+                                                    value={""}
+                                                    placeholder={"ДД.ММ.ГГГГ"}
+                                                    keyboardType={"number-pad"}
+                                                    style={[cs.inputField, cs.fzM, fs.montR]}
+                                                    onChangeText={(masked: string, unmasked: string) => {
+
+                                                    }}
+                                                    mask={dateMask} />
                                             </View>
                                             <View style={[cs.fColumn, cs.spaceM]}>
                                                 <Text style={[cs.fzS, fs.montR, cs.fwMedium]} aria-label="Label for Username"
