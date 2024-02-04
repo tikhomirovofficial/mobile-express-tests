@@ -1,8 +1,8 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { ProfileCreateForm, ProfileData, ProfileEditTextFields } from "../../../types/entities/user.types";
-import { HasLoading } from "../../../types/common.types";
 import { OrderApi } from "../../../types/entities/order.types";
 import { ProfileCreateReq } from "../../../types/api/user.api.types";
+
 
 type ProfileSliceState = {
     creating_form: {
