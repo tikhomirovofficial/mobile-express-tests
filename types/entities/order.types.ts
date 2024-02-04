@@ -4,6 +4,7 @@ export type OrderApi = {
     date: string
     bonus: number
     status: string
+    pacient?: string
 } & HasId
 
 export type OrderDetailsApi = {

@@ -5,7 +5,6 @@ import { Animated, Modal, StyleSheet, Text, TouchableOpacity, View, RefreshContr
 import { cs } from "../../../common/styles";
 import { AnalysisIcon, Logo } from "../../../icons";
 import AnalysisCard from "../../../components/Cards/AnalysisCard";
-import { OrderAnalysisType } from "../../../types/entities/analysis.types";
 import { useAppDispatch, useAppSelector } from "../../../app/base/hooks";
 import { handleOrderInfoModal } from "../../../app/features/modals/modalsSlice";
 import { NavProps } from "../../../types/common.types";
@@ -13,13 +12,15 @@ import OrderInfoModal from "../../../components/Modals/OrderInfoModal";
 import { getGreeting } from '../../../utils/getGreeting';
 import { SkeletonContainer, Skeleton } from 'react-native-skeleton-component';
 import { SkeletonView } from '../../../components/SkeletonView';
-import { getAllOrders } from '../../../app/features/profile/profileSlice';
 import { normalizeDate } from '../../../utils/normalizeDate';
+import { getAllOrders } from '../../../app/features/orders/ordersSlice';
 
 const Main: FC<NavProps> = ({ navigation }) => {
     const dispatch = useAppDispatch()
     const { orderInfoModal } = useAppSelector(state => state.modals)
+    const { all_orders, loadings } = useAppSelector(state => state.orders)
     const profile = useAppSelector(state => state.profile)
+
 
     useEffect(() => {
         dispatch(getAllOrders())
@@ -69,13 +70,13 @@ const Main: FC<NavProps> = ({ navigation }) => {
 
                         <View style={[cs.fColumn, cs.spaceM]}>
                             {
-                                profile.loadings.orders ?
+                                loadings.all_orders ?
                                     Array(3).fill("").map(item => (
                                         <SkeletonView height={100} width={"100%"} />
                                     )) :
 
-                                    profile.orders.length > 0 ?
-                                        profile.orders.map((item, index) => (
+                                    all_orders.length > 0 ?
+                                        all_orders.map((item, index) => (
                                             <AnalysisCard
                                                 handlePress={() => dispatch(handleOrderInfoModal())}
                                                 key={item.id}

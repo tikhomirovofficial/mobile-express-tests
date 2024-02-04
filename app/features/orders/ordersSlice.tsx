@@ -1,32 +1,62 @@
-import {createSlice, PayloadAction} from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { OrderApi } from "../../../types/entities/order.types";
+import { GetAllOrdersRes } from "../../../types/api/orders.api.types";
 
-type Order = {
-    id: number
-    title: string
-    date: string,
-    patientFirstName: string,
-    patientLastName: string,
-    isPaid: false
-}
+
 type OrdersSliceState = {
-    items: Order[];
+    loadings: {
+        all_orders: boolean
+    }
+    all_orders: OrderApi[];
 }
 
 const initialState: OrdersSliceState = {
-    items: [
-        
-    ]
+    loadings: {
+        all_orders: true,
+    },
+    all_orders: []
 }
+export const getAllOrders = createAsyncThunk(
+    'all/orders/get',
+    async (req, { dispatch }) => {
+        return new Promise<GetAllOrdersRes>((res, rej) => {
+            setTimeout(() => {
+                res({
+                    status: true,
+                    orders: [{
+                        id: 1,
+                        status: "Создано",
+                        date: "2024-01-22",
+                        pacient: "Иван Иванов",
+                        bonus: 1,
+                    }]
+                })
+            }, 1000)
+        })
+    }
+)
+
 export const OrdersSlice = createSlice({
     name: "orders",
     initialState,
     reducers: {
-        addOrder(state, action: PayloadAction<Order>) {
-            state.items = [...state.items, action.payload]
-        }
-    }
+
+    },
+    extraReducers: (builder) => {
+        //USER ALL ORDERS
+        builder.addCase(getAllOrders.pending, (state, action) => {
+            state.loadings.all_orders = true
+        })
+        builder.addCase(getAllOrders.fulfilled, (state, action) => {
+            state.all_orders = action.payload.orders
+            state.loadings.all_orders = false
+        })
+        builder.addCase(getAllOrders.rejected, (state, action) => {
+            state.loadings.all_orders = false
+        })
+    },
 })
 export const {
-     addOrder
+
 } = OrdersSlice.actions
 export const ordersReducer = OrdersSlice.reducer

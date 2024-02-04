@@ -32,40 +32,17 @@ export const ModalsSlice = createSlice({
     name: "modals",
     initialState,
     reducers: {
-        handleOrderInfoModal: (state) => {
-            state.orderInfoModal = !state.orderInfoModal
-        },
-        handleProfileEditModal: (state) => {
-            state.profileEditModal = !state.profileEditModal
-        },
-        handlePatientsModal: (state) => {
-            state.patientsModal = !state.patientsModal
-        },
-        handleAboutModal: (state) => {
-            state.aboutAppModal = !state.aboutAppModal
-        },
-        handleBonusesModal: (state) => {
-            state.bonusesModal = !state.bonusesModal
-        },
-        handlePatientInfoModal: (state) => {
-            state.patientInfoModal = !state.patientInfoModal
-        },
-        handlePatientInvitingModal: (state) => {
-            state.patientInvitingModal = !state.patientInvitingModal
-        },
-        handlePatientOrderInfoModal: (state) => {
-            state.patientInvitingModal = !state.patientInvitingModal
-        },
-        handleBonusesBottomSheet: (state) => {
-            state.bonusesBottomSheet = !state.bonusesBottomSheet
-        },
-        handleOrdersFinancesModal: (state) => {
-            state.ordersFinancesModal = !state.ordersFinancesModal
-        },
-        handleAnalysisInfoModal: (state) => {
-            state.analysisInfoModal = !state.analysisInfoModal
-        }
-
+        handleOrderInfoModal: (state) => { state.orderInfoModal = !state.orderInfoModal },
+        handleProfileEditModal: (state) => { state.profileEditModal = !state.profileEditModal },
+        handlePatientsModal: (state) => { state.patientsModal = !state.patientsModal },
+        handleAboutModal: (state) => { state.aboutAppModal = !state.aboutAppModal },
+        handleBonusesModal: (state) => { state.bonusesModal = !state.bonusesModal },
+        handlePatientInfoModal: (state) => { state.patientInfoModal = !state.patientInfoModal },
+        handlePatientInvitingModal: (state) => { state.patientInvitingModal = !state.patientInvitingModal },
+        handlePatientOrderInfoModal: (state) => { state.patientOrderInfoModal = !state.patientOrderInfoModal },
+        handleBonusesBottomSheet: (state) => { state.bonusesBottomSheet = !state.bonusesBottomSheet },
+        handleOrdersFinancesModal: (state) => { state.ordersFinancesModal = !state.ordersFinancesModal },
+        handleAnalysisInfoModal: (state) => { state.analysisInfoModal = !state.analysisInfoModal },
     }
 })
 

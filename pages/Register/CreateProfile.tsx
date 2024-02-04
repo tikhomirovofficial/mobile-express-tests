@@ -15,7 +15,7 @@ import WhiteBorderedLayout from '../../layouts/WhiteBordered';
 import SelectableBtn from '../../components/SelectableBtn';
 import MaskInput from 'react-native-mask-input';
 import { dateMask, passport, phoneMask } from '../../rules/masks.rules';
-import { createProfile, handleCreateProfileForm, handleCreateProfileGender, resetCreateProfileFormStatus } from '../../app/features/profile/profileSlice';
+import { createProfile, handleCreateProfileForm, handleCreateProfileGender, resetCreateProfileForm } from '../../app/features/profile/profileSlice';
 import { InputField } from '../../components/InputField';
 import { ProfileCreateReq } from '../../types/api/user.api.types';
 
@@ -43,7 +43,7 @@ const CreateProfile: FC<NavProps> = ({ navigation }) => {
 
     useEffect(() => {
         return () => {
-            dispatch(resetCreateProfileFormStatus())
+            dispatch(resetCreateProfileForm())
         }
     }, [])
 

@@ -15,6 +15,11 @@ export type OrdersByPatientGetReq = {
 export type OrdersByPatientGetRes = {
     first_name: string
     last_name: string
-    orders: OrderApi[]
     total_bonus: number
+    orders: OrderApi[]
 } & ResponseStatus
+
+export type GetAllOrdersRes = {
+    orders: OrderApi[]
+} & ResponseStatus
+

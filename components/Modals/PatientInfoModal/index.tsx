@@ -18,7 +18,7 @@ import { NavProps } from '../../../types/common.types';
 const PatientInfoModal: FC<NavProps> = ({ navigation }) => {
     const dispatch = useAppDispatch()
     const { patientInfoModal, patientOrderInfoModal, orderInfoModal } = useAppSelector(state => state.modals)
-    const handleModal = () => dispatch(handlePatientInfoModal())
+    const handleModal = () => dispatch(handlePatientOrderInfoModal())
 
     const handleToOrder = () => {
         dispatch(setPatient({

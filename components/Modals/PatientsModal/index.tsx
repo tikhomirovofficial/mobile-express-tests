@@ -45,7 +45,7 @@ const PatientsModal: FC<NavProps> = ({ navigation }) => {
                             data={patients.list}
                             style={[cs.fColumn, styles.patientsList]}
                             renderItem={({ item }) => (
-                                <PatientItem {...item} />
+                                <PatientItem handlePress={handlePatientInfo} {...item} />
                             )} />
                         <ButtonYellow handlePress={toInviting}>
                             <Text style={[cs.fzM, cs.yellowBtnText]}>Пригласить пациентов</Text>
