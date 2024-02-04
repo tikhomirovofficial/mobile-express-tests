@@ -14,21 +14,23 @@ import { LinearGradient } from 'expo-linear-gradient';
 import WhiteBorderedLayout from '../../layouts/WhiteBordered';
 import SelectableBtn from '../../components/SelectableBtn';
 import MaskInput from 'react-native-mask-input';
-import { dateMask, phoneMask } from '../../rules/masks.rules';
-import { handleCreateProfileForm } from '../../app/features/profile/profileSlice';
+import { dateMask, passport, phoneMask } from '../../rules/masks.rules';
+import { handleCreateProfileForm, handleCreateProfileGender } from '../../app/features/profile/profileSlice';
+import { InputField } from '../../components/InputField';
 
 const CreateProfile: FC<NavProps> = ({ navigation }) => {
     const dispatch = useAppDispatch()
-    const { text_fields } = useAppSelector(state => state.profile.creating_form)
-    
-    const handleCreateProfile = () => {
+    const { text_fields, gender } = useAppSelector(state => state.profile.creating_form)
 
+    const handleCreateProfile = () => {
+        console.log(text_fields);
     }
 
     useEffect(() => {
-        console.log(text_fields);
-
-    }, [text_fields])
+        return () => {
+            //clear form
+        }
+    }, [])
 
     return (
         <Animated.ScrollView contentContainerStyle={{ minHeight: "100%" }}>
@@ -62,72 +64,104 @@ const CreateProfile: FC<NavProps> = ({ navigation }) => {
                                             <View style={[cs.fColumn, cs.spaceM]}>
                                                 <Text style={[cs.fzS, fs.montR, cs.fwMedium]} aria-label="Label for Username"
                                                     nativeID="labelLastName">Фамилия</Text>
-                                                <TextInput value={text_fields.last_name} onChangeText={val => dispatch(handleCreateProfileForm({ key: "last_name", val }))} accessibilityLabelledBy={"labelLastName"} placeholder={"Фамилия"}
-                                                    style={[styles.inputField, cs.fzM, fs.montR]} />
+                                                <InputField
+                                                    val={text_fields.last_name}
+                                                    placeholder={"Фамилия"}
+                                                    idInput={"labelLastName"}
+                                                    onChange={val => dispatch(handleCreateProfileForm({ key: "last_name", val }))}
+                                                />
+
                                             </View>
                                             <View style={[cs.fColumn, cs.spaceM]}>
                                                 <Text style={[cs.fzS, fs.montR, cs.fwMedium]} aria-label="Label for Username"
                                                     nativeID="labelFirstName">Имя</Text>
-                                                <TextInput accessibilityLabelledBy={"labelFirstName"} placeholder={"Имя"}
-                                                    style={[styles.inputField, cs.fzM, fs.montR]} />
+                                                <InputField
+                                                    val={text_fields.first_name}
+                                                    placeholder={"Имя"}
+                                                    idInput={"labelFirstName"}
+                                                    onChange={val => dispatch(handleCreateProfileForm({ key: "first_name", val }))}
+                                                />
                                             </View>
                                             <View style={[cs.fColumn, cs.spaceM]}>
                                                 <Text style={[cs.fzS, fs.montR, cs.fwMedium]} aria-label="Label for Username"
                                                     nativeID="labelMiddleName">Отчество</Text>
-                                                <TextInput accessibilityLabelledBy={"labelMiddleName"} placeholder={"Отчество"}
-                                                    style={[styles.inputField, cs.fzM, fs.montR]} />
+                                                <InputField
+                                                    val={text_fields.subname}
+                                                    placeholder={"Отчество"}
+                                                    idInput={"labelMiddleName"}
+                                                    onChange={val => dispatch(handleCreateProfileForm({ key: "subname", val }))}
+                                                />
                                             </View>
                                             <View style={[cs.fColumn, cs.spaceM]}>
                                                 <Text style={[cs.fzS, fs.montR, cs.fwMedium]} aria-label="Label for Username"
                                                     nativeID="labelFirstName">Пол</Text>
                                                 <View style={[cs.dF, cs.fRowBetw, cs.spaceS, cs.flexOne]}>
-                                                    <SelectableBtn isFilled={false} style={[styles.selectableBtn]} text={"Мужской"} handlePress={() => { }} />
-                                                    <SelectableBtn isFilled={true} style={[styles.selectableBtn]} text={"Женский"} handlePress={() => { }} />
+                                                    <SelectableBtn isFilled={gender === 1} style={[styles.selectableBtn]} text={"Мужской"} handlePress={() => dispatch(handleCreateProfileGender(1))} />
+                                                    <SelectableBtn isFilled={gender === 0} style={[styles.selectableBtn]} text={"Женский"} handlePress={() => dispatch(handleCreateProfileGender(0))} />
                                                 </View>
                                             </View>
                                             <View style={[cs.fColumn, cs.spaceM]}>
                                                 <Text style={[cs.fzS, fs.montR, cs.fwMedium]} aria-label="Label for Username"
-                                                    nativeID="labelMiddleName">Дата рождения</Text>
-                                                <MaskInput
-                                                    value={""}
+                                                    nativeID="dateDob">Дата рождения</Text>
+                                                <InputField
+                                                    mask={dateMask}
+                                                    type={"number-pad"}
+                                                    val={text_fields.dob}
                                                     placeholder={"ДД.ММ.ГГГГ"}
-                                                    keyboardType={"number-pad"}
-                                                    style={[cs.inputField, cs.fzM, fs.montR]}
-                                                    onChangeText={(masked: string, unmasked: string) => {
-
-                                                    }}
-                                                    mask={dateMask} />
+                                                    idInput={"dateDob"}
+                                                    onChange={val => dispatch(handleCreateProfileForm({ key: "dob", val }))}
+                                                />
                                             </View>
                                             <View style={[cs.fColumn, cs.spaceM]}>
                                                 <Text style={[cs.fzS, fs.montR, cs.fwMedium]} aria-label="Label for Username"
-                                                    nativeID="labelMiddleName">Серия и номер паспорта</Text>
-                                                <TextInput accessibilityLabelledBy={"labelMiddleName"} placeholder={"СССС НННННН"}
-                                                    style={[styles.inputField, cs.fzM, fs.montR]} />
+                                                    nativeID="pass">Серия и номер паспорта</Text>
+                                                <InputField
+                                                    mask={passport}
+                                                    type={"number-pad"}
+                                                    val={text_fields.passport_numbers}
+                                                    placeholder={"СССС НННННН"}
+                                                    idInput={"pass"}
+                                                    onChange={val => dispatch(handleCreateProfileForm({ key: "passport_numbers", val }))}
+                                                />
                                             </View>
                                             <View style={[cs.fColumn, cs.spaceM]}>
                                                 <Text style={[cs.fzS, fs.montR, cs.fwMedium]} aria-label="Label for Username"
-                                                    nativeID="labelMiddleName">Когда выдан</Text>
-                                                <TextInput accessibilityLabelledBy={"labelMiddleName"} placeholder={"ДД.ММ.ГГГГ"}
-                                                    style={[styles.inputField, cs.fzM, fs.montR]} />
+                                                    nativeID="pass-date">Когда выдан</Text>
+                                                <InputField
+                                                    mask={dateMask}
+                                                    type={"number-pad"}
+                                                    val={text_fields.passport_issue_date}
+                                                    placeholder={"ДД.ММ.ГГГГ"}
+                                                    idInput={"pass-date"}
+                                                    onChange={val => dispatch(handleCreateProfileForm({ key: "passport_issue_date", val }))}
+                                                />
                                             </View>
                                             <View style={[cs.fColumn, cs.spaceM]}>
                                                 <Text style={[cs.fzS, fs.montR, cs.fwMedium]} aria-label="Label for Username"
                                                     nativeID="labelMiddleName">Кем выдан</Text>
-                                                <TextInput accessibilityLabelledBy={"labelMiddleName"} placeholder={"Кем выдан паспорт"}
-                                                    style={[styles.inputField, cs.fzM, fs.montR]} />
+                                                <InputField
+                                                    val={text_fields.passport_issued_by}
+                                                    placeholder={"Кем выдан паспорт"}
+                                                    idInput={"labelMiddleName"}
+                                                    onChange={val => dispatch(handleCreateProfileForm({ key: "passport_issued_by", val }))}
+                                                />
                                             </View>
                                             <View style={[cs.fColumn, cs.spaceM]}>
                                                 <Text style={[cs.fzS, fs.montR, cs.fwMedium]} aria-label="Label for Username"
                                                     nativeID="labelMiddleName">E-mail</Text>
-                                                <TextInput accessibilityLabelledBy={"labelMiddleName"} placeholder={"E-mail"}
-                                                    style={[styles.inputField, cs.fzM, fs.montR]} />
+                                                <InputField
+                                                    val={text_fields.email}
+                                                    placeholder={"E-mail"}
+                                                    idInput={"labelMiddleName"}
+                                                    onChange={val => dispatch(handleCreateProfileForm({ key: "email", val }))}
+                                                />
                                             </View>
                                         </View>
                                     </View>
                                 </View>
                             </ScrollView>
 
-                            <ButtonYellow isFilled={true} handlePress={() => { }}>
+                            <ButtonYellow isFilled={true} handlePress={handleCreateProfile}>
                                 <Text style={[cs.fzM, cs.yellowBtnText]}>Сохранить</Text>
                             </ButtonYellow>
                         </View>

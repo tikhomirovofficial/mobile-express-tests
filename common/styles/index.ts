@@ -11,6 +11,9 @@ const cs = StyleSheet.create({
     dF: {
         display: "flex",
     },
+    focusedInput: {
+        borderColor: "#FFCF00"
+    },
     bottomBorder: {
         borderBottomWidth: 1,
         borderBottomColor: "#F3F3F3",

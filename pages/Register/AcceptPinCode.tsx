@@ -9,6 +9,8 @@ import { LinearGradient } from 'expo-linear-gradient';
 import WhiteBorderedLayout from '../../layouts/WhiteBordered';
 import { BackspaceIcon, CloseIcon } from '../../icons';
 import { checkValidEnteredPin, resetAcceptedErr } from '../../app/features/access/accessSlice';
+import * as Haptics from 'expo-haptics';
+import { vibrate } from '../../utils/device/vibrate';
 
 const AcceptPinCode: FC<NavProps> = ({ navigation }) => {
     const dispatch = useAppDispatch()
@@ -17,6 +19,7 @@ const AcceptPinCode: FC<NavProps> = ({ navigation }) => {
     const { error } = useAppSelector(state => state.access.accepted)
 
     const handlePin = (digit: string) => {
+        vibrate(80)
         setPin((prev) => {
             if (digit === "reset") {
                 return ["", "", "", ""]
@@ -66,7 +69,7 @@ const AcceptPinCode: FC<NavProps> = ({ navigation }) => {
 
     return (
         <Animated.ScrollView contentContainerStyle={{ minHeight: "100%" }}>
-            <View style={[cs.fColumn, cs.spaceM, { minHeight: "100%"}]}>
+            <View style={[cs.fColumn, cs.spaceM, { minHeight: "100%" }]}>
                 <WhiteBorderedLayout
                     topContent={
                         <AppContainer style={{ paddingBottom: 0 }}>
@@ -75,8 +78,8 @@ const AcceptPinCode: FC<NavProps> = ({ navigation }) => {
                             </View>
                         </AppContainer>
                     }
-                    style={{ paddingTop: 40, maxHeight: "100%", flex: 1}}>
-                    <View style={[cs.fColumnBetw, {paddingBottom: 32, height: "100%"}]}>
+                    style={{ paddingTop: 40, maxHeight: "100%", flex: 1 }}>
+                    <View style={[cs.fColumnBetw, { paddingBottom: 32, height: "100%" }]}>
                         <View style={[cs.spaceXXL, cs.flexOne]}>
                             <View style={[cs.spaceM]}>
                                 <View style={[cs.fColumn, cs.spaceM, cs.fAlCenter]}>

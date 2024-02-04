@@ -7,6 +7,7 @@ import { checkPinExists } from "../../../utils/checkAccessed";
 import { storeAlreadyBeen } from "../../../utils/storeFirstTime";
 import { checkEnteredPin } from "../../../utils/checkEnteredPin";
 import { deletePin, storePin } from "../../../utils/storePin";
+import { vibrate } from "../../../utils/device/vibrate";
 
 type AcecssSliceType = {
     faceId: {
@@ -96,6 +97,7 @@ export const checkValidEnteredPin = createAsyncThunk(
     async (entered_pin: string, { dispatch }) => {
         const isEntered = await checkEnteredPin(entered_pin)
         if (!isEntered) {
+            vibrate(200)
             throw isEntered
         }
         //Выполним отделную функцию для проверки заполненности профиля

@@ -21,7 +21,7 @@ type ProfileSliceState = {
 
 const initialState: ProfileSliceState = {
     creating_form: {
-        gender: 0,
+        gender: 1,
         text_fields: {
             passport_numbers: "",
             first_name: "",
@@ -120,6 +120,9 @@ export const ProfileSlice = createSlice({
             }
             state.form[key] = val
         },
+        handleCreateProfileGender: (state, action: PayloadAction<0 | 1>) => {
+            state.creating_form.gender = action.payload
+        },
         handleCreateProfileForm: (state, action: PayloadAction<{ key: keyof typeof initialState.creating_form.text_fields, val: string }>) => {
             const key = action.payload.key
             const val = action.payload.val
@@ -164,6 +167,7 @@ export const ProfileSlice = createSlice({
 export const {
     handleProfileForm,
     handleCreateProfileForm,
+    handleCreateProfileGender,
     setDefaultProfileForm
 } = ProfileSlice.actions
 
