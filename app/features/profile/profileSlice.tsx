@@ -1,11 +1,15 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { ProfileCreateForm, ProfileData, ProfileEditTextFields } from "../../../types/entities/user.types";
 import { OrderApi } from "../../../types/entities/order.types";
-import { ProfileCreateReq } from "../../../types/api/user.api.types";
+import { ProfileCreateReq, ProfileCreateRes } from "../../../types/api/user.api.types";
+import { EMAIL } from "../../../rules/masks.rules";
 
 
 type ProfileSliceState = {
     creating_form: {
+        sending: boolean
+        err: string,
+        disabled: boolean,
         gender: number,
         text_fields: ProfileCreateForm
     }
@@ -21,6 +25,9 @@ type ProfileSliceState = {
 
 const initialState: ProfileSliceState = {
     creating_form: {
+        sending: false,
+        err: "",
+        disabled: true,
         gender: 1,
         text_fields: {
             passport_numbers: "",
@@ -79,6 +86,20 @@ export const getProfile = createAsyncThunk(
         })
     }
 )
+export const createProfile = createAsyncThunk(
+    'profile/create',
+    async (req: ProfileCreateReq, { dispatch }) => {
+        const resp: ProfileCreateRes = { status: true }
+        if (!resp.status) {
+            throw new Error("Не удалось создать профиль!")
+        }
+        return new Promise<ProfileCreateRes>((res, rej) => {
+            setTimeout(() => {
+                res(resp)
+            }, 1000)
+        })
+    }
+)
 export const getHasProfile = createAsyncThunk(
     'has-profile/get',
     async (req, { dispatch }) => {
@@ -126,10 +147,29 @@ export const ProfileSlice = createSlice({
         handleCreateProfileForm: (state, action: PayloadAction<{ key: keyof typeof initialState.creating_form.text_fields, val: string }>) => {
             const key = action.payload.key
             const val = action.payload.val
-            state.creating_form.text_fields[key] = val
+            const tempCreatingForm: typeof initialState.creating_form.text_fields = JSON.parse(JSON.stringify(state.creating_form.text_fields))
+
+            if (key === "dob") {
+                //correcting dob
+            }
+            if (key == "passport_issue_date") {
+                //correcting date
+            }
+            tempCreatingForm[key] = val
+            state.creating_form.text_fields = tempCreatingForm
+
+            const datesAreValid = tempCreatingForm.dob.length === 10 && tempCreatingForm.passport_issue_date.length === 10
+            const pass = tempCreatingForm.passport_numbers.length === 11
+            const allFieldsAreNotEmpty = Object.values(tempCreatingForm).every((val) => val.length > 0)
+            const emailIsValid = EMAIL.test(tempCreatingForm["email"])
+
+            state.creating_form.disabled = !datesAreValid || !pass || !allFieldsAreNotEmpty || !emailIsValid
         },
         setDefaultProfileForm: state => {
             state.form = state.data
+        },
+        resetCreateProfileForm: state => {
+            state.creating_form = initialState.creating_form
         }
     },
     extraReducers: (builder) => {
@@ -150,6 +190,18 @@ export const ProfileSlice = createSlice({
         builder.addCase(getProfile.rejected, (state, action) => {
             state.loadings.profile = false
         })
+        //PROFILE CREATE
+        builder.addCase(createProfile.pending, (state, action) => {
+            state.creating_form.sending = true
+        })
+        builder.addCase(createProfile.fulfilled, (state, action) => {
+            state.has_profile = action.payload.status
+            state.creating_form.sending = false
+        })
+        builder.addCase(createProfile.rejected, (state, action) => {
+            state.creating_form.err = "Не удалось создать профиль!"
+            state.creating_form.sending = false
+        })
         //PROFILE ORDERS
         builder.addCase(getAllOrders.pending, (state, action) => {
             state.loadings.orders = true
@@ -168,6 +220,7 @@ export const {
     handleProfileForm,
     handleCreateProfileForm,
     handleCreateProfileGender,
+    resetCreateProfileFormStatus,
     setDefaultProfileForm
 } = ProfileSlice.actions
 

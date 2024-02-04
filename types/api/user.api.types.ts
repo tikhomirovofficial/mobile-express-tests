@@ -22,5 +22,5 @@ export type AuthRefreshRes = Pick<JWT, "access">
 export type ProfileGetRes = ProfileData & ResponseStatus
 
 // Регистрация профиля
-export type ProfileCreateReq = Omit<ProfileData, "bonus"> & ProfilePersonData
+export type ProfileCreateReq = Omit<ProfileData, "bonus" | "image"> & ProfilePersonData
 export type ProfileCreateRes = ResponseStatus

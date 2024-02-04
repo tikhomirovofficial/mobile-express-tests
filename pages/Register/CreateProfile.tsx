@@ -15,20 +15,35 @@ import WhiteBorderedLayout from '../../layouts/WhiteBordered';
 import SelectableBtn from '../../components/SelectableBtn';
 import MaskInput from 'react-native-mask-input';
 import { dateMask, passport, phoneMask } from '../../rules/masks.rules';
-import { handleCreateProfileForm, handleCreateProfileGender } from '../../app/features/profile/profileSlice';
+import { createProfile, handleCreateProfileForm, handleCreateProfileGender, resetCreateProfileFormStatus } from '../../app/features/profile/profileSlice';
 import { InputField } from '../../components/InputField';
+import { ProfileCreateReq } from '../../types/api/user.api.types';
 
 const CreateProfile: FC<NavProps> = ({ navigation }) => {
     const dispatch = useAppDispatch()
-    const { text_fields, gender } = useAppSelector(state => state.profile.creating_form)
+    const { text_fields, gender, disabled, sending } = useAppSelector(state => state.profile.creating_form)
 
     const handleCreateProfile = () => {
-        console.log(text_fields);
+        const data: ProfileCreateReq = {
+            first_name: text_fields.first_name,
+            last_name: text_fields.last_name,
+            subname: text_fields.subname,
+            dob: text_fields.dob,
+            pob: text_fields.pob,
+            passport_issue_date: text_fields.passport_issue_date,
+            passport_issued_by: text_fields.passport_issued_by,
+            passport_series: text_fields.passport_numbers.split(" ")[0],
+            passport_id: text_fields.passport_numbers.split(" ")[1],
+            email: text_fields.email,
+            gender
+
+        }
+        dispatch(createProfile(data));
     }
 
     useEffect(() => {
         return () => {
-            //clear form
+            dispatch(resetCreateProfileFormStatus())
         }
     }, [])
 
@@ -114,6 +129,16 @@ const CreateProfile: FC<NavProps> = ({ navigation }) => {
                                             </View>
                                             <View style={[cs.fColumn, cs.spaceM]}>
                                                 <Text style={[cs.fzS, fs.montR, cs.fwMedium]} aria-label="Label for Username"
+                                                    nativeID="pob">Место рождения</Text>
+                                                <InputField
+                                                    val={text_fields.pob}
+                                                    placeholder={"Место рождения"}
+                                                    idInput={"pob"}
+                                                    onChange={val => dispatch(handleCreateProfileForm({ key: "pob", val }))}
+                                                />
+                                            </View>
+                                            <View style={[cs.fColumn, cs.spaceM]}>
+                                                <Text style={[cs.fzS, fs.montR, cs.fwMedium]} aria-label="Label for Username"
                                                     nativeID="pass">Серия и номер паспорта</Text>
                                                 <InputField
                                                     mask={passport}
@@ -161,7 +186,7 @@ const CreateProfile: FC<NavProps> = ({ navigation }) => {
                                 </View>
                             </ScrollView>
 
-                            <ButtonYellow isFilled={true} handlePress={handleCreateProfile}>
+                            <ButtonYellow disabled={disabled} handlePress={handleCreateProfile}>
                                 <Text style={[cs.fzM, cs.yellowBtnText]}>Сохранить</Text>
                             </ButtonYellow>
                         </View>
