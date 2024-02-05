@@ -51,11 +51,11 @@ const AnalysisCard: FC<OrderAnalysisType> = ({
             </View>
             <View style={[cs.fRowBetw, cs.fAlCenter, cs.flexOne, styles.cardBottom]}>
                 <View style={[getStatusObj(paid).styleBlock, styles.statusBlock]}>
-                    <Text style={[cs.fwSemi, cs.colorWhite]}>{getStatusObj(paid).text}</Text>
+                    <Text style={[cs.fwSemi, cs.colorWhite, cs.fzS]}>{getStatusObj(paid).text}</Text>
                 </View>
                 <TouchableOpacity style={[cs.fAlCenter, cs.fRow, styles.resultsBtn]}>
                     <DownloadIcon />
-                    <Text style={[cs.colorGray, cs.fwSemi, cs.fzXS, styles.resultsText]}>
+                    <Text style={[cs.colorGray, cs.fwSemi, cs.fzXXS, styles.resultsText]}>
                         Скачать результаты анализов
                     </Text>
                 </TouchableOpacity>

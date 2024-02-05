@@ -8,11 +8,12 @@ import { PatientApi } from "../../../types/entities/patients.types";
 type CurrentData = {
     loadings: {
         order: boolean,
-        patient_orders: boolean
+        patient_orders: boolean,
+        patient_info: boolean
     },
     orderInfo: OrderDetailsApi,
     patientInfo: {
-        data: Pick<PatientApi, "first_name" | "last_name" | "id" | "bonus">,
+        data: PatientApi,
         orders: OrderApi[]
     }
 }
@@ -20,8 +21,10 @@ type CurrentData = {
 const initialState: CurrentData = {
     loadings: {
         order: true,
-        patient_orders: true
+        patient_orders: true,
+        patient_info: true
     },
+
     orderInfo: {
         info_order: {
             doctor: "",
@@ -41,6 +44,8 @@ const initialState: CurrentData = {
     patientInfo: {
         data: {
             id: 0,
+            phone: "",
+            date: "",
             first_name: "",
             last_name: "",
             bonus: 0
@@ -91,6 +96,24 @@ export const getOrdersByPatientId = createAsyncThunk(
         })
     }
 )
+export const getPatientById = createAsyncThunk(
+    'patient/get',
+    async (id: number, { dispatch }) => {
+        return new Promise<PatientApi>((res, rej) => {
+            setTimeout(() => {
+                res({
+                    id: 1,
+                    first_name: "Артём",
+                    last_name: "Тихомиров",
+                    bonus: 400,
+                    date: "2024-01-22",
+                    phone: "79211400129"
+                })
+            }, 1000)
+        })
+    }
+)
+
 
 export const CurrentDataSlice = createSlice({
     name: "current-data",
@@ -129,6 +152,18 @@ export const CurrentDataSlice = createSlice({
         builder.addCase(getOrdersByPatientId.rejected, (state, action) => {
             state.loadings.patient_orders = false
         })
+        //PATIENT  BY ID
+        builder.addCase(getPatientById.pending, (state, action) => {
+            state.loadings.patient_info = true
+        })
+        builder.addCase(getPatientById.fulfilled, (state, action) => {
+            state.patientInfo.data = action.payload
+            state.loadings.patient_info = false
+        })
+        builder.addCase(getPatientById.rejected, (state, action) => {
+            state.loadings.patient_info = false
+        })
+
 
     },
 })

@@ -225,6 +225,12 @@ const cs = StyleSheet.create({
     },
     textBlue: {
         color: "rgba(18, 178, 179, 1)"
+    },
+    errBorderColor: {
+        borderColor: "#FF4A4A"
+    },
+    errBg: {
+        backgroundColor: "#FF4A4A"
     }
 
 })
