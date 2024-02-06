@@ -7,7 +7,8 @@ import { fs } from '../../navigation/AppNavigator';
 import { NavProps } from '../../types/common.types';
 import { LinearGradient } from 'expo-linear-gradient';
 import WhiteBorderedLayout from '../../layouts/WhiteBordered';
-import { checkToken, sendAuthCode } from '../../app/features/login/loginSlice';
+import { checkToken, resetLoginCodeStatus, sendAuthCode } from '../../app/features/login/loginSlice';
+import { resetAcceptedErr } from '../../app/features/access/accessSlice';
 
 const CodePhoneAccept: FC<NavProps> = ({ navigation }) => {
     const dispatch = useAppDispatch()
@@ -83,7 +84,7 @@ const CodePhoneAccept: FC<NavProps> = ({ navigation }) => {
 
     useEffect(() => {
         if (code.filter(item => item !== "").length === 4) {
-            if (!sended) {
+            if (!sended && auth.success.code === null) {
                 if (keyboardStatus) {
                     Keyboard.dismiss()
                 }
@@ -94,9 +95,11 @@ const CodePhoneAccept: FC<NavProps> = ({ navigation }) => {
             }
             return
         }
+        if (auth.success.code === false) {
+            dispatch(resetLoginCodeStatus())
+        }
         setSended(false)
-    }, [code, keyboardStatus, sended])
-
+    }, [code, keyboardStatus, sended, auth.success.code])
 
 
     return (
@@ -114,8 +117,14 @@ const CodePhoneAccept: FC<NavProps> = ({ navigation }) => {
                     <View style={[cs.fColumnBetw, cs.flexOne, { minHeight: !keyboardStatus ? "100%" : "99%", paddingBottom: 32 }]}>
                         <View style={[cs.spaceM]}>
                             <View style={[cs.fColumn, cs.spaceM]}>
-                                <Text style={[cs.fzS, fs.montR, cs.fwMedium]} aria-label="Label for Usernam"
-                                    nativeID="labelFirstName">Введите код из СМС {auth.form.maskedPhone}</Text>
+                                <Text style={[cs.fzS, fs.montR, cs.fwMedium, (auth.success.code === false ? cs.colorRed : null)]} aria-label="Label for Usernam"
+                                    nativeID="labelFirstName">
+                                    {
+                                        auth.success.code !== false ? ` Введите код из СМС ${auth.form.maskedPhone}` :
+                                            "Неверный код!"
+                                    }
+
+                                </Text>
                                 <View style={[cs.fRowBetw]}>
                                     {
                                         code.map((item, index) => (
@@ -124,7 +133,7 @@ const CodePhoneAccept: FC<NavProps> = ({ navigation }) => {
                                                     handleBackspace(index);
                                                 }
                                             }} value={item} onChangeText={(text) => handleCodeInput(text, index)} ref={(ref) => (inputRefs.current[index] = ref as TextInput)} keyboardType={"numeric"} maxLength={1} accessibilityLabelledBy={"labelFirstName"} placeholder={item}
-                                                style={[cs.inputField, cs.fzM, fs.montR, cs.txtCenter, styles.smsCodeField, cs.fwBold]} />
+                                                style={[cs.inputField, cs.fzM, fs.montR, cs.txtCenter, styles.smsCodeField, cs.fwBold, (auth.success.code === false ? [cs.errBorderColor, cs.colorRed] : null)]} />
                                         ))
                                     }
                                 </View>

@@ -75,7 +75,7 @@ export const checkPinCodeExists = createAsyncThunk(
             throw isExists
         }
         return new Promise<boolean>((res, rej) => {
-            res(isExists)
+            res(false)
         })
 
     }
@@ -95,8 +95,8 @@ export const setPinCode = createAsyncThunk(
 export const checkValidEnteredPin = createAsyncThunk(
     'access/pin/entered',
     async (entered_pin: string, { dispatch }) => {
-        //const isEntered = await checkEnteredPin(entered_pin)
-        const isEntered = true
+        const isEntered = await checkEnteredPin(entered_pin)
+        //const isEntered = true
         if (!isEntered) {
             vibrate(200)
             throw isEntered

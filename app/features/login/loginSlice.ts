@@ -124,6 +124,10 @@ export const LoginSlice = createSlice({
         resetLoginForm: (state) => {
             state.auth = initialState.auth
         },
+        resetLoginCodeStatus: (state) => {
+            state.auth.success.code = initialState.auth.success.code
+        },
+        
 
     },
     extraReducers: (builder) => {
@@ -194,7 +198,8 @@ export const LoginSlice = createSlice({
 
 export const {
     handleLoginForm,
-    resetLoginForm
+    resetLoginForm,
+    resetLoginCodeStatus
 } = LoginSlice.actions
 
 

@@ -4,6 +4,9 @@ import { cs } from "../../common/styles";
 import { CheckedBorderedIcon, CheckedCircleIcon, ProfileIcon, UncheckedBorderedIcon, UncheckedCircleIcon } from "../../icons";
 import { fs } from "../../navigation/AppNavigator";
 import { PatientApi, PatientType } from "../../types/entities/patients.types";
+import { useAppDispatch } from '../../app/base/hooks';
+import { getPatientById } from '../../app/features/current-data/currentData';
+import { handlePatientInfoModal } from '../../app/features/modals/modalsSlice';
 
 type PatientItemProps = {
     selected?: boolean,
@@ -11,7 +14,23 @@ type PatientItemProps = {
     neededBottomBorder?: boolean
     handlePress?: () => any,
 } & PatientApi
-const PatientItem: FC<PatientItemProps> = ({ selected, handlePress, neededBottomBorder = true, isRadio, first_name, last_name, bonus, phone, id }) => {
+
+const PatientItem: FC<PatientItemProps> = ({
+    selected,
+    handlePress,
+    neededBottomBorder = true,
+    isRadio,
+    first_name,
+    last_name,
+    bonus,
+    phone,
+    id }) => {
+    const dispatch = useAppDispatch()       
+
+    const handleOpenPatientInfo = () => {
+        dispatch(handlePatientInfoModal())
+        dispatch(getPatientById(id))
+    }
     const GetSelectedIcon = () => {
         if (selected !== undefined) {
             if (!selected) {
@@ -22,7 +41,7 @@ const PatientItem: FC<PatientItemProps> = ({ selected, handlePress, neededBottom
         return null
     }
     return (
-        <TouchableOpacity onPress={handlePress} style={[styles.patientCard, cs.fRowBetw, cs.fAlCenter, (neededBottomBorder ? cs.bottomBorder : null)]}>
+        <TouchableOpacity onPress={handleOpenPatientInfo} style={[styles.patientCard, cs.fRowBetw, cs.fAlCenter, (neededBottomBorder ? cs.bottomBorder : null)]}>
             <View style={[cs.fRow, cs.fAlCenter, cs.spaceM]}>
                 <View style={[styles.patientAvatar, styles.patientAvatarEmpty, cs.circle, cs.fCenterCol]}>
                     <ProfileIcon height={12} />

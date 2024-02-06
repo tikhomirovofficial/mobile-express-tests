@@ -8,6 +8,7 @@ export type PatientType = {
 }
 export type PatientApi = {
     first_name: string
+    subname?: string,
     last_name: string
     bonus: number
     date: string,

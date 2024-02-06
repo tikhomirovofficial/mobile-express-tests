@@ -33,6 +33,7 @@ const AcceptPinCode: FC<NavProps> = ({ navigation }) => {
                 }
                 return [...prev]
             }
+
             if (filledCount < pin.length) {
                 prev[filledCount] = digit
                 return [...prev]
@@ -43,12 +44,17 @@ const AcceptPinCode: FC<NavProps> = ({ navigation }) => {
 
     useEffect(() => {
         if (pin.filter(item => item !== "").length === 4) {
-            const pinStr = pin.join("")
-            dispatch(checkValidEnteredPin(pinStr))
+            if (!error) {
+                const pinStr = pin.join("")
+                dispatch(checkValidEnteredPin(pinStr))
+            }
             return
         }
-        dispatch(resetAcceptedErr())
-    }, [pin])
+        if(error) {
+            dispatch(resetAcceptedErr())
+        }
+
+    }, [pin, error])
 
     useEffect(() => {
         Keyboard.dismiss()
@@ -90,11 +96,10 @@ const AcceptPinCode: FC<NavProps> = ({ navigation }) => {
                                 <View style={[cs.fRow, cs.spaceXL, cs.jcCenter]}>
                                     {
                                         pin.map(item => (
-                                            <View style={[styles.pinDot, (item !== "" ? cs.bgYellow : null)]}></View>
+                                            <View style={[styles.pinDot, (!error ? item !== "" ? cs.bgYellow : null : cs.errBg)]}></View>
                                         ))
                                     }
-
-                                </View>
+                                </View> 
                             </View>
                         </View>
                         <View style={[cs.fColumn, cs.spaceXXL]}>
