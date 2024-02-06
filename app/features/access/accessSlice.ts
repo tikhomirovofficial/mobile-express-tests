@@ -44,7 +44,7 @@ const initialState: AcecssSliceType = {
     accepted: {
         error: "",
         checking: true,
-        valid: true
+        valid: false
     },
     pin: {
         exists: false,

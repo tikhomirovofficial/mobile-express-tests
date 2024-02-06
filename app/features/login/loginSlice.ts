@@ -95,7 +95,7 @@ export const sendAuthCode = createAsyncThunk(
         const resp: AuthAcceptRes = {
             refresh: token,
             access: "",
-            status: false
+            status: true
         }
         if (!resp.status) {
             throw new Error("Некорректный код")

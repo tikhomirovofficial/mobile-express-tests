@@ -153,6 +153,7 @@ const CodePhoneAccept: FC<NavProps> = ({ navigation }) => {
 const styles = StyleSheet.create({
     smsCodeField: {
         fontSize: 36,
+        minWidth: "23.6%",
         padding: 0,
         paddingVertical: 8
     }
