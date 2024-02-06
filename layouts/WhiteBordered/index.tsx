@@ -1,28 +1,42 @@
-import React, {FC, ReactNode} from 'react';
-import {Dimensions, ScrollView, StyleSheet, View, ViewStyle, Text} from "react-native";
+import React, { FC, ReactNode } from 'react';
+import { Dimensions, ScrollView, StyleSheet, View, ViewStyle, Text } from "react-native";
 import AppContainer from "../../components/AppContainer";
-import {cs} from "../../common/styles";
+import { cs } from "../../common/styles";
 
 type WhiteBorderedProps = {
     children: ReactNode,
+    scrollable?: boolean
     style?: ViewStyle | ViewStyle[],
     topContent?: ReactNode
 }
 const minContainerHeight = Dimensions.get("window").height / 100 * 92
 
-const WhiteBorderedLayout: FC<WhiteBorderedProps> = ({children, topContent, style}) => {
+const WhiteBorderedLayout: FC<WhiteBorderedProps> = ({ children, topContent, style, scrollable = true }) => {
     return (
         <View style={styles.baseView}>
-            <ScrollView contentContainerStyle={styles.scrollContainer} style={cs.flexOne}>
-                <View style={styles.containerWrapperScroll}>
-                    {topContent}
-                    <View style={[styles.whiteContainer, style]}>
-                        <AppContainer>
-                            {children}
-                        </AppContainer>
+            {
+                scrollable ?
+                    <ScrollView contentContainerStyle={styles.scrollContainer} style={cs.flexOne}>
+                        <View style={styles.containerWrapperScroll}>
+                            {topContent}
+                            <View style={[styles.whiteContainer, style]}>
+                                <AppContainer>
+                                    {children}
+                                </AppContainer>
+                            </View>
+                        </View>
+                    </ScrollView> :
+                    <View style={[cs.flexOne, styles.scrollContainer]}>
+                        <View style={styles.containerWrapperScroll}>
+                            {topContent}
+                            <View style={[styles.whiteContainer, style]}>
+                                <AppContainer>
+                                    {children}
+                                </AppContainer>
+                            </View>
+                        </View>
                     </View>
-                </View>
-            </ScrollView>
+            }
 
         </View>
 

@@ -31,13 +31,18 @@ const CreatePinCode: FC<NavProps> = ({ navigation }) => {
                     if (filledCount) {
                         return ["", "", "", ""]
                     }
+                    if(isAccepting) {
+                        setIsAccepting(false)
+                    }
                     return [...prev]
                 }
                 if (digit === "clear") {
                     if (filledCount) {
                         prev[filledCount - 1] = ""
-
                         return [...prev]
+                    }
+                    if(isAccepting) {
+                        setIsAccepting(false)
                     }
                     return [...prev]
                 }
@@ -119,8 +124,8 @@ const CreatePinCode: FC<NavProps> = ({ navigation }) => {
                             </View>
                         </AppContainer>
                     }
-                    style={{ paddingTop: 40, maxHeight: "100%", backgroundColor: "blue" }}>
-                    <View style={[cs.fColumnBetw, cs.flexOne, { minHeight: !keyboardStatus ? "99.5%" : "99.1%", paddingBottom: 32, backgroundColor: "red" }]}>
+                    style={{ paddingTop: 40, maxHeight: "100%", flex: 1 }}>
+                    <View style={[cs.fColumnBetw, { paddingBottom: 32, height: "100%" }]}>
                         <View style={[cs.spaceXXL, cs.flexOne]}>
                             <View style={[cs.spaceM]}>
                                 <View style={[cs.fColumn, cs.spaceM, cs.fAlCenter]}>
@@ -214,11 +219,9 @@ const CreatePinCode: FC<NavProps> = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
-    pinTable: {
-        paddingBottom: 40,
-    },
+    pinTable: {},
     pinLabel: {
-        maxWidth: 254
+        maxWidth: 256
     },
     pinDot: {
         height: 14,

@@ -13,6 +13,8 @@ import {
 import PatientInfoModal from "../PatientInfoModal";
 import { NavProps } from "../../../types/common.types";
 import { ModalContainer } from '../../ModalContainer';
+import { SkeletonContainer } from 'react-native-skeleton-component';
+import { SkeletonView } from '../../SkeletonView';
 
 const PatientsModal: FC<NavProps> = ({ navigation }) => {
     const dispatch = useAppDispatch()
@@ -31,7 +33,7 @@ const PatientsModal: FC<NavProps> = ({ navigation }) => {
 
     return (
         <Modal animationType={"slide"} visible={patientsModal} transparent={true}>
-            <WhiteBordered style={{ ...cs.modalSlidedBottom }}>
+            <WhiteBordered scrollable={false} style={{ ...cs.modalSlidedBottom }}>
                 <View style={[cs.spaceXXL, styles.patientsModalBlock]}>
                     <View style={[cs.fRowBetw]}>
                         <Text onPress={handleModal} style={[cs.yellowBtnText, cs.textYellow, cs.fzM]}>Закрыть</Text>
@@ -40,17 +42,37 @@ const PatientsModal: FC<NavProps> = ({ navigation }) => {
                         </View>
                         <View style={{ flex: 0.4 }}></View>
                     </View>
-                    <View style={[styles.patientsContent, cs.fColumnBetw]}>
-                        <FlatList
-                            data={patients.list}
-                            style={[cs.fColumn, styles.patientsList]}
-                            renderItem={({ item }) => (
-                                <PatientItem handlePress={handlePatientInfo} {...item} />
-                            )} />
+
+                    <View style={[cs.flexOne, cs.spaceM, cs.fColumn]}>
+                        {
+                            patients.loadings.patients ?
+                                <>
+                                    <SkeletonContainer>
+                                        <View style={[cs.flexOne, cs.spaceM, cs.fColumn]}>
+                                            <SkeletonView height={60} width={"100%"}></SkeletonView>
+                                            <SkeletonView height={60} width={"100%"}></SkeletonView>
+                                            <SkeletonView height={60} width={"100%"}></SkeletonView>
+                                        </View>
+                                    </SkeletonContainer>
+                                </> :
+                                <View style={[cs.flexOne, { position: "relative" }]}>
+                                    <View style={[{ position: "absolute", height: "100%", width: "100%" }]}>
+                                            <FlatList
+                                                data={patients.list}
+                                                style={[cs.fColumn, styles.patientsList]}
+                                                renderItem={({ item }) => (
+                                                    <PatientItem handlePress={handlePatientInfo} {...item} />
+                                                )} />
+
+                                        </View>
+
+                                </View>
+                        }
                         <ButtonYellow handlePress={toInviting}>
                             <Text style={[cs.fzM, cs.yellowBtnText]}>Пригласить пациентов</Text>
                         </ButtonYellow>
                     </View>
+
                 </View>
                 {
                     patientInfoModal ? <PatientInfoModal navigation={navigation} /> : null

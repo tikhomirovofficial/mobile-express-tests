@@ -24,7 +24,7 @@ export const getAllPatients = createAsyncThunk(
     async (req, { dispatch }) => {
         return new Promise<PatientApi[]>((res, rej) => {
             setTimeout(() => {
-                res([
+                res([...Array(12).fill(
                     {
                         id: 1,
                         bonus: 10,
@@ -32,7 +32,7 @@ export const getAllPatients = createAsyncThunk(
                         first_name: "Артём",
                         last_name: "Тихомиров",
                         phone: "+79005001849"
-                    }
+                    },)
                 ])
             }, 1000)
         })

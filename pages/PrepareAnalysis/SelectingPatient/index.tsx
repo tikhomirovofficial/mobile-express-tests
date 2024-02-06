@@ -176,7 +176,7 @@ const styles = StyleSheet.create({
     patientsContent: {
         flex: 1,
         minHeight: "100%",
-        paddingBottom: 40
+        paddingBottom: 32
     },
 })
 export default SelectingPatient;

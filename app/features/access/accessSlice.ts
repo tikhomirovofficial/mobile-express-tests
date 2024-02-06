@@ -33,7 +33,7 @@ type AcecssSliceType = {
 
 const initialState: AcecssSliceType = {
     faceId: {
-        connected: false,
+        connected: true,
         asked: false,
         checking: true,
     },
@@ -75,7 +75,7 @@ export const checkPinCodeExists = createAsyncThunk(
             throw isExists
         }
         return new Promise<boolean>((res, rej) => {
-            res(false)
+            res(isExists)
         })
 
     }
