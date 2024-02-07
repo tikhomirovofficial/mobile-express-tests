@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { FC, useEffect } from 'react';
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack"
 import Main from "../pages/Account/Main";
@@ -32,26 +32,35 @@ import { useAppDispatch, useAppSelector } from '../app/base/hooks';
 import { getAllOrders, getProfile } from '../app/features/profile/profileSlice';
 import { getAllPatients } from '../app/features/patients/patientsSlice';
 import { checkToken } from '../app/features/login/loginSlice';
+import PatientInfoModal from '../components/Modals/PatientInfoModal';
+import { NavProps } from '../types/common.types';
 
 const Stack = createNativeStackNavigator()
 const Tab = createBottomTabNavigator()
 
-const MainTabs = () => {
+const MainTabs: FC<NavProps> = ({ navigation }) => {
     const dispatch = useAppDispatch()
-
+    const { patientInfoModal } = useAppSelector(state => state.modals)
+    
     useEffect(() => {
         dispatch(getProfile())
         dispatch(getAllPatients())
     }, [])
 
     return (
-        <Tab.Navigator initialRouteName={"orders"} tabBar={(props) => <AppTab key={props.state.index} {...props} />}
-            sceneContainerStyle={styles.main}
-            screenOptions={{ headerShown: false }}>
-            <Tab.Screen name="orders" component={Main} />
-            <Tab.Screen name="support" component={Support} />
-            <Tab.Screen name="profile" component={Profile} />
-        </Tab.Navigator>
+        <>
+
+            <Tab.Navigator initialRouteName={"orders"} tabBar={(props) => <AppTab key={props.state.index} {...props} />}
+                sceneContainerStyle={styles.main}
+                screenOptions={{ headerShown: false }}>
+                <Tab.Screen name="orders" component={Main} />
+                <Tab.Screen name="support" component={Support} />
+                <Tab.Screen name="profile" component={Profile} />
+            </Tab.Navigator>
+            {
+                patientInfoModal ? <PatientInfoModal navigation={navigation} /> : null
+            }
+        </>
     );
 }
 
@@ -91,6 +100,7 @@ const AppNavigator = () => {
     return (
         <NavigationContainer>
             <View style={styles.main}>
+
                 <Stack.Navigator initialRouteName={getInitialRoute()}
                     screenOptions={{ headerShown: false, contentStyle: cs.rootBg }}>
                     {

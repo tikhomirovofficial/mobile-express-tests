@@ -30,7 +30,7 @@ const WhiteBorderedLayout: FC<WhiteBorderedProps> = ({ children, topContent, sty
                         <View style={styles.containerWrapperScroll}>
                             {topContent}
                             <View style={[styles.whiteContainer, style]}>
-                                <AppContainer>
+                                <AppContainer style={{flex: 1}}>
                                     {children}
                                 </AppContainer>
                             </View>

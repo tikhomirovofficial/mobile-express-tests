@@ -13,10 +13,12 @@ import { deleteAlreadyBeen } from './utils/storeFirstTime';
 import { deleteAccessed } from './utils/storeAccessed';
 import { getHasProfile } from './app/features/profile/profileSlice';
 import { checkContactsPerm, checkMediaPerm, checkNotificationsPerm } from './app/features/permissions/permissionsSlice';
+import PatientInfoModal from './components/Modals/PatientInfoModal';
 
 
 const Root = () => {
     const dispatch = useAppDispatch()
+   
     const { token } = useAppSelector(state => state.login)
     const { has_profile } = useAppSelector(state => state.profile)
     const { pin, alreadyBeen, faceId } = useAppSelector(state => state.access)
@@ -76,6 +78,7 @@ const Root = () => {
                         <AppNavigator />
                     </ScrollView>
                 </View>
+                
             </>
         )
     }

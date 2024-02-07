@@ -4,7 +4,7 @@ import WhiteBorderedLayout from "../../../layouts/WhiteBordered";
 import { Animated, Modal, StyleSheet, Text, TouchableOpacity, View, RefreshControl } from "react-native";
 import { cs } from "../../../common/styles";
 import { AnalysisIcon, Logo } from "../../../icons";
-import AnalysisCard from "../../../components/Cards/AnalysisCard";
+import OrderCard from "../../../components/Cards/OrderCard";
 import { useAppDispatch, useAppSelector } from "../../../app/base/hooks";
 import { handleOrderInfoModal } from "../../../app/features/modals/modalsSlice";
 import { NavProps } from "../../../types/common.types";
@@ -14,6 +14,7 @@ import { SkeletonContainer, Skeleton } from 'react-native-skeleton-component';
 import { SkeletonView } from '../../../components/SkeletonView';
 import { normalizeDate } from '../../../utils/normalizeDate';
 import { getAllOrders } from '../../../app/features/orders/ordersSlice';
+import { fs } from '../../../navigation/AppNavigator';
 
 const Main: FC<NavProps> = ({ navigation }) => {
     const dispatch = useAppDispatch()
@@ -41,7 +42,7 @@ const Main: FC<NavProps> = ({ navigation }) => {
                         }
                         <View style={[cs.fRowBetw, styles.buttonsTopContainer]}>
                             <TouchableOpacity
-                                onPress={() => navigation.navigate("info_contacts")}
+                                onPress={() => navigation.navigate("inviting")}
                                 style={[
                                     cs.fColumn,
                                     styles.buttonTop,
@@ -49,7 +50,7 @@ const Main: FC<NavProps> = ({ navigation }) => {
                                     styles.buttonDark
                                 ]}>
                                 <Logo />
-                                <Text style={[cs.fzS, cs.colorWhite, cs.txtCenter]}>Пригласить в Экспресс Тест</Text>
+                                <Text style={[cs.fzS, cs.colorWhite, cs.txtCenter, fs.montR]}>Пригласить в Экспресс Тест</Text>
 
                             </TouchableOpacity>
                             <TouchableOpacity
@@ -61,7 +62,7 @@ const Main: FC<NavProps> = ({ navigation }) => {
                                     cs.flexOne
                                 ]}>
                                 <AnalysisIcon />
-                                <Text style={[cs.fzS, cs.txtCenter]}>Назначить анализы</Text>
+                                <Text style={[cs.fzS, cs.txtCenter, fs.montR]}>Назначить анализы</Text>
                             </TouchableOpacity>
                         </View>
                     </View>
@@ -77,7 +78,7 @@ const Main: FC<NavProps> = ({ navigation }) => {
 
                                     all_orders.length > 0 ?
                                         all_orders.map((item, index) => (
-                                            <AnalysisCard
+                                            <OrderCard
                                                 handlePress={() => dispatch(handleOrderInfoModal())}
                                                 key={item.id}
                                                 paid={true}
@@ -133,7 +134,7 @@ const styles = StyleSheet.create({
         fontSize: 13
     },
     buttonTop: {
-        padding: 20,
+        padding: 18,
         alignItems: "center",
         gap: 10,
         borderRadius: 16,

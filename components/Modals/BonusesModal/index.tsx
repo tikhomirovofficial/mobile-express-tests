@@ -47,7 +47,7 @@ const BonusesModal = () => {
 
         <Modal animationType={"slide"} visible={bonusesModal} transparent={true}>
             <GestureHandlerRootView style={[cs.flexOne]}>
-                <WhiteBordered style={{ ...cs.modalSlidedBottom, paddingBottom: 20 }}>
+                <WhiteBordered scrollable={false} style={{ ...cs.modalSlidedBottom, paddingBottom: 20}}>
                     <View style={[cs.flexOne, cs.fColumnBetw, cs.spaceXXL]}>
                         <View style={[cs.fRowBetw]}>
                             <Text onPress={handleModal}

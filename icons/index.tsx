@@ -409,16 +409,16 @@ export const HomeIcon: FC<IconProps> = ({ width = 20, height = 21, stroke = "#4D
     )
 }
 
-export const DownloadIcon: FC<IconProps> = ({ width = 21, height = 20 }) => {
+export const DownloadIcon: FC<IconProps> = ({ width = 21, height = 20, stroke = "#D7D7D7" }) => {
     return (
         <Svg width={width} height={height} viewBox="0 0 21 20" fill="none">
-            <Path d="M10.1222 13.436L10.1222 1.39502" stroke="#D7D7D7" strokeWidth="2" strokeLinecap="round"
+            <Path d="M10.1222 13.436L10.1222 1.39502" stroke={stroke} strokeWidth="2" strokeLinecap="round"
                 stroke-linejoin="round" />
-            <Path d="M13.0382 10.5083L10.1222 13.4363L7.20619 10.5083" stroke="#D7D7D7" strokeWidth="1.5"
+            <Path d="M13.0382 10.5083L10.1222 13.4363L7.20619 10.5083" stroke={stroke} strokeWidth="1.5"
                 strokeLinecap="round" stroke-linejoin="round" />
             <Path opacity="0.4"
                 d="M14.755 6.12793H15.688C17.723 6.12793 19.372 7.77693 19.372 9.81293V14.6969C19.372 16.7269 17.727 18.3719 15.697 18.3719L4.55699 18.3719C2.52199 18.3719 0.871994 16.7219 0.871994 14.6869V9.80193C0.871994 7.77293 2.51799 6.12793 4.54699 6.12793H5.48899"
-                stroke="#D7D7D7" strokeWidth="1.5" strokeLinecap="round" stroke-linejoin="round" />
+                stroke={stroke} strokeWidth="1.5" strokeLinecap="round" stroke-linejoin="round" />
         </Svg>
     )
 }

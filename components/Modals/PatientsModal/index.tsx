@@ -74,9 +74,7 @@ const PatientsModal: FC<NavProps> = ({ navigation }) => {
                     </View>
 
                 </View>
-                {
-                    patientInfoModal ? <PatientInfoModal navigation={navigation} /> : null
-                }
+              
 
             </WhiteBordered>
 

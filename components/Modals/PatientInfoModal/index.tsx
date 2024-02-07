@@ -10,7 +10,7 @@ import {
     handlePatientOrderInfoModal
 } from "../../../app/features/modals/modalsSlice";
 import { PhotoIcon } from "../../../icons";
-import AnalysisCard from "../../Cards/AnalysisCard";
+import OrderCard from "../../Cards/OrderCard";
 import OrderInfoModal from "../OrderInfoModal";
 import { setPatient } from '../../../app/features/order/orderSlice';
 import { NavProps } from '../../../types/common.types';
@@ -132,7 +132,7 @@ const PatientInfoModal: FC<NavProps> = ({ navigation }) => {
                                             )) :
                                             patientInfo.orders.length > 0 ?
                                                 patientInfo.orders.map((item, index) => (
-                                                    <AnalysisCard
+                                                    <OrderCard
                                                         handlePress={() => dispatch(handleOrderInfoModal())}
                                                         key={item.id}
                                                         paid={true}

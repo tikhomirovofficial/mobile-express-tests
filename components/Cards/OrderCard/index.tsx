@@ -9,7 +9,7 @@ import { fs } from '../../../navigation/AppNavigator';
 import { getOrderById } from '../../../app/features/current-data/currentData';
 
 
-const AnalysisCard: FC<OrderAnalysisType> = ({
+const OrderCard: FC<OrderAnalysisType> = ({
     id,
     date,
     customer,
@@ -28,7 +28,7 @@ const AnalysisCard: FC<OrderAnalysisType> = ({
         }
         return statusObj
     }
-    
+
     const handleOpenInfo = () => {
         dispatch(handleOrderInfoModal())
         dispatch(getOrderById(id))
@@ -54,8 +54,8 @@ const AnalysisCard: FC<OrderAnalysisType> = ({
                     <Text style={[cs.fwSemi, cs.colorWhite, cs.fzS]}>{getStatusObj(paid).text}</Text>
                 </View>
                 <TouchableOpacity style={[cs.fAlCenter, cs.fRow, styles.resultsBtn]}>
-                    <DownloadIcon />
-                    <Text style={[cs.colorGray, cs.fwSemi, cs.fzXXS, styles.resultsText]}>
+                    <DownloadIcon stroke={"#FFCF00"} />
+                    <Text style={[cs.colorGray, cs.fwSemi, cs.fzXXS, styles.resultsText, cs.textYellow]}>
                         Скачать результаты анализов
                     </Text>
                 </TouchableOpacity>
@@ -105,7 +105,7 @@ const styles = StyleSheet.create({
     resultsText: {
         textDecorationLine: "underline",
         maxWidth: 128
-        
+
     }
 })
-export default AnalysisCard;
+export default OrderCard;
