@@ -1,3 +1,4 @@
+import { InvitingCreateReq } from "../api/patients.api.types"
 import { HasId } from "../common.types"
 
 export type PatientType = {
@@ -14,3 +15,4 @@ export type PatientApi = {
     date: string,
     phone: string
 } & HasId
+export type InvitingTextFields = Omit<InvitingCreateReq, | "gender">

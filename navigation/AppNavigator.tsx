@@ -29,11 +29,12 @@ import CreateProfile from '../pages/Register/CreateProfile';
 import AcceptPinCode from '../pages/Register/AcceptPinCode';
 import { useAccess } from '../hooks/useAccess';
 import { useAppDispatch, useAppSelector } from '../app/base/hooks';
-import { getAllOrders, getProfile } from '../app/features/profile/profileSlice';
+import { getProfile } from '../app/features/profile/profileSlice';
 import { getAllPatients } from '../app/features/patients/patientsSlice';
 import { checkToken } from '../app/features/login/loginSlice';
 import PatientInfoModal from '../components/Modals/PatientInfoModal';
 import { NavProps } from '../types/common.types';
+import CreatePatient from '../pages/Inviting/CreatePatient';
 
 const Stack = createNativeStackNavigator()
 const Tab = createBottomTabNavigator()
@@ -41,7 +42,7 @@ const Tab = createBottomTabNavigator()
 const MainTabs: FC<NavProps> = ({ navigation }) => {
     const dispatch = useAppDispatch()
     const { patientInfoModal } = useAppSelector(state => state.modals)
-    
+
     useEffect(() => {
         dispatch(getProfile())
         dispatch(getAllPatients())
@@ -136,7 +137,7 @@ const AppNavigator = () => {
                                             }
 
                                             {/* //Приглашение */}
-                                            <Stack.Screen name="inviting" component={SelectingPatients} />
+                                            <Stack.Screen name="inviting" component={CreatePatient} />
                                             <Stack.Screen name="inviting_check" component={CheckSelectedPatients} />
                                             {/* //Информативные экраны */}
                                             <Stack.Screen name="inviting_sent" component={InvitingSent} />

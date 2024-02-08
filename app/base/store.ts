@@ -13,6 +13,7 @@ import { bonusesReducer } from '../features/bonuses/bonusesSlice';
 import { loginReducer } from '../features/login/loginSlice';
 import { accessReducer } from '../features/access/accessSlice';
 import { permissionsReducer } from '../features/permissions/permissionsSlice';
+import { invitingReducer } from '../features/inviting/invitingSlice';
 
 export const store = configureStore({
     reducer: {
@@ -29,7 +30,8 @@ export const store = configureStore({
         bonuses: bonusesReducer,
         access: accessReducer,
         login: loginReducer,
-        permissions: permissionsReducer
+        permissions: permissionsReducer,
+        inviting: invitingReducer
     }
 })
 

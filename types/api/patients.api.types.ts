@@ -16,3 +16,11 @@ export type PatientsBySearchReq = {
 export type PatientsBySearchRes = {
     pacients: PatientApi[]
 } & ResponseStatus
+
+// Приглашение пациента
+export type InvitingCreateReq = {
+    dob: string
+    gender: 0 | 1,
+    email: string
+} & Omit<PatientApi, "bonus" | "date" | "id">
+export type InvitingCreateRes = ResponseStatus
