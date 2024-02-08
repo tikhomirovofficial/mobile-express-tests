@@ -4,20 +4,23 @@ import { OrderApi } from "../../../types/entities/order.types";
 import { ProfileCreateReq, ProfileCreateRes } from "../../../types/api/user.api.types";
 import { EMAIL } from "../../../rules/masks.rules";
 import { InvitingTextFields } from "../../../types/entities/patients.types";
+import { InvitingCreateReq, InvitingCreateRes } from "../../../types/api/patients.api.types";
 
 
 type InvitingSliceState = {
     form: {
+        success: boolean,
         sending: boolean
         err: string,
         disabled: boolean,
-        gender: number,
+        gender: 0 | 1,
         text_fields: InvitingTextFields
     }
 }
 
 const initialState: InvitingSliceState = {
     form: {
+        success: false,
         sending: false,
         err: "",
         disabled: true,
@@ -25,7 +28,7 @@ const initialState: InvitingSliceState = {
         text_fields: {
             first_name: "",
             last_name: "",
-            phone: "",
+            phone: "+7",
             dob: "",
             email: ""
         }
@@ -34,12 +37,12 @@ const initialState: InvitingSliceState = {
 
 export const createInviting = createAsyncThunk(
     'inviting/create',
-    async (req: ProfileCreateReq, { dispatch }) => {
-        const resp: ProfileCreateRes = { status: true }
+    async (req: InvitingCreateReq, { dispatch }) => {
+        const resp: InvitingCreateRes = { status: false }
         if (!resp.status) {
             throw new Error("Не удалось создать профиль!")
         }
-        return new Promise<ProfileCreateRes>((res, rej) => {
+        return new Promise<InvitingCreateRes>((res, rej) => {
             setTimeout(() => {
                 res(resp)
             }, 1000)
@@ -72,21 +75,30 @@ export const InvitingSlice = createSlice({
 
             state.form.disabled = !datesAreValid || !allFieldsAreNotEmpty || !emailIsValid
         },
+        resetSuccessInviting: state => {
+            state.form.success = false
+        },
         resetCreateInvitingForm: state => {
-            state.form = initialState.form
+            state.form.text_fields = initialState.form.text_fields
+            state.form.gender = initialState.form.gender,
+            state.form.disabled = initialState.form.disabled,
+            state.form.sending = initialState.form.sending
         }
     },
     extraReducers: (builder) => {
-        //Inviting CREATE
+        //INVITING CREATE
         builder.addCase(createInviting.pending, (state, action) => {
             state.form.sending = true
+            state.form.success = false
         })
         builder.addCase(createInviting.fulfilled, (state, action) => {
             state.form.sending = false
+            state.form.success = true
         })
         builder.addCase(createInviting.rejected, (state, action) => {
             state.form.err = "Не удалось создать профиль!"
             state.form.sending = false
+            state.form.success = false
         })
     },
 })
@@ -95,6 +107,7 @@ export const {
     handleCreateInvitingForm,
     handleCreateInvitingGender,
     resetCreateInvitingForm,
+    resetSuccessInviting
 } = InvitingSlice.actions
 
 

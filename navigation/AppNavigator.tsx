@@ -71,6 +71,7 @@ const AppNavigator = () => {
     const { token } = useAppSelector(state => state.login)
     const { data, loadings, has_profile } = useAppSelector(state => state.profile)
     const { alreadyBeen, accepted, pin, faceId } = useAppSelector(state => state.access)
+    const inviting = useAppSelector(state => state.inviting)
     const { contacts, media, notifications } = useAppSelector(state => state.permissions)
 
     const getInitialRoute = () => {
@@ -137,10 +138,12 @@ const AppNavigator = () => {
                                             }
 
                                             {/* //Приглашение */}
+
                                             <Stack.Screen name="inviting" component={CreatePatient} />
                                             <Stack.Screen name="inviting_check" component={CheckSelectedPatients} />
                                             {/* //Информативные экраны */}
-                                            <Stack.Screen name="inviting_sent" component={InvitingSent} />
+                                            {inviting.form.success ? <Stack.Screen name="inviting_sent" component={InvitingSent} /> : null}
+
                                             <Stack.Screen name="order_sent" component={OrderSent} />
                                             <Stack.Screen name="how_get_results" component={HowGetResults} />
 

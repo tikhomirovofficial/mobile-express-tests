@@ -15,25 +15,40 @@ import { dateMask, passport, phoneMask } from "../../../rules/masks.rules";
 import { ProfileCreateReq } from "../../../types/api/user.api.types";
 import { NavProps } from "../../../types/common.types";
 import { InvitingCreateReq } from "../../../types/api/patients.api.types";
-import { handleCreateInvitingForm, handleCreateInvitingGender } from "../../../app/features/inviting/invitingSlice";
+import { createInviting, handleCreateInvitingForm, handleCreateInvitingGender, resetCreateInvitingForm, resetSuccessInviting } from "../../../app/features/inviting/invitingSlice";
 
 
 const CreatePatient: FC<NavProps> = ({ navigation }) => {
     const dispatch = useAppDispatch()
-    const { text_fields, gender, disabled, sending } = useAppSelector(state => state.inviting.form)
+    const { text_fields, gender, disabled, sending, success } = useAppSelector(state => state.inviting.form)
 
     const toBackScreen = () => {
         navigation.goBack()
     }
 
     const handleCreateInviting = () => {
-        console.log(text_fields, gender);
-
+        const data: InvitingCreateReq = {
+            first_name: text_fields.first_name,
+            last_name: text_fields.last_name,
+            subname: text_fields.subname,
+            phone: text_fields.phone,
+            dob: text_fields.dob,
+            email: text_fields.email,
+            gender: gender,
+        }
+        dispatch(createInviting(data))
     }
 
     useEffect(() => {
+        if (success) {
+            navigation.navigate("inviting_sent")
+            dispatch(resetCreateInvitingForm())
+        }
+    }, [success])
+
+    useEffect(() => {
         return () => {
-            dispatch(resetCreateProfileForm())
+            dispatch(resetCreateInvitingForm())
         }
     }, [])
 
@@ -47,7 +62,6 @@ const CreatePatient: FC<NavProps> = ({ navigation }) => {
                                 <TouchableOpacity onPress={toBackScreen}>
                                     <ArrowLeft />
                                 </TouchableOpacity>
-
                                 <Text style={[cs.fwSemi, cs.fwSemi, cs.fzXL]}>Приглашение пациентов</Text>
                             </View>
                         </AppContainer>
@@ -98,14 +112,14 @@ const CreatePatient: FC<NavProps> = ({ navigation }) => {
                                             </View>
                                             <View style={[cs.fColumn, cs.spaceM]}>
                                                 <Text style={[cs.fzS, fs.montR, cs.fwMedium]} aria-label="Label for Username"
-                                                    nativeID="dateDob">Номер телефона</Text>
+                                                    nativeID="phone">Номер телефона</Text>
                                                 <InputField
                                                     mask={phoneMask}
                                                     type={"number-pad"}
-                                                    val={text_fields.dob}
+                                                    val={text_fields.phone}
                                                     placeholder={"+7"}
-                                                    idInput={"dateDob"}
-                                                    onChange={val => dispatch(handleCreateInvitingForm({ key: "dob", val }))}
+                                                    idInput={"phone"}
+                                                    onChange={val => dispatch(handleCreateInvitingForm({ key: "phone", val }))}
                                                 />
                                             </View>
                                             <View style={[cs.fColumn, cs.spaceM]}>

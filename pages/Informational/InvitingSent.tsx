@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useEffect } from 'react';
 import FeauturesLayout from "../../layouts/FeaturesLayout";
 import { Text, TouchableOpacity, View, Linking } from "react-native";
 import { cs } from "../../common/styles";
@@ -11,9 +11,10 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { fs } from '../../navigation/AppNavigator';
 import { NavProps } from '../../types/common.types';
 import { handlePatientsModal } from '../../app/features/modals/modalsSlice';
+import { resetSuccessInviting } from '../../app/features/inviting/invitingSlice';
 const InfoInvitingSentImage = require('../../assets/info_inviting_sent.jpg')
 
-const InvitingSent: FC<NavProps> = ({navigation}) => {
+const InvitingSent: FC<NavProps> = ({ navigation }) => {
     const dispatch = useAppDispatch()
 
     const toMyPatients = () => {
@@ -28,6 +29,13 @@ const InvitingSent: FC<NavProps> = ({navigation}) => {
             screen: "orders"
         })
     }
+
+    useEffect(() => {
+        return () => {
+            dispatch(resetSuccessInviting())
+        }
+    }, [])
+
     return (
         <InfoPageLayout title='Приглашения отправлены' image={InfoInvitingSentImage} content={
             <AppContainer style={{ flex: 1, ...cs.spaceXXL }}>
