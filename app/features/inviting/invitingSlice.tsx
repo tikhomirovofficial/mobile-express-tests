@@ -38,7 +38,7 @@ const initialState: InvitingSliceState = {
 export const createInviting = createAsyncThunk(
     'inviting/create',
     async (req: InvitingCreateReq, { dispatch }) => {
-        const resp: InvitingCreateRes = { status: false }
+        const resp: InvitingCreateRes = { status: true }
         if (!resp.status) {
             throw new Error("Не удалось создать профиль!")
         }

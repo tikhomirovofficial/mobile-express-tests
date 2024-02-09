@@ -15,6 +15,7 @@ import { NavProps } from "../../../types/common.types";
 import { ModalContainer } from '../../ModalContainer';
 import { SkeletonContainer } from 'react-native-skeleton-component';
 import { SkeletonView } from '../../SkeletonView';
+import { getPatientById } from '../../../app/features/current-data/currentData';
 
 const PatientsModal: FC<NavProps> = ({ navigation }) => {
     const dispatch = useAppDispatch()
@@ -27,8 +28,10 @@ const PatientsModal: FC<NavProps> = ({ navigation }) => {
         handleModal()
         navigation.navigate('inviting')
     }
-    const handlePatientInfo = () => {
+    
+    const handlePatientInfo = (id: number) => {
         dispatch(handlePatientInfoModal())
+        dispatch(getPatientById(id))
     }
 
     return (
@@ -61,7 +64,7 @@ const PatientsModal: FC<NavProps> = ({ navigation }) => {
                                                 data={patients.list}
                                                 style={[cs.fColumn, styles.patientsList]}
                                                 renderItem={({ item }) => (
-                                                    <PatientItem handlePress={handlePatientInfo} {...item} />
+                                                    <PatientItem handlePress={() => handlePatientInfo(item.id)} {...item} />
                                                 )} />
 
                                         </View>

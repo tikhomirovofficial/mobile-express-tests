@@ -29,6 +29,7 @@ const SelectingPatient: FC<NavProps> = ({ navigation }) => {
     const handleToMyPatients = () => {
         navigation.navigate("home")
     }
+
     const toSelectCategory = () => {
         const patientData = contacts.filter(item => item.id === contactsSelected[0])[0]
         dispatch(setPatient({
@@ -57,7 +58,9 @@ const SelectingPatient: FC<NavProps> = ({ navigation }) => {
             // }
         })();
     }, []);
-    const openNewPatient = () => dispatch(handlePatientInvitingModal())
+    const openNewPatient = () => {
+        navigation.navigate("inviting")
+    }
 
     const [keyboardStatus, setKeyboardStatus] = useState(false);
 
@@ -108,7 +111,7 @@ const SelectingPatient: FC<NavProps> = ({ navigation }) => {
                                 <TextInput value={searchVal} onChangeText={(text) => setSearchVal(text)} style={[cs.fzS, fs.montR, cs.flexOne]} placeholder={"Найти по имени или номеру"} />
                             </View>
                             <TouchableOpacity onPress={openNewPatient}>
-                                <Text style={[cs.textYellow, cs.fwSemi, { textDecorationLine: "underline" }]}>Новый номер телефона</Text>
+                                <Text style={[cs.textYellow, cs.fwSemi, { textDecorationLine: "underline" }]}>Пригласить пациента</Text>
                             </TouchableOpacity>
                         </View>
                         <View style={[cs.flexOne, { position: "relative" }]}>

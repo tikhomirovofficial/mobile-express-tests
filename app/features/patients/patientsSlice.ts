@@ -6,6 +6,7 @@ type PatientsSliceState = {
     items: Contact[],
     invitingsIds: string[],
     list: PatientApi[]
+    searched_list: PatientApi[]
     loadings: {
         patients: boolean
     }
@@ -15,6 +16,7 @@ const initialState: PatientsSliceState = {
     items: [],
     invitingsIds: [],
     list: [],
+    searched_list: [],
     loadings: {
         patients: true
     }
@@ -38,6 +40,7 @@ export const getAllPatients = createAsyncThunk(
         })
     }
 )
+
 export const PatientsSlice = createSlice({
     name: "patients",
     initialState,

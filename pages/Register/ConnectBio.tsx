@@ -53,11 +53,11 @@ const ConnectBio: FC<NavProps> = ({ navigation }) => {
                                 </LinearGradient>
                             </TouchableOpacity>
                             <View style={[cs.fCenterCol]}>
-                            <TouchableOpacity onPress={handleToNotifications}>
-                                <Text onPress={handleSkip} style={[cs.fClickableGray, cs.fzM]}>Пропустить</Text>
-                            </TouchableOpacity>
+                                <TouchableOpacity onPress={handleToNotifications}>
+                                    <Text onPress={handleSkip} style={[cs.fClickableGray, cs.fzM]}>Пропустить</Text>
+                                </TouchableOpacity>
                             </View>
-                        
+
                         </View>
                     </View>
                 </WhiteBorderedLayout>

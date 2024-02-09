@@ -7,8 +7,10 @@ import { fs } from '../../navigation/AppNavigator';
 import { NavProps } from '../../types/common.types';
 import { LinearGradient } from 'expo-linear-gradient';
 import WhiteBorderedLayout from '../../layouts/WhiteBordered';
-import { checkToken, resetLoginCodeStatus, sendAuthCode } from '../../app/features/login/loginSlice';
+import { checkToken, resetLoginCodeStatus, sendAuthCode, sendAuthPhone, setCodeFreezedSecs, setCodeIsFreezed } from '../../app/features/login/loginSlice';
 import { resetAcceptedErr } from '../../app/features/access/accessSlice';
+import { useInterval } from '../../hooks/useInterval';
+import ButtonYellow from '../../components/Buttons/ButtonYellow';
 
 const CodePhoneAccept: FC<NavProps> = ({ navigation }) => {
     const dispatch = useAppDispatch()
@@ -37,6 +39,16 @@ const CodePhoneAccept: FC<NavProps> = ({ navigation }) => {
         }
     };
 
+    const handleNewCode = () => {
+        if (!auth.code_options.is_freezed) {
+            dispatch(sendAuthPhone({ phone: auth.form.phone }))
+            dispatch(setCodeIsFreezed(true))
+            dispatch(setCodeFreezedSecs(5))
+            setCode(["", "", "", ""])
+            return;
+        }
+    }
+
     const handleBackspace = (index: number) => {
         if (index > 0 && code[index] === '') {
             const prevInput = inputRefs.current[index - 1];
@@ -62,6 +74,15 @@ const CodePhoneAccept: FC<NavProps> = ({ navigation }) => {
             //dispatch(checkToken())
         }
     }, [auth.success.code])
+
+    useInterval(() => {
+        if (auth.code_options.is_freezed && auth.code_options.freezed_sec > 0) {
+            dispatch(setCodeFreezedSecs(auth.code_options.freezed_sec - 1))
+        } else {
+            dispatch(setCodeIsFreezed(false))
+            dispatch(setCodeFreezedSecs(0))
+        }
+    }, 1000);
 
     useEffect(() => {
         const keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', () => {
@@ -139,12 +160,10 @@ const CodePhoneAccept: FC<NavProps> = ({ navigation }) => {
                                 </View>
 
                             </View>
-                            <TouchableOpacity>
-                                <LinearGradient style={[cs.yellowBtn, cs.fCenterCol]}
-                                    colors={["#FB0", "#FFCB3D", "#FFDA75"]}>
-                                    <Text style={[cs.fzM, cs.yellowBtnText]}>Отправить код еще раз</Text>
-                                </LinearGradient>
-                            </TouchableOpacity>
+
+                            <ButtonYellow disabled={auth.code_options.is_freezed} handlePress={handleNewCode}>
+                                <Text style={[cs.fzM, cs.yellowBtnText]}>Отправить код еще раз {auth.code_options.is_freezed ? `(${auth.code_options.freezed_sec} сек)` : null}</Text>
+                            </ButtonYellow>
                         </View>
                         <Text style={[fs.montR, cs.fzXS, cs.fwMedium, cs.colorGray]}>
                             Нажав кнопку «Продолжить», вы соглашаетесь с <Text onPress={() => { }} style={cs.textYellow}>пользовательским соглашением </Text>

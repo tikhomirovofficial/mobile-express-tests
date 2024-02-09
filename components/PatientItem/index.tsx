@@ -12,6 +12,7 @@ type PatientItemProps = {
     selected?: boolean,
     isRadio?: boolean,
     neededBottomBorder?: boolean
+    bottomText?: string,
     handlePress?: () => any,
 } & PatientApi
 
@@ -21,13 +22,18 @@ const PatientItem: FC<PatientItemProps> = ({
     neededBottomBorder = true,
     isRadio,
     first_name,
+    bottomText,
     last_name,
     bonus,
     phone,
     id }) => {
-    const dispatch = useAppDispatch()       
+    const dispatch = useAppDispatch()
 
     const handleOpenPatientInfo = () => {
+        if (handlePress) {
+            handlePress()
+            return
+        }
         dispatch(handlePatientInfoModal())
         dispatch(getPatientById(id))
     }
@@ -48,7 +54,7 @@ const PatientItem: FC<PatientItemProps> = ({
                 </View>
                 <View style={[cs.fColumn]}>
                     <Text style={[cs.fzS, cs.fwSemi, cs.colorDark]}>{`${first_name} ${last_name}`}</Text>
-                    <Text style={[cs.colorGray, fs.montR, cs.fzXS]}>{phone}</Text>
+                    <Text style={[cs.colorGray, fs.montR, cs.fzXS]}>{bottomText || phone}</Text>
                 </View>
             </View>
             <GetSelectedIcon />

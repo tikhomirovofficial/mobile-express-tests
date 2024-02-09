@@ -80,6 +80,7 @@ const BonusesModal = () => {
                             <FlatList data={patients.list} style={[cs.fColumn]} renderItem={({ item, index }) => (
                                 <PatientItem
                                     handlePress={() => handleOpenPatientInfo(item)}
+                                    bottomText={`${item.bonus} бонусов за всё время`}
                                     neededBottomBorder={index !== patients.list.length - 1}
                                     {...item} />
                             )} />

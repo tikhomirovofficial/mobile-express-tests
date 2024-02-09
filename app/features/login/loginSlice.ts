@@ -15,6 +15,10 @@ type LoginSliceType = {
             phone: boolean | null
             code: boolean | null
         },
+        code_options: {
+            is_freezed: boolean
+            freezed_sec: number
+        },
         form: {
             maskedPhone: string
             phone: string
@@ -37,6 +41,10 @@ const initialState: LoginSliceType = {
         success: {
             phone: null,
             code: null
+        },
+        code_options: {
+            is_freezed: false,
+            freezed_sec: 0
         },
         form: {
             maskedPhone: "+7",
@@ -80,9 +88,7 @@ export const sendAuthPhone = createAsyncThunk(
             throw new Error("Нет номера телеофна")
         }
         return new Promise<AuthRes>((res, rej) => {
-
             setTimeout(() => {
-
                 res(resp)
             }, 1000)
         })
@@ -104,7 +110,7 @@ export const sendAuthCode = createAsyncThunk(
             throw new Error("Невалидный токен пришёл")
         }
         await storeTokens({ refresh: resp.refresh, access: resp.access })
-       
+
         return new Promise<AuthRes>((res, rej) => {
             setTimeout(() => {
                 res(resp)
@@ -121,13 +127,19 @@ export const LoginSlice = createSlice({
         handleLoginForm: (state, action: PayloadAction<{ key: keyof typeof initialState.auth.form, val: string }>) => {
             state.auth.form[action.payload.key] = action.payload.val
         },
+        setCodeIsFreezed: (state, action: PayloadAction<boolean>) => {
+            state.auth.code_options.is_freezed = action.payload
+        },
+        setCodeFreezedSecs: (state, action: PayloadAction<number>) => {
+            state.auth.code_options.freezed_sec = action.payload
+        },
         resetLoginForm: (state) => {
             state.auth = initialState.auth
         },
         resetLoginCodeStatus: (state) => {
             state.auth.success.code = initialState.auth.success.code
         },
-        
+
 
     },
     extraReducers: (builder) => {
@@ -160,7 +172,7 @@ export const LoginSlice = createSlice({
             state.auth.loading = false
             state.auth.success.code = true
             state.token.valid = true,
-            state.auth.form = initialState.auth.form
+                state.auth.form = initialState.auth.form
 
         })
         builder.addCase(sendAuthCode.rejected, (state, action) => {
@@ -199,7 +211,9 @@ export const LoginSlice = createSlice({
 export const {
     handleLoginForm,
     resetLoginForm,
-    resetLoginCodeStatus
+    resetLoginCodeStatus,
+    setCodeFreezedSecs,
+    setCodeIsFreezed
 } = LoginSlice.actions
 
 

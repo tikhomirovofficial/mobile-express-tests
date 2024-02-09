@@ -41,7 +41,7 @@ const initialState: CurrentData = {
             }
         ]
     },
-    patientInfo: {
+    patientInfo: {  
         data: {
             id: 0,
             phone: "",

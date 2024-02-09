@@ -18,10 +18,10 @@ const InvitingSent: FC<NavProps> = ({ navigation }) => {
     const dispatch = useAppDispatch()
 
     const toMyPatients = () => {
-        dispatch(handlePatientsModal())
         navigation.navigate("home", {
             screen: "profile"
         })
+        dispatch(handlePatientsModal())
     }
 
     const toHome = () => {
