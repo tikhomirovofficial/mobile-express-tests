@@ -35,7 +35,7 @@ const SelectingProducts: FC<NavProps> = ({ navigation }) => {
     }
     const handleOpenProductInfo = () => {
         console.log("Текущий продукт");
-        
+
         dispatch(handleAnalysisInfoModal())
     }
 
@@ -65,7 +65,7 @@ const SelectingProducts: FC<NavProps> = ({ navigation }) => {
                                 <TouchableOpacity onPress={handleToSelectingCategory}>
                                     <ArrowLeft />
                                 </TouchableOpacity>
-                                <Text style={[cs.fwSemi, cs.fwSemi, cs.fzXL]}>{currentCategory !== undefined ? currentCategory.title.slice(0, 17) : ""}</Text>
+                                <Text style={[cs.fwSemi, cs.fwSemi, cs.fzXL]}>{currentCategory !== undefined ? currentCategory.name.slice(0, 17) : ""}</Text>
                                 <View></View>
                             </View>
                         </AppContainer>

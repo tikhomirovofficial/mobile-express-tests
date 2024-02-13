@@ -1,10 +1,8 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { PatientApi } from "../../../types/entities/patients.types";
 
-type PatientOrderData = {
-    id: string,
-    firstName: string,
-    lastName: string
-}
+type PatientOrderData = Pick<PatientApi, "id" | "first_name" | "last_name">
+
 type OrderSliceState = {
     patientData: PatientOrderData
     currentCategorySelected: number
@@ -12,9 +10,9 @@ type OrderSliceState = {
 
 const initialState: OrderSliceState = {
     patientData: {
-        id: "-1",
-        firstName: "",
-        lastName: ""
+        id: -1,
+        first_name: "",
+        last_name: ""
     },
     currentCategorySelected: -1
 }
@@ -29,11 +27,7 @@ export const OrderSlice = createSlice({
             state.currentCategorySelected = action.payload
         },
         resetPatient(state) {
-            state.patientData = {
-                id: "-1",
-                firstName: "",
-                lastName: ""
-            }
+            state.patientData = initialState.patientData
         }
     }
 })

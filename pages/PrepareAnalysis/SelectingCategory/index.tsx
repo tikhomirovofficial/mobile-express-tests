@@ -15,33 +15,43 @@ import { handlePatientInvitingModal } from "../../../app/features/modals/modalsS
 import * as Contacts from 'expo-contacts';
 import * as Permissions from 'expo-permissions';
 import { setCurrentCategory } from '../../../app/features/order/orderSlice';
+import { getCategories } from '../../../app/features/categories/categoriesSlice';
+import { useDeferred } from '../../../hooks/useDeffered';
+import { SkeletonContainer } from 'react-native-skeleton-component';
+import { SkeletonView } from '../../../components/SkeletonView';
 
-const SelectingCategory: FC<NavProps> = ({navigation }) => {
+const SelectingCategory: FC<NavProps> = ({ navigation }) => {
     const dispatch = useAppDispatch()
     const cart = useAppSelector(state => state.cart)
-    const patients = useAppSelector(state => state.patients.items)
 
     const [searchVal, setSearchVal] = useState("")
-    const [categoriesLoading, setCategoriesLoading] = useState(false)
+    const defferedSearchVal = useDeferred(searchVal, 500)
+
     const patient = useAppSelector(state => state.order.patientData)
     const categories = useAppSelector(state => state.categories.items)
-    const products = useAppSelector(state => state.products.items)
-    const patientFullName = `${patient?.firstName || ""} ${patient?.lastName || ""} ${patient?.firstName === undefined && patient?.lastName === undefined ? "Пациент" : ""}`
-    
+    const loadings = useAppSelector(state => state.categories.loadings)
+    const patientFullName = `${patient?.first_name || ""} ${patient?.last_name || ""} ${patient?.first_name === undefined && patient?.last_name === undefined ? "Пациент" : ""}`
+    const [keyboardStatus, setKeyboardStatus] = useState(false);
 
     const handleToSelectingPatient = () => {
         navigation.navigate("order_patient")
     }
+
     const toProducts = (categoryId: number) => {
         dispatch(setCurrentCategory(categoryId))
         navigation.navigate("order_products")
     }
+
     const toCart = () => {
         navigation.navigate("order_cart")
     }
-    const [keyboardStatus, setKeyboardStatus] = useState(false);
 
     useEffect(() => {
+        dispatch(getCategories(defferedSearchVal))
+    }, [defferedSearchVal])
+
+    useEffect(() => {
+
         const keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', () => {
             setKeyboardStatus(true);
         });
@@ -60,6 +70,7 @@ const SelectingCategory: FC<NavProps> = ({navigation }) => {
         <Animated.View>
             <View style={[cs.fColumn, cs.spaceM]}>
                 <WhiteBorderedLayout
+                    scrollable={false}
                     topContent={
                         <AppContainer style={{ paddingBottom: 0 }}>
                             <View style={[cs.fRowBetw, cs.spaceM, cs.fAlCenter]}>
@@ -91,28 +102,28 @@ const SelectingCategory: FC<NavProps> = ({navigation }) => {
 
                         </View>
                         <View style={[cs.flexOne, { position: "relative" }]}>
-                            {categoriesLoading ? <Text style={[cs.txtCenter]}>Загрузка...</Text> :
+                            {loadings.categories ?
+                                <SkeletonContainer>
+                                    <View style={[cs.fColumn, cs.spaceS]}>
+                                        <SkeletonView width={"100%"} height={50} />
+                                        <SkeletonView width={"100%"} height={50} />
+                                    </View>
+
+                                </SkeletonContainer>
+                                :
                                 <View style={[{ position: "absolute", height: "100%", width: "100%" }]}>
                                     <FlatList
-
                                         contentContainerStyle={[cs.fColumn, cs.spaceS]}
-                                        data={searchVal.length > 0 ? categories.filter(category => {
-                                            if(category.title.toLocaleLowerCase().includes(searchVal.toLocaleLowerCase())) {
-                                                return category
-                                            }
-
-                                        }) : categories}
+                                        data={categories}
                                         renderItem={({ item }) => (
                                             <TouchableOpacity onPress={() => toProducts(item.id)} style={[cs.fRowBetw, cs.spaceS]}>
                                                 <View key={item.id} style={[cs.fRow, cs.spaceS, { maxWidth: "90%" }]}>
-                                                    <Text style={[cs.fwMedium, fs.montR, cs.fzS, cs.colorDark]}>{item.title}</Text>
-                                                    <Text style={[cs.fwMedium, fs.montR, cs.fzS, cs.colorDark, cs.colorGray]}>{products.filter(product => product.category_id === item.id).length}</Text>
+                                                    <Text style={[cs.fwMedium, fs.montR, cs.fzS, cs.colorDark]}>{item.name}</Text>
+                                                    <Text style={[cs.fwMedium, fs.montR, cs.fzS, cs.colorDark, cs.colorGray]}>300</Text>
                                                 </View>
                                                 <View style={[{ marginTop: 3 }]}>
                                                     <ArrowRightIcon />
                                                 </View>
-
-
                                             </TouchableOpacity>
                                         )}
                                     />
@@ -140,7 +151,7 @@ const SelectingCategory: FC<NavProps> = ({navigation }) => {
 
                 </WhiteBorderedLayout>
             </View >
-            
+
         </Animated.View >
 
     );

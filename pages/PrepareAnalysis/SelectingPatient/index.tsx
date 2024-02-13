@@ -17,32 +17,35 @@ import * as Permissions from 'expo-permissions';
 import { getSearchPatients, setPatients } from '../../../app/features/patients/patientsSlice';
 import { setPatient } from '../../../app/features/order/orderSlice';
 import { useDeferred } from '../../../hooks/useDeffered';
+import { SkeletonContainer } from 'react-native-skeleton-component';
+import { SkeletonView } from '../../../components/SkeletonView';
 
 const SelectingPatient: FC<NavProps> = ({ navigation }) => {
     const dispatch = useAppDispatch()
-    const { searched_list } = useAppSelector(state => state.patients)
+    const { searched_list, loadings } = useAppSelector(state => state.patients)
     const { patientInvitingModal } = useAppSelector(state => state.modals)
 
     const [searchVal, setSearchVal] = useState("")
     const defferedSearchVal = useDeferred(searchVal, 500)
 
-    const [contactsLoading, setContactsLoading] = useState(false)
-    const [contactsSelected, setContactsSelected] = useState<string[]>([])
+    const [contactsSelected, setContactsSelected] = useState<number>(-1)
     const [keyboardStatus, setKeyboardStatus] = useState(false);
 
     const handleToMyPatients = () => {
         navigation.navigate("home")
     }
+    const handleSelectPatient = (id: number) => {
+        setContactsSelected(id)
+        const patientData = searched_list.filter(item => item.id === id)[0]
+        dispatch(setPatient({
+            id: patientData.id,
+            first_name: patientData.first_name || "",
+            last_name: patientData.last_name || ""
+        }))
+    }
 
-    // const toSelectCategory = () => {
-    //     const patientData = searched_list.filter(item => item.id === contactsSelected[0])[0]
-    //     dispatch(setPatient({
-    //         id: contactsSelected[0],
-    //         firstName: patientData?.firstName || "",
-    //         lastName: patientData?.lastName || ""
-    //     }))
-    //     navigation.navigate("order_category")
-    // }
+    const toSelectCategory = () => navigation.navigate("order_category")
+
 
     // useEffect(() => {
     //     (async () => {
@@ -121,52 +124,37 @@ const SelectingPatient: FC<NavProps> = ({ navigation }) => {
                             </TouchableOpacity>
                         </View>
                         <View style={[cs.flexOne, { position: "relative" }]}>
-                            {contactsLoading ? <Text style={[cs.txtCenter]}>Загрузка...</Text> :
+                            {loadings.search_patients ?
+                                <SkeletonContainer>
+                                    <View style={[cs.fColumn, cs.spaceS]}>
+                                        <SkeletonView width={"100%"} height={50} />
+                                        <SkeletonView width={"100%"} height={50} />
+                                    </View>
+                                </SkeletonContainer> :
                                 <View style={[{ position: "absolute", height: "100%", width: "100%" }]}>
                                     <FlatList
                                         data={searched_list}
                                         renderItem={({ item }) => (
                                             <PatientItem
-                                                handlePress={() => {
-
-
-                                                    // setContactsSelected(prev => {
-
-                                                    //     const alreadySelected = contactsSelected.some(contact => contact === item.id)
-                                                    //     if (!alreadySelected) {
-
-                                                    //         return [item.id]
-                                                    //     }
-                                                    //     return prev.filter(contact => contact !== item.id)
-
-                                                    // })
-
-                                                }}
+                                                handlePress={() => handleSelectPatient(item.id)}
                                                 isRadio={true}
                                                 key={item.id}
-                                                selected={contactsSelected.some(contact => contact == String(item.id))}
-                                                {...item}/>
+                                                selected={contactsSelected === item.id}
+                                                {...item} />
                                         )}
                                     />
-
                                 </View>}
-
                         </View>
-
-
-                        <ButtonYellow disabled={contactsSelected.length < 1} handlePress={() => { }}>
+                        <ButtonYellow disabled={contactsSelected === -1} handlePress={toSelectCategory}>
                             <View style={[cs.fRow, cs.fAlCenter, cs.spaceS]}>
                                 <Text style={[cs.fzM, cs.yellowBtnText]}>Далее</Text>
                             </View>
                         </ButtonYellow>
                     </View>
-
                 </WhiteBorderedLayout>
             </View >
             {patientInvitingModal ? <PatientInvitingModal /> : null}
-
         </Animated.View >
-
     );
 };
 const styles = StyleSheet.create({
