@@ -18,7 +18,7 @@ import PatientInfoModal from './components/Modals/PatientInfoModal';
 
 const Root = () => {
     const dispatch = useAppDispatch()
-   
+
     const { token } = useAppSelector(state => state.login)
     const { has_profile } = useAppSelector(state => state.profile)
     const { pin, alreadyBeen, faceId } = useAppSelector(state => state.access)
@@ -74,11 +74,9 @@ const Root = () => {
             <>
                 <StatusBar style={"auto"} />
                 <View style={{ flex: 1 }}>
-                    <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
-                        <AppNavigator />
-                    </ScrollView>
+                    <AppNavigator />
                 </View>
-                
+
             </>
         )
     }

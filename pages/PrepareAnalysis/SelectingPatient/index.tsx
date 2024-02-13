@@ -14,65 +14,70 @@ import PatientInvitingModal from "../../../components/Modals/PatientInvitingModa
 import { handlePatientInvitingModal } from "../../../app/features/modals/modalsSlice";
 import * as Contacts from 'expo-contacts';
 import * as Permissions from 'expo-permissions';
-import { setPatients } from '../../../app/features/patients/patientsSlice';
+import { getSearchPatients, setPatients } from '../../../app/features/patients/patientsSlice';
 import { setPatient } from '../../../app/features/order/orderSlice';
+import { useDeferred } from '../../../hooks/useDeffered';
 
 const SelectingPatient: FC<NavProps> = ({ navigation }) => {
     const dispatch = useAppDispatch()
-    const contacts = useAppSelector(state => state.patients.items)
+    const { searched_list } = useAppSelector(state => state.patients)
     const { patientInvitingModal } = useAppSelector(state => state.modals)
 
     const [searchVal, setSearchVal] = useState("")
+    const defferedSearchVal = useDeferred(searchVal, 500)
+
     const [contactsLoading, setContactsLoading] = useState(false)
     const [contactsSelected, setContactsSelected] = useState<string[]>([])
+    const [keyboardStatus, setKeyboardStatus] = useState(false);
 
     const handleToMyPatients = () => {
         navigation.navigate("home")
     }
 
-    const toSelectCategory = () => {
-        const patientData = contacts.filter(item => item.id === contactsSelected[0])[0]
-        dispatch(setPatient({
-            id: contactsSelected[0],
-            firstName: patientData?.firstName || "",
-            lastName: patientData?.lastName || ""
-        }))
-        navigation.navigate("order_category")
-    }
+    // const toSelectCategory = () => {
+    //     const patientData = searched_list.filter(item => item.id === contactsSelected[0])[0]
+    //     dispatch(setPatient({
+    //         id: contactsSelected[0],
+    //         firstName: patientData?.firstName || "",
+    //         lastName: patientData?.lastName || ""
+    //     }))
+    //     navigation.navigate("order_category")
+    // }
 
-    useEffect(() => {
+    // useEffect(() => {
+    //     (async () => {
+    //         // const contactsPermissions = await Permissions.askAsync(Permissions.CONTACTS);
+    //         // console.log(contactsPermissions.status);
 
-        (async () => {
-            // const contactsPermissions = await Permissions.askAsync(Permissions.CONTACTS);
-            // console.log(contactsPermissions.status);
+    //         // const { status } = await Contacts.requestPermissionsAsync();
+    //         // if (status === 'granted') {
+    //         //     setContactsLoading(true)
+    //         //     const { data } = await Contacts.getContactsAsync();
 
-            // const { status } = await Contacts.requestPermissionsAsync();
-            // if (status === 'granted') {
-            //     setContactsLoading(true)
-            //     const { data } = await Contacts.getContactsAsync();
+    //         //     if (data.length > 0) {
+    //         //         dispatch(setPatients(data.slice(0, 3)))
+    //         //         setContactsLoading(false)
+    //         //     }
+    //         // }
+    //     })();
+    // }, []);
 
-            //     if (data.length > 0) {
-            //         dispatch(setPatients(data.slice(0, 3)))
-            //         setContactsLoading(false)
-            //     }
-            // }
-        })();
-    }, []);
     const openNewPatient = () => {
         navigation.navigate("inviting")
     }
 
-    const [keyboardStatus, setKeyboardStatus] = useState(false);
+    useEffect(() => {
+        dispatch(getSearchPatients({ pacient: searchVal }))
+    }, [defferedSearchVal])
 
     useEffect(() => {
+
         const keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', () => {
             setKeyboardStatus(true);
         });
-
         const keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', () => {
             setKeyboardStatus(false);
         });
-
         return () => {
             keyboardDidShowListener.remove();
             keyboardDidHideListener.remove();
@@ -83,6 +88,7 @@ const SelectingPatient: FC<NavProps> = ({ navigation }) => {
         <Animated.View>
             <View style={[cs.fColumn, cs.spaceM, { minHeight: keyboardStatus ? "99%" : "100%" }]}>
                 <WhiteBorderedLayout
+                    scrollable={false}
                     topContent={
                         <AppContainer style={{ paddingBottom: 0 }}>
                             <View style={[cs.fRow, cs.spaceM, cs.fAlCenter]}>
@@ -118,31 +124,28 @@ const SelectingPatient: FC<NavProps> = ({ navigation }) => {
                             {contactsLoading ? <Text style={[cs.txtCenter]}>Загрузка...</Text> :
                                 <View style={[{ position: "absolute", height: "100%", width: "100%" }]}>
                                     <FlatList
-                                        data={searchVal.length > 0 ? contacts.filter(contact => {
-                                            const matchFirstName = contact.firstName?.toLocaleLowerCase().includes(searchVal.toLocaleLowerCase())
-                                            const matchLastName = contact.lastName?.toLocaleLowerCase().includes(searchVal.toLocaleLowerCase())
-                                            if (matchFirstName || matchLastName) {
-                                                return contact
-                                            }
-
-
-                                        }) : contacts}
+                                        data={searched_list}
                                         renderItem={({ item }) => (
-                                            <PatientItem isRadio={true} handlePress={() => {
+                                            <PatientItem
+                                                handlePress={() => {
 
 
-                                                setContactsSelected(prev => {
+                                                    // setContactsSelected(prev => {
 
-                                                    const alreadySelected = contactsSelected.some(contact => contact === item.id)
-                                                    if (!alreadySelected) {
+                                                    //     const alreadySelected = contactsSelected.some(contact => contact === item.id)
+                                                    //     if (!alreadySelected) {
 
-                                                        return [item.id]
-                                                    }
-                                                    return prev.filter(contact => contact !== item.id)
+                                                    //         return [item.id]
+                                                    //     }
+                                                    //     return prev.filter(contact => contact !== item.id)
 
-                                                })
+                                                    // })
 
-                                            }} key={item.id} selected={contactsSelected.some(contact => contact === item.id)} firstName={item.firstName || ""} lastName={item.lastName || ""} phone={item.phoneNumbers ? item.phoneNumbers[0]?.number || "" : ""} avatarSrc={null} />
+                                                }}
+                                                isRadio={true}
+                                                key={item.id}
+                                                selected={contactsSelected.some(contact => contact == String(item.id))}
+                                                {...item}/>
                                         )}
                                     />
 
@@ -151,7 +154,7 @@ const SelectingPatient: FC<NavProps> = ({ navigation }) => {
                         </View>
 
 
-                        <ButtonYellow disabled={contactsSelected.length < 1} handlePress={toSelectCategory}>
+                        <ButtonYellow disabled={contactsSelected.length < 1} handlePress={() => { }}>
                             <View style={[cs.fRow, cs.fAlCenter, cs.spaceS]}>
                                 <Text style={[cs.fzM, cs.yellowBtnText]}>Далее</Text>
                             </View>

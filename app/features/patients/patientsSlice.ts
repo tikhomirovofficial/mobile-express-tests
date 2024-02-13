@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { Contact } from "expo-contacts";
 import { PatientApi } from "../../../types/entities/patients.types";
+import { PatientsBySearchReq } from "../../../types/api/patients.api.types";
 
 type PatientsSliceState = {
     items: Contact[],
@@ -8,7 +9,8 @@ type PatientsSliceState = {
     list: PatientApi[]
     searched_list: PatientApi[]
     loadings: {
-        patients: boolean
+        patients: boolean,
+        search_patients: boolean
     }
 }
 
@@ -18,9 +20,29 @@ const initialState: PatientsSliceState = {
     list: [],
     searched_list: [],
     loadings: {
-        patients: true
+        patients: true,
+        search_patients: true
     }
 }
+export const getSearchPatients = createAsyncThunk(
+    'patients/search/get',
+    async (req: PatientsBySearchReq, { dispatch }) => {
+        return new Promise<PatientApi[]>((res, rej) => {
+            setTimeout(() => {
+                res([...Array(3).fill(
+                    {
+                        id: 1,
+                        bonus: 10,
+                        date: "2024-01-22",
+                        first_name: "Артём",
+                        last_name: "Тихомиров",
+                        phone: "+79005001849"
+                    },)
+                ])
+            }, 1000)
+        })
+    }
+)
 export const getAllPatients = createAsyncThunk(
     'patients/get',
     async (req, { dispatch }) => {
@@ -72,7 +94,20 @@ export const PatientsSlice = createSlice({
             state.loadings.patients = false
         })
         builder.addCase(getAllPatients.rejected, (state, action) => {
-            state.loadings.patients = false
+            state.loadings.
+            patients = false
+        })
+        //DOCTOR SEARCH PATIENTS
+        builder.addCase(getSearchPatients.pending, (state, action) => {
+            state.loadings.search_patients = true
+        })
+        builder.addCase(getSearchPatients.fulfilled, (state, action) => {
+            state.searched_list = action.payload
+            state.loadings.search_patients = false
+        })
+        builder.addCase(getSearchPatients.rejected, (state, action) => {
+            state.loadings.
+            search_patients = false
         })
 
     },

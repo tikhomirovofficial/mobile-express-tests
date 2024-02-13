@@ -26,7 +26,7 @@ type PermissionsSliceType = {
 
 const initialState: PermissionsSliceType = {
     notifications: {
-        granted: false,
+        granted: !false,
         checking: true
     },
     media: {
