@@ -17,18 +17,20 @@ import { handleAnalysisInfoModal } from '../../../app/features/modals/modalsSlic
 import { useDeferred } from '../../../hooks/useDeffered';
 import { SkeletonContainer } from 'react-native-skeleton-component';
 import { SkeletonView } from '../../../components/SkeletonView';
-import { getProducts } from '../../../app/features/products/productSlice';
+import { getProducts, resetPart, resetProducts } from '../../../app/features/products/productSlice';
 
 const SelectingProducts: FC<NavProps> = ({ navigation }) => {
     const dispatch = useAppDispatch()
     const cart = useAppSelector(state => state.cart)
 
     const [keyboardStatus, setKeyboardStatus] = useState(false);
+    const [canMore, setCanMore] = useState(false);
     const [searchVal, setSearchVal] = useState("")
-    const defferedSearchVal = useDeferred(searchVal, 500)
+    const defferedSearchVal = useDeferred(searchVal, 200)
+
 
     const [categoriesLoading, setCategoriesLoading] = useState(false)
-    const { items, part } = useAppSelector(state => state.products)
+    const { items, part, loadings } = useAppSelector(state => state.products)
     const categories = useAppSelector(state => state.categories.items)
     const cartProducts = useAppSelector(state => state.cart.items)
     const currentCategoryId = useAppSelector(state => state.order.currentCategorySelected)
@@ -46,23 +48,44 @@ const SelectingProducts: FC<NavProps> = ({ navigation }) => {
         dispatch(handleAnalysisInfoModal())
     }
 
-    useEffect(() => {
-        dispatch(getProducts({
-            id: currentCategoryId,
-            title: searchVal,
-            part
-        }))
-    }, [defferedSearchVal])
+    const loadProducts = () => {
+        if (canMore) {
+            dispatch(getProducts({
+                id: currentCategoryId,
+                title: defferedSearchVal,
+                part
+            }))
+            return
+        }
+        if (part === 1) {
+            if (!items.length) {
+                dispatch(getProducts({
+                    id: currentCategoryId,
+                    title: defferedSearchVal,
+                    part
+                }))
+                return
+            }
+        }
+    }
 
     useEffect(() => {
+        dispatch(resetProducts())
+    }, [defferedSearchVal])
+
+
+    useEffect(() => {
+        loadProducts()
+    }, [part, items])
+
+    useEffect(() => {
+
         const keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', () => {
             setKeyboardStatus(true);
         });
-
         const keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', () => {
             setKeyboardStatus(false);
         });
-
         return () => {
             keyboardDidShowListener.remove();
             keyboardDidHideListener.remove();
@@ -73,6 +96,7 @@ const SelectingProducts: FC<NavProps> = ({ navigation }) => {
         <Animated.View>
             <View style={[cs.fColumn, cs.spaceM]}>
                 <WhiteBorderedLayout
+                    scrollable={false}
                     topContent={
                         <AppContainer style={{ paddingBottom: 0 }}>
                             <View style={[cs.fRowBetw, cs.spaceM, cs.fAlCenter]}>
@@ -103,16 +127,18 @@ const SelectingProducts: FC<NavProps> = ({ navigation }) => {
 
                         </View>
                         <View style={[cs.flexOne, { position: "relative" }]}>
-                            {categoriesLoading ?
+                            {loadings.products ?
                                 <SkeletonContainer>
-                                    <View style={[cs.fColumn, cs.spaceS]}>
+                                    <View style={[cs.fColumn, cs.spaceS, cs.flexOne]}>
                                         <SkeletonView width={"100%"} height={50} />
                                         <SkeletonView width={"100%"} height={50} />
                                     </View>
                                 </SkeletonContainer> :
                                 <View style={[{ position: "absolute", height: "100%", width: "100%" }]}>
+
                                     <FlatList
                                         contentContainerStyle={[cs.fColumn, cs.spaceS]}
+                                        onEndReached={loadProducts}
                                         data={items}
                                         renderItem={({ item, index }) => {
                                             const isInCart = cartProducts.some(cartProduct => cartProduct.id === item.id)

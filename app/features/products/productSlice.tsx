@@ -24,23 +24,22 @@ export const getProducts = createAsyncThunk(
             setTimeout(() => {
                 res({
                     status: true,
-                    analiz: [
-                        {
-                            id: 1,
-                            cat: 1,
-                            code: "",
-                            cost: 300,
-                            info: "dfdsf",
-                            maxdur: 1,
-                            mindur: 10,
-                            name: "Какой-то анализ",
-                            prepare: [],
-                            tags: [],
-                            templates: []
-                        }
-                    ]
+                    analiz: Array(10).fill({
+                        id: 1,
+                        cat: 1,
+                        code: "",
+                        cost: 300,
+                        info: "dfdsf",
+                        maxdur: 1,
+                        mindur: 10,
+                        name: "Какой-то анализ",
+                        prepare: [],
+                        tags: [],
+                        templates: []
+                    })
                 })
             }, 1000)
+
         })
     })
 export const ProductsSlice = createSlice({
@@ -49,11 +48,13 @@ export const ProductsSlice = createSlice({
     reducers: {
         resetProducts: state => {
             state.items = initialState.items
-            state.loadings = initialState.loadings,
-                state.part = initialState.part
+            state.part = initialState.part
         },
         incrementProductsPart: state => {
             state.part += 1
+        },
+        resetPart: state => {
+            state.part = 1
         }
     },
     extraReducers: (builder) => {
@@ -72,6 +73,7 @@ export const ProductsSlice = createSlice({
 })
 export const {
     resetProducts,
+    resetPart,
     incrementProductsPart
 } = ProductsSlice.actions
 export const productsReducer = ProductsSlice.reducer
