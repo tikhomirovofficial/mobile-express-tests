@@ -73,7 +73,7 @@ const SelectingProducts: FC<NavProps> = ({ navigation }) => {
             dispatch(incrementProductsPart())
         }
     }
-
+    
     useEffect(() => {
         dispatch(resetProducts())
     }, [defferedSearchVal])

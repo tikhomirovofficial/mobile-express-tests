@@ -13,7 +13,7 @@ import ButtonYellow from "../../../components/Buttons/ButtonYellow";
 import PatientInvitingModal from "../../../components/Modals/PatientInvitingModal";
 import { addToCart, clearCart, removeProduct } from '../../../app/features/cart/cartSlice';
 import { resetPatient, setCurrentCategory, setPatient } from '../../../app/features/order/orderSlice';
-import { addOrder } from '../../../app/features/orders/ordersSlice';
+
 
 const CartProducts: FC<NavProps> = ({ navigation }) => {
     const dispatch = useAppDispatch()
@@ -26,22 +26,16 @@ const CartProducts: FC<NavProps> = ({ navigation }) => {
     const handleClearCart = () => {
         dispatch(clearCart())
     }
+    
     const handleOrder = () => {
         const dateNow = new Date()
-        dispatch(addOrder({
-            id: 1,
-            patientFirstName: orderData.firstName,
-            patientLastName: orderData.lastName,
-            isPaid: false,
-            date: `${dateNow.getDate()}.${dateNow.getMonth() + 1}.${dateNow.getFullYear()}`,
-            title: ""
-        }))
+
         handleClearCart()
         dispatch(setCurrentCategory(-1))
         dispatch(resetPatient())
 
         navigation.navigate("order_sent")
-        
+
     }
     const handleToSelectingCategory = () => {
         navigation.navigate("order_category")
@@ -86,14 +80,14 @@ const CartProducts: FC<NavProps> = ({ navigation }) => {
                         <View style={[cs.spaceL, cs.fColumn]}>
                             <View style={[cs.fRowBetw, cs.spaceM, cs.fAlCenter]}>
                                 <Text style={[cs.fwSemi, cs.fwBold, cs.fzXL]}>Всего анализов: {cartProducts.length}</Text>
-                                <View style={[cs.fRow, cs.fAlCenter, cs.spaceS,{backgroundColor: "#36CACB", paddingHorizontal: 15, paddingVertical: 6, borderRadius: 300}]}>
-                                    <HeartIcon stroke={"#ffffff"}/>
+                                <View style={[cs.fRow, cs.fAlCenter, cs.spaceS, { backgroundColor: "#36CACB", paddingHorizontal: 15, paddingVertical: 6, borderRadius: 300 }]}>
+                                    <HeartIcon stroke={"#ffffff"} />
                                     <Text style={[cs.fwSemi, cs.colorWhite]}>{cartProducts.length * 3}</Text>
                                 </View>
 
                             </View>
                             <TouchableOpacity onPress={handleClearCart} style={[cs.fRow, cs.fAlCenter, cs.spaceS]}>
-                                <ClearIcon/>
+                                <ClearIcon />
                                 <Text style={[cs.textRed, cs.fwMedium, fs.montR, cs.fzM]}>Очистить</Text>
                             </TouchableOpacity>
 
@@ -106,8 +100,8 @@ const CartProducts: FC<NavProps> = ({ navigation }) => {
                                         contentContainerStyle={[cs.fColumn, cs.spaceS]}
                                         data={cartProducts}
                                         renderItem={({ item }) => {
-                                        
-                                        
+
+
                                             const removeItem = () => {
                                                 dispatch(removeProduct(item.id))
                                             }
@@ -115,8 +109,8 @@ const CartProducts: FC<NavProps> = ({ navigation }) => {
                                             return (<TouchableOpacity style={[cs.fRowBetw, cs.spaceS, cs.fAlCenter]} >
                                                 <View key={item.id} style={[cs.fRow, cs.spaceS, { maxWidth: "90%" }]}>
                                                     <View style={[cs.fColumn]}>
-                                                        <Text style={[cs.fwMedium, fs.montR, cs.fzS, cs.colorDark]}>{products.filter(product => product.id === item.id)[0].title}</Text>
-                                                        <Text style={[cs.fwBold, fs.montR, cs.fzS, cs.colorDark]}>{item.price} ₽</Text>
+                                                        <Text style={[cs.fwMedium, fs.montR, cs.fzS, cs.colorDark]}>{item.name}</Text>
+                                                        <Text style={[cs.fwBold, fs.montR, cs.fzS, cs.colorDark]}>{item.cost} ₽</Text>
                                                     </View>
                                                 </View>
                                                 <TouchableOpacity onPress={removeItem}>
