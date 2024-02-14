@@ -110,7 +110,7 @@ const SelectingProducts: FC<NavProps> = ({ navigation }) => {
 
                     }
                     style={{ paddingTop: 40, maxHeight: "100%" }}>
-                    <View style={[cs.spaceXL, styles.patientsContent, { minHeight: keyboardStatus ? "99%" : "100%" }]}>
+                    <View style={[cs.spaceXL, styles.patientsContent, { minHeight: keyboardStatus ? "100%" : "100%" }]}>
                         <View style={[cs.spaceL, cs.fColumn]}>
                             <View style={[cs.fRowBetw, cs.spaceM, cs.fAlCenter]}>
                                 <Text style={[cs.fwSemi, cs.fwBold, cs.fzXL]}>Выберите анализы</Text>
@@ -126,57 +126,62 @@ const SelectingProducts: FC<NavProps> = ({ navigation }) => {
                             </View>
 
                         </View>
-                        <View style={[cs.flexOne, { position: "relative" }]}>
-                            {loadings.products ?
-                                <SkeletonContainer>
-                                    <View style={[cs.fColumn, cs.spaceS, cs.flexOne]}>
-                                        <SkeletonView width={"100%"} height={50} />
-                                        <SkeletonView width={"100%"} height={50} />
-                                    </View>
-                                </SkeletonContainer> :
-                                <View style={[{ position: "absolute", height: "100%", width: "100%" }]}>
+                        <View style={[cs.flexOne]}>
+                            <View style={[cs.flexOne, { position: "relative" }]}>
+                                {loadings.products ?
+                                    <SkeletonContainer>
+                                        <View style={[cs.fColumn, cs.spaceS, cs.flexOne]}>
+                                            <SkeletonView width={"100%"} height={50} />
+                                            <SkeletonView width={"100%"} height={50} />
+                                        </View>
+                                    </SkeletonContainer> :
+                                    <View style={[{ position: "absolute", height: "100%", width: "100%" }]}>
 
-                                    <FlatList
-                                        contentContainerStyle={[cs.fColumn, cs.spaceS]}
-                                        onEndReached={loadProducts}
-                                        data={items}
-                                        renderItem={({ item, index }) => {
-                                            const isInCart = cartProducts.some(cartProduct => cartProduct.id === item.id)
-                                            const addProduct = () => {
-                                                dispatch(addToCart({
-                                                    id: item.id,
-                                                    price: item.cost,
-                                                    count: 1
-                                                }))
-                                            }
-                                            const removeItem = () => {
-                                                dispatch(removeProduct(item.id))
-                                            }
+                                        <FlatList
+                                            contentContainerStyle={[cs.fColumn, cs.spaceS]}
+                                            onEndReached={loadProducts}
+                                            data={items}
+                                            renderItem={({ item, index }) => {
+                                                const isInCart = cartProducts.some(cartProduct => cartProduct.id === item.id)
+                                                const addProduct = () => {
+                                                    dispatch(addToCart({
+                                                        id: item.id,
+                                                        price: item.cost,
+                                                        count: 1
+                                                    }))
+                                                }
+                                                const removeItem = () => {
+                                                    dispatch(removeProduct(item.id))
+                                                }
 
-                                            return (<TouchableOpacity onPress={handleOpenProductInfo} style={[cs.fRowBetw, cs.spaceS, cs.fAlCenter, { paddingBottom: 16, paddingTop: index ? 16 : 0, borderBottomWidth: 1, borderBottomColor: "#f3f3f3" }]} >
-                                                <View key={item.id} style={[cs.fRow, cs.spaceS, { maxWidth: "90%" }]}>
-                                                    <View style={[cs.fColumn]}>
-                                                        <Text style={[cs.fwMedium, fs.montR, cs.fzS, cs.colorDark]}>{item.name}</Text>
-                                                        <Text style={[cs.fwBold, fs.montR, cs.fzS, cs.colorDark]}>{item.cost} ₽</Text>
+                                                return (<TouchableOpacity onPress={handleOpenProductInfo} style={[cs.fRowBetw, cs.spaceS, cs.fAlCenter, { paddingBottom: 16, paddingTop: index ? 16 : 0, borderBottomWidth: 1, borderBottomColor: "#f3f3f3" }]} >
+                                                    <View key={item.id} style={[cs.fRow, cs.spaceS, { maxWidth: "90%" }]}>
+                                                        <View style={[cs.fColumn]}>
+                                                            <Text style={[cs.fwMedium, fs.montR, cs.fzS, cs.colorDark]}>{item.name}</Text>
+                                                            <Text style={[cs.fwBold, fs.montR, cs.fzS, cs.colorDark]}>{item.cost} ₽</Text>
+                                                        </View>
                                                     </View>
-                                                </View>
-                                                <TouchableOpacity onPress={!isInCart ? addProduct : removeItem}>
-                                                    {
-                                                        isInCart ?
-                                                            <RemoveIcon /> : <AddIcon />
-                                                    }
+                                                    <TouchableOpacity onPress={!isInCart ? addProduct : removeItem}>
+                                                        {
+                                                            isInCart ?
+                                                                <RemoveIcon /> : <AddIcon />
+                                                        }
 
-                                                </TouchableOpacity>
+                                                    </TouchableOpacity>
 
 
-                                            </TouchableOpacity>)
-                                        }}
-                                    />
+                                                </TouchableOpacity>)
+                                            }}
+                                        />
 
-                                </View>}
+                                    </View>}
 
+                            </View>
+
+                            <View style={[{ height: 20 }]}>
+                                {/* <Text>Подгружаем...</Text> */}
+                            </View>
                         </View>
-
 
                         <ButtonYellow handlePress={handleToCart}>
                             <View style={[cs.fRow, cs.fAlCenter, cs.spaceS]}>
