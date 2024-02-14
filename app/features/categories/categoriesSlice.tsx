@@ -32,7 +32,7 @@ export const getCategories = createAsyncThunk(
                 })
             }, 1000)
         })
-    })
+})
 export const CategoriesSlice = createSlice({
     name: "categories",
     initialState,
@@ -49,7 +49,6 @@ export const CategoriesSlice = createSlice({
         })
         builder.addCase(getCategories.rejected, (state, action) => {
             console.log(`Ошибка при получении категорий: ${action.error.message}`);
-            
             state.loadings.categories = false
         })
     },

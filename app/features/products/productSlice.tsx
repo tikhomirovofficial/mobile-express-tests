@@ -1,66 +1,77 @@
-import {createSlice, PayloadAction} from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { AnalysisApi } from "../../../types/entities/analysis.types";
+import { AnalysisGetReq, AnalysisGetRes } from "../../../types/api/analysis.api.types";
 
-type Product = {
-    id: number
-    price: number,
-    title: string,
-    category_id: number
-}
 type ProductSliceState = {
-    items: Product[];
+    loadings: {
+        products: boolean
+    }
+    items: AnalysisApi[];
+    part: number
 }
 
 const initialState: ProductSliceState = {
-    items: [
-        {
-            category_id: 1,
-            id: 1,
-            price: 773,
-            title: "Т3 свободный (П)"
-        },
-        {
-            category_id: 1,
-            id: 12,
-            price: 773,
-            title: "ФСГ (фолликулостимулирующий гормон) (П)"
-        },
-        {
-            id: 1001,
-            category_id: 3,
-            price: 400,
-            title: "Индекс ROMA (включает исследования СА 125 и НЕ-4) (П)"
-        },
-        {
-            id: 151,
-            category_id: 3,
-            price: 420,
-            title: "ТТГ (тиреотропный гормон) (П)"
-        },
-        {
-            id: 3,
-            category_id: 2,
-            price: 650,
-            title: "ПСА общий (П)"
-        },
-        {
-            id: 19,
-            category_id: 2,
-            price: 750,
-            title: "Альфафетопротеин (П)"
-        },
-        {
-            id: 51,
-            category_id: 2,
-            price: 690,
-            title: "Тестостерон общий (П)"
-        }
-    ]
+    loadings: {
+        products: true,
+    },
+    items: [],
+    part: 1
 }
+export const getProducts = createAsyncThunk(
+    'all/products/get',
+    async (req: AnalysisGetReq, { dispatch }) => {
+        return new Promise<AnalysisGetRes>((res, rej) => {
+            setTimeout(() => {
+                res({
+                    status: true,
+                    analiz: [
+                        {
+                            id: 1,
+                            cat: 1,
+                            code: "",
+                            cost: 300,
+                            info: "dfdsf",
+                            maxdur: 1,
+                            mindur: 10,
+                            name: "Какой-то анализ",
+                            prepare: [],
+                            tags: [],
+                            templates: []
+                        }
+                    ]
+                })
+            }, 1000)
+        })
+    })
 export const ProductsSlice = createSlice({
     name: "products",
     initialState,
     reducers: {
-    }
+        resetProducts: state => {
+            state.items = initialState.items
+            state.loadings = initialState.loadings,
+                state.part = initialState.part
+        },
+        incrementProductsPart: state => {
+            state.part += 1
+        }
+    },
+    extraReducers: (builder) => {
+        builder.addCase(getProducts.pending, state => {
+            state.loadings.products = true
+        })
+        builder.addCase(getProducts.fulfilled, (state, action) => {
+            state.items = [...state.items, ...action.payload.analiz]
+            state.loadings.products = false
+        })
+        builder.addCase(getProducts.rejected, (state, action) => {
+            console.log(`Ошибка при получении продуктов: ${action.error.message}`);
+            state.loadings.products = false
+        })
+    },
 })
-
+export const {
+    resetProducts,
+    incrementProductsPart
+} = ProductsSlice.actions
 export const productsReducer = ProductsSlice.reducer

@@ -51,7 +51,6 @@ const SelectingCategory: FC<NavProps> = ({ navigation }) => {
     }, [defferedSearchVal])
 
     useEffect(() => {
-
         const keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', () => {
             setKeyboardStatus(true);
         });
@@ -108,7 +107,6 @@ const SelectingCategory: FC<NavProps> = ({ navigation }) => {
                                         <SkeletonView width={"100%"} height={50} />
                                         <SkeletonView width={"100%"} height={50} />
                                     </View>
-
                                 </SkeletonContainer>
                                 :
                                 <View style={[{ position: "absolute", height: "100%", width: "100%" }]}>

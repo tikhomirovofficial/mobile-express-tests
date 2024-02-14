@@ -14,14 +14,21 @@ import PatientInvitingModal from "../../../components/Modals/PatientInvitingModa
 import { addToCart, removeProduct } from '../../../app/features/cart/cartSlice';
 import AnalysisInfoModal from '../../../components/Modals/AnalysisInfoModal';
 import { handleAnalysisInfoModal } from '../../../app/features/modals/modalsSlice';
+import { useDeferred } from '../../../hooks/useDeffered';
+import { SkeletonContainer } from 'react-native-skeleton-component';
+import { SkeletonView } from '../../../components/SkeletonView';
+import { getProducts } from '../../../app/features/products/productSlice';
 
 const SelectingProducts: FC<NavProps> = ({ navigation }) => {
     const dispatch = useAppDispatch()
     const cart = useAppSelector(state => state.cart)
+
     const [keyboardStatus, setKeyboardStatus] = useState(false);
     const [searchVal, setSearchVal] = useState("")
+    const defferedSearchVal = useDeferred(searchVal, 500)
+
     const [categoriesLoading, setCategoriesLoading] = useState(false)
-    const products = useAppSelector(state => state.products.items)
+    const { items, part } = useAppSelector(state => state.products)
     const categories = useAppSelector(state => state.categories.items)
     const cartProducts = useAppSelector(state => state.cart.items)
     const currentCategoryId = useAppSelector(state => state.order.currentCategorySelected)
@@ -39,6 +46,13 @@ const SelectingProducts: FC<NavProps> = ({ navigation }) => {
         dispatch(handleAnalysisInfoModal())
     }
 
+    useEffect(() => {
+        dispatch(getProducts({
+            id: currentCategoryId,
+            title: searchVal,
+            part
+        }))
+    }, [defferedSearchVal])
 
     useEffect(() => {
         const keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', () => {
@@ -89,26 +103,23 @@ const SelectingProducts: FC<NavProps> = ({ navigation }) => {
 
                         </View>
                         <View style={[cs.flexOne, { position: "relative" }]}>
-                            {categoriesLoading ? <Text style={[cs.txtCenter]}>Загрузка...</Text> :
+                            {categoriesLoading ?
+                                <SkeletonContainer>
+                                    <View style={[cs.fColumn, cs.spaceS]}>
+                                        <SkeletonView width={"100%"} height={50} />
+                                        <SkeletonView width={"100%"} height={50} />
+                                    </View>
+                                </SkeletonContainer> :
                                 <View style={[{ position: "absolute", height: "100%", width: "100%" }]}>
                                     <FlatList
-
                                         contentContainerStyle={[cs.fColumn, cs.spaceS]}
-                                        data={searchVal.length > 0 ? products.filter(product => {
-                                            if (product.title.toLocaleLowerCase().includes(searchVal.toLocaleLowerCase())) {
-                                                if (product.category_id === currentCategoryId) {
-                                                    return product
-                                                }
-
-                                            }
-
-                                        }) : products.filter(product => product.category_id === currentCategoryId)}
+                                        data={items}
                                         renderItem={({ item, index }) => {
                                             const isInCart = cartProducts.some(cartProduct => cartProduct.id === item.id)
                                             const addProduct = () => {
                                                 dispatch(addToCart({
                                                     id: item.id,
-                                                    price: item.price,
+                                                    price: item.cost,
                                                     count: 1
                                                 }))
                                             }
@@ -119,8 +130,8 @@ const SelectingProducts: FC<NavProps> = ({ navigation }) => {
                                             return (<TouchableOpacity onPress={handleOpenProductInfo} style={[cs.fRowBetw, cs.spaceS, cs.fAlCenter, { paddingBottom: 16, paddingTop: index ? 16 : 0, borderBottomWidth: 1, borderBottomColor: "#f3f3f3" }]} >
                                                 <View key={item.id} style={[cs.fRow, cs.spaceS, { maxWidth: "90%" }]}>
                                                     <View style={[cs.fColumn]}>
-                                                        <Text style={[cs.fwMedium, fs.montR, cs.fzS, cs.colorDark]}>{item.title}</Text>
-                                                        <Text style={[cs.fwBold, fs.montR, cs.fzS, cs.colorDark]}>{item.price} ₽</Text>
+                                                        <Text style={[cs.fwMedium, fs.montR, cs.fzS, cs.colorDark]}>{item.name}</Text>
+                                                        <Text style={[cs.fwBold, fs.montR, cs.fzS, cs.colorDark]}>{item.cost} ₽</Text>
                                                     </View>
                                                 </View>
                                                 <TouchableOpacity onPress={!isInCart ? addProduct : removeItem}>
