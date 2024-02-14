@@ -17,20 +17,18 @@ import { handleAnalysisInfoModal } from '../../../app/features/modals/modalsSlic
 import { useDeferred } from '../../../hooks/useDeffered';
 import { SkeletonContainer } from 'react-native-skeleton-component';
 import { SkeletonView } from '../../../components/SkeletonView';
-import { getProducts, resetPart, resetProducts } from '../../../app/features/products/productSlice';
+import { getProducts, incrementProductsPart, resetPart, resetProducts } from '../../../app/features/products/productSlice';
+import ProductItem from '../../../components/ProductItem';
 
 const SelectingProducts: FC<NavProps> = ({ navigation }) => {
     const dispatch = useAppDispatch()
     const cart = useAppSelector(state => state.cart)
 
     const [keyboardStatus, setKeyboardStatus] = useState(false);
-    const [canMore, setCanMore] = useState(false);
     const [searchVal, setSearchVal] = useState("")
     const defferedSearchVal = useDeferred(searchVal, 200)
 
-
-    const [categoriesLoading, setCategoriesLoading] = useState(false)
-    const { items, part, loadings } = useAppSelector(state => state.products)
+    const { items, part, loadings, can_next } = useAppSelector(state => state.products)
     const categories = useAppSelector(state => state.categories.items)
     const cartProducts = useAppSelector(state => state.cart.items)
     const currentCategoryId = useAppSelector(state => state.order.currentCategorySelected)
@@ -42,22 +40,14 @@ const SelectingProducts: FC<NavProps> = ({ navigation }) => {
     const handleToSelectingCategory = () => {
         navigation.navigate("order_category")
     }
+
     const handleOpenProductInfo = () => {
         console.log("Текущий продукт");
-
         dispatch(handleAnalysisInfoModal())
     }
 
     const loadProducts = () => {
-        if (canMore) {
-            dispatch(getProducts({
-                id: currentCategoryId,
-                title: defferedSearchVal,
-                part
-            }))
-            return
-        }
-        if (part === 1) {
+        if (part === 0) {
             if (!items.length) {
                 dispatch(getProducts({
                     id: currentCategoryId,
@@ -66,6 +56,21 @@ const SelectingProducts: FC<NavProps> = ({ navigation }) => {
                 }))
                 return
             }
+            return
+        }
+        if (can_next) {
+            dispatch(getProducts({
+                id: currentCategoryId,
+                title: defferedSearchVal,
+                part
+            }))
+            return
+        }
+    }
+
+    const loadMore = () => {
+        if (can_next && items.length, !loadings.pagination) {
+            dispatch(incrementProductsPart())
         }
     }
 
@@ -75,11 +80,12 @@ const SelectingProducts: FC<NavProps> = ({ navigation }) => {
 
 
     useEffect(() => {
-        loadProducts()
-    }, [part, items])
+        if (part !== 1) {
+            loadProducts()
+        }
+    }, [part])
 
     useEffect(() => {
-
         const keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', () => {
             setKeyboardStatus(true);
         });
@@ -87,6 +93,7 @@ const SelectingProducts: FC<NavProps> = ({ navigation }) => {
             setKeyboardStatus(false);
         });
         return () => {
+            dispatch(resetProducts())
             keyboardDidShowListener.remove();
             keyboardDidHideListener.remove();
         };
@@ -136,56 +143,35 @@ const SelectingProducts: FC<NavProps> = ({ navigation }) => {
                                         </View>
                                     </SkeletonContainer> :
                                     <View style={[{ position: "absolute", height: "100%", width: "100%" }]}>
-
                                         <FlatList
                                             contentContainerStyle={[cs.fColumn, cs.spaceS]}
-                                            onEndReached={loadProducts}
+                                            onEndReached={loadMore}
+                                            getItemLayout={(data, index) => ({
+                                                length: 50,
+                                                offset: 50 * index,
+                                                index,
+                                            })}
+                                            initialNumToRender={5}
                                             data={items}
-                                            renderItem={({ item, index }) => {
-                                                const isInCart = cartProducts.some(cartProduct => cartProduct.id === item.id)
-                                                const addProduct = () => {
-                                                    dispatch(addToCart({
-                                                        id: item.id,
-                                                        price: item.cost,
-                                                        count: 1
-                                                    }))
-                                                }
-                                                const removeItem = () => {
-                                                    dispatch(removeProduct(item.id))
-                                                }
-
-                                                return (<TouchableOpacity onPress={handleOpenProductInfo} style={[cs.fRowBetw, cs.spaceS, cs.fAlCenter, { paddingBottom: 16, paddingTop: index ? 16 : 0, borderBottomWidth: 1, borderBottomColor: "#f3f3f3" }]} >
-                                                    <View key={item.id} style={[cs.fRow, cs.spaceS, { maxWidth: "90%" }]}>
-                                                        <View style={[cs.fColumn]}>
-                                                            <Text style={[cs.fwMedium, fs.montR, cs.fzS, cs.colorDark]}>{item.name}</Text>
-                                                            <Text style={[cs.fwBold, fs.montR, cs.fzS, cs.colorDark]}>{item.cost} ₽</Text>
-                                                        </View>
-                                                    </View>
-                                                    <TouchableOpacity onPress={!isInCart ? addProduct : removeItem}>
-                                                        {
-                                                            isInCart ?
-                                                                <RemoveIcon /> : <AddIcon />
-                                                        }
-
-                                                    </TouchableOpacity>
-
-
-                                                </TouchableOpacity>)
-                                            }}
+                                            renderItem={({ item, index }) =>
+                                                <ProductItem
+                                                    clickHandle={handleOpenProductInfo}
+                                                    product={item}
+                                                    isInCart={cartProducts.some(cartProduct => cartProduct.id === item.id)}
+                                                    index={index}
+                                                ></ProductItem>}
                                         />
-
                                     </View>}
-
                             </View>
-
                             <View style={[{ height: 20 }]}>
-                                {/* <Text>Подгружаем...</Text> */}
+                                {loadings.pagination ? <Text>Подгружаем...</Text> : null}
+
                             </View>
                         </View>
 
                         <ButtonYellow handlePress={handleToCart}>
                             <View style={[cs.fRow, cs.fAlCenter, cs.spaceS]}>
-                                <Text style={[cs.fzM, cs.yellowBtnText]}>Корзина</Text>
+                                <Text style={[cs.fzM, cs.yellowBtnText]}>Корзинаs</Text>
                                 {14 > 0 ? <View style={cs.count}>
                                     <Text style={cs.countText}>{cart.items.length}</Text>
                                 </View> : null}

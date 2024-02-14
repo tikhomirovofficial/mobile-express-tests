@@ -19,6 +19,7 @@ import { getCategories } from '../../../app/features/categories/categoriesSlice'
 import { useDeferred } from '../../../hooks/useDeffered';
 import { SkeletonContainer } from 'react-native-skeleton-component';
 import { SkeletonView } from '../../../components/SkeletonView';
+import { CategoryItem } from '../../../components/CategoryItem';
 
 const SelectingCategory: FC<NavProps> = ({ navigation }) => {
     const dispatch = useAppDispatch()
@@ -37,8 +38,7 @@ const SelectingCategory: FC<NavProps> = ({ navigation }) => {
         navigation.navigate("order_patient")
     }
 
-    const toProducts = (categoryId: number) => {
-        dispatch(setCurrentCategory(categoryId))
+    const toProducts = () => {
         navigation.navigate("order_products")
     }
 
@@ -113,16 +113,8 @@ const SelectingCategory: FC<NavProps> = ({ navigation }) => {
                                     <FlatList
                                         contentContainerStyle={[cs.fColumn, cs.spaceS]}
                                         data={categories}
-                                        renderItem={({ item }) => (
-                                            <TouchableOpacity onPress={() => toProducts(item.id)} style={[cs.fRowBetw, cs.spaceS]}>
-                                                <View key={item.id} style={[cs.fRow, cs.spaceS, { maxWidth: "90%" }]}>
-                                                    <Text style={[cs.fwMedium, fs.montR, cs.fzS, cs.colorDark]}>{item.name}</Text>
-                                                    <Text style={[cs.fwMedium, fs.montR, cs.fzS, cs.colorDark, cs.colorGray]}>300</Text>
-                                                </View>
-                                                <View style={[{ marginTop: 3 }]}>
-                                                    <ArrowRightIcon />
-                                                </View>
-                                            </TouchableOpacity>
+                                        renderItem={({ item, index }) => (
+                                            <CategoryItem clickHandle={toProducts} index={index} category={item} />
                                         )}
                                     />
 

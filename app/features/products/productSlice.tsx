@@ -4,17 +4,21 @@ import { AnalysisGetReq, AnalysisGetRes } from "../../../types/api/analysis.api.
 
 type ProductSliceState = {
     loadings: {
-        products: boolean
+        products: boolean,
+        pagination: boolean,
     }
     items: AnalysisApi[];
+    can_next: boolean
     part: number
 }
 
 const initialState: ProductSliceState = {
     loadings: {
         products: true,
+        pagination: false,
     },
     items: [],
+    can_next: false,
     part: 1
 }
 export const getProducts = createAsyncThunk(
@@ -23,19 +27,22 @@ export const getProducts = createAsyncThunk(
         return new Promise<AnalysisGetRes>((res, rej) => {
             setTimeout(() => {
                 res({
+                    can_next: true,
                     status: true,
-                    analiz: Array(10).fill({
-                        id: 1,
-                        cat: 1,
-                        code: "",
-                        cost: 300,
-                        info: "dfdsf",
-                        maxdur: 1,
-                        mindur: 10,
-                        name: "Какой-то анализ",
-                        prepare: [],
-                        tags: [],
-                        templates: []
+                    analiz: Array(10).fill("").map((item, index) => {
+                        return {
+                            id: index,
+                            cat: 1,
+                            code: "",
+                            cost: 300,
+                            info: "dfdsf",
+                            maxdur: 1,
+                            mindur: 10,
+                            name: "Какой-то анализ",
+                            prepare: [],
+                            tags: [],
+                            templates: []
+                        }
                     })
                 })
             }, 1000)
@@ -48,7 +55,7 @@ export const ProductsSlice = createSlice({
     reducers: {
         resetProducts: state => {
             state.items = initialState.items
-            state.part = initialState.part
+            state.part = 0
         },
         incrementProductsPart: state => {
             state.part += 1
@@ -59,14 +66,24 @@ export const ProductsSlice = createSlice({
     },
     extraReducers: (builder) => {
         builder.addCase(getProducts.pending, state => {
+            if (state.part > 1) {
+                state.loadings.pagination = true
+                return
+            }
             state.loadings.products = true
         })
         builder.addCase(getProducts.fulfilled, (state, action) => {
             state.items = [...state.items, ...action.payload.analiz]
+            state.can_next = action.payload.can_next
+            state.loadings.pagination = false
             state.loadings.products = false
+            if (state.part === 0) {
+                state.part = 1
+            }
         })
         builder.addCase(getProducts.rejected, (state, action) => {
             console.log(`Ошибка при получении продуктов: ${action.error.message}`);
+            state.loadings.pagination = false
             state.loadings.products = false
         })
     },

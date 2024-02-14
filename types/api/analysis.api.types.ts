@@ -7,6 +7,7 @@ export type AnalysisGetReq = {
     title?: string
 }
 export type AnalysisGetRes = {
+    can_next: boolean
     analiz: AnalysisApi[]
 } & ResponseStatus
 
