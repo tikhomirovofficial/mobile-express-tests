@@ -6,6 +6,7 @@ import { PatientDoctorGetRes } from "../../../types/api/patients.api.types";
 import { PatientApi } from "../../../types/entities/patients.types";
 import { AnalysisApi } from "../../../types/entities/analysis.types";
 import { AnalysisGetByIdReq } from "../../../types/api/analysis.api.types";
+import { OrdersByPatientGetReq, OrdersByPatientGetRes } from "../../../types/api/orders.api.types";
 
 type CurrentData = {
     loadings: {
@@ -19,6 +20,9 @@ type CurrentData = {
     patientInfo: {
         data: PatientApi,
         orders: OrderApi[]
+        bonuses_data: {
+            total: number
+        }
     }
 
 }
@@ -69,7 +73,11 @@ const initialState: CurrentData = {
             last_name: "",
             bonus: 0
         },
-        orders: []
+        orders: [],
+        bonuses_data: {
+            total: 0
+        }
+
     }
 }
 
@@ -100,17 +108,26 @@ export const getOrderById = createAsyncThunk(
 )
 export const getOrdersByPatientId = createAsyncThunk(
     'patient/orders/get',
-    async (id: number, { dispatch }) => {
-        return new Promise<OrderApi[]>((res, rej) => {
+    async (req: OrdersByPatientGetReq, { dispatch }) => {
+        return new Promise<OrdersByPatientGetRes>((res, rej) => {
             setTimeout(() => {
-                res([
-                    {
-                        id: 1,
-                        date: "2023-07-25",
-                        status: "Зачислено",
-                        bonus: 500
-                    }
-                ])
+                res({
+                    first_name: "Артём",
+                    last_name: "Тихомиров",
+                    can_next: true,
+                    total_bonus: 300,
+                    status: true,
+                    orders: [
+                        {
+                            id: 1,
+                            pacient: "",
+                            status: "Окончено",
+                            date: "2024-02-24",
+                            bonus: 300,
+                            bonus_status: true,
+                        }
+                    ]
+                })
             }, 1000)
         })
     }
@@ -189,7 +206,8 @@ export const CurrentDataSlice = createSlice({
             state.loadings.patient_orders = true
         })
         builder.addCase(getOrdersByPatientId.fulfilled, (state, action) => {
-            state.patientInfo.orders = action.payload
+            state.patientInfo.orders = action.payload.orders
+            state.patientInfo.bonuses_data.total = action.payload.total_bonus
             state.loadings.patient_orders = false
         })
         builder.addCase(getOrdersByPatientId.rejected, (state, action) => {

@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { ProfileCreateForm, ProfileData, ProfileEditTextFields } from "../../../types/entities/user.types";
 import { OrderApi } from "../../../types/entities/order.types";
-import { ProfileCreateReq, ProfileCreateRes } from "../../../types/api/user.api.types";
+import { GetProfileFilledRes, ProfileCreateReq, ProfileCreateRes } from "../../../types/api/user.api.types";
 import { EMAIL } from "../../../rules/masks.rules";
 
 
@@ -98,10 +98,16 @@ export const createProfile = createAsyncThunk(
 )
 export const getHasProfile = createAsyncThunk(
     'has-profile/get',
-    async (req, { dispatch }) => {
-        return new Promise<boolean>((res, rej) => {
+    async (_,{ dispatch }) => {
+        return new Promise<GetProfileFilledRes>((res, rej) => {
             setTimeout(() => {
-                res(true)
+                res({
+                    status: true,
+                    id: 1,
+                    is_doc_signed: false,
+                    is_fill_fio: true,
+                    is_phone_confirm: true,
+                })
             }, 1000)
         })
     }
@@ -155,8 +161,8 @@ export const ProfileSlice = createSlice({
     extraReducers: (builder) => {
         //HAS PROFILE
         builder.addCase(getHasProfile.fulfilled, (state, action) => {
-            console.log(`Профиль заполнен: ${action.payload}`);
-            state.has_profile = action.payload
+            console.log(`Профиль заполнен: ${action.payload.is_fill_fio}`);
+            state.has_profile = action.payload.is_fill_fio
         })
         //PROFILE
         builder.addCase(getProfile.pending, (state, action) => {

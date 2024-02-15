@@ -1,21 +1,19 @@
-import { ResponseStatus } from "../common.types"
+import { HasNextPart, HasPart, ResponseStatus } from "../common.types"
 import { PatientApi } from "../entities/patients.types"
 
 //Получить пациенты профиля
-export type PatientsDoctorGetReq = {
-
-}
+export type PatientsDoctorGetReq = HasPart
 export type PatientDoctorGetRes = {
     pacients: PatientApi[]
-} & ResponseStatus
+} & ResponseStatus & HasNextPart
 
 //Получить пациенты по телефону или имени
 export type PatientsBySearchReq = {
     pacient: string
-}
+} & HasPart
 export type PatientsBySearchRes = {
     pacients: PatientApi[]
-} & ResponseStatus
+} & ResponseStatus & HasNextPart
 
 // Приглашение пациента
 export type InvitingCreateReq = {

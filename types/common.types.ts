@@ -6,6 +6,12 @@ export type HasId = {
 export type HasLoading = {
     loading: boolean
 }
+export type HasPart = {
+    part: boolean
+}
+export type HasNextPart = {
+    can_next: boolean
+}
 
 export type NavProps = {
     navigation: NavigationProp<any>

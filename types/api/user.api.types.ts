@@ -1,4 +1,4 @@
-import { JWT, ResponseStatus } from "../common.types"
+import { HasId, JWT, ResponseStatus } from "../common.types"
 import { ProfileData, ProfilePersonData } from "../entities/user.types"
 
 //Регитсрация или Авторизация по телефону
@@ -20,6 +20,14 @@ export type AuthRefreshRes = Pick<JWT, "access">
 
 // Получить данные пользователя
 export type ProfileGetRes = ProfileData & ResponseStatus
+
+// Получить статус заполненности профиля
+export type GetProfileFilledRes = {
+    id: number,
+    is_doc_signed: boolean,
+    is_phone_confirm: boolean,
+    is_fill_fio: boolean
+} & HasId & ResponseStatus
 
 // Регистрация профиля
 export type ProfileCreateReq = Omit<ProfileData, "bonus" | "image"> & ProfilePersonData

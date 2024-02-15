@@ -33,6 +33,7 @@ export const getCategories = createAsyncThunk(
             }, 1000)
         })
 })
+
 export const CategoriesSlice = createSlice({
     name: "categories",
     initialState,

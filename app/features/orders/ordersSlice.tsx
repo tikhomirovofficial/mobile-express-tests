@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { OrderApi } from "../../../types/entities/order.types";
-import { GetAllOrdersRes } from "../../../types/api/orders.api.types";
+import { GetAllOrdersReq, GetAllOrdersRes } from "../../../types/api/orders.api.types";
+import { HasNextPart } from "../../../types/common.types";
 
 
 type OrdersSliceState = {
@@ -8,21 +9,23 @@ type OrdersSliceState = {
         all_orders: boolean
     }
     all_orders: OrderApi[];
-}
+} & HasNextPart
 
 const initialState: OrdersSliceState = {
     loadings: {
         all_orders: true,
     },
+    can_next: false,
     all_orders: []
 }
 export const getAllOrders = createAsyncThunk(
     'all/orders/get',
-    async (req, { dispatch }) => {
+    async (req: GetAllOrdersReq, { dispatch }) => {
         return new Promise<GetAllOrdersRes>((res, rej) => {
             setTimeout(() => {
                 res({
                     status: true,
+                    can_next: true,
                     orders: [{
                         id: 1,
                         status: "Создано",
@@ -49,6 +52,7 @@ export const OrdersSlice = createSlice({
         })
         builder.addCase(getAllOrders.fulfilled, (state, action) => {
             state.all_orders = action.payload.orders
+            state.can_next = action.payload.can_next
             state.loadings.all_orders = false
         })
         builder.addCase(getAllOrders.rejected, (state, action) => {
