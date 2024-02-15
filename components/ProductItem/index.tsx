@@ -17,7 +17,7 @@ const ProductItem: FC<ProductItemProps> = ({ product, index, isInCart, clickHand
     const dispatch = useAppDispatch()
 
     const addProduct = useCallback(() => {
-        dispatch(addToCart({...product as CartItem}))
+        dispatch(addToCart({ ...product as CartItem }))
     }, [dispatch, product]);
 
     const removeItem = useCallback(() => {
@@ -33,14 +33,8 @@ const ProductItem: FC<ProductItemProps> = ({ product, index, isInCart, clickHand
                 </View>
             </View>
             <TouchableOpacity onPress={!isInCart ? addProduct : removeItem}>
-                {
-                    isInCart ?
-                        <RemoveIcon /> : <AddIcon />
-                }
-
+                {isInCart ? <RemoveIcon /> : <AddIcon />}
             </TouchableOpacity>
-
-
         </TouchableOpacity>
     )
 }

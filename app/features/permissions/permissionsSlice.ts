@@ -7,6 +7,7 @@ import { checkPinExists } from "../../../utils/checkAccessed";
 import { storeAlreadyBeen } from "../../../utils/storeFirstTime";
 import { checkEnteredPin } from "../../../utils/checkEnteredPin";
 import { deletePin, storePin } from "../../../utils/storePin";
+import * as Notifications from 'expo-notifications';
 
 type PermissionsSliceType = {
     notifications: {
@@ -43,16 +44,32 @@ const initialState: PermissionsSliceType = {
 export const checkNotificationsPerm = createAsyncThunk(
     'permissions/notifications/get',
     async (_, { dispatch }) => {
-        const granted = await checkIsAlreadyBeen()
+        const { status } = await Notifications.getPermissionsAsync();
+        const granted = status === "granted"
         if (!granted) {
             throw granted
         }
         return new Promise<boolean>((res, rej) => {
-            res(true)
+            res(granted)
         })
 
     }
 )
+export const requestNotificationsPerm = createAsyncThunk(
+    'permissions/notifications/request',
+    async (_, { dispatch }) => {
+        const { status } = await Notifications.requestPermissionsAsync();
+        const granted = status === "granted"
+        if (!granted) {
+            throw granted
+        }
+        return new Promise<boolean>((res, rej) => {
+            res(granted)
+        })
+
+    }
+)
+
 export const checkContactsPerm = createAsyncThunk(
     'permissions/contacts/get',
     async (_, { dispatch }) => {
@@ -97,6 +114,13 @@ export const permissionsSlice = createSlice({
         })
         builder.addCase(checkNotificationsPerm.rejected, (state, action) => {
             state.notifications.checking = false
+            state.notifications.granted = false
+        })
+        //REQUEST NOFITICATIONS
+        builder.addCase(requestNotificationsPerm.fulfilled, (state, action) => {
+            state.notifications.granted = action.payload
+        })
+        builder.addCase(requestNotificationsPerm.rejected, (state, action) => {
             state.notifications.granted = false
         })
         //CHECK CONTACTS

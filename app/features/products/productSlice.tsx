@@ -38,7 +38,7 @@ export const getProducts = createAsyncThunk(
                             info: "dfdsf",
                             maxdur: 1,
                             mindur: 10,
-                            name: "Какой-то анализ",
+                            name: "Какой-то анализ" + " " + index,
                             prepare: [],
                             tags: [],
                             templates: []

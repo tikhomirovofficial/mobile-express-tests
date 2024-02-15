@@ -4,27 +4,46 @@ import { HasLoading } from "../../../types/common.types";
 import { OrderApi, OrderDetailsApi } from "../../../types/entities/order.types";
 import { PatientDoctorGetRes } from "../../../types/api/patients.api.types";
 import { PatientApi } from "../../../types/entities/patients.types";
+import { AnalysisApi } from "../../../types/entities/analysis.types";
+import { AnalysisGetByIdReq } from "../../../types/api/analysis.api.types";
 
 type CurrentData = {
     loadings: {
         order: boolean,
         patient_orders: boolean,
-        patient_info: boolean
+        patient_info: boolean,
+        product_info: boolean
     },
     orderInfo: OrderDetailsApi,
+    productInfo: AnalysisApi,
     patientInfo: {
         data: PatientApi,
         orders: OrderApi[]
     }
+
 }
 
 const initialState: CurrentData = {
     loadings: {
         order: true,
         patient_orders: true,
-        patient_info: true
+        patient_info: true,
+        product_info: true
     },
+    productInfo: {
+        id: 0,
+        cat: 0,
+        code: "",
+        cost: 0,
+        info: "",
+        maxdur: 0,
+        mindur: 0,
+        name: "",
+        prepare: [],
+        tags: [],
+        templates: []
 
+    },
     orderInfo: {
         info_order: {
             doctor: "",
@@ -41,7 +60,7 @@ const initialState: CurrentData = {
             }
         ]
     },
-    patientInfo: {  
+    patientInfo: {
         data: {
             id: 0,
             phone: "",
@@ -113,7 +132,28 @@ export const getPatientById = createAsyncThunk(
         })
     }
 )
-
+export const getProductById = createAsyncThunk(
+    'product/get',
+    async (req: AnalysisGetByIdReq, { dispatch }) => {
+        return new Promise<AnalysisApi>((res, rej) => {
+            setTimeout(() => {
+                res({
+                    id: req.id,
+                    cat: 1,
+                    code: "",
+                    cost: 300,
+                    info: "Описание",
+                    maxdur: 1,
+                    mindur: 10,
+                    name: "Какой-то анализ",
+                    prepare: [],
+                    tags: [],
+                    templates: []
+                })
+            }, 1000)
+        })
+    }
+)
 
 export const CurrentDataSlice = createSlice({
     name: "current-data",
@@ -127,6 +167,9 @@ export const CurrentDataSlice = createSlice({
         },
         resetPatientInfo: (state) => {
             state.patientInfo = initialState.patientInfo
+        },
+        resetProductInfo: (state) => {
+            state.productInfo = initialState.productInfo
         }
     },
     extraReducers: (builder) => {
@@ -163,6 +206,17 @@ export const CurrentDataSlice = createSlice({
         builder.addCase(getPatientById.rejected, (state, action) => {
             state.loadings.patient_info = false
         })
+        //PRODUCT  BY ID
+        builder.addCase(getProductById.pending, (state, action) => {
+            state.loadings.product_info = true
+        })
+        builder.addCase(getProductById.fulfilled, (state, action) => {
+            state.productInfo = action.payload
+            state.loadings.product_info = false
+        })
+        builder.addCase(getProductById.rejected, (state, action) => {
+            state.loadings.product_info = false
+        })
 
 
     },
@@ -171,7 +225,8 @@ export const CurrentDataSlice = createSlice({
 export const {
     resetOrderInfo,
     setPatientData,
-    resetPatientInfo
+    resetPatientInfo,
+    resetProductInfo
 } = CurrentDataSlice.actions
 
 

@@ -86,9 +86,9 @@ const AppNavigator = () => {
                 if (!media.granted) {
                     return "info_media"
                 }
-                if (!contacts.granted) {
-                    return "info_contacts"
-                }
+                // if (!contacts.granted) {
+                //     return "info_contacts"
+                // }
                 return "home"
             }
             return "pin_accept"
@@ -129,7 +129,7 @@ const AppNavigator = () => {
                                             }
                                             {!notifications.granted ? <Stack.Screen name="info_notifications" component={AccessNotifications} /> : null}
                                             {!media.granted ? <Stack.Screen name="info_media" component={AccessMedia} /> : null}
-                                            {!contacts.granted ? <Stack.Screen name="info_contacts" component={AccessContacts} /> : null}
+                                            {/* {!contacts.granted ? <Stack.Screen name="info_contacts" component={AccessContacts} /> : null} */}
                                             {
                                                 has_profile ?
                                                     <Stack.Screen name="home" component={MainTabs} />

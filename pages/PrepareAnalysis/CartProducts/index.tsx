@@ -18,8 +18,6 @@ import { resetPatient, setCurrentCategory, setPatient } from '../../../app/featu
 const CartProducts: FC<NavProps> = ({ navigation }) => {
     const dispatch = useAppDispatch()
     const [categoriesLoading, setCategoriesLoading] = useState(false)
-    const orderData = useAppSelector(state => state.order.patientData)
-    const products = useAppSelector(state => state.products.items)
     const cartProducts = useAppSelector(state => state.cart.items)
 
 

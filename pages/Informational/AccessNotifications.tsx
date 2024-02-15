@@ -14,18 +14,16 @@ import * as Notifications from 'expo-notifications'
 const InfoNotificationsImage = require('../../assets/info_notifications.jpg')
 
 const AccessNotifications: FC<NavProps> = ({ navigation }) => {
-    const dispatch = useAppDispatch()
     const getNotificationPermission = async () => {
-        // // Запрашиваем разрешение на уведомления
-        // const { status } = await Notifications.requestPermissionsAsync();
-        // console.log(status);
-
-        // if (status === 'granted') {
-        //     navigation.navigate("info_media")
-        // } else {
-        //   // Разрешение на уведомления не получено
-        //   alert('Не удалось получить разрешение на уведомления');
-        // }
+        const { status } = await Notifications.requestPermissionsAsync();
+        if (status === 'granted') {
+            navigation.navigate("info_media")
+            return
+        }
+        if (status === "denied") {
+            Linking.openSettings()
+            return;
+        }
     };
 
     return (

@@ -16,7 +16,7 @@ const WhiteBorderedLayout: FC<WhiteBorderedProps> = ({ children, topContent, sty
         <View style={styles.baseView}>
             {
                 scrollable ?
-                    <ScrollView contentContainerStyle={styles.scrollContainer} style={cs.flexOne}>
+                    <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.scrollContainer} style={cs.flexOne}>
                         <View style={styles.containerWrapperScroll}>
                             {topContent}
                             <View style={[styles.whiteContainer, style]}>

@@ -19,31 +19,34 @@ import { SkeletonContainer } from 'react-native-skeleton-component';
 import { SkeletonView } from '../../../components/SkeletonView';
 import { getProducts, incrementProductsPart, resetPart, resetProducts } from '../../../app/features/products/productSlice';
 import ProductItem from '../../../components/ProductItem';
+import { getProductById } from '../../../app/features/current-data/currentData';
 
 const SelectingProducts: FC<NavProps> = ({ navigation }) => {
     const dispatch = useAppDispatch()
     const cart = useAppSelector(state => state.cart)
+    const categories = useAppSelector(state => state.categories.items)
+    const cartProducts = useAppSelector(state => state.cart.items)
+    const { analysisInfoModal } = useAppSelector(state => state.modals)
+    const { items, part, loadings, can_next } = useAppSelector(state => state.products)
 
     const [keyboardStatus, setKeyboardStatus] = useState(false);
     const [searchVal, setSearchVal] = useState("")
     const defferedSearchVal = useDeferred(searchVal, 200)
 
-    const { items, part, loadings, can_next } = useAppSelector(state => state.products)
-    const categories = useAppSelector(state => state.categories.items)
-    const cartProducts = useAppSelector(state => state.cart.items)
     const currentCategoryId = useAppSelector(state => state.order.currentCategorySelected)
     const currentCategory = categories.filter(ctg => ctg.id === currentCategoryId)[0]
 
     const handleToCart = () => {
         navigation.navigate("order_cart")
     }
+
     const handleToSelectingCategory = () => {
         navigation.navigate("order_category")
     }
 
-    const handleOpenProductInfo = () => {
-        console.log("Текущий продукт");
+    const handleOpenProductInfo = (product_id: number) => {
         dispatch(handleAnalysisInfoModal())
+        dispatch(getProductById({ id: product_id }))
     }
 
     const loadProducts = () => {
@@ -73,7 +76,7 @@ const SelectingProducts: FC<NavProps> = ({ navigation }) => {
             dispatch(incrementProductsPart())
         }
     }
-    
+
     useEffect(() => {
         dispatch(resetProducts())
     }, [defferedSearchVal])
@@ -155,7 +158,7 @@ const SelectingProducts: FC<NavProps> = ({ navigation }) => {
                                             data={items}
                                             renderItem={({ item, index }) =>
                                                 <ProductItem
-                                                    clickHandle={handleOpenProductInfo}
+                                                    clickHandle={() => handleOpenProductInfo(item.id)}
                                                     product={item}
                                                     isInCart={cartProducts.some(cartProduct => cartProduct.id === item.id)}
                                                     index={index}
@@ -171,7 +174,7 @@ const SelectingProducts: FC<NavProps> = ({ navigation }) => {
 
                         <ButtonYellow handlePress={handleToCart}>
                             <View style={[cs.fRow, cs.fAlCenter, cs.spaceS]}>
-                                <Text style={[cs.fzM, cs.yellowBtnText]}>Корзинаs</Text>
+                                <Text style={[cs.fzM, cs.yellowBtnText]}>Корзина</Text>
                                 {14 > 0 ? <View style={cs.count}>
                                     <Text style={cs.countText}>{cart.items.length}</Text>
                                 </View> : null}
@@ -180,7 +183,10 @@ const SelectingProducts: FC<NavProps> = ({ navigation }) => {
                     </View>
                 </WhiteBorderedLayout>
             </View>
-            <AnalysisInfoModal />
+            {
+                analysisInfoModal ? <AnalysisInfoModal navigation={navigation} /> : null
+            }
+
         </Animated.View >
 
     );
