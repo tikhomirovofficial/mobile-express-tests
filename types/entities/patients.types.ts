@@ -18,4 +18,4 @@ export type PatientApi = {
     date: string,
     phone: string
 } & HasId
-export type InvitingTextFields = Omit<InvitingCreateReq, | "gender">
+export type InvitingTextFields = Omit<InvitingCreateReq, | "gender" | "sex">

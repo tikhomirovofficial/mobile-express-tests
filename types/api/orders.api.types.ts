@@ -36,3 +36,7 @@ export type GetAllOrdersRes = {
     orders: OrderApi[]
 } & ResponseStatus & HasNextPart
 
+// Создание заказа
+export type CreateOrderReq = {}
+export type CreateOrderRes = {}
+

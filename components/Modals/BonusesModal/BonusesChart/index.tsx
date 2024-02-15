@@ -3,6 +3,7 @@ import { BarChart } from 'react-native-chart-kit'
 import { containerStyles } from '../../../AppContainer'
 import { ChartConfig } from 'react-native-chart-kit/dist/HelperTypes';
 import { cs } from '../../../../common/styles';
+import { useAppSelector } from '../../../../app/base/hooks';
 
 const data = {
     labels: [
@@ -68,13 +69,14 @@ const chartConfig: ChartConfig = {
 };
 
 export const BonusesChart = () => {
+    const { chartData } = useAppSelector(state => state.bonuses)
     return (
         <BarChart
             segments={5}
-            data={data}
+            data={chartData}
             fromZero={true}
             withInnerLines={true}
-            fromNumber={50000}
+            fromNumber={Math.max(...chartData.datasets[0].data)}
             showValuesOnTopOfBars={true}
             showBarTops={false}
             width={containerStyles.container.maxWidth - 12}

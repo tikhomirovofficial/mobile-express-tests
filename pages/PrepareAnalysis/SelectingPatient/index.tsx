@@ -22,13 +22,14 @@ import { SkeletonView } from '../../../components/SkeletonView';
 
 const SelectingPatient: FC<NavProps> = ({ navigation }) => {
     const dispatch = useAppDispatch()
+    const { patientData } = useAppSelector(state => state.order)
     const { searched_list, loadings } = useAppSelector(state => state.patients)
     const { patientInvitingModal } = useAppSelector(state => state.modals)
 
     const [searchVal, setSearchVal] = useState("")
     const defferedSearchVal = useDeferred(searchVal, 500)
 
-    const [contactsSelected, setContactsSelected] = useState<number>(-1)
+    const [contactsSelected, setContactsSelected] = useState<number>(patientData.id > 0 ? patientData.id : -1)
     const [keyboardStatus, setKeyboardStatus] = useState(false);
 
     const handleToMyPatients = () => {
@@ -70,11 +71,10 @@ const SelectingPatient: FC<NavProps> = ({ navigation }) => {
     }
 
     useEffect(() => {
-        dispatch(getSearchPatients({ pacient: searchVal }))
+        dispatch(getSearchPatients({ pacient: defferedSearchVal, part: 1 }))
     }, [defferedSearchVal])
 
     useEffect(() => {
-
         const keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', () => {
             setKeyboardStatus(true);
         });

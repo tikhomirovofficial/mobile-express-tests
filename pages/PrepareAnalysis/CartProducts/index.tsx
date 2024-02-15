@@ -27,7 +27,6 @@ const CartProducts: FC<NavProps> = ({ navigation }) => {
     
     const handleOrder = () => {
         const dateNow = new Date()
-
         handleClearCart()
         dispatch(setCurrentCategory(-1))
         dispatch(resetPatient())
@@ -38,7 +37,6 @@ const CartProducts: FC<NavProps> = ({ navigation }) => {
     const handleToSelectingCategory = () => {
         navigation.navigate("order_category")
     }
-
 
     const [keyboardStatus, setKeyboardStatus] = useState(false);
 

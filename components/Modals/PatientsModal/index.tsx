@@ -28,7 +28,7 @@ const PatientsModal: FC<NavProps> = ({ navigation }) => {
         handleModal()
         navigation.navigate('inviting')
     }
-    
+
     const handlePatientInfo = (id: number) => {
         dispatch(handlePatientInfoModal())
         dispatch(getPatientById(id))
@@ -60,14 +60,17 @@ const PatientsModal: FC<NavProps> = ({ navigation }) => {
                                 </> :
                                 <View style={[cs.flexOne, { position: "relative" }]}>
                                     <View style={[{ position: "absolute", height: "100%", width: "100%" }]}>
-                                            <FlatList
-                                                data={patients.list}
-                                                style={[cs.fColumn, styles.patientsList]}
-                                                renderItem={({ item }) => (
-                                                    <PatientItem handlePress={() => handlePatientInfo(item.id)} {...item} />
-                                                )} />
+                                        <FlatList
+                                            data={patients.list}
+                                            style={[cs.fColumn, styles.patientsList]}
+                                            renderItem={({ item }) => (
+                                                <PatientItem
+                                                    bottomText={`${item.phone}`}
+                                                    handlePress={() => handlePatientInfo(item.id)}
+                                                    {...item} />
+                                            )} />
 
-                                        </View>
+                                    </View>
 
                                 </View>
                         }
@@ -77,7 +80,7 @@ const PatientsModal: FC<NavProps> = ({ navigation }) => {
                     </View>
 
                 </View>
-              
+
 
             </WhiteBordered>
 

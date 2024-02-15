@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useEffect } from 'react';
 import WhiteBorderedLayout from "../../../layouts/WhiteBordered";
 import { Animated, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { cs } from "../../../common/styles";
@@ -39,6 +39,12 @@ const Profile: FC<NavProps> = ({ navigation }) => {
         dispatch(logout())
         dispatch(resetAccess())
     }
+
+    useEffect(() => {
+        return () => {
+            alert("sadsa")
+        }
+    }, [])
 
     return (
         <>

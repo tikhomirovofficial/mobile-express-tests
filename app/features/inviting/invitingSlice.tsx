@@ -40,7 +40,7 @@ export const createInviting = createAsyncThunk(
     async (req: InvitingCreateReq, { dispatch }) => {
         const resp: InvitingCreateRes = { status: true }
         if (!resp.status) {
-            throw new Error("Не удалось создать профиль!")
+            throw new Error("Не удалось добавить пациента!")
         }
         return new Promise<InvitingCreateRes>((res, rej) => {
             setTimeout(() => {
@@ -65,7 +65,7 @@ export const InvitingSlice = createSlice({
             if (key === "dob") {
                 //correcting dob
             }
-
+            
             tempCreatingForm[key] = val
             state.form.text_fields = tempCreatingForm
 

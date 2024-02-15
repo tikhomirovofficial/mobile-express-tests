@@ -24,6 +24,7 @@ import { PatientApi } from '../../../types/entities/patients.types';
 import { SkeletonContainer } from 'react-native-skeleton-component';
 import { SkeletonView } from '../../SkeletonView';
 import { getChartBonusesData } from '../../../app/features/bonuses/bonusesSlice';
+import { getAllPatients } from '../../../app/features/patients/patientsSlice';
 
 const BonusesModal = () => {
     const dispatch = useAppDispatch()
@@ -36,18 +37,25 @@ const BonusesModal = () => {
     }
     const handleOpenPatientInfo = (patient: PatientApi) => {
         dispatch(setPatientData(patient))
-        dispatch(getOrdersByPatientId(patient.id))
+        dispatch(getOrdersByPatientId({
+            pacient: patient.id,
+            part: 1
+        }))
         dispatch(handleBonusesBottomSheet())
     }
     useEffect(() => {
         dispatch(getChartBonusesData())
+        dispatch(getAllPatients({
+            part: 1,
+        }))
+
     }, [])
 
     return (
 
         <Modal animationType={"slide"} visible={bonusesModal} transparent={true}>
             <GestureHandlerRootView style={[cs.flexOne]}>
-                <WhiteBordered scrollable={false} style={{ ...cs.modalSlidedBottom, paddingBottom: 20}}>
+                <WhiteBordered scrollable={false} style={{ ...cs.modalSlidedBottom, paddingBottom: 20 }}>
                     <View style={[cs.flexOne, cs.fColumnBetw, cs.spaceXXL]}>
                         <View style={[cs.fRowBetw]}>
                             <Text onPress={handleModal}

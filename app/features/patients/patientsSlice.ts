@@ -2,7 +2,7 @@ import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { Contact } from "expo-contacts";
 import { PatientApi } from "../../../types/entities/patients.types";
 import { PatientDoctorGetRes, PatientsBySearchReq, PatientsBySearchRes, PatientsDoctorGetReq } from "../../../types/api/patients.api.types";
-import { HasNextPart } from "../../../types/common.types";
+import { HasNextPart, HasPart } from "../../../types/common.types";
 import { GetAllOrdersRes } from "../../../types/api/orders.api.types";
 
 type PatientsSliceState = {
@@ -11,17 +11,21 @@ type PatientsSliceState = {
     list: PatientApi[]
     searched_list: PatientApi[]
     searched_can_next: boolean
+    can_next: boolean,
+    searched_part: number
     loadings: {
         patients: boolean,
         search_patients: boolean
     }
-} & HasNextPart
+} & HasNextPart & HasPart
 
 const initialState: PatientsSliceState = {
     items: [],
     invitingsIds: [],
     list: [],
     searched_list: [],
+    searched_part: 1,
+    part: 1,
     can_next: false,
     searched_can_next: false,
     loadings: {
@@ -42,7 +46,7 @@ export const getSearchPatients = createAsyncThunk(
                             id: 1,
                             bonus: 10,
                             date: "2024-01-22",
-                            first_name: "Артём",
+                            first_name: "Дмитрий",
                             last_name: "Тихомиров",
                             phone: "+79005001849"
                         }
@@ -62,10 +66,10 @@ export const getAllPatients = createAsyncThunk(
                     can_next: true,
                     pacients: [
                         {
-                            id: 0,
-                            phone: "",
-                            first_name: "",
-                            last_name: "",
+                            id: 1,
+                            phone: "+79005001849",
+                            first_name: "Дмитрий",
+                            last_name: "Тихомиров",
                             bonus: 10,
                             date: "2024-01-22"
                         }
@@ -95,6 +99,18 @@ export const PatientsSlice = createSlice({
         },
         resetInvitingsIds(state) {
             state.invitingsIds = []
+        },
+        resetAllPatients(state) {
+            state.list = []
+            state.can_next = false
+            state.loadings.patients = true
+            state.part = 1
+        },
+        resetSearchedPatients(state) {
+            state.searched_list = []
+            state.searched_can_next = false
+            state.loadings.search_patients = true
+            state.searched_part = 1
         }
 
     },
@@ -132,7 +148,9 @@ export const {
     addInvitingsId,
     setInvigitingsIds,
     removeInvitingsId,
-    resetInvitingsIds
+    resetInvitingsIds,
+    resetSearchedPatients,
+    resetAllPatients
 } = PatientsSlice.actions
 
 

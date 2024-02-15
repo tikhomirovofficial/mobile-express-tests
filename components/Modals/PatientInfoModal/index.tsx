@@ -7,7 +7,8 @@ import ButtonYellow from "../../Buttons/ButtonYellow";
 import {
     handleOrderInfoModal,
     handlePatientInfoModal,
-    handlePatientOrderInfoModal
+    handlePatientOrderInfoModal,
+    handlePatientsModal
 } from "../../../app/features/modals/modalsSlice";
 import { PhotoIcon } from "../../../icons";
 import OrderCard from "../../Cards/OrderCard";
@@ -21,31 +22,35 @@ import { getOrdersByPatientId, resetPatientInfo } from '../../../app/features/cu
 
 const PatientInfoModal: FC<NavProps> = ({ navigation }) => {
     const dispatch = useAppDispatch()
-    const { patientInfoModal, patientOrderInfoModal } = useAppSelector(state => state.modals)
+    const { patientInfoModal, patientOrderInfoModal, patientsModal } = useAppSelector(state => state.modals)
     const { patientInfo, loadings } = useAppSelector(state => state.currentData)
 
     const handleModal = () => dispatch(handlePatientInfoModal())
 
     const handleToOrder = () => {
+        alert(patientInfo.data.id)
         dispatch(setPatient({
-            id: String(patientInfo.data.id),
-            firstName: patientInfo.data.first_name,
-            lastName: patientInfo.data.last_name
+            id: patientInfo.data.id,
+            first_name: patientInfo.data.first_name,
+            last_name: patientInfo.data.last_name
         }))
         navigation.navigate("order_category")
+        handleModal()
+        if (patientsModal) {
+            dispatch(handlePatientsModal())
+        }
+
     }
 
     useEffect(() => {
         if (patientInfo.data.id) {
-            dispatch(getOrdersByPatientId(patientInfo.data.id))
+            dispatch(getOrdersByPatientId({
+                pacient: patientInfo.data.id,
+                part: 1
+            }))
         }
     }, [patientInfo])
 
-    useEffect(() => {
-        return () => {
-            dispatch(resetPatientInfo())
-        }
-    }, [])
 
     return (
         <Modal animationType={"slide"} visible={patientInfoModal} transparent={true}>

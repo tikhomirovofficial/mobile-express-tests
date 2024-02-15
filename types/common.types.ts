@@ -7,7 +7,7 @@ export type HasLoading = {
     loading: boolean
 }
 export type HasPart = {
-    part: boolean
+    part: number
 }
 export type HasNextPart = {
     can_next: boolean
