@@ -14,6 +14,7 @@ import { deleteAccessed } from './utils/storeAccessed';
 import { getHasProfile } from './app/features/profile/profileSlice';
 import { checkContactsPerm, checkMediaPerm, checkNotificationsPerm } from './app/features/permissions/permissionsSlice';
 import PatientInfoModal from './components/Modals/PatientInfoModal';
+import { deletePin } from './utils/storePin';
 
 
 const Root = () => {
@@ -60,6 +61,7 @@ const Root = () => {
         // deleteTokens()
         // deleteAlreadyBeen()
         // deleteAccessed()
+        // deletePin()
         dispatch(checkToken())
         dispatch(checkPinCodeExists())
         dispatch(checkFirstTime())
