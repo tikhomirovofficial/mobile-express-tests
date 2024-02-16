@@ -17,28 +17,24 @@ import { getAllOrders, incrementOrdersPart, resetOrders } from '../../../app/fea
 import { fs } from '../../../navigation/AppNavigator';
 import { IOScrollView, InView } from 'react-native-intersection-observer'
 import { PaginationBottom } from '../../../components/PaginationBottom';
+import { usePagination } from '../../../hooks/usePagination';
+import { incrementProductsPart } from '../../../app/features/products/productSlice';
 
 const Main: FC<NavProps> = ({ navigation }) => {
     const dispatch = useAppDispatch()
-    const { orderInfoModal } = useAppSelector(state => state.modals)
     const { all_orders, loadings, can_next, part } = useAppSelector(state => state.orders)
     const profile = useAppSelector(state => state.profile)
 
-    const loadOrders = () => {
-        if (part !== 1) {
-            if (part === 0 && !all_orders.length) {
-                dispatch(getAllOrders({ part }));
-            } else if (can_next) {
-                dispatch(getAllOrders({ part }));
-            }
+    const [loadOrders, loadMore] = usePagination(
+        () => { dispatch(getAllOrders({ part })) },
+        () => { dispatch(incrementOrdersPart()) },
+        {
+            part,
+            can_more: can_next,
+            items: all_orders,
+            loading: loadings.all_orders_pagination
         }
-    }
-
-    const loadMore = () => {
-        if (can_next && all_orders.length, !loadings.all_orders_pagination) {
-            dispatch(incrementOrdersPart())
-        }
-    }
+    )
 
     useEffect(loadOrders, [part])
 
@@ -121,18 +117,11 @@ const Main: FC<NavProps> = ({ navigation }) => {
                                         </View>
 
                                         : <Text>Пока пусто.</Text>
-
                             }
-
-
                         </View>
-
                     </View>
                 </SkeletonContainer>
             </WhiteBorderedLayout>
-            {orderInfoModal ? <OrderInfoModal /> : null}
-
-
         </View>
     );
 };

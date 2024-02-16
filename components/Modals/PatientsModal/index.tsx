@@ -1,6 +1,6 @@
-import React, { FC } from 'react';
+import React, { FC, useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from "../../../app/base/hooks";
-import { Modal, StyleSheet, Text, View, FlatList } from "react-native";
+import { Modal, StyleSheet, Text, View, FlatList, ActivityIndicator } from "react-native";
 import WhiteBordered from "../../../layouts/WhiteBordered";
 import { cs } from "../../../common/styles";
 import ButtonYellow from "../../Buttons/ButtonYellow";
@@ -16,11 +16,23 @@ import { ModalContainer } from '../../ModalContainer';
 import { SkeletonContainer } from 'react-native-skeleton-component';
 import { SkeletonView } from '../../SkeletonView';
 import { getPatientById } from '../../../app/features/current-data/currentData';
+import { getAllPatients, incrementPatientsPart, resetAllPatients } from '../../../app/features/patients/patientsSlice';
+import { usePagination } from '../../../hooks/usePagination';
 
 const PatientsModal: FC<NavProps> = ({ navigation }) => {
     const dispatch = useAppDispatch()
     const { patientsModal, patientInfoModal } = useAppSelector(state => state.modals)
     const patients = useAppSelector(state => state.patients)
+    const [loadOrders, loadMore] = usePagination(
+        () => { dispatch(getAllPatients({ part: patients.part })) },
+        () => { dispatch(incrementPatientsPart()) },
+        {
+            part: patients.part,
+            can_more: patients.can_next,
+            items: patients.list,
+            loading: patients.loadings.patients_pagination
+        }
+    )
 
     const handleModal = () => dispatch(handlePatientsModal())
 
@@ -33,6 +45,14 @@ const PatientsModal: FC<NavProps> = ({ navigation }) => {
         dispatch(handlePatientInfoModal())
         dispatch(getPatientById(id))
     }
+
+    useEffect(loadOrders, [patients.part])
+
+    useEffect(() => {
+        return () => {
+            dispatch(resetAllPatients())
+        }
+    }, [])
 
     return (
         <Modal animationType={"slide"} visible={patientsModal} transparent={true}>
@@ -58,18 +78,29 @@ const PatientsModal: FC<NavProps> = ({ navigation }) => {
                                         </View>
                                     </SkeletonContainer>
                                 </> :
-                                <View style={[cs.flexOne, { position: "relative" }]}>
-                                    <View style={[{ position: "absolute", height: "100%", width: "100%" }]}>
-                                        <FlatList
-                                            data={patients.list}
-                                            style={[cs.fColumn, styles.patientsList]}
-                                            renderItem={({ item }) => (
-                                                <PatientItem
-                                                    bottomText={`${item.phone}`}
-                                                    handlePress={() => handlePatientInfo(item.id)}
-                                                    {...item} />
-                                            )} />
+                                <View style={[cs.flexOne]}>
 
+                                    <View style={[cs.flexOne, { position: "relative" }]}>
+                                        <View style={[{ position: "absolute", height: "100%", width: "100%" }]}>
+                                            <FlatList
+                                                showsVerticalScrollIndicator={false}
+                                                data={patients.list}
+                                                onEndReached={loadMore}
+                                                style={[cs.fColumn]}
+                                                renderItem={({ item, index }) => (
+                                                    <PatientItem
+                                                        bottomText={`${item.phone}`}
+                                                        neededBottomBorder={index < patients.list.length - 1}
+                                                        handlePress={() => handlePatientInfo(item.id)}
+                                                        {...item} />
+                                                )} />
+
+                                        </View>
+
+
+                                    </View>
+                                    <View style={{ height: 20 }}>
+                                        {patients.loadings.patients_pagination ? <ActivityIndicator color={cs.bgYellow.backgroundColor} /> : null}
                                     </View>
 
                                 </View>
@@ -109,7 +140,6 @@ const styles = StyleSheet.create({
         height: 80,
         width: 80,
     },
-    patientsList: {},
     patientsModalBlock: {
         minHeight: "100%",
         paddingBottom: 32

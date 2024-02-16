@@ -15,7 +15,9 @@ type PatientsSliceState = {
     searched_part: number
     loadings: {
         patients: boolean,
-        search_patients: boolean
+        search_patients: boolean,
+        patients_pagination: boolean
+        search_patients_pagination: boolean
     }
 } & HasNextPart & HasPart
 
@@ -24,13 +26,15 @@ const initialState: PatientsSliceState = {
     invitingsIds: [],
     list: [],
     searched_list: [],
-    searched_part: 1,
-    part: 1,
+    searched_part: 0,
+    part: 0,
     can_next: false,
     searched_can_next: false,
     loadings: {
         patients: true,
-        search_patients: true
+        search_patients: true,
+        patients_pagination: false,
+        search_patients_pagination: false
     }
 }
 export const getSearchPatients = createAsyncThunk(
@@ -41,16 +45,16 @@ export const getSearchPatients = createAsyncThunk(
                 res({
                     status: true,
                     can_next: true,
-                    pacients: [
-                        {
-                            id: 1,
+                    pacients: Array(8).fill("").map((_, index) => {
+                        return {
+                            id: index,
                             bonus: 10,
                             date: "2024-01-22",
                             first_name: "Дмитрий",
-                            last_name: "Тихомиров",
+                            last_name: "Тихомиров " + index,
                             phone: "+79005001849"
                         }
-                    ]
+                    })
                 })
             }, 1000)
         })
@@ -64,16 +68,16 @@ export const getAllPatients = createAsyncThunk(
                 res({
                     status: true,
                     can_next: true,
-                    pacients: [
-                        {
-                            id: 1,
-                            phone: "+79005001849",
-                            first_name: "Дмитрий",
-                            last_name: "Тихомиров",
+                    pacients: Array(8).fill("").map((_, index) => {
+                        return {
+                            id: index,
                             bonus: 10,
-                            date: "2024-01-22"
+                            date: "2024-01-22",
+                            first_name: "Дмитрий",
+                            last_name: "Тихомиров " + index,
+                            phone: "+79005001849"
                         }
-                    ],
+                    })
 
                 })
             }, 1000)
@@ -104,27 +108,45 @@ export const PatientsSlice = createSlice({
             state.list = []
             state.can_next = false
             state.loadings.patients = true
-            state.part = 1
+            state.part = 0
         },
         resetSearchedPatients(state) {
             state.searched_list = []
             state.searched_can_next = false
             state.loadings.search_patients = true
-            state.searched_part = 1
-        }
+            state.searched_part = 0
+        },
+        incrementPatientsPart: state => {
+            state.part += 1
+        },
+        incrementSearchedPatientsPart: state => {
+            state.searched_part += 1
+        },
 
     },
     extraReducers: (builder) => {
         //DOCTOR PATIENTS
         builder.addCase(getAllPatients.pending, (state, action) => {
+            if (state.part > 1) {
+                state.loadings.patients_pagination = true
+                return
+            }
             state.loadings.patients = true
         })
         builder.addCase(getAllPatients.fulfilled, (state, action) => {
-            state.list = action.payload.pacients
+            state.list = [...state.list, ...action.payload.pacients]
             state.can_next = action.payload.can_next
             state.loadings.patients = false
+            state.loadings.patients_pagination = false
+            if (state.part === 0) {
+                state.part = 1
+            }
         })
         builder.addCase(getAllPatients.rejected, (state, action) => {
+            if (state.searched_part > 1) {
+                state.loadings.search_patients_pagination = true
+                return
+            }
             state.loadings.patients = false
         })
         //DOCTOR SEARCH PATIENTS
@@ -135,6 +157,10 @@ export const PatientsSlice = createSlice({
             state.searched_list = action.payload.pacients
             state.searched_can_next = action.payload.can_next
             state.loadings.search_patients = false
+            state.loadings.search_patients_pagination = false
+            if (state.searched_part === 0) {
+                state.searched_part = 1
+            }
         })
         builder.addCase(getSearchPatients.rejected, (state, action) => {
             state.loadings.search_patients = false
@@ -150,6 +176,8 @@ export const {
     removeInvitingsId,
     resetInvitingsIds,
     resetSearchedPatients,
+    incrementPatientsPart,
+    incrementSearchedPatientsPart,
     resetAllPatients
 } = PatientsSlice.actions
 

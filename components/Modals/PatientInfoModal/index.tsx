@@ -1,6 +1,6 @@
 import React, { FC, useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from "../../../app/base/hooks";
-import { Modal, StyleSheet, Text, View } from "react-native";
+import { ActivityIndicator, FlatList, Modal, StyleSheet, Text, View } from "react-native";
 import WhiteBordered from "../../../layouts/WhiteBordered";
 import { cs } from "../../../common/styles";
 import ButtonYellow from "../../Buttons/ButtonYellow";
@@ -18,39 +18,56 @@ import { NavProps } from '../../../types/common.types';
 import { SkeletonContainer } from 'react-native-skeleton-component';
 import { SkeletonView } from '../../SkeletonView';
 import { normalizeDate } from '../../../utils/normalizeDate';
-import { getOrdersByPatientId, resetPatientInfo } from '../../../app/features/current-data/currentData';
+import { getOrdersByPatientId, incrementPatientOrdersPart, resetPatientInfo, resetPatientOrders } from '../../../app/features/current-data/currentData';
+import { PaginationBottom } from '../../PaginationBottom';
+import { usePagination } from '../../../hooks/usePagination';
 
 const PatientInfoModal: FC<NavProps> = ({ navigation }) => {
     const dispatch = useAppDispatch()
     const { patientInfoModal, patientOrderInfoModal, patientsModal } = useAppSelector(state => state.modals)
-    const { patientInfo, loadings } = useAppSelector(state => state.currentData)
+    const { patientInfo, loadings, parts, can_next } = useAppSelector(state => state.currentData)
 
     const handleModal = () => dispatch(handlePatientInfoModal())
 
     const handleToOrder = () => {
-        alert(patientInfo.data.id)
         dispatch(setPatient({
             id: patientInfo.data.id,
             first_name: patientInfo.data.first_name,
             last_name: patientInfo.data.last_name
         }))
-        navigation.navigate("order_category")
         handleModal()
         if (patientsModal) {
             dispatch(handlePatientsModal())
         }
-
+        setTimeout(() => {
+            navigation.navigate("order_category")
+        }, 50)
     }
 
-    useEffect(() => {
-        if (patientInfo.data.id) {
+
+    const [loadOrders, loadMore] = usePagination(
+        () => {
             dispatch(getOrdersByPatientId({
                 pacient: patientInfo.data.id,
-                part: 1
+                part: parts.patients_orders
             }))
+        },
+        () => { dispatch(incrementPatientOrdersPart()) },
+        {
+            part: parts.patients_orders,
+            can_more: can_next.patients_orders,
+            items: patientInfo.orders,
+            loading: loadings.patient_orders_pagination
         }
-    }, [patientInfo])
+    )
 
+    useEffect(loadOrders, [parts.patients_orders])
+
+    useEffect(() => {
+        return () => {
+            dispatch(resetPatientOrders())
+        }
+    }, [])
 
     return (
         <Modal animationType={"slide"} visible={patientInfoModal} transparent={true}>
@@ -131,21 +148,34 @@ const PatientInfoModal: FC<NavProps> = ({ navigation }) => {
                                 <View style={[cs.spaceS]}>
 
                                     {
-                                        loadings.patient_info ?
+                                        loadings.patient_orders ?
                                             Array(3).fill("").map(item => (
                                                 <SkeletonView height={100} width={"100%"} />
                                             )) :
                                             patientInfo.orders.length > 0 ?
-                                                patientInfo.orders.map((item, index) => (
-                                                    <OrderCard
-                                                        handlePress={() => dispatch(handleOrderInfoModal())}
-                                                        key={item.id}
-                                                        paid={true}
-                                                        date={normalizeDate(item.date)}
-                                                        id={item.id}
-                                                        customer={`Имя Фамилия`}
-                                                        analysisList={[]} />
-                                                ))
+                                                <View style={[cs.fColumn]}>
+                                                    <FlatList
+                                                        scrollEnabled={false}
+                                                        data={patientInfo.orders}
+
+                                                        style={{ overflow: "visible" }}
+                                                        contentContainerStyle={[cs.fColumn, cs.spaceL]}
+                                                        renderItem={({ item }) => (
+                                                            <OrderCard
+                                                                handlePress={() => dispatch(handleOrderInfoModal())}
+                                                                key={item.id}
+                                                                paid={true}
+                                                                date={normalizeDate(item.date)}
+                                                                id={item.id}
+                                                                customer={`Имя Фамилия`}
+                                                                analysisList={[]} />
+                                                        )}
+                                                    />
+                                                    <PaginationBottom onVisible={(inView) => inView ? loadMore() : null} />
+                                                    {loadings.patient_orders_pagination ? <ActivityIndicator color={cs.bgYellow.backgroundColor} /> : null}
+
+                                                </View>
+
                                                 : <Text>Пока пусто.</Text>
                                     }
 

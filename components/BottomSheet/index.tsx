@@ -12,6 +12,11 @@ import { handleBonusesBottomSheet } from '../../app/features/modals/modalsSlice'
 import { normalizeDate } from '../../utils/normalizeDate'
 import { SkeletonContainer } from 'react-native-skeleton-component'
 import { SkeletonView } from '../SkeletonView'
+import { getOrdersByPatientId, incrementPatientOrdersPart, resetPatientOrders } from '../../app/features/current-data/currentData'
+import { usePagination } from '../../hooks/usePagination'
+import { ActivityIndicator } from 'react-native'
+import { PaginationBottom } from '../PaginationBottom'
+import { IOScrollView } from 'react-native-intersection-observer'
 
 
 
@@ -19,12 +24,29 @@ const { width, height } = Dimensions.get("screen")
 
 export const BottomSheet = () => {
     const dispatch = useAppDispatch()
-    const { patientInfo, loadings } = useAppSelector(state => state.currentData)
+    const { patientInfo, loadings, parts, can_next } = useAppSelector(state => state.currentData)
     const translateY = useSharedValue(1)
     const ctx = useSharedValue({ y: 1 })
     const closeSheet = () => {
         dispatch(handleBonusesBottomSheet())
     }
+    const [loadOrders, loadMore] = usePagination(
+        () => {
+            dispatch(getOrdersByPatientId({
+                pacient: patientInfo.data.id,
+                part: parts.patients_orders
+            }))
+        },
+        () => { dispatch(incrementPatientOrdersPart()) },
+        {
+            part: parts.patients_orders,
+            can_more: can_next.patients_orders,
+            items: patientInfo.orders,
+            loading: loadings.patient_orders_pagination
+        }
+    )
+
+
 
     const gesture = Gesture.Pan()
         .onStart(e => {
@@ -51,6 +73,14 @@ export const BottomSheet = () => {
             transform: [{ translateY: translateY.value }]
         }
     })
+
+    useEffect(loadOrders, [parts.patients_orders])
+
+    useEffect(() => {
+        return () => {
+            dispatch(resetPatientOrders())
+        }
+    }, [])
 
     useEffect(() => {
         translateY.value = withTiming(-height / 1.5)
@@ -94,29 +124,39 @@ export const BottomSheet = () => {
                                 <Text style={[cs.title]}>Всего</Text>
                                 <Text style={[cs.title]}>{patientInfo.data.bonus}</Text>
                             </View>
-                            {
-                                loadings.patient_orders ?
-                                    <SkeletonContainer>
-                                        <View style={[cs.fColumn, cs.spaceS]}>
-                                            <SkeletonView width={"100%"} height={80} />
-                                            <SkeletonView width={"100%"} height={80} />
-                                        </View>
-                                    </SkeletonContainer>
-
-                                    :
-                                    <ScrollView showsVerticalScrollIndicator={false} style={cs.flexOne}>
-                                        {
-                                            patientInfo.orders.map(item => (
+                            <View style={[cs.flexOne]}>
+                                {
+                                    loadings.patient_orders ?
+                                        <SkeletonContainer>
+                                            <View style={[cs.fColumn, cs.spaceS]}>
+                                                <SkeletonView width={"100%"} height={80} />
+                                                <SkeletonView width={"100%"} height={80} />
+                                            </View>
+                                        </SkeletonContainer>
+                                        :
+                                        <FlatList
+                                            data={patientInfo.orders}
+                                            scrollEnabled={false}
+                                            contentContainerStyle={[cs.flexOne, { minHeight: "100%" }]}
+                                            style={cs.flexOne}
+                                            renderItem={({ item }) => (
                                                 <OrderItem
                                                     codeText={String(item.id)}
                                                     bottomLeftText={`От ${normalizeDate(item.date)}`}
                                                     bottomRightText={item.status}
                                                     topRightText={String(item.bonus)}
                                                 />
-                                            ))
-                                        }
-                                    </ScrollView>
-                            }
+                                            )}
+                                            showsVerticalScrollIndicator={false}
+                                        />
+
+                                }
+                            </View>
+
+                            <View>
+                                {true ? <ActivityIndicator color={cs.bgYellow.backgroundColor} /> : null}
+                            </View>
+
 
                             {/* <FlatList
                                     scrollEnabled={true}
@@ -184,7 +224,7 @@ const styles = StyleSheet.create({
     },
     patientSheetContent: {
         paddingTop: 40,
-        paddingBottom: 60,
+        paddingBottom: 40,
         flex: 1
     }
 

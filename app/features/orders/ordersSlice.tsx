@@ -28,7 +28,7 @@ export const getAllOrders = createAsyncThunk(
             setTimeout(() => {
                 res({
                     status: true,
-                    can_next: false,
+                    can_next: true,
                     orders: [
                         {
                             id: 1,
@@ -71,6 +71,7 @@ export const OrdersSlice = createSlice({
     reducers: {
         resetOrders: state => {
             state.all_orders = initialState.all_orders
+            state.can_next = false
             state.part = 0
         },
         incrementOrdersPart: state => {

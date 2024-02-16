@@ -9,11 +9,18 @@ import { AnalysisGetByIdReq } from "../../../types/api/analysis.api.types";
 import { OrdersByPatientGetReq, OrdersByPatientGetRes } from "../../../types/api/orders.api.types";
 
 type CurrentData = {
+    can_next: {
+        patients_orders: boolean,
+    }
+    parts: {
+        patients_orders: number
+    },
     loadings: {
         order: boolean,
         patient_orders: boolean,
         patient_info: boolean,
-        product_info: boolean
+        product_info: boolean,
+        patient_orders_pagination: boolean
     },
     orderInfo: OrderDetailsApi,
     productInfo: AnalysisApi,
@@ -28,11 +35,18 @@ type CurrentData = {
 }
 
 const initialState: CurrentData = {
+    parts: {
+        patients_orders: 0
+    },
+    can_next: {
+        patients_orders: false
+    },
     loadings: {
         order: true,
         patient_orders: true,
         patient_info: true,
-        product_info: true
+        product_info: true,
+        patient_orders_pagination: false,
     },
     productInfo: {
         id: 0,
@@ -117,16 +131,16 @@ export const getOrdersByPatientId = createAsyncThunk(
                     can_next: true,
                     total_bonus: 300,
                     status: true,
-                    orders: [
-                        {
-                            id: 1,
+                    orders: Array(8).fill("").map((_, index) => {
+                        return {
+                            id: index,
                             pacient: "",
                             status: "Окончено",
                             date: "2024-02-24",
                             bonus: 300,
                             bonus_status: true,
                         }
-                    ]
+                    })
                 })
             }, 1000)
         })
@@ -187,7 +201,15 @@ export const CurrentDataSlice = createSlice({
         },
         resetProductInfo: (state) => {
             state.productInfo = initialState.productInfo
-        }
+        },
+        resetPatientOrders: state => {
+            state.patientInfo.orders = initialState.patientInfo.orders
+            state.parts.patients_orders = 0
+            state.can_next.patients_orders = false
+        },
+        incrementPatientOrdersPart: state => {
+            state.parts.patients_orders += 1
+        },
     },
     extraReducers: (builder) => {
         //ORDER BY ID
@@ -203,12 +225,21 @@ export const CurrentDataSlice = createSlice({
         })
         //ORDERS BY PATIENT ID
         builder.addCase(getOrdersByPatientId.pending, (state, action) => {
+            if (state.parts.patients_orders > 1) {
+                state.loadings.patient_orders_pagination = true
+                return
+            }
             state.loadings.patient_orders = true
         })
         builder.addCase(getOrdersByPatientId.fulfilled, (state, action) => {
-            state.patientInfo.orders = action.payload.orders
+            state.patientInfo.orders = [...state.patientInfo.orders, ...action.payload.orders]
             state.patientInfo.bonuses_data.total = action.payload.total_bonus
             state.loadings.patient_orders = false
+            state.loadings.patient_orders_pagination = false
+            state.can_next.patients_orders = action.payload.can_next
+            if (state.parts.patients_orders === 0) {
+                state.parts.patients_orders = 1
+            }
         })
         builder.addCase(getOrdersByPatientId.rejected, (state, action) => {
             state.loadings.patient_orders = false
@@ -244,6 +275,8 @@ export const {
     resetOrderInfo,
     setPatientData,
     resetPatientInfo,
+    incrementPatientOrdersPart,
+    resetPatientOrders,
     resetProductInfo
 } = CurrentDataSlice.actions
 

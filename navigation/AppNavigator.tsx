@@ -35,13 +35,14 @@ import { checkToken } from '../app/features/login/loginSlice';
 import PatientInfoModal from '../components/Modals/PatientInfoModal';
 import { NavProps } from '../types/common.types';
 import CreatePatient from '../pages/Inviting/CreatePatient';
+import OrderInfoModal from '../components/Modals/OrderInfoModal';
 
 const Stack = createNativeStackNavigator()
 const Tab = createBottomTabNavigator()
 
 const MainTabs: FC<NavProps> = ({ navigation }) => {
     const dispatch = useAppDispatch()
-    const { patientInfoModal } = useAppSelector(state => state.modals)
+    const { patientInfoModal, orderInfoModal } = useAppSelector(state => state.modals)
 
     useEffect(() => {
         dispatch(getProfile())
@@ -55,13 +56,17 @@ const MainTabs: FC<NavProps> = ({ navigation }) => {
 
             <Tab.Navigator initialRouteName={"orders"} tabBar={(props) => <AppTab key={props.state.index} {...props} />}
                 sceneContainerStyle={styles.main}
-                screenOptions={{ headerShown: false, unmountOnBlur: true}}>
+                screenOptions={{ headerShown: false, unmountOnBlur: true }}>
                 <Tab.Screen name="orders" component={Main} />
                 <Tab.Screen name="support" component={Support} />
                 <Tab.Screen name="profile" component={Profile} />
             </Tab.Navigator>
             {
                 patientInfoModal ? <PatientInfoModal navigation={navigation} /> : null
+
+            }
+            {
+                orderInfoModal ? <OrderInfoModal /> : null
             }
         </>
     );

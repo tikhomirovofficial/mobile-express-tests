@@ -54,7 +54,8 @@ export const ProductsSlice = createSlice({
     initialState,
     reducers: {
         resetProducts: state => {
-            state.items = initialState.items
+            state.items = initialState.items,
+            state.can_next = false,
             state.part = 0
         },
         incrementProductsPart: state => {
