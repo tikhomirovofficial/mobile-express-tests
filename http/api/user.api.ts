@@ -1,10 +1,14 @@
 import { AxiosResponse } from "axios";
 import { api } from "../instances";
-import { USER_PATHS } from "../paths/user.paths";
+import { USER_PATHS } from "../paths/index.paths";
+import { AuthReq, AuthRes } from "../../types/api/user.api.types";
 
 export class UserApi {
-    static async getProfile(): Promise<AxiosResponse<any>> {
-        const res: AxiosResponse<any> = await api.get(USER_PATHS.LOGIN); // Заглушка
+    static async LoginPhone(req: AuthReq): Promise<AxiosResponse<AuthRes>> {
+        const res: AxiosResponse<AuthRes> = await api.post(USER_PATHS.LOGIN_PHONE, req); // Заглушка
+        if (!res.data) {
+            throw res
+        }
         return res;
     }
 }

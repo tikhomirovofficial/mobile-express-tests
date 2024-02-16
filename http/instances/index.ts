@@ -3,11 +3,11 @@ import axios from "axios"
 const currentDomain = 0
 
 const domains = [
-    "test"
+    "http://dev.advafert.ru"
 ]
 
 export const domain = domains[currentDomain]
-const URL = domain + "/api"
+const URL = domain + "/api/"
 
 export const api = axios.create({
     baseURL: URL,

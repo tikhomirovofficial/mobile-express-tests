@@ -5,7 +5,7 @@ import { RemoveIcon, AddIcon } from '../../icons'
 import { fs } from '../../navigation/AppNavigator'
 import { AnalysisApi } from '../../types/entities/analysis.types'
 import { useAppDispatch, useAppSelector } from '../../app/base/hooks'
-import { CartItem, addToCart, removeProduct } from '../../app/features/cart/cartSlice'
+import { CartItemType, addToCart, removeProduct } from '../../app/features/cart/cartSlice'
 
 type ProductItemProps = {
     product: AnalysisApi,
@@ -17,7 +17,7 @@ const ProductItem: FC<ProductItemProps> = ({ product, index, isInCart, clickHand
     const dispatch = useAppDispatch()
 
     const addProduct = useCallback(() => {
-        dispatch(addToCart({ ...product as CartItem }))
+        dispatch(addToCart({ ...product as CartItemType }))
     }, [dispatch, product]);
 
     const removeItem = useCallback(() => {

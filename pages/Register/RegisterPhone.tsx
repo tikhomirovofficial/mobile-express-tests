@@ -1,5 +1,5 @@
 import React, { FC, useEffect, useState } from 'react';
-import { Animated, Text, TouchableOpacity, View, StyleSheet, TextInput, ScrollView, Keyboard } from "react-native";
+import { Animated, Text, TouchableOpacity, View, StyleSheet, TextInput, ScrollView, Keyboard, ActivityIndicator } from "react-native";
 import { useAppDispatch, useAppSelector } from '../../app/base/hooks';
 import { handlePatientInvitingModal } from '../../app/features/modals/modalsSlice';
 import { cs } from '../../common/styles';
@@ -16,6 +16,7 @@ import MaskInput from 'react-native-mask-input';
 import { createNumberMask, Masks } from 'react-native-mask-input';
 import { handleLoginForm, resetLoginCodeStatus, sendAuthPhone } from '../../app/features/login/loginSlice';
 import { phoneMask } from '../../rules/masks.rules';
+import { InputField } from '../../components/InputField';
 
 
 
@@ -68,26 +69,26 @@ const LoginPhone: FC<NavProps> = ({ navigation }) => {
                     style={{ paddingTop: 40, maxHeight: "100%" }}>
                     <View style={[cs.fColumnBetw, cs.flexOne, { minHeight: !keyboardStatus ? "100%" : "99%", paddingBottom: 32 }]}>
                         <View style={[cs.spaceM]}>
-                            <View style={[cs.fColumn, cs.spaceM]}>
-                                <Text style={[cs.fzS, fs.montR, cs.fwMedium]} aria-label="Label for Usernam"
-                                    nativeID="labelFirstName">Введите номер телефона, чтобы войти</Text>
-                                <MaskInput
-                                    value={auth.form.maskedPhone}
-                                    placeholder={"+7"}
-                                    keyboardType={"number-pad"}
-                                    style={[cs.inputField, cs.fzM, fs.montR]}
-                                    onChangeText={(masked: string, unmasked: string) => {
-                                        if (masked.startsWith("+7")) {
-                                            dispatch(handleLoginForm({ key: "maskedPhone", val: masked }))
-                                            dispatch(handleLoginForm({ key: "phone", val: unmasked }))
-                                        }
+                            <InputField
+                                error={auth.errors.phone}
+                                mask={phoneMask}
+                                label={"Введите номер телефона, чтобы войти"}
+                                val={auth.form.maskedPhone}
+                                idInput={"login-phone"}
+                                type={"number-pad"}
+                                placeholder={"+7"}
+                                onChange={(masked: string, unmasked: string | undefined) => {
+                                    if (masked.startsWith("+7")) {
+                                        dispatch(handleLoginForm({ key: "maskedPhone", val: masked }))
+                                        dispatch(handleLoginForm({ key: "phone", val: String(unmasked) }))
+                                    }
 
-                                    }}
-                                    mask={phoneMask}
-                                />
-                            </View>
-                            <ButtonYellow disabled={disabledBtn} handlePress={handleSendPhone}>
-                                <Text style={[cs.fzM, cs.yellowBtnText]}>Продолжить</Text>
+                                }}
+                            />
+
+                            <ButtonYellow style={{minHeight: 54}} disabled={disabledBtn} handlePress={handleSendPhone}>
+                                {!true ? <ActivityIndicator color={"black"} /> : <Text style={[cs.fzM, cs.yellowBtnText]}>Продолжить</Text>}
+
                             </ButtonYellow>
                         </View>
                         <Text style={[fs.montR, cs.fzXS, cs.fwMedium, cs.colorGray]}>

@@ -3,6 +3,7 @@ import { AuthAcceptReq, AuthAcceptRes, AuthReq, AuthRes } from "../../../types/a
 import { deleteTokens, storeTokens } from "../../../utils/storeTokens";
 import { checkIsValid } from "../../../utils/checkToken";
 import { getHasProfile } from "../profile/profileSlice";
+import { UserApi } from "../../../http/api/user.api";
 
 type LoginSliceType = {
     token: {
@@ -81,17 +82,13 @@ export const logout = createAsyncThunk(
 export const sendAuthPhone = createAsyncThunk(
     'login/phone',
     async (req: AuthReq, { dispatch }) => {
-        const resp: AuthRes = {
-            status: true
-        }
-        if (!resp.status) {
+        const res = await UserApi.LoginPhone(req)
+        console.log(res);
+
+        if (!res.status || !res.data.status) {
             throw new Error("Нет номера телеофна")
         }
-        return new Promise<AuthRes>((res, rej) => {
-            setTimeout(() => {
-                res(resp)
-            }, 1000)
-        })
+        return res
     }
 )
 const token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJPbmxpbmUgSldUIEJ1aWxkZXIiLCJpYXQiOjE3MDY4MjM3MTUsImV4cCI6MTczODM1OTcxNSwiYXVkIjoid3d3LmV4YW1wbGUuY29tIiwic3ViIjoianJvY2tldEBleGFtcGxlLmNvbSIsIkdpdmVuTmFtZSI6IkpvaG5ueSIsIlN1cm5hbWUiOiJSb2NrZXQiLCJFbWFpbCI6Impyb2NrZXRAZXhhbXBsZS5jb20iLCJSb2xlIjpbIk1hbmFnZXIiLCJQcm9qZWN0IEFkbWluaXN0cmF0b3IiXX0.XIwgkYXEV4jr8ykkkPq196lsIDOw9V05lysW4DswROM"
@@ -125,6 +122,12 @@ export const LoginSlice = createSlice({
     initialState,
     reducers: {
         handleLoginForm: (state, action: PayloadAction<{ key: keyof typeof initialState.auth.form, val: string }>) => {
+            if (state.auth.errors.code) {
+                state.auth.errors.code = ""
+            }
+            if (state.auth.errors.phone) {
+                state.auth.errors.phone = ""
+            }
             state.auth.form[action.payload.key] = action.payload.val
         },
         setCodeIsFreezed: (state, action: PayloadAction<boolean>) => {
