@@ -1,10 +1,10 @@
 import { LinearGradient } from 'expo-linear-gradient'
 import React, { useEffect, useState } from 'react'
-import { View, Text, StyleSheet, Dimensions, useAnimatedValue, Touchable, TouchableOpacity, FlatList } from 'react-native'
+import { View, Text, StyleSheet, Dimensions, useAnimatedValue, Touchable, TouchableOpacity, ActivityIndicator } from 'react-native'
 import { cs } from '../../common/styles'
 import AppContainer from '../AppContainer'
 import { BorderedProfileIcon } from '../../icons'
-import { Gesture, GestureDetector, ScrollView, TouchableWithoutFeedback } from 'react-native-gesture-handler'
+import { Gesture, GestureDetector, ScrollView, TouchableWithoutFeedback, FlatList } from 'react-native-gesture-handler'
 import Animated, { SlideInDown, SlideOutDown, runOnJS, useAnimatedStyle, useSharedValue, withSpring, withTiming } from 'react-native-reanimated'
 import { OrderItem } from '../OrderItem'
 import { useAppDispatch, useAppSelector } from '../../app/base/hooks'
@@ -14,7 +14,6 @@ import { SkeletonContainer } from 'react-native-skeleton-component'
 import { SkeletonView } from '../SkeletonView'
 import { getOrdersByPatientId, incrementPatientOrdersPart, resetPatientOrders } from '../../app/features/current-data/currentData'
 import { usePagination } from '../../hooks/usePagination'
-import { ActivityIndicator } from 'react-native'
 import { PaginationBottom } from '../PaginationBottom'
 import { IOScrollView } from 'react-native-intersection-observer'
 
@@ -62,7 +61,7 @@ export const BottomSheet = () => {
                 translateY.value = withTiming(0, { duration: 500 }, () => {
                 })
             } else if (translateY.value < -height / 1.5) {
-                translateY.value = withSpring(-height + 20, { damping: 50 })
+                translateY.value = withSpring(-height, { damping: 50 })
             }
 
         })
@@ -77,16 +76,13 @@ export const BottomSheet = () => {
     useEffect(loadOrders, [parts.patients_orders])
 
     useEffect(() => {
+        translateY.value = withTiming(-height / 1.5)
         return () => {
             dispatch(resetPatientOrders())
         }
     }, [])
 
-    useEffect(() => {
-        translateY.value = withTiming(-height / 1.5)
-    }, [])
-
-
+    
     return (
 
         <GestureDetector gesture={gesture}>
@@ -124,37 +120,34 @@ export const BottomSheet = () => {
                                 <Text style={[cs.title]}>Всего</Text>
                                 <Text style={[cs.title]}>{patientInfo.data.bonus}</Text>
                             </View>
-                            <View style={[cs.flexOne]}>
-                                {
-                                    loadings.patient_orders ?
-                                        <SkeletonContainer>
-                                            <View style={[cs.fColumn, cs.spaceS]}>
-                                                <SkeletonView width={"100%"} height={80} />
-                                                <SkeletonView width={"100%"} height={80} />
-                                            </View>
-                                        </SkeletonContainer>
-                                        :
-                                        <FlatList
-                                            data={patientInfo.orders}
-                                            scrollEnabled={false}
-                                            contentContainerStyle={[cs.flexOne, { minHeight: "100%" }]}
-                                            style={cs.flexOne}
-                                            renderItem={({ item }) => (
-                                                <OrderItem
-                                                    codeText={String(item.id)}
-                                                    bottomLeftText={`От ${normalizeDate(item.date)}`}
-                                                    bottomRightText={item.status}
-                                                    topRightText={String(item.bonus)}
-                                                />
-                                            )}
-                                            showsVerticalScrollIndicator={false}
-                                        />
+                            {
+                                loadings.patient_orders ?
+                                    <SkeletonContainer>
+                                        <View style={[cs.fColumn, cs.spaceS]}>
+                                            <SkeletonView width={"100%"} height={80} />
+                                            <SkeletonView width={"100%"} height={80} />
+                                        </View>
+                                    </SkeletonContainer>
+                                    :
+                                    
+                                    <FlatList
+                                        onEndReached={loadMore}
+                                        showsVerticalScrollIndicator={false}
+                                        data={patientInfo.orders}
+                                        renderItem={({ item }) => (
+                                            <OrderItem
+                                                codeText={String(item.id)}
+                                                bottomLeftText={`От ${normalizeDate(item.date)}`}
+                                                bottomRightText={item.status}
+                                                topRightText={String(item.bonus)}
+                                            />
+                                        )}
+                                    />
 
-                                }
-                            </View>
 
-                            <View>
-                                {true ? <ActivityIndicator color={cs.bgYellow.backgroundColor} /> : null}
+                            }
+                            <View style={{ height: 20 }}>
+                                {loadings.patient_orders_pagination ? <ActivityIndicator color={cs.bgYellow.backgroundColor} /> : null}
                             </View>
 
 
@@ -224,7 +217,7 @@ const styles = StyleSheet.create({
     },
     patientSheetContent: {
         paddingTop: 40,
-        paddingBottom: 40,
+        paddingBottom: 20,
         flex: 1
     }
 
