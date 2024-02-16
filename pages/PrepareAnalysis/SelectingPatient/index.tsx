@@ -1,6 +1,6 @@
 import React, { FC, useEffect, useState } from 'react';
 import WhiteBorderedLayout from "../../../layouts/WhiteBordered";
-import { Animated, Text, TouchableOpacity, View, StyleSheet, TextInput, ScrollView, SectionList, FlatList, Keyboard } from "react-native";
+import { Animated, Text, TouchableOpacity, View, StyleSheet, TextInput, ScrollView, SectionList, FlatList, Keyboard, ActivityIndicator } from "react-native";
 import { cs } from "../../../common/styles";
 import { ArrowLeft, Logo, SearchIcon } from "../../../icons";
 import { OrderAnalysisType } from "../../../types/entities/analysis.types";
@@ -14,20 +14,31 @@ import PatientInvitingModal from "../../../components/Modals/PatientInvitingModa
 import { handlePatientInvitingModal } from "../../../app/features/modals/modalsSlice";
 import * as Contacts from 'expo-contacts';
 import * as Permissions from 'expo-permissions';
-import { getSearchPatients, setPatients } from '../../../app/features/patients/patientsSlice';
-import { setPatient } from '../../../app/features/order/orderSlice';
+import { getSearchPatients, incrementSearchedPatientsPart, resetSearchedPatients, setPatients } from '../../../app/features/patients/patientsSlice';
+import { resetPatient, setPatient } from '../../../app/features/order/orderSlice';
 import { useDeferred } from '../../../hooks/useDeffered';
 import { SkeletonContainer } from 'react-native-skeleton-component';
 import { SkeletonView } from '../../../components/SkeletonView';
+import { usePagination } from '../../../hooks/usePagination';
 
 const SelectingPatient: FC<NavProps> = ({ navigation }) => {
     const dispatch = useAppDispatch()
     const { patientData } = useAppSelector(state => state.order)
-    const { searched_list, loadings } = useAppSelector(state => state.patients)
+    const { searched_list, loadings, searched_can_next, searched_part } = useAppSelector(state => state.patients)
     const { patientInvitingModal } = useAppSelector(state => state.modals)
-
     const [searchVal, setSearchVal] = useState("")
     const defferedSearchVal = useDeferred(searchVal, 500)
+
+    const [loadSearchedPatients, loadMore] = usePagination(
+        () => { dispatch(getSearchPatients({ part: searched_part, pacient: searchVal })) },
+        () => { dispatch(incrementSearchedPatientsPart()) },
+        {
+            part: searched_part,
+            can_more: searched_can_next,
+            items: searched_list,
+            loading: loadings.search_patients_pagination
+        }
+    )
 
     const [contactsSelected, setContactsSelected] = useState<number>(patientData.id > 0 ? patientData.id : -1)
     const [keyboardStatus, setKeyboardStatus] = useState(false);
@@ -47,32 +58,15 @@ const SelectingPatient: FC<NavProps> = ({ navigation }) => {
 
     const toSelectCategory = () => navigation.navigate("order_category")
 
-
-    // useEffect(() => {
-    //     (async () => {
-    //         // const contactsPermissions = await Permissions.askAsync(Permissions.CONTACTS);
-    //         // console.log(contactsPermissions.status);
-
-    //         // const { status } = await Contacts.requestPermissionsAsync();
-    //         // if (status === 'granted') {
-    //         //     setContactsLoading(true)
-    //         //     const { data } = await Contacts.getContactsAsync();
-
-    //         //     if (data.length > 0) {
-    //         //         dispatch(setPatients(data.slice(0, 3)))
-    //         //         setContactsLoading(false)
-    //         //     }
-    //         // }
-    //     })();
-    // }, []);
-
     const openNewPatient = () => {
         navigation.navigate("inviting")
     }
 
     useEffect(() => {
-        dispatch(getSearchPatients({ pacient: defferedSearchVal, part: 1 }))
+        dispatch(resetSearchedPatients())
     }, [defferedSearchVal])
+
+    useEffect(loadSearchedPatients, [searched_part])
 
     useEffect(() => {
         const keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', () => {
@@ -82,6 +76,8 @@ const SelectingPatient: FC<NavProps> = ({ navigation }) => {
             setKeyboardStatus(false);
         });
         return () => {
+            dispatch(resetPatient())
+            dispatch(resetSearchedPatients())
             keyboardDidShowListener.remove();
             keyboardDidHideListener.remove();
         };
@@ -98,14 +94,13 @@ const SelectingPatient: FC<NavProps> = ({ navigation }) => {
                                 <TouchableOpacity onPress={handleToMyPatients}>
                                     <ArrowLeft />
                                 </TouchableOpacity>
-
                                 <Text style={[cs.fwSemi, cs.fwSemi, cs.fzXL]}>Подготовка анализов</Text>
                             </View>
                         </AppContainer>
 
                     }
                     style={{ paddingTop: 40, maxHeight: "100%" }}>
-                    <View style={[cs.spaceXL, styles.patientsContent]}>
+                    <View style={[cs.spaceS, styles.patientsContent]}>
                         <View style={[cs.spaceL, cs.fColumn]}>
                             <View style={[cs.fRowBetw, cs.spaceM, cs.fAlCenter]}>
                                 <Text style={[cs.fwSemi, cs.fwBold, cs.fzXL]}>Выберите пациента</Text>
@@ -123,27 +118,35 @@ const SelectingPatient: FC<NavProps> = ({ navigation }) => {
                                 <Text style={[cs.textYellow, cs.fwSemi, { textDecorationLine: "underline" }]}>Пригласить пациента</Text>
                             </TouchableOpacity>
                         </View>
-                        <View style={[cs.flexOne, { position: "relative" }]}>
-                            {loadings.search_patients ?
-                                <SkeletonContainer>
-                                    <View style={[cs.fColumn, cs.spaceS]}>
-                                        <SkeletonView width={"100%"} height={50} />
-                                        <SkeletonView width={"100%"} height={50} />
-                                    </View>
-                                </SkeletonContainer> :
-                                <View style={[{ position: "absolute", height: "100%", width: "100%" }]}>
-                                    <FlatList
-                                        data={searched_list}
-                                        renderItem={({ item }) => (
-                                            <PatientItem
-                                                handlePress={() => handleSelectPatient(item.id)}
-                                                isRadio={true}
-                                                key={item.id}
-                                                selected={contactsSelected === item.id}
-                                                {...item} />
-                                        )}
-                                    />
-                                </View>}
+                        <View style={cs.flexOne}>
+                            <View style={[cs.flexOne, { position: "relative" }]}>
+                                {loadings.search_patients ?
+                                    <SkeletonContainer>
+                                        <View style={[cs.fColumn, cs.spaceS]}>
+                                            <SkeletonView width={"100%"} height={50} />
+                                            <SkeletonView width={"100%"} height={50} />
+                                        </View>
+                                    </SkeletonContainer> :
+                                    <View style={[{ position: "absolute", height: "100%", width: "100%" }]}>
+                                        <FlatList
+                                            data={searched_list}
+                                            showsVerticalScrollIndicator={false}
+                                            onEndReached={loadMore}
+                                            renderItem={({ item }) => (
+                                                <PatientItem
+                                                    handlePress={() => handleSelectPatient(item.id)}
+                                                    isRadio={true}
+                                                    key={item.id}
+                                                    selected={contactsSelected === item.id}
+                                                    {...item} />
+                                            )}
+                                        />
+                                    </View>}
+
+                            </View>
+                            <View style={{ height: 20 }}>
+                                {loadings.search_patients_pagination ? <ActivityIndicator color={cs.bgYellow.backgroundColor} /> : null}
+                            </View>
                         </View>
                         <ButtonYellow disabled={contactsSelected === -1} handlePress={toSelectCategory}>
                             <View style={[cs.fRow, cs.fAlCenter, cs.spaceS]}>

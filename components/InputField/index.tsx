@@ -1,20 +1,55 @@
 import React, { FC, useState } from 'react'
-import { View, StyleSheet, TextInput, KeyboardType } from 'react-native'
+import { View, StyleSheet, TextInput, KeyboardType, Text } from 'react-native'
 import { cs } from '../../common/styles'
 import { fs } from '../../navigation/AppNavigator'
 import MaskInput from 'react-native-mask-input'
 
 type InputFieldProps = {
     mask?: string | RegExp | RegExp[] | (string | RegExp)[],
+    label?: string,
     idInput?: string,
+    error?: string,
     placeholder?: string
     type?: KeyboardType
     val: string,
     onChange: (val: string, unmasked?: string) => void
 
 }
-export const InputField: FC<InputFieldProps> = ({ mask, placeholder, val, type, onChange, idInput, }) => {
+export const InputField: FC<InputFieldProps> = ({ mask, label, placeholder, val, type, onChange, idInput, error }) => {
     const [focused, setFocused] = useState(false)
+    if (label) {
+        return (
+            <View style={[cs.fColumn, cs.spaceM]}>
+                <Text style={[cs.fzS, fs.montR, (error ? cs.colorRed : null)]}
+                    nativeID="labelFirstName">{error || label}</Text>
+                {
+                    mask ? <MaskInput
+                        mask={mask}
+                        value={val}
+                        keyboardType={type}
+                        onFocus={() => setFocused(true)}
+                        onBlur={() => setFocused(false)}
+                        nativeID={idInput}
+                        onChangeText={onChange}
+                        accessibilityLabelledBy={idInput}
+                        placeholder={placeholder}
+                        style={[styles.inputField, cs.fzM, fs.montR, (error ? [cs.errBorderColor, cs.colorRed] : null), (focused ? cs.focusedInput : null)]} />
+                        :
+                        <TextInput
+                            onFocus={() => setFocused(true)}
+                            onBlur={() => setFocused(false)}
+                            value={val}
+                            keyboardType={type}
+                            nativeID={idInput}
+                            onChangeText={onChange}
+                            accessibilityLabelledBy={idInput}
+                            placeholder={placeholder}
+                            style={[styles.inputField, cs.fzM, fs.montR, (error ? [cs.errBorderColor, cs.colorRed] : null), (focused ? cs.focusedInput : null)]} />
+                }
+            </View>
+        )
+    }
+
     if (mask) {
         return (
             <MaskInput
@@ -27,9 +62,10 @@ export const InputField: FC<InputFieldProps> = ({ mask, placeholder, val, type, 
                 onChangeText={onChange}
                 accessibilityLabelledBy={idInput}
                 placeholder={placeholder}
-                style={[styles.inputField, cs.fzM, fs.montR, (focused ? cs.focusedInput : null)]} />
+                style={[styles.inputField, cs.fzM, fs.montR, (error ? [cs.errBorderColor, cs.colorRed] : null), (focused ? cs.focusedInput : null)]} />
         )
     }
+
     return (
         <TextInput
             onFocus={() => setFocused(true)}
@@ -40,7 +76,7 @@ export const InputField: FC<InputFieldProps> = ({ mask, placeholder, val, type, 
             onChangeText={onChange}
             accessibilityLabelledBy={idInput}
             placeholder={placeholder}
-            style={[styles.inputField, cs.fzM, fs.montR, (focused ? cs.focusedInput : null)]} />
+            style={[styles.inputField, cs.fzM, fs.montR, (error ? [cs.errBorderColor, cs.colorRed] : null), (focused ? cs.focusedInput : null)]} />
     )
 }
 const styles = StyleSheet.create({

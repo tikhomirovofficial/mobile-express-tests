@@ -1,10 +1,10 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import { AnalysisApi } from "../../../types/entities/analysis.types";
 
-export type CartItem = Pick<AnalysisApi, "id" | "name" | "cost">
+export type CartItemType = Pick<AnalysisApi, "id" | "name" | "cost">
 
 type CartSliceState = {
-    items: CartItem[]
+    items: CartItemType[]
     totalPrice: number
 }
 
@@ -16,7 +16,7 @@ export const CartSlice = createSlice({
     name: "cart",
     initialState,
     reducers: {
-        addToCart: (state, action: PayloadAction<CartItem>) => {
+        addToCart: (state, action: PayloadAction<CartItemType>) => {
             console.log(action.payload.name);
             
             state.items = [

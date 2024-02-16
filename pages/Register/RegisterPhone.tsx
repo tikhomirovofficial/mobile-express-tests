@@ -14,7 +14,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import WhiteBorderedLayout from '../../layouts/WhiteBordered';
 import MaskInput from 'react-native-mask-input';
 import { createNumberMask, Masks } from 'react-native-mask-input';
-import { handleLoginForm, sendAuthPhone } from '../../app/features/login/loginSlice';
+import { handleLoginForm, resetLoginCodeStatus, sendAuthPhone } from '../../app/features/login/loginSlice';
 import { phoneMask } from '../../rules/masks.rules';
 
 
@@ -33,6 +33,7 @@ const LoginPhone: FC<NavProps> = ({ navigation }) => {
     useEffect(() => {
         if (auth.success.phone) {
             navigation.navigate("sms_login")
+            dispatch(resetLoginCodeStatus())
         }
     }, [auth.success.phone])
 

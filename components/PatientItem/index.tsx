@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useCallback } from 'react';
 import { StyleSheet, TouchableOpacity, View, Text } from "react-native";
 import { cs } from "../../common/styles";
 import { CheckedBorderedIcon, CheckedCircleIcon, ProfileIcon, UncheckedBorderedIcon, UncheckedCircleIcon } from "../../icons";
@@ -29,15 +29,16 @@ const PatientItem: FC<PatientItemProps> = ({
     id }) => {
     const dispatch = useAppDispatch()
 
-    const handleOpenPatientInfo = () => {
+    const handleOpenPatientInfo = useCallback(() => {
         if (handlePress) {
             handlePress()
             return
         }
         dispatch(handlePatientInfoModal())
         dispatch(getPatientById(id))
-    }
-    const GetSelectedIcon = () => {
+    }, [handlePress, id])
+
+    const GetSelectedIcon = useCallback(() => {
         if (selected !== undefined) {
             if (!selected) {
                 return !isRadio ? <UncheckedBorderedIcon /> : <UncheckedCircleIcon />
@@ -45,7 +46,8 @@ const PatientItem: FC<PatientItemProps> = ({
             return !isRadio ? <CheckedBorderedIcon /> : <CheckedCircleIcon />
         }
         return null
-    }
+    }, [selected, isRadio])
+    
     return (
         <TouchableOpacity onPress={handleOpenPatientInfo} style={[styles.patientCard, cs.fRowBetw, cs.fAlCenter, (neededBottomBorder ? cs.bottomBorder : null)]}>
             <View style={[cs.fRow, cs.fAlCenter, cs.spaceM]}>

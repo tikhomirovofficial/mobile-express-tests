@@ -18,7 +18,7 @@ import { addInvitingsId, removeInvitingsId, setPatients } from '../../../app/fea
 
 const SelectingPatients: FC<NavProps> = ({ navigation }) => {
     const dispatch = useAppDispatch()
-    const contacts = useAppSelector(state => state.patients.items)
+    const patients = useAppSelector(state => state.patients.searched_list)
     const [contactsLoading, setContactsLoading] = useState(false)
     const contactsSelected = useAppSelector(state => state.patients.invitingsIds)
     const { patientInvitingModal } = useAppSelector(state => state.modals)
@@ -26,11 +26,22 @@ const SelectingPatients: FC<NavProps> = ({ navigation }) => {
     const handleToMyPatients = () => {
         navigation.navigate("home")
     }
+
     const toCheckInvitingContacts = () => {
         navigation.navigate("inviting_check")
     }
-    useEffect(() => {
+    const openNewPatient = () => dispatch(handlePatientInvitingModal())
 
+    const handlePatient = (id: number) => {
+        const alreadySelected = contactsSelected.some(contact => contact === id)
+        if (!alreadySelected) {
+            dispatch(addInvitingsId(id))
+            return
+        }
+        dispatch(removeInvitingsId(id))
+    }
+
+    useEffect(() => {
         (async () => {
             const contactsPermissions = await Permissions.askAsync(Permissions.CONTACTS);
             console.log(contactsPermissions.status);
@@ -47,11 +58,9 @@ const SelectingPatients: FC<NavProps> = ({ navigation }) => {
             }
         })();
     }, []);
-    const openNewPatient = () => dispatch(handlePatientInvitingModal())
 
-    function setInvigitingsIds(arg0: (prev: any) => any): any {
-        throw new Error('Function not implemented.');
-    }
+
+
 
     return (
         <Animated.View>
@@ -91,18 +100,15 @@ const SelectingPatients: FC<NavProps> = ({ navigation }) => {
                             {contactsLoading ? <Text style={[cs.txtCenter]}>Загрузка...</Text> :
                                 <View style={[{ position: "absolute", height: "100%", width: "100%" }]}>
                                     <FlatList
-                                        data={contacts}
+                                        showsVerticalScrollIndicator={false}
+                                        data={patients}
                                         renderItem={({ item }) => (
-                                            <PatientItem handlePress={() => {
-                                                const alreadySelected = contactsSelected.some(contact => contact === item.id)
-
-                                                if (!alreadySelected) {
-                                                    dispatch(addInvitingsId(item.id))
-                                                    return
-                                                }
-                                                dispatch(removeInvitingsId(item.id))
-
-                                            }} key={item.id} selected={contactsSelected.some(contact => contact === item.id)} firstName={item.firstName || ""} lastName={item.lastName || ""} phone={item.phoneNumbers ? item.phoneNumbers[0]?.number || "" : ""} avatarSrc={null} />
+                                            <PatientItem
+                                                handlePress={() => handlePatient(item.id)}
+                                                key={item.id}
+                                                selected={contactsSelected.some(contact => contact === item.id)}
+                                                {...item}
+                                            />
                                         )}
                                     />
 
@@ -119,13 +125,8 @@ const SelectingPatients: FC<NavProps> = ({ navigation }) => {
                                 </View> : null}
 
                             </View>
-
-
                         </ButtonYellow>
-
-
                     </View>
-
                 </WhiteBorderedLayout>
             </View >
             {

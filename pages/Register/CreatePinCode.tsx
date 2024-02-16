@@ -10,6 +10,7 @@ import WhiteBorderedLayout from '../../layouts/WhiteBordered';
 import { BackspaceIcon, CloseIcon } from '../../icons';
 import { storePin } from '../../utils/storePin';
 import { setPinCode } from '../../app/features/access/accessSlice';
+import { vibrate } from '../../utils/device/vibrate';
 
 const CreatePinCode: FC<NavProps> = ({ navigation }) => {
     const dispatch = useAppDispatch()
@@ -31,7 +32,7 @@ const CreatePinCode: FC<NavProps> = ({ navigation }) => {
                     if (filledCount) {
                         return ["", "", "", ""]
                     }
-                    if(isAccepting) {
+                    if (isAccepting) {
                         setIsAccepting(false)
                     }
                     return [...prev]
@@ -41,7 +42,7 @@ const CreatePinCode: FC<NavProps> = ({ navigation }) => {
                         prev[filledCount - 1] = ""
                         return [...prev]
                     }
-                    if(isAccepting) {
+                    if (isAccepting) {
                         setIsAccepting(false)
                     }
                     return [...prev]
@@ -85,6 +86,7 @@ const CreatePinCode: FC<NavProps> = ({ navigation }) => {
         if (lengthsEquals) {
             const pinsEquals = pin.join(",") === acceptPin.join(",")
             if (!pinsEquals) {
+                vibrate(200)
                 setIncorrectAccept("Пин-код не совпадает!")
                 return;
             }

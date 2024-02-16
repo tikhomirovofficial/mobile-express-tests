@@ -148,6 +148,7 @@ const SelectingProducts: FC<NavProps> = ({ navigation }) => {
                                                 index,
                                             })}
                                             initialNumToRender={5}
+                                            showsVerticalScrollIndicator={false}
                                             data={items}
                                             renderItem={({ item, index }) =>
                                                 <ProductItem

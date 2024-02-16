@@ -10,6 +10,7 @@ import SelectableBtn from "../../SelectableBtn";
 import { handleProfileEditModal } from "../../../app/features/modals/modalsSlice";
 import { handleProfileForm, setDefaultProfileForm } from '../../../app/features/profile/profileSlice';
 import { ProfileData, ProfileEditTextFields } from '../../../types/entities/user.types';
+import { InputField } from '../../InputField';
 
 const ProfileEditModal = () => {
     const dispatch = useAppDispatch()
@@ -53,12 +54,13 @@ const ProfileEditModal = () => {
                                     </TouchableOpacity>
 
                                 </View>
-                                <View style={[cs.fColumn, cs.spaceM]}>
-                                    <Text style={[cs.fzS, fs.montR]} aria-label="Label for Username"
-                                        nativeID="labelLastName">Фамилия</Text>
-                                    <TextInput onChangeText={val => dispatch(handleProfileForm({ key: "last_name", val }))} value={form.last_name} accessibilityLabelledBy={"labelLastName"} placeholder={"Фамилия"}
-                                        style={[styles.inputField, cs.fzM, fs.montR]} />
-                                </View>
+                                <InputField
+                                    error={""}
+                                    label={"Фамилия"}
+                                    idInput={"labelLastName"}
+                                    val={form.last_name}
+                                    onChange={val => dispatch(handleProfileForm({ key: "last_name", val }))}
+                                />
                                 <View style={[cs.fColumn, cs.spaceM]}>
                                     <Text style={[cs.fzS, fs.montR]} aria-label="Label for Username"
                                         nativeID="labelFirstName">Имя</Text>

@@ -13,18 +13,17 @@ import ButtonYellow from "../../../components/Buttons/ButtonYellow";
 import PatientInvitingModal from "../../../components/Modals/PatientInvitingModal";
 import { addToCart, clearCart, removeProduct } from '../../../app/features/cart/cartSlice';
 import { resetPatient, setCurrentCategory, setPatient } from '../../../app/features/order/orderSlice';
-
+import CartItem from '../../../components/CartItem';
 
 const CartProducts: FC<NavProps> = ({ navigation }) => {
     const dispatch = useAppDispatch()
     const [categoriesLoading, setCategoriesLoading] = useState(false)
     const cartProducts = useAppSelector(state => state.cart.items)
 
-
     const handleClearCart = () => {
         dispatch(clearCart())
     }
-    
+
     const handleOrder = () => {
         const dateNow = new Date()
         handleClearCart()
@@ -59,6 +58,7 @@ const CartProducts: FC<NavProps> = ({ navigation }) => {
         <Animated.View>
             <View style={[cs.fColumn, cs.spaceM]}>
                 <WhiteBorderedLayout
+                    scrollable={false}
                     topContent={
                         <AppContainer style={{ paddingBottom: 0 }}>
                             <View style={[cs.fRowBetw, cs.spaceM, cs.fAlCenter]}>
@@ -69,7 +69,6 @@ const CartProducts: FC<NavProps> = ({ navigation }) => {
                                 <View></View>
                             </View>
                         </AppContainer>
-
                     }
                     style={{ paddingTop: 40, maxHeight: "100%" }}>
                     <View style={[cs.spaceXL, styles.patientsContent, { minHeight: keyboardStatus ? "99%" : "100%" }]}>
@@ -80,64 +79,36 @@ const CartProducts: FC<NavProps> = ({ navigation }) => {
                                     <HeartIcon stroke={"#ffffff"} />
                                     <Text style={[cs.fwSemi, cs.colorWhite]}>{cartProducts.length * 3}</Text>
                                 </View>
-
                             </View>
                             <TouchableOpacity onPress={handleClearCart} style={[cs.fRow, cs.fAlCenter, cs.spaceS]}>
                                 <ClearIcon />
                                 <Text style={[cs.textRed, cs.fwMedium, fs.montR, cs.fzM]}>Очистить</Text>
                             </TouchableOpacity>
-
                         </View>
                         <View style={[cs.flexOne, { position: "relative" }]}>
                             {categoriesLoading ? <Text style={[cs.txtCenter]}>Загрузка...</Text> :
                                 <View style={[{ position: "absolute", height: "100%", width: "100%" }]}>
                                     <FlatList
-
                                         contentContainerStyle={[cs.fColumn, cs.spaceS]}
                                         data={cartProducts}
-                                        renderItem={({ item }) => {
-
-
-                                            const removeItem = () => {
-                                                dispatch(removeProduct(item.id))
-                                            }
-
-                                            return (<TouchableOpacity style={[cs.fRowBetw, cs.spaceS, cs.fAlCenter]} >
-                                                <View key={item.id} style={[cs.fRow, cs.spaceS, { maxWidth: "90%" }]}>
-                                                    <View style={[cs.fColumn]}>
-                                                        <Text style={[cs.fwMedium, fs.montR, cs.fzS, cs.colorDark]}>{item.name}</Text>
-                                                        <Text style={[cs.fwBold, fs.montR, cs.fzS, cs.colorDark]}>{item.cost} ₽</Text>
-                                                    </View>
-                                                </View>
-                                                <TouchableOpacity onPress={removeItem}>
-                                                    <RemoveIcon />
-
-                                                </TouchableOpacity>
-
-
-                                            </TouchableOpacity>)
-                                        }}
+                                        renderItem={({ item }) => (
+                                            <CartItem
+                                                removeItem={() => dispatch(removeProduct(item.id))}
+                                                item={item}
+                                            />
+                                        )}
                                     />
-
                                 </View>}
-
                         </View>
-
-
                         <ButtonYellow disabled={cartProducts.length < 1} handlePress={handleOrder}>
                             <View style={[cs.fRow, cs.fAlCenter, cs.spaceS]}>
                                 <Text style={[cs.fzM, cs.yellowBtnText]}>Отправить заказ</Text>
                             </View>
                         </ButtonYellow>
-
-
-
                     </View>
-
                 </WhiteBorderedLayout>
             </View >
         </Animated.View >
-
     );
 };
 const styles = StyleSheet.create({

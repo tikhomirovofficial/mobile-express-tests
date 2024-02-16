@@ -7,7 +7,7 @@ import { GetAllOrdersRes } from "../../../types/api/orders.api.types";
 
 type PatientsSliceState = {
     items: Contact[],
-    invitingsIds: string[],
+    invitingsIds: number[],
     list: PatientApi[]
     searched_list: PatientApi[]
     searched_can_next: boolean
@@ -47,7 +47,7 @@ export const getSearchPatients = createAsyncThunk(
                     can_next: true,
                     pacients: Array(8).fill("").map((_, index) => {
                         return {
-                            id: index,
+                            id: index + 1,
                             bonus: 10,
                             date: "2024-01-22",
                             first_name: "Дмитрий",
@@ -70,7 +70,7 @@ export const getAllPatients = createAsyncThunk(
                     can_next: true,
                     pacients: Array(8).fill("").map((_, index) => {
                         return {
-                            id: index,
+                            id: index + 1,
                             bonus: 10,
                             date: "2024-01-22",
                             first_name: "Дмитрий",
@@ -92,13 +92,13 @@ export const PatientsSlice = createSlice({
         setPatients(state, action: PayloadAction<Contact[]>) {
             state.items = action.payload
         },
-        setInvigitingsIds(state, action: PayloadAction<string[]>) {
+        setInvigitingsIds(state, action: PayloadAction<number[]>) {
             state.invitingsIds = action.payload
         },
-        addInvitingsId(state, action: PayloadAction<string>) {
+        addInvitingsId(state, action: PayloadAction<number>) {
             state.invitingsIds = [...state.invitingsIds, action.payload]
         },
-        removeInvitingsId(state, action: PayloadAction<string>) {
+        removeInvitingsId(state, action: PayloadAction<number>) {
             state.invitingsIds = state.invitingsIds.filter(item => item !== action.payload)
         },
         resetInvitingsIds(state) {
@@ -143,18 +143,19 @@ export const PatientsSlice = createSlice({
             }
         })
         builder.addCase(getAllPatients.rejected, (state, action) => {
-            if (state.searched_part > 1) {
-                state.loadings.search_patients_pagination = true
-                return
-            }
+
             state.loadings.patients = false
         })
         //DOCTOR SEARCH PATIENTS
         builder.addCase(getSearchPatients.pending, (state, action) => {
+            if (state.searched_part > 1) {
+                state.loadings.search_patients_pagination = true
+                return
+            }
             state.loadings.search_patients = true
         })
         builder.addCase(getSearchPatients.fulfilled, (state, action) => {
-            state.searched_list = action.payload.pacients
+            state.searched_list = [...state.searched_list, ...action.payload.pacients]
             state.searched_can_next = action.payload.can_next
             state.loadings.search_patients = false
             state.loadings.search_patients_pagination = false

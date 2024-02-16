@@ -98,7 +98,7 @@ export const createProfile = createAsyncThunk(
 )
 export const getHasProfile = createAsyncThunk(
     'has-profile/get',
-    async (_,{ dispatch }) => {
+    async (_, { dispatch }) => {
         return new Promise<GetProfileFilledRes>((res, rej) => {
             setTimeout(() => {
                 res({
@@ -156,6 +156,11 @@ export const ProfileSlice = createSlice({
         },
         resetCreateProfileForm: state => {
             state.creating_form = initialState.creating_form
+        },
+        resetProfileData: state => {
+            state.data = initialState.data
+            state.form = initialState.form
+            state.has_profile = initialState.has_profile
         }
     },
     extraReducers: (builder) => {
@@ -196,7 +201,8 @@ export const {
     handleCreateProfileForm,
     handleCreateProfileGender,
     resetCreateProfileForm,
-    setDefaultProfileForm
+    setDefaultProfileForm,
+    resetProfileData
 } = ProfileSlice.actions
 
 

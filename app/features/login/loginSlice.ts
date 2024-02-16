@@ -137,7 +137,10 @@ export const LoginSlice = createSlice({
             state.auth = initialState.auth
         },
         resetLoginCodeStatus: (state) => {
-            state.auth.success.code = initialState.auth.success.code
+            state.auth.success.code = null
+        },
+        resetLoginPhoneStatus: (state) => {
+            state.auth.success.phone = null
         },
 
 
@@ -212,6 +215,7 @@ export const {
     handleLoginForm,
     resetLoginForm,
     resetLoginCodeStatus,
+    resetLoginPhoneStatus,
     setCodeFreezedSecs,
     setCodeIsFreezed
 } = LoginSlice.actions

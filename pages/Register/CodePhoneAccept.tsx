@@ -7,7 +7,7 @@ import { fs } from '../../navigation/AppNavigator';
 import { NavProps } from '../../types/common.types';
 import { LinearGradient } from 'expo-linear-gradient';
 import WhiteBorderedLayout from '../../layouts/WhiteBordered';
-import { checkToken, resetLoginCodeStatus, sendAuthCode, sendAuthPhone, setCodeFreezedSecs, setCodeIsFreezed } from '../../app/features/login/loginSlice';
+import { checkToken, resetLoginCodeStatus, resetLoginPhoneStatus, sendAuthCode, sendAuthPhone, setCodeFreezedSecs, setCodeIsFreezed } from '../../app/features/login/loginSlice';
 import { resetAcceptedErr } from '../../app/features/access/accessSlice';
 import { useInterval } from '../../hooks/useInterval';
 import ButtonYellow from '../../components/Buttons/ButtonYellow';
@@ -69,12 +69,6 @@ const CodePhoneAccept: FC<NavProps> = ({ navigation }) => {
         }))
     }
 
-    useEffect(() => {
-        if (auth.success.code) {
-            //dispatch(checkToken())
-        }
-    }, [auth.success.code])
-
     useInterval(() => {
         if (auth.code_options.is_freezed && auth.code_options.freezed_sec > 0) {
             dispatch(setCodeFreezedSecs(auth.code_options.freezed_sec - 1))
@@ -94,6 +88,8 @@ const CodePhoneAccept: FC<NavProps> = ({ navigation }) => {
         });
 
         return () => {
+            dispatch(resetLoginCodeStatus())
+            dispatch(resetLoginPhoneStatus())
             keyboardDidShowListener.remove();
             keyboardDidHideListener.remove();
         };

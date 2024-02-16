@@ -23,6 +23,7 @@ import { incrementProductsPart } from '../../../app/features/products/productSli
 const Main: FC<NavProps> = ({ navigation }) => {
     const dispatch = useAppDispatch()
     const { all_orders, loadings, can_next, part } = useAppSelector(state => state.orders)
+    const login = useAppSelector(state => state.login)
     const profile = useAppSelector(state => state.profile)
 
     const [loadOrders, loadMore] = usePagination(
@@ -39,6 +40,8 @@ const Main: FC<NavProps> = ({ navigation }) => {
     useEffect(loadOrders, [part])
 
     useEffect(() => {
+        console.log(login.auth);
+
         return () => {
             dispatch(resetOrders())
         }

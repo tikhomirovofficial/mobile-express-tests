@@ -18,14 +18,13 @@ import { SkeletonView } from '../../../components/SkeletonView';
 import { SkeletonContainer } from 'react-native-skeleton-component';
 import { logout } from '../../../app/features/login/loginSlice';
 import { resetAccess } from '../../../app/features/access/accessSlice';
+import { resetProfileData } from '../../../app/features/profile/profileSlice';
 
 
 const Profile: FC<NavProps> = ({ navigation }) => {
     const dispatch = useAppDispatch()
     const profile = useAppSelector(state => state.profile)
-    const { orderInfoModal, bonusesBottomSheet, ordersFinancesModal, patientsModal, aboutAppModal, profileEditModal } = useAppSelector(state => state.modals)
-    const scaleValue = new Animated.Value(1);
-
+    const { ordersFinancesModal, patientsModal, aboutAppModal, profileEditModal } = useAppSelector(state => state.modals)
 
     const handleProfileDataModal = () => dispatch(handleProfileEditModal())
 
@@ -37,9 +36,9 @@ const Profile: FC<NavProps> = ({ navigation }) => {
 
     const handleLogout = () => {
         dispatch(logout())
+        dispatch(resetProfileData())
         dispatch(resetAccess())
     }
-
 
     return (
         <>
@@ -135,9 +134,7 @@ const Profile: FC<NavProps> = ({ navigation }) => {
                 {profileEditModal ? <ProfileEditModal /> : null}
                 {aboutAppModal ? <AboutAppModal /> : null}
                 {ordersFinancesModal ? <OrdersFinancesModal /> : null}
-
             </Animated.ScrollView>
-
         </>
     );
 };
