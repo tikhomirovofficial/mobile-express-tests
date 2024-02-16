@@ -40,11 +40,6 @@ const Profile: FC<NavProps> = ({ navigation }) => {
         dispatch(resetAccess())
     }
 
-    useEffect(() => {
-        return () => {
-            alert("sadsa")
-        }
-    }, [])
 
     return (
         <>

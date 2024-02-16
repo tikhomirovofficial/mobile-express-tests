@@ -19,7 +19,7 @@ const initialState: ProductSliceState = {
     },
     items: [],
     can_next: false,
-    part: 1
+    part: 0
 }
 export const getProducts = createAsyncThunk(
     'all/products/get',

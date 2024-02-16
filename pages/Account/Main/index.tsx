@@ -1,7 +1,7 @@
 import React, { FC, useEffect, useState } from 'react';
 import WhiteBordered from "../../../layouts/WhiteBordered";
 import WhiteBorderedLayout from "../../../layouts/WhiteBordered";
-import { Animated, Modal, StyleSheet, Text, TouchableOpacity, View, RefreshControl } from "react-native";
+import { Animated, Modal, StyleSheet, Text, TouchableOpacity, View, RefreshControl, FlatList, ActivityIndicator } from "react-native";
 import { cs } from "../../../common/styles";
 import { AnalysisIcon, Logo } from "../../../icons";
 import OrderCard from "../../../components/Cards/OrderCard";
@@ -13,23 +13,44 @@ import { getGreeting } from '../../../utils/getGreeting';
 import { SkeletonContainer, Skeleton } from 'react-native-skeleton-component';
 import { SkeletonView } from '../../../components/SkeletonView';
 import { normalizeDate } from '../../../utils/normalizeDate';
-import { getAllOrders } from '../../../app/features/orders/ordersSlice';
+import { getAllOrders, incrementOrdersPart, resetOrders } from '../../../app/features/orders/ordersSlice';
 import { fs } from '../../../navigation/AppNavigator';
+import { IOScrollView, InView } from 'react-native-intersection-observer'
+import { PaginationBottom } from '../../../components/PaginationBottom';
 
 const Main: FC<NavProps> = ({ navigation }) => {
     const dispatch = useAppDispatch()
     const { orderInfoModal } = useAppSelector(state => state.modals)
-    const { all_orders, loadings } = useAppSelector(state => state.orders)
+    const { all_orders, loadings, can_next, part } = useAppSelector(state => state.orders)
     const profile = useAppSelector(state => state.profile)
 
+    const loadOrders = () => {
+        if (part !== 1) {
+            if (part === 0 && !all_orders.length) {
+                dispatch(getAllOrders({ part }));
+            } else if (can_next) {
+                dispatch(getAllOrders({ part }));
+            }
+        }
+    }
+
+    const loadMore = () => {
+        if (can_next && all_orders.length, !loadings.all_orders_pagination) {
+            dispatch(incrementOrdersPart())
+        }
+    }
+
+    useEffect(loadOrders, [part])
 
     useEffect(() => {
-        dispatch(getAllOrders())
+        return () => {
+            dispatch(resetOrders())
+        }
     }, [])
 
     return (
-        <Animated.ScrollView
-            contentContainerStyle={{ flex: 1 }}
+        <View
+            style={{ flex: 1 }}
         >
             <WhiteBorderedLayout style={{
                 paddingTop: 32,
@@ -77,28 +98,42 @@ const Main: FC<NavProps> = ({ navigation }) => {
                                     )) :
 
                                     all_orders.length > 0 ?
-                                        all_orders.map((item, index) => (
-                                            <OrderCard
-                                                handlePress={() => dispatch(handleOrderInfoModal())}
-                                                key={item.id}
-                                                paid={true}
-                                                date={normalizeDate(item.date)}
-                                                id={item.id}
-                                                customer={`Имя Фамилия`}
-                                                analysisList={[]} />
-                                        ))
+                                        <View style={[cs.fColumn]}>
+                                            <FlatList
+                                                scrollEnabled={false}
+                                                data={all_orders}
+                                                style={{ overflow: "visible" }}
+                                                contentContainerStyle={[cs.fColumn, cs.spaceL]}
+                                                renderItem={({ item }) => (
+                                                    <OrderCard
+                                                        handlePress={() => dispatch(handleOrderInfoModal())}
+                                                        key={item.id}
+                                                        paid={true}
+                                                        date={normalizeDate(item.date)}
+                                                        id={item.id}
+                                                        customer={`Имя Фамилия`}
+                                                        analysisList={[]} />
+                                                )}
+                                            />
+                                            <PaginationBottom onVisible={(inView) => inView ? loadMore() : null} />
+                                            {loadings.all_orders_pagination ? <ActivityIndicator color={cs.bgYellow.backgroundColor} /> : null}
+
+                                        </View>
+
                                         : <Text>Пока пусто.</Text>
 
                             }
 
+
                         </View>
+
                     </View>
                 </SkeletonContainer>
             </WhiteBorderedLayout>
             {orderInfoModal ? <OrderInfoModal /> : null}
 
 
-        </Animated.ScrollView >
+        </View>
     );
 };
 const styles = StyleSheet.create({

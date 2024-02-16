@@ -50,24 +50,21 @@ const SelectingProducts: FC<NavProps> = ({ navigation }) => {
     }
 
     const loadProducts = () => {
-        if (part === 0) {
-            if (!items.length) {
+        console.log(part);
+        if (part !== 1) {
+            if (part === 0 && !items.length) {
                 dispatch(getProducts({
                     id: currentCategoryId,
                     title: defferedSearchVal,
                     part
-                }))
-                return
+                }));
+            } else if (can_next) {
+                dispatch(getProducts({
+                    id: currentCategoryId,
+                    title: defferedSearchVal,
+                    part
+                }));
             }
-            return
-        }
-        if (can_next) {
-            dispatch(getProducts({
-                id: currentCategoryId,
-                title: defferedSearchVal,
-                part
-            }))
-            return
         }
     }
 
@@ -82,11 +79,7 @@ const SelectingProducts: FC<NavProps> = ({ navigation }) => {
     }, [defferedSearchVal])
 
 
-    useEffect(() => {
-        if (part !== 1) {
-            loadProducts()
-        }
-    }, [part])
+    useEffect(loadProducts, [part])
 
     useEffect(() => {
         const keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', () => {

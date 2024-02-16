@@ -55,7 +55,7 @@ const MainTabs: FC<NavProps> = ({ navigation }) => {
 
             <Tab.Navigator initialRouteName={"orders"} tabBar={(props) => <AppTab key={props.state.index} {...props} />}
                 sceneContainerStyle={styles.main}
-                screenOptions={{ headerShown: false }}>
+                screenOptions={{ headerShown: false, unmountOnBlur: true}}>
                 <Tab.Screen name="orders" component={Main} />
                 <Tab.Screen name="support" component={Support} />
                 <Tab.Screen name="profile" component={Profile} />

@@ -63,6 +63,7 @@ const OrderCard: FC<OrderAnalysisType> = ({
 
 
         </TouchableOpacity>
+
     );
 };
 
@@ -70,15 +71,12 @@ const styles = StyleSheet.create({
     card: {
         padding: 16,
         borderRadius: 6,
-        shadowColor: "rgba(19, 101, 101, 0.3)",
-        shadowOffset: {
-            width: 4,
-            height: 4,
-        },
-        shadowOpacity: 0.2,
+        overflow: "visible",
+        borderWidth: 1,
+        borderColor: "#FAFAFA",
         backgroundColor: "white",
-        shadowRadius: 10,
-        elevation: 10,
+        zIndex: 1,
+        position: "relative",
     },
     cardTop: {
         gap: 8

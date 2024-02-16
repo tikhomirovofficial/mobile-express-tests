@@ -2,6 +2,7 @@ import React, { FC, ReactNode } from 'react';
 import { Dimensions, ScrollView, StyleSheet, View, ViewStyle, Text } from "react-native";
 import AppContainer from "../../components/AppContainer";
 import { cs } from "../../common/styles";
+import { IOScrollView } from 'react-native-intersection-observer';
 
 type WhiteBorderedProps = {
     children: ReactNode,
@@ -16,7 +17,7 @@ const WhiteBorderedLayout: FC<WhiteBorderedProps> = ({ children, topContent, sty
         <View style={styles.baseView}>
             {
                 scrollable ?
-                    <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.scrollContainer} style={cs.flexOne}>
+                    <IOScrollView nestedScrollEnabled={true} showsVerticalScrollIndicator={false} contentContainerStyle={styles.scrollContainer} style={cs.flexOne}>
                         <View style={styles.containerWrapperScroll}>
                             {topContent}
                             <View style={[styles.whiteContainer, style]}>
@@ -25,7 +26,7 @@ const WhiteBorderedLayout: FC<WhiteBorderedProps> = ({ children, topContent, sty
                                 </AppContainer>
                             </View>
                         </View>
-                    </ScrollView> :
+                    </IOScrollView> :
                     <View style={[cs.flexOne, styles.scrollContainer]}>
                         <View style={styles.containerWrapperScroll}>
                             {topContent}
