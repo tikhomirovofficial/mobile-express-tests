@@ -82,7 +82,7 @@ export const BottomSheet = () => {
         }
     }, [])
 
-    
+
     return (
 
         <GestureDetector gesture={gesture}>
@@ -129,7 +129,7 @@ export const BottomSheet = () => {
                                         </View>
                                     </SkeletonContainer>
                                     :
-                                    
+
                                     <FlatList
                                         onEndReached={loadMore}
                                         showsVerticalScrollIndicator={false}

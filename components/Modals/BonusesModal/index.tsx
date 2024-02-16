@@ -1,6 +1,6 @@
 import React, { FC, useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from "../../../app/base/hooks";
-import { Dimensions, FlatList, Modal, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { ActivityIndicator, Dimensions, FlatList, Modal, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import WhiteBordered from "../../../layouts/WhiteBordered";
 import { cs } from "../../../common/styles";
 import ButtonYellow from "../../Buttons/ButtonYellow";
@@ -24,38 +24,50 @@ import { PatientApi } from '../../../types/entities/patients.types';
 import { SkeletonContainer } from 'react-native-skeleton-component';
 import { SkeletonView } from '../../SkeletonView';
 import { getChartBonusesData } from '../../../app/features/bonuses/bonusesSlice';
-import { getAllPatients } from '../../../app/features/patients/patientsSlice';
+import { getAllPatients, incrementPatientsPart, resetAllPatients } from '../../../app/features/patients/patientsSlice';
+import { usePagination } from '../../../hooks/usePagination';
 
 const BonusesModal = () => {
     const dispatch = useAppDispatch()
     const { bonusesModal, bonusesBottomSheet, analysisInfoModal } = useAppSelector(state => state.modals)
     const patients = useAppSelector(state => state.patients)
     const bonuses = useAppSelector(state => state.bonuses)
+    const [loadOrders, loadMore] = usePagination(
+        () => { dispatch(getAllPatients({ part: patients.part })) },
+        () => { dispatch(incrementPatientsPart()) },
+        {
+            part: patients.part,
+            can_more: patients.can_next,
+            items: patients.list,
+            loading: patients.loadings.patients_pagination
+        }
+    )
 
     const handleModal = () => {
         dispatch(handleBonusesModal())
     }
     const handleOpenPatientInfo = (patient: PatientApi) => {
         dispatch(setPatientData(patient))
-        dispatch(getOrdersByPatientId({
-            pacient: patient.id,
-            part: 1
-        }))
+        // dispatch(getOrdersByPatientId({
+        //     pacient: patient.id,
+        //     part: 1
+        // }))
         dispatch(handleBonusesBottomSheet())
     }
+
+    useEffect(loadOrders, [patients.part])
+
     useEffect(() => {
         dispatch(getChartBonusesData())
-        dispatch(getAllPatients({
-            part: 1,
-        }))
-
+        return () => {
+            dispatch(resetAllPatients())
+        }
     }, [])
 
     return (
-
         <Modal animationType={"slide"} visible={bonusesModal} transparent={true}>
             <GestureHandlerRootView style={[cs.flexOne]}>
-                <WhiteBordered scrollable={false} style={{ ...cs.modalSlidedBottom, paddingBottom: 20 }}>
+                <WhiteBordered scrollable={false} style={{ ...cs.modalSlidedBottom }}>
                     <View style={[cs.flexOne, cs.fColumnBetw, cs.spaceXXL]}>
                         <View style={[cs.fRowBetw]}>
                             <Text onPress={handleModal}
@@ -72,26 +84,43 @@ const BonusesModal = () => {
                                         <SkeletonView width={"100%"} height={170} />
                                     </SkeletonContainer>
                                     :
-
                                     <View style={[cs.wBlockShadow, cs.fCenterCol, { borderRadius: 16, paddingVertical: 10 }]}>
                                         <BonusesChart />
                                     </View>
-
-
-
                                 }
                                 <ButtonYellow style={[cs.fCenterRow, cs.spaceS]} handlePress={() => { }}>
                                     <HeartIcon />
                                     <Text style={[cs.colorDark, cs.fwSemi, cs.fzM]}>Вывести бонусы</Text>
                                 </ButtonYellow>
                             </View>
-                            <FlatList data={patients.list} style={[cs.fColumn]} renderItem={({ item, index }) => (
-                                <PatientItem
-                                    handlePress={() => handleOpenPatientInfo(item)}
-                                    bottomText={`${item.bonus} бонусов за всё время`}
-                                    neededBottomBorder={index !== patients.list.length - 1}
-                                    {...item} />
-                            )} />
+                            {
+                                patients.loadings.patients ?
+                                    <>
+                                        <SkeletonContainer>
+                                            <View style={[cs.flexOne, cs.spaceS, cs.fColumn]}>
+                                                <SkeletonView height={60} width={"100%"}></SkeletonView>
+                                                <SkeletonView height={60} width={"100%"}></SkeletonView>
+                                                <SkeletonView height={60} width={"100%"}></SkeletonView>
+                                            </View>
+                                        </SkeletonContainer>
+                                    </> :
+                                    <View style={cs.flexOne}>
+                                        <FlatList
+                                            onEndReached={loadMore}
+                                            data={patients.list}
+                                            style={[cs.fColumn]}
+                                            renderItem={({ item, index }) => (
+                                                <PatientItem
+                                                    handlePress={() => handleOpenPatientInfo(item)}
+                                                    bottomText={`${item.bonus} бонусов за всё время`}
+                                                    neededBottomBorder={index !== patients.list.length - 1}
+                                                    {...item} />
+                                            )} />
+                                        <View style={{ height: 10 }}>
+                                            {patients.loadings.patients_pagination ? <ActivityIndicator color={cs.bgYellow.backgroundColor} /> : null}
+                                        </View>
+                                    </View>
+                            }
 
                         </View>
                     </View>
