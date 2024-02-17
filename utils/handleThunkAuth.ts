@@ -24,8 +24,6 @@ export async function handleTokenRefreshedRequest(apiFunction: Function, ...args
                     refresh: refreshToken
                 });
                 console.log("refreshed");
-
-
                 return await apiFunction(...args);
             } else {
                 throw error;

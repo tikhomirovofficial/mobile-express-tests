@@ -6,6 +6,7 @@ import { EMAIL } from "../../../rules/masks.rules";
 import { AxiosResponse } from "axios";
 import { UserApi } from "../../../http/api/user.api";
 import { handleTokenRefreshedRequest } from "../../../utils/handleThunkAuth";
+import { correctFormDate } from "../../../utils/correctFormDate";
 
 
 type ProfileSliceState = {
@@ -13,7 +14,7 @@ type ProfileSliceState = {
         sending: boolean
         err: string,
         disabled: boolean,
-        gender: number,
+        gender: boolean,
         text_fields: ProfileCreateForm
     }
     has_profile: boolean | null
@@ -30,7 +31,7 @@ const initialState: ProfileSliceState = {
         sending: false,
         err: "",
         disabled: true,
-        gender: 1,
+        gender: true,
         text_fields: {
             passport_numbers: "",
             first_name: "",
@@ -51,7 +52,7 @@ const initialState: ProfileSliceState = {
         dob: "",
         image: "",
         bonus: 0,
-        gender: 1
+        gender: true
     },
     form: {
         first_name: "",
@@ -59,7 +60,7 @@ const initialState: ProfileSliceState = {
         subname: "",
         dob: "",
         image: "",
-        gender: 1
+        gender: true
     },
     loadings: {
         profile: true,
@@ -92,31 +93,27 @@ export const getProfile = createAsyncThunk(
 export const createProfile = createAsyncThunk(
     'profile/create',
     async (req: ProfileCreateReq, { dispatch }) => {
-        const resp: ProfileCreateRes = { status: true }
-        if (!resp.status) {
+        const res: AxiosResponse<ProfileCreateRes> = await handleTokenRefreshedRequest(UserApi.Create, req)
+        if (!res.status) {
             throw new Error("Не удалось создать профиль!")
         }
-        return new Promise<ProfileCreateRes>((res, rej) => {
-            setTimeout(() => {
-                res(resp)
-            }, 1000)
-        })
+        return res.data
     }
 )
 export const getHasProfile = createAsyncThunk(
     'has-profile/get',
     async (_, { dispatch }) => {
-        // const res: AxiosResponse<GetProfileFilledRes> = await handleTokenRefreshedRequest(UserApi.GetProfileFilled)
-        // console.log(res.data);
+        const res: AxiosResponse<GetProfileFilledRes> = await handleTokenRefreshedRequest(UserApi.GetProfileFilled)
+        console.log(res.data);
 
-        // return res.data
-        return {
-            id: 1,
-            is_doc_signed: false,
-            is_fill_fio: true,
-            is_phone_confirm: true,
-            status: true
-        } as GetProfileFilledRes
+        return res.data
+        // return {
+        //     id: 1,
+        //     is_doc_signed: false,
+        //     is_fill_fio: true,
+        //     is_phone_confirm: true,
+        //     status: true
+        // } as GetProfileFilledRes
     }
 )
 
@@ -129,24 +126,24 @@ export const ProfileSlice = createSlice({
             const val = action.payload.val
 
             if (key === "gender") {
-                state.form[key] = Number(val)
+                state.form[key] = Boolean(val)
                 return
             }
             state.form[key] = val
         },
-        handleCreateProfileGender: (state, action: PayloadAction<0 | 1>) => {
+        handleCreateProfileGender: (state, action: PayloadAction<boolean>) => {
             state.creating_form.gender = action.payload
+        },
+        handleEditProfileGender: (state, action: PayloadAction<boolean>) => {
+            state.form.gender = action.payload
         },
         handleCreateProfileForm: (state, action: PayloadAction<{ key: keyof typeof initialState.creating_form.text_fields, val: string }>) => {
             const key = action.payload.key
-            const val = action.payload.val
+            let val = action.payload.val
             const tempCreatingForm: typeof initialState.creating_form.text_fields = JSON.parse(JSON.stringify(state.creating_form.text_fields))
 
-            if (key === "dob") {
-                //correcting dob
-            }
-            if (key == "passport_issue_date") {
-                //correcting date
+            if (key === "dob" || "passport_issue_date") {
+                val = correctFormDate(val)
             }
             tempCreatingForm[key] = val
             state.creating_form.text_fields = tempCreatingForm
@@ -186,14 +183,14 @@ export const ProfileSlice = createSlice({
         })
         builder.addCase(getProfile.fulfilled, (state, action) => {
             console.log(action.payload);
-            
+
             state.data = action.payload
             state.form = action.payload
             state.loadings.profile = false
         })
         builder.addCase(getProfile.rejected, (state, action) => {
             console.log(action.error);
-            
+
             state.loadings.profile = false
         })
         //PROFILE CREATE
@@ -216,6 +213,7 @@ export const {
     handleCreateProfileForm,
     handleCreateProfileGender,
     resetCreateProfileForm,
+    handleEditProfileGender,
     setDefaultProfileForm,
     resetProfileData
 } = ProfileSlice.actions

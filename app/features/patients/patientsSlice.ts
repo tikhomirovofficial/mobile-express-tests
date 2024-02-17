@@ -1,9 +1,13 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { Contact } from "expo-contacts";
 import { PatientApi } from "../../../types/entities/patients.types";
-import { PatientDoctorGetRes, PatientsBySearchReq, PatientsBySearchRes, PatientsDoctorGetReq } from "../../../types/api/patients.api.types";
+import { PatientsBySearchReq, PatientsBySearchRes, PatientsDoctorGetReq, PatientsDoctorGetRes } from "../../../types/api/patients.api.types";
 import { HasNextPart, HasPart } from "../../../types/common.types";
-import { GetAllOrdersRes } from "../../../types/api/orders.api.types";
+import { GetAllOrdersReq, GetAllOrdersRes } from "../../../types/api/orders.api.types";
+import { AxiosResponse } from "axios";
+import { OrdersApi } from "../../../http/api/orders.api";
+import { handleTokenRefreshedRequest} from "../../../utils/handleThunkAuth";
+import { PatientsApi } from "../../../http/api/patients.api";
 
 type PatientsSliceState = {
     items: Contact[],
@@ -63,25 +67,12 @@ export const getSearchPatients = createAsyncThunk(
 export const getAllPatients = createAsyncThunk(
     'patients/get',
     async (req: PatientsDoctorGetReq, { dispatch }) => {
-        return new Promise<PatientDoctorGetRes>((res, rej) => {
-            setTimeout(() => {
-                res({
-                    status: true,
-                    can_next: true,
-                    pacients: Array(8).fill("").map((_, index) => {
-                        return {
-                            id: index + 1,
-                            bonus: 10,
-                            date: "2024-01-22",
-                            first_name: "Дмитрий",
-                            last_name: "Тихомиров " + index,
-                            phone: "+79005001849"
-                        }
-                    })
-
-                })
-            }, 1000)
-        })
+        const preparedReq: PatientsDoctorGetReq = {
+            part: req.part || 1
+        }
+        const res: AxiosResponse<PatientsDoctorGetRes> = await handleTokenRefreshedRequest(PatientsApi.GetAll, preparedReq)
+        console.log(res.data);
+        return res.data
     }
 )
 

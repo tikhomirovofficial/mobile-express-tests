@@ -1,7 +1,8 @@
 import { AxiosResponse } from "axios";
 import { api, authApi } from "../instances";
 import { USER_PATHS } from "../paths/index.paths";
-import { AuthAcceptReq, AuthAcceptRes, AuthRefreshReq, AuthRefreshRes, AuthReq, AuthRes, GetProfileFilledRes, ProfileGetRes } from "../../types/api/user.api.types";
+import { AuthAcceptReq, AuthAcceptRes, AuthRefreshReq, AuthRefreshRes, AuthReq, AuthRes, GetProfileFilledRes, ProfileCreateReq, ProfileCreateRes, ProfileGetRes } from "../../types/api/user.api.types";
+import { ProfileCreateForm } from "../../types/entities/user.types";
 
 export class UserApi {
     static async LoginPhone(req: AuthReq): Promise<AxiosResponse<AuthRes>> {
@@ -18,10 +19,20 @@ export class UserApi {
     }
     static async GetProfileFilled(): Promise<AxiosResponse<GetProfileFilledRes>> {
         const res: AxiosResponse<GetProfileFilledRes> = await authApi.get(USER_PATHS.GET_FILLED_PROFILE);
+        if (!res.data) {
+            throw res
+        }
         return res;
     }
     static async GetProfile(): Promise<AxiosResponse<ProfileGetRes>> {
         const res: AxiosResponse<ProfileGetRes> = await authApi.get(USER_PATHS.GET_PROFILE);
+        if (!res.data) {
+            throw res
+        }
+        return res
+    }
+    static async Create(req: ProfileCreateReq): Promise<AxiosResponse<ProfileCreateRes>> {
+        const res: AxiosResponse<ProfileCreateRes> = await authApi.post(USER_PATHS.CREATE_PROFILE, req);
         if (!res.data) {
             throw res
         }

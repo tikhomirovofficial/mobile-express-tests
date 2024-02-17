@@ -3,7 +3,7 @@ import { PatientApi } from "../entities/patients.types"
 
 //Получить пациенты профиля
 export type PatientsDoctorGetReq = HasPart
-export type PatientDoctorGetRes = {
+export type PatientsDoctorGetRes = {
     pacients: PatientApi[]
 } & ResponseStatus & HasNextPart
 

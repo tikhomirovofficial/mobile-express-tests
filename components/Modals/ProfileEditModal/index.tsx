@@ -8,7 +8,7 @@ import { PhotoIcon } from "../../../icons";
 import { fs } from "../../../navigation/AppNavigator";
 import SelectableBtn from "../../SelectableBtn";
 import { handleProfileEditModal } from "../../../app/features/modals/modalsSlice";
-import { handleProfileForm, setDefaultProfileForm } from '../../../app/features/profile/profileSlice';
+import { handleEditProfileGender, handleProfileForm, setDefaultProfileForm } from '../../../app/features/profile/profileSlice';
 import { ProfileData, ProfileEditTextFields } from '../../../types/entities/user.types';
 import { InputField } from '../../InputField';
 
@@ -77,8 +77,8 @@ const ProfileEditModal = () => {
                                     <Text style={[cs.fzS, fs.montR]} aria-label="Label for Username"
                                         nativeID="labelFirstName">Пол</Text>
                                     <View style={[cs.dF, cs.fRowBetw, cs.spaceS, cs.flexOne]}>
-                                        <SelectableBtn isFilled={form.gender === 1} style={[styles.selectableBtn]} text={"Мужской"} handlePress={() => dispatch(handleProfileForm({ key: "gender", val: "1" }))} />
-                                        <SelectableBtn isFilled={form.gender === 0} style={[styles.selectableBtn]} text={"Женский"} handlePress={() => dispatch(handleProfileForm({ key: "gender", val: "0" }))} />
+                                        <SelectableBtn isFilled={form.gender} style={[styles.selectableBtn]} text={"Мужской"} handlePress={() => dispatch(handleEditProfileGender(true))} />
+                                        <SelectableBtn isFilled={!form.gender} style={[styles.selectableBtn]} text={"Женский"} handlePress={() => dispatch(handleEditProfileGender(false))} />
                                     </View>
                                 </View>
                             </View>

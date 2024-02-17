@@ -5,6 +5,7 @@ import { ProfileCreateReq, ProfileCreateRes } from "../../../types/api/user.api.
 import { EMAIL } from "../../../rules/masks.rules";
 import { InvitingTextFields } from "../../../types/entities/patients.types";
 import { InvitingCreateReq, InvitingCreateRes } from "../../../types/api/patients.api.types";
+import { correctFormDate } from "../../../utils/correctFormDate";
 
 
 type InvitingSliceState = {
@@ -59,13 +60,13 @@ export const InvitingSlice = createSlice({
         },
         handleCreateInvitingForm: (state, action: PayloadAction<{ key: keyof typeof initialState.form.text_fields, val: string }>) => {
             const key = action.payload.key
-            const val = action.payload.val
+            let val = action.payload.val
             const tempCreatingForm: typeof initialState.form.text_fields = JSON.parse(JSON.stringify(state.form.text_fields))
 
             if (key === "dob") {
-                //correcting dob
+                val = correctFormDate(val)
             }
-            
+
             tempCreatingForm[key] = val
             state.form.text_fields = tempCreatingForm
 
@@ -81,8 +82,8 @@ export const InvitingSlice = createSlice({
         resetCreateInvitingForm: state => {
             state.form.text_fields = initialState.form.text_fields
             state.form.gender = initialState.form.gender,
-            state.form.disabled = initialState.form.disabled,
-            state.form.sending = initialState.form.sending
+                state.form.disabled = initialState.form.disabled,
+                state.form.sending = initialState.form.sending
         }
     },
     extraReducers: (builder) => {

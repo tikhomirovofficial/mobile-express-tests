@@ -2,6 +2,10 @@ import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { OrderApi } from "../../../types/entities/order.types";
 import { GetAllOrdersReq, GetAllOrdersRes } from "../../../types/api/orders.api.types";
 import { HasNextPart, HasPart } from "../../../types/common.types";
+import { AxiosResponse } from "axios";
+import { OrdersApi } from "../../../http/api/orders.api";
+import { handleTokenRefreshedRequest } from "../../../utils/handleThunkAuth";
+import { UserApi } from "../../../http/api/user.api";
 
 
 type OrdersSliceState = {
@@ -24,44 +28,12 @@ const initialState: OrdersSliceState = {
 export const getAllOrders = createAsyncThunk(
     'all/orders/get',
     async (req: GetAllOrdersReq, { dispatch }) => {
-        return new Promise<GetAllOrdersRes>((res, rej) => {
-            setTimeout(() => {
-                res({
-                    status: true,
-                    can_next: true,
-                    orders: [
-                        {
-                            id: 1,
-                            status: "Создано",
-                            date: "2024-01-22",
-                            pacient: "Иван Иванов",
-                            bonus: 1,
-                        },
-                        {
-                            id: 2,
-                            status: "Создано",
-                            date: "2024-01-22",
-                            pacient: "Иван Иванов",
-                            bonus: 1,
-                        },
-                        {
-                            id: 3,
-                            status: "Создано",
-                            date: "2024-01-22",
-                            pacient: "Иван Иванов",
-                            bonus: 1,
-                        },
-                        {
-                            id: 4,
-                            status: "Создано",
-                            date: "2024-01-22",
-                            pacient: "Иван Иванов",
-                            bonus: 1,
-                        }
-                    ]
-                })
-            }, 1000)
-        })
+        const preparedReq: GetAllOrdersReq = {
+            part: req.part || 1
+        }
+        const res: AxiosResponse<GetAllOrdersRes> = await handleTokenRefreshedRequest(OrdersApi.GetAll, preparedReq)
+        console.log(res.data);
+        return res.data
     }
 )
 

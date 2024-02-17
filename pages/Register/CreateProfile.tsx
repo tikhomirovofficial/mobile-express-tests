@@ -66,7 +66,7 @@ const CreateProfile: FC<NavProps> = ({ navigation }) => {
                                     <View style={[cs.fColumn, cs.spaceXXL]}>
                                         <Text style={[cs.title, styles.title]}>Укажите информацию о себе для пациентов</Text>
                                         <View style={[cs.spaceXL]}>
-                                            <View style={[cs.fCenterCol, cs.spaceM]}>
+                                            {/* <View style={[cs.fCenterCol, cs.spaceM]}>
                                                 <View style={[styles.avatarBlock, cs.circle, cs.fCenterCol]}>
                                                     <PhotoIcon />
                                                 </View>
@@ -75,7 +75,7 @@ const CreateProfile: FC<NavProps> = ({ navigation }) => {
                                                         фото</Text>
                                                 </TouchableOpacity>
 
-                                            </View>
+                                            </View> */}
                                             <View style={[cs.fColumn, cs.spaceM]}>
                                                 <Text style={[cs.fzS, fs.montR, cs.fwMedium]} aria-label="Label for Username"
                                                     nativeID="labelLastName">Фамилия</Text>
@@ -111,8 +111,8 @@ const CreateProfile: FC<NavProps> = ({ navigation }) => {
                                                 <Text style={[cs.fzS, fs.montR, cs.fwMedium]} aria-label="Label for Username"
                                                     nativeID="labelFirstName">Пол</Text>
                                                 <View style={[cs.dF, cs.fRowBetw, cs.spaceS, cs.flexOne]}>
-                                                    <SelectableBtn isFilled={gender === 1} style={[styles.selectableBtn]} text={"Мужской"} handlePress={() => dispatch(handleCreateProfileGender(1))} />
-                                                    <SelectableBtn isFilled={gender === 0} style={[styles.selectableBtn]} text={"Женский"} handlePress={() => dispatch(handleCreateProfileGender(0))} />
+                                                    <SelectableBtn isFilled={gender} style={[styles.selectableBtn]} text={"Мужской"} handlePress={() => dispatch(handleCreateProfileGender(true))} />
+                                                    <SelectableBtn isFilled={!gender} style={[styles.selectableBtn]} text={"Женский"} handlePress={() => dispatch(handleCreateProfileGender(false))} />
                                                 </View>
                                             </View>
                                             <View style={[cs.fColumn, cs.spaceM]}>

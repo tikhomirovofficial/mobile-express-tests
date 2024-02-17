@@ -6,7 +6,7 @@ export type ProfileData = {
     subname: string
     dob: string
     image: string
-    gender: number,
+    gender: boolean,
     bonus: number
 }
 export type ProfilePersonData = {

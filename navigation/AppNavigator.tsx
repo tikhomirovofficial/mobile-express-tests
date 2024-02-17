@@ -133,7 +133,7 @@ const AppNavigator = () => {
                                                 : null
                                             }
                                             {!notifications.granted ? <Stack.Screen name="info_notifications" component={AccessNotifications} /> : null}
-                                            {!media.granted ? <Stack.Screen name="info_media" component={AccessMedia} /> : null}
+                                            {/* {!media.granted ? <Stack.Screen name="info_media" component={AccessMedia} /> : null} */}
                                             {/* {!contacts.granted ? <Stack.Screen name="info_contacts" component={AccessContacts} /> : null} */}
                                             {
                                                 has_profile ?
