@@ -8,7 +8,7 @@ import { cs } from './common/styles';
 import { useAppDispatch, useAppSelector } from './app/base/hooks';
 import { checkToken } from './app/features/login/loginSlice';
 import { checkPinCodeExists, checkFirstTime } from './app/features/access/accessSlice';
-import { deleteTokens } from './utils/storeTokens';
+import { deleteTokens, getTokens, storeTokens } from './utils/storeTokens';
 import { deleteAlreadyBeen } from './utils/storeFirstTime';
 import { deleteAccessed } from './utils/storeAccessed';
 import { getHasProfile } from './app/features/profile/profileSlice';
@@ -48,7 +48,6 @@ const Root = () => {
             media_perm: ${media.granted},\n
             `);
         }
-
     }, [pin.checking, token.checking, pin.checking, alreadyBeen.checking, notifications.checking, contacts.checking, media.checking])
 
     useEffect(() => {

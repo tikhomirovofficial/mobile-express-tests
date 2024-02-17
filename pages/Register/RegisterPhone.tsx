@@ -14,7 +14,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import WhiteBorderedLayout from '../../layouts/WhiteBordered';
 import MaskInput from 'react-native-mask-input';
 import { createNumberMask, Masks } from 'react-native-mask-input';
-import { handleLoginForm, resetLoginCodeStatus, sendAuthPhone } from '../../app/features/login/loginSlice';
+import { handleLoginForm, resetLoginCodeStatus, resetLoginPhoneStatus, sendAuthPhone } from '../../app/features/login/loginSlice';
 import { phoneMask } from '../../rules/masks.rules';
 import { InputField } from '../../components/InputField';
 
@@ -23,18 +23,17 @@ import { InputField } from '../../components/InputField';
 const LoginPhone: FC<NavProps> = ({ navigation }) => {
     const dispatch = useAppDispatch()
     const { auth } = useAppSelector(state => state.login)
-    const { alreadyBeen } = useAppSelector(state => state.access)
     const [keyboardStatus, setKeyboardStatus] = useState(false);
     const disabledBtn = auth.form.phone.length < 11
 
     const handleSendPhone = () => {
-        dispatch(sendAuthPhone({ phone: auth.form.phone }))
+        dispatch(sendAuthPhone({ username: auth.form.phone }))
     }
 
     useEffect(() => {
         if (auth.success.phone) {
             navigation.navigate("sms_login")
-            dispatch(resetLoginCodeStatus())
+            dispatch(resetLoginPhoneStatus())
         }
     }, [auth.success.phone])
 
@@ -86,8 +85,8 @@ const LoginPhone: FC<NavProps> = ({ navigation }) => {
                                 }}
                             />
 
-                            <ButtonYellow style={{minHeight: 54}} disabled={disabledBtn} handlePress={handleSendPhone}>
-                                {!true ? <ActivityIndicator color={"black"} /> : <Text style={[cs.fzM, cs.yellowBtnText]}>Продолжить</Text>}
+                            <ButtonYellow style={{minHeight: 54}} disabled={disabledBtn || auth.loading} handlePress={handleSendPhone}>
+                                {auth.loading ? <ActivityIndicator color={"black"} /> : <Text style={[cs.fzM, cs.yellowBtnText]}>Продолжить</Text>}
 
                             </ButtonYellow>
                         </View>

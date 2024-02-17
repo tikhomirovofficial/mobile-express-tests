@@ -4,8 +4,10 @@ import { deleteTokens, storeTokens } from "../../../utils/storeTokens";
 import { checkIsValid } from "../../../utils/checkToken";
 import { getHasProfile } from "../profile/profileSlice";
 import { UserApi } from "../../../http/api/user.api";
+import { AxiosResponse } from "axios";
 
 type LoginSliceType = {
+    access_token: string
     token: {
         valid: boolean,
         checking: boolean
@@ -33,6 +35,7 @@ type LoginSliceType = {
 }
 
 const initialState: LoginSliceType = {
+    access_token: "",
     token: {
         checking: true,
         valid: false
@@ -82,37 +85,31 @@ export const logout = createAsyncThunk(
 export const sendAuthPhone = createAsyncThunk(
     'login/phone',
     async (req: AuthReq, { dispatch }) => {
-        const res = await UserApi.LoginPhone(req)
-        console.log(res);
-
+        const res: AxiosResponse<AuthRes> = await UserApi.LoginPhone(req)
         if (!res.status || !res.data.status) {
-            throw new Error("Нет номера телеофна")
+            throw new Error("Ошибка сервера!")
         }
-        return res
+        return res.data
     }
 )
 const token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJPbmxpbmUgSldUIEJ1aWxkZXIiLCJpYXQiOjE3MDY4MjM3MTUsImV4cCI6MTczODM1OTcxNSwiYXVkIjoid3d3LmV4YW1wbGUuY29tIiwic3ViIjoianJvY2tldEBleGFtcGxlLmNvbSIsIkdpdmVuTmFtZSI6IkpvaG5ueSIsIlN1cm5hbWUiOiJSb2NrZXQiLCJFbWFpbCI6Impyb2NrZXRAZXhhbXBsZS5jb20iLCJSb2xlIjpbIk1hbmFnZXIiLCJQcm9qZWN0IEFkbWluaXN0cmF0b3IiXX0.XIwgkYXEV4jr8ykkkPq196lsIDOw9V05lysW4DswROM"
 export const sendAuthCode = createAsyncThunk(
     'login/code',
     async (req: AuthAcceptReq, { dispatch }) => {
-        const resp: AuthAcceptRes = {
-            refresh: token,
-            access: "",
-            status: true
+        const res: AxiosResponse<AuthAcceptRes> = await UserApi.LoginCode(req)
+        if (!res.data) {
+            throw new Error("Ошибка сервера!")
         }
-        if (!resp.status) {
-            throw new Error("Некорректный код")
+        if (res.status === 401) {
+            throw new Error("Неверный код!")
         }
-        if (!resp?.refresh.length) {
-            throw new Error("Невалидный токен пришёл")
-        }
-        await storeTokens({ refresh: resp.refresh, access: resp.access })
-
-        return new Promise<AuthRes>((res, rej) => {
-            setTimeout(() => {
-                res(resp)
-            }, 1000)
-        })
+        await storeTokens({ refresh: res.data.refresh, access: res.data.access })
+        return res.data
+        // return new Promise<AuthRes>((res, rej) => {
+        //     setTimeout(() => {
+        //         res(resp)
+        //     }, 1000)
+        // })
 
     }
 )
@@ -155,17 +152,17 @@ export const LoginSlice = createSlice({
             state.auth.success.phone = null
             state.auth.errors.phone = ""
         })
-        //SAVE TOKENS
         builder.addCase(sendAuthPhone.fulfilled, (state, action) => {
             state.auth.loading = false
-            state.auth.success.phone = true
-            console.log("Успех");
+            state.auth.success.phone = action.payload.status
         })
         builder.addCase(sendAuthPhone.rejected, (state, action) => {
             state.auth.loading = false
             state.auth.success.phone = false
-            state.auth.errors.phone = "Номер телефона плохой!"
-            console.log("Плохо");
+
+            console.log(action.error.code);
+
+            state.auth.errors.phone = String(action.error.message)
         })
         //SEND CODE IN LOGIN
         builder.addCase(sendAuthCode.pending, (state, action) => {
@@ -177,15 +174,15 @@ export const LoginSlice = createSlice({
         builder.addCase(sendAuthCode.fulfilled, (state, action) => {
             state.auth.loading = false
             state.auth.success.code = true
-            state.token.valid = true,
-                state.auth.form = initialState.auth.form
+            state.token.valid = true
+            state.auth.form = initialState.auth.form
 
         })
         builder.addCase(sendAuthCode.rejected, (state, action) => {
+            const isBadCode = action.error.code === "ERR_BAD_REQUEST"
             state.auth.loading = false
             state.auth.success.code = false
-            state.auth.errors.code = "Номер телефона плохой!"
-            console.log("Плохо");
+            state.auth.errors.code = String(isBadCode ? "Неверный код"  :action.error.message)
         })
         //CHECK TOKEN IS VALID
         builder.addCase(checkToken.pending, (state, action) => {

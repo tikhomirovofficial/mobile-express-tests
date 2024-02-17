@@ -1,8 +1,11 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { ProfileCreateForm, ProfileData, ProfileEditTextFields } from "../../../types/entities/user.types";
 import { OrderApi } from "../../../types/entities/order.types";
-import { GetProfileFilledRes, ProfileCreateReq, ProfileCreateRes } from "../../../types/api/user.api.types";
+import { GetProfileFilledRes, ProfileCreateReq, ProfileCreateRes, ProfileGetRes } from "../../../types/api/user.api.types";
 import { EMAIL } from "../../../rules/masks.rules";
+import { AxiosResponse } from "axios";
+import { UserApi } from "../../../http/api/user.api";
+import { handleTokenRefreshedRequest } from "../../../utils/handleThunkAuth";
 
 
 type ProfileSliceState = {
@@ -66,20 +69,24 @@ const initialState: ProfileSliceState = {
 
 export const getProfile = createAsyncThunk(
     'profile/get',
-    async (req, { dispatch }) => {
-        return new Promise<ProfileData>((res, rej) => {
-            setTimeout(() => {
-                res({
-                    first_name: "Борис",
-                    last_name: "Борисов",
-                    subname: "Борисович",
-                    dob: "2000-11-11",
-                    image: "/",
-                    bonus: 3,
-                    gender: 1
-                })
-            }, 1000)
-        })
+    async (_, { dispatch }) => {
+        const res: AxiosResponse<ProfileGetRes> = await handleTokenRefreshedRequest(UserApi.GetProfile)
+        console.log("profile ", res.data);
+
+        return res.data
+        // return new Promise<ProfileData>((res, rej) => {
+        //     setTimeout(() => {
+        //         res({
+        //             first_name: "Борис",
+        //             last_name: "Борисов",
+        //             subname: "Борисович",
+        //             dob: "2000-11-11",
+        //             image: "/",
+        //             bonus: 3,
+        //             gender: 1
+        //         })
+        //     }, 1000)
+        // })
     }
 )
 export const createProfile = createAsyncThunk(
@@ -99,17 +106,17 @@ export const createProfile = createAsyncThunk(
 export const getHasProfile = createAsyncThunk(
     'has-profile/get',
     async (_, { dispatch }) => {
-        return new Promise<GetProfileFilledRes>((res, rej) => {
-            setTimeout(() => {
-                res({
-                    status: true,
-                    id: 1,
-                    is_doc_signed: false,
-                    is_fill_fio: true,
-                    is_phone_confirm: true,
-                })
-            }, 1000)
-        })
+        // const res: AxiosResponse<GetProfileFilledRes> = await handleTokenRefreshedRequest(UserApi.GetProfileFilled)
+        // console.log(res.data);
+
+        // return res.data
+        return {
+            id: 1,
+            is_doc_signed: false,
+            is_fill_fio: true,
+            is_phone_confirm: true,
+            status: true
+        } as GetProfileFilledRes
     }
 )
 
@@ -169,16 +176,24 @@ export const ProfileSlice = createSlice({
             console.log(`Профиль заполнен: ${action.payload.is_fill_fio}`);
             state.has_profile = action.payload.is_fill_fio
         })
+        builder.addCase(getHasProfile.rejected, (state, action) => {
+            console.log(action.error);
+
+        })
         //PROFILE
         builder.addCase(getProfile.pending, (state, action) => {
             state.loadings.profile = true
         })
         builder.addCase(getProfile.fulfilled, (state, action) => {
+            console.log(action.payload);
+            
             state.data = action.payload
             state.form = action.payload
             state.loadings.profile = false
         })
         builder.addCase(getProfile.rejected, (state, action) => {
+            console.log(action.error);
+            
             state.loadings.profile = false
         })
         //PROFILE CREATE

@@ -46,9 +46,6 @@ const MainTabs: FC<NavProps> = ({ navigation }) => {
 
     useEffect(() => {
         dispatch(getProfile())
-        dispatch(getAllPatients({
-            part: 1
-        }))
     }, [])
 
     return (

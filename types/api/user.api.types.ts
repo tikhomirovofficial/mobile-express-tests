@@ -3,7 +3,7 @@ import { ProfileData, ProfilePersonData } from "../entities/user.types"
 
 //Регитсрация или Авторизация по телефону
 export type AuthReq = {
-    phone: string
+    username: string
 }
 export type AuthRes = ResponseStatus
 
@@ -12,7 +12,7 @@ export type AuthAcceptReq = {
     username: string
     password: string
 }
-export type AuthAcceptRes = JWT & ResponseStatus
+export type AuthAcceptRes = JWT & { details?: string }
 
 // Перевыпустить refresh токен
 export type AuthRefreshReq = Pick<JWT, "refresh">

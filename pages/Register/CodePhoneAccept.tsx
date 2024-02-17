@@ -41,7 +41,7 @@ const CodePhoneAccept: FC<NavProps> = ({ navigation }) => {
 
     const handleNewCode = () => {
         if (!auth.code_options.is_freezed) {
-            dispatch(sendAuthPhone({ phone: auth.form.phone }))
+            dispatch(sendAuthPhone({ username: auth.form.phone }))
             dispatch(setCodeIsFreezed(true))
             dispatch(setCodeFreezedSecs(5))
             setCode(["", "", "", ""])
@@ -137,10 +137,8 @@ const CodePhoneAccept: FC<NavProps> = ({ navigation }) => {
                                 <Text style={[cs.fzS, fs.montR, cs.fwMedium, (auth.success.code === false ? cs.colorRed : null)]} aria-label="Label for Usernam"
                                     nativeID="labelFirstName">
                                     {
-                                        auth.success.code !== false ? ` Введите код из СМС ${auth.form.maskedPhone}` :
-                                            "Неверный код!"
+                                       auth.success.code === false ? auth.errors.code : ` Введите код из СМС ${auth.form.maskedPhone}`
                                     }
-
                                 </Text>
                                 <View style={[cs.fRowBetw]}>
                                     {

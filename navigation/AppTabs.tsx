@@ -5,10 +5,10 @@ import {cs} from "../common/styles";
 import {CallIcon, DownloadIcon, HomeIcon, ProfileIcon} from "../icons";
 import {routesNames} from "./routes";
 
-const AppTab: FC<BottomTabBarProps> = ({state, descriptors, navigation}) => {
+const AppTab: FC<BottomTabBarProps> = ({state, descriptors,  navigation}) => {
 
     return (
-        <View key={state.key} style={[cs.dF, cs.fRow, styles.tabsContainer]}>
+        <View key={state.index} style={[cs.dF, cs.fRow, styles.tabsContainer]}>
             {state.routes.map((route, index) => {
                 const {options} = descriptors[route.key];
                 const isFocused = state.index === index;
