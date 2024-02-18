@@ -42,7 +42,7 @@ const PatientsModal: FC<NavProps> = ({ navigation }) => {
 
     const handlePatientInfo = (id: number) => {
         dispatch(handlePatientInfoModal())
-        dispatch(getPatientById(id))
+        dispatch(getPatientById({id}))
     }
 
     useEffect(loadOrders, [patients.part])

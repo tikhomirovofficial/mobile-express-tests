@@ -6,7 +6,9 @@ import { OrderApi, OrderDetailsApi } from "../entities/order.types"
 export type OrderDetailsReq = {
     id: number
 }
-export type OrderDetailsRes = OrderDetailsApi
+export type OrderDetailsRes = {
+    order: OrderDetailsApi
+} & ResponseStatus 
 
 // Получить заказы пациента (Краткие данные (Получение бонуса))
 export type OrdersByPatientGetReq = {

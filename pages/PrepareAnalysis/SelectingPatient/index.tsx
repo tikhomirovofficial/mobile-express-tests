@@ -27,7 +27,7 @@ const SelectingPatient: FC<NavProps> = ({ navigation }) => {
     const { searched_list, loadings, searched_can_next, searched_part } = useAppSelector(state => state.patients)
     const { patientInvitingModal } = useAppSelector(state => state.modals)
     const [searchVal, setSearchVal] = useState("")
-    const defferedSearchVal = useDeferred(searchVal, 500)
+    const defferedSearchVal = useDeferred(searchVal, 100)
 
     const [loadSearchedPatients, loadMore] = usePagination(
         () => { dispatch(getSearchPatients({ part: searched_part, pacient: searchVal })) },
@@ -47,21 +47,28 @@ const SelectingPatient: FC<NavProps> = ({ navigation }) => {
         navigation.navigate("home")
     }
     const handleSelectPatient = (id: number) => {
-        setContactsSelected(id)
-        const patientData = searched_list.filter(item => item.id === id)[0]
-        dispatch(setPatient({
-            id: patientData.id,
-            first_name: patientData.first_name || "",
-            last_name: patientData.last_name || ""
-        }))
+        if (id) {
+            setContactsSelected(id)
+            const patientData = searched_list.filter(item => item.id === id)[0]
+            dispatch(setPatient({
+                id: patientData.id,
+                first_name: patientData.first_name || "",
+                last_name: patientData.last_name || ""
+            }))
+        }
+
     }
+    useEffect(() => {
+        console.log(patientData);
+
+    }, [patientData])
 
     const toSelectCategory = () => navigation.navigate("order_category")
 
     const openNewPatient = () => {
         navigation.navigate("inviting")
     }
-
+    
     useEffect(() => {
         dispatch(resetSearchedPatients())
     }, [defferedSearchVal])
@@ -76,7 +83,6 @@ const SelectingPatient: FC<NavProps> = ({ navigation }) => {
             setKeyboardStatus(false);
         });
         return () => {
-            dispatch(resetPatient())
             dispatch(resetSearchedPatients())
             keyboardDidShowListener.remove();
             keyboardDidHideListener.remove();

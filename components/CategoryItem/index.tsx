@@ -21,10 +21,10 @@ export const CategoryItem: FC<CategoryItemProps> = ({ category, index, clickHand
         clickHandle()
     }
     return (
-        <TouchableOpacity onPress={() => toProducts(category.id)} style={[cs.fRowBetw, cs.spaceS]}>
-            <View key={category.id} style={[cs.fRow, cs.spaceS, { maxWidth: "90%" }]}>
+        <TouchableOpacity key={category.id} onPress={() => toProducts(category.id)} style={[cs.fRowBetw, cs.spaceS]}>
+            <View key={category.id} style={[cs.fRow, cs.spaceS, { maxWidth: "86%" }]}>
                 <Text style={[cs.fwMedium, fs.montR, cs.fzS, cs.colorDark]}>{category.name}</Text>
-                <Text style={[cs.fwMedium, fs.montR, cs.fzS, cs.colorDark, cs.colorGray]}>300</Text>
+                {/* <Text style={[cs.fwMedium, fs.montR, cs.fzS, cs.colorDark, cs.colorGray]}>300</Text> */}
             </View>
             <View style={[{ marginTop: 3 }]}>
                 <ArrowRightIcon />

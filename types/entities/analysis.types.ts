@@ -7,6 +7,7 @@ export type AnalysisType = {
 export type OrderAnalysisType = {
     id: number,
     date: string,
+    status: string,
     customer: string,
     handlePress?: () => void,
     paid: boolean

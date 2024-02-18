@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useCallback } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { cs } from "../../../common/styles";
 import { DownloadIcon } from "../../../icons";
@@ -13,25 +13,32 @@ const OrderCard: FC<OrderAnalysisType> = ({
     id,
     date,
     customer,
+    status,
     paid,
     handlePress,
 }) => {
     const dispatch = useAppDispatch()
-    const getStatusObj = (status: boolean) => {
+
+
+    const getStatusObj = useCallback(() => {
         const statusObj = {
             styleBlock: cs.statusGray,
-            text: "Не оплачен"
+            text: status
         }
-        if (status) {
-            statusObj.styleBlock = cs.statusGreen
-            statusObj.text = "Оплачен"
+
+        if (status === "Не оплачен") {
+            statusObj.styleBlock = cs.statusGray
+
+        } else if (status === "Оплачен") {
+            statusObj.styleBlock = cs.statusGray
         }
+
         return statusObj
-    }
+    }, [status])
 
     const handleOpenInfo = () => {
         dispatch(handleOrderInfoModal())
-        dispatch(getOrderById(id))
+        dispatch(getOrderById({ id }))
     }
 
     return (
@@ -47,15 +54,14 @@ const OrderCard: FC<OrderAnalysisType> = ({
                     <Text style={[cs.colorGray, cs.fzS, fs.montR]}>{date}</Text>
                 </View>
                 {customer.length ? <Text style={[cs.colorGray, cs.fzXS, fs.montR]}>{customer}</Text> : null}
-
             </View>
             <View style={[cs.fRowBetw, cs.fAlCenter, cs.flexOne, styles.cardBottom]}>
-                <View style={[getStatusObj(paid).styleBlock, styles.statusBlock]}>
-                    <Text style={[cs.fwSemi, cs.colorWhite, cs.fzS]}>{getStatusObj(paid).text}</Text>
+                <View style={[getStatusObj().styleBlock, styles.statusBlock]}>
+                    <Text style={[cs.fwSemi, cs.colorWhite, cs.fzS]}>{getStatusObj().text}</Text>
                 </View>
                 <TouchableOpacity style={[cs.fAlCenter, cs.fRow, styles.resultsBtn]}>
-                    <DownloadIcon 
-                    stroke={cs.colorGray.color} 
+                    <DownloadIcon
+                        stroke={cs.colorGray.color}
                     />
                     <Text style={[cs.colorGray, cs.fwSemi, cs.fzXXS, styles.resultsText, cs.colorGray]}>
                         Скачивание пока недоступно.

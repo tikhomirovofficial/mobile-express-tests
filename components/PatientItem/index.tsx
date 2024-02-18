@@ -34,8 +34,8 @@ const PatientItem: FC<PatientItemProps> = ({
             handlePress()
             return
         }
+        dispatch(getPatientById({id}))
         dispatch(handlePatientInfoModal())
-        dispatch(getPatientById(id))
     }, [handlePress, id])
 
     const GetSelectedIcon = useCallback(() => {

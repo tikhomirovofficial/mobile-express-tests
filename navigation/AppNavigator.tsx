@@ -162,6 +162,9 @@ const AppNavigator = () => {
                                                         <Stack.Screen name="order_cart" component={CartProducts} />
                                                     </> : null
                                             }
+                                            {/* <Stack.Screen name="order_category" component={SelectingCategory} />
+                                            <Stack.Screen name="order_products" component={SelectingProducts} />
+                                            <Stack.Screen name="order_cart" component={CartProducts} /> */}
 
                                         </>
                                 }

@@ -81,7 +81,7 @@ const OrderInfoModal = () => {
                                     <Text style={[styles.analysisCount, cs.fzXL, cs.fwBold]}>Список анализов</Text>
                                     {
                                         loadings.order ? null : <View style={[cs.fAlCenter, cs.fRow, styles.analysisCountCircle, cs.bgYellow]}>
-                                            <Text style={[]}>2</Text>
+                                            <Text style={[]}>{analiz_list.length}</Text>
                                         </View>
                                     }
 

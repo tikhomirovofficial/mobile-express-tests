@@ -16,6 +16,7 @@ import { getOrdersByPatientId, incrementPatientOrdersPart, resetPatientOrders } 
 import { usePagination } from '../../hooks/usePagination'
 import { PaginationBottom } from '../PaginationBottom'
 import { IOScrollView } from 'react-native-intersection-observer'
+import { fs } from '../../navigation/AppNavigator'
 
 
 
@@ -129,7 +130,7 @@ export const BottomSheet = () => {
                                         </View>
                                     </SkeletonContainer>
                                     :
-
+                                    patientInfo.orders.length ?
                                     <FlatList
                                         onEndReached={loadMore}
                                         showsVerticalScrollIndicator={false}
@@ -142,7 +143,8 @@ export const BottomSheet = () => {
                                                 topRightText={String(item.bonus)}
                                             />
                                         )}
-                                    />
+                                    /> :
+                                    <Text style={fs.montR}>Не сделан ни один заказ.</Text>
 
 
                             }

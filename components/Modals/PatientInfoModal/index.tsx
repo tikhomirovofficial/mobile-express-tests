@@ -1,4 +1,4 @@
-import React, { FC, useEffect } from 'react';
+import React, { FC, useCallback, useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from "../../../app/base/hooks";
 import { ActivityIndicator, FlatList, Modal, StyleSheet, Text, View } from "react-native";
 import WhiteBordered from "../../../layouts/WhiteBordered";
@@ -21,6 +21,7 @@ import { normalizeDate } from '../../../utils/normalizeDate';
 import { getOrdersByPatientId, incrementPatientOrdersPart, resetPatientInfo, resetPatientOrders } from '../../../app/features/current-data/currentData';
 import { PaginationBottom } from '../../PaginationBottom';
 import { usePagination } from '../../../hooks/usePagination';
+import { fs } from '../../../navigation/AppNavigator';
 
 const PatientInfoModal: FC<NavProps> = ({ navigation }) => {
     const dispatch = useAppDispatch()
@@ -31,10 +32,11 @@ const PatientInfoModal: FC<NavProps> = ({ navigation }) => {
 
     const handleToOrder = () => {
         dispatch(setPatient({
-            id: patientInfo.data.id,
+            id: 1,
             first_name: patientInfo.data.first_name,
             last_name: patientInfo.data.last_name
         }))
+        alert(patientInfo.data.id)
         handleModal()
         if (patientsModal) {
             dispatch(handlePatientsModal())
@@ -43,7 +45,6 @@ const PatientInfoModal: FC<NavProps> = ({ navigation }) => {
             navigation.navigate("order_category")
         }, 50)
     }
-
 
     const [loadOrders, loadMore] = usePagination(
         () => {
@@ -58,13 +59,20 @@ const PatientInfoModal: FC<NavProps> = ({ navigation }) => {
             can_more: can_next.patients_orders,
             items: patientInfo.orders,
             loading: loadings.patient_orders_pagination
-        }
+        },
+        [patientInfo.data.id]
     )
 
-    useEffect(loadOrders, [parts.patients_orders])
+    useEffect(() => {
+        if (patientInfo.data.id) {
+            loadOrders()
+        }
+
+    }, [parts.patients_orders, patientInfo.data.id])
 
     useEffect(() => {
         return () => {
+            dispatch(resetPatientInfo())
             dispatch(resetPatientOrders())
         }
     }, [])
@@ -77,7 +85,7 @@ const PatientInfoModal: FC<NavProps> = ({ navigation }) => {
                         <View style={[cs.fRowBetw]}>
                             <Text onPress={handleModal} style={[cs.yellowBtnText, cs.textYellow, cs.fzM]}>Закрыть</Text>
                             <View style={[cs.fAlCenter]}>
-                                <Text style={[cs.fzM, cs.colorDark, cs.fzM, cs.colorDark, cs.fwSemi]}>Пациент</Text>
+                                <Text style={[cs.fzM, cs.colorDark, cs.fzM, cs.colorDark, cs.fwSemi]}>Пациент {patientInfo.data.id}</Text>
                             </View>
                             <View style={{ flex: 0.4 }}></View>
                         </View>
@@ -127,14 +135,14 @@ const PatientInfoModal: FC<NavProps> = ({ navigation }) => {
                                                 <SkeletonView height={22} width={200}></SkeletonView>
                                             </> :
                                             <>
-                                                <View style={[cs.fRowBetw]}>
+                                                {/* <View style={[cs.fRowBetw]}>
                                                     <Text style={[cs.colorGray, cs.fzM]}>Возраст</Text>
                                                     <Text style={[cs.colorDark, cs.fzM, cs.fwMedium]}>27 лет</Text>
-                                                </View>
-                                                <View style={[cs.fRowBetw]}>
+                                                </View> */}
+                                                {/* <View style={[cs.fRowBetw]}>
                                                     <Text style={[cs.colorGray, cs.fzM]}>Пол</Text>
                                                     <Text style={[cs.colorDark, cs.fzM, cs.fwMedium]}>Мужской</Text>
-                                                </View>
+                                                </View> */}
                                                 <View style={[cs.fRowBetw]}>
                                                     <Text style={[cs.colorGray, cs.fzM]}>Телефон</Text>
                                                     <Text style={[cs.colorDark, cs.fzM, cs.fwMedium]}>{patientInfo.data.phone}</Text>
@@ -162,6 +170,7 @@ const PatientInfoModal: FC<NavProps> = ({ navigation }) => {
                                                         contentContainerStyle={[cs.fColumn, cs.spaceL]}
                                                         renderItem={({ item }) => (
                                                             <OrderCard
+                                                                status={item.status}
                                                                 handlePress={() => dispatch(handleOrderInfoModal())}
                                                                 key={item.id}
                                                                 paid={true}
@@ -176,7 +185,7 @@ const PatientInfoModal: FC<NavProps> = ({ navigation }) => {
 
                                                 </View>
 
-                                                : <Text>Пока пусто.</Text>
+                                                : <Text style={fs.montR}>Анализы ещё не назначались.</Text>
                                     }
 
                                 </View>

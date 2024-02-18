@@ -2,11 +2,16 @@ import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { ProfileData } from "../../../types/entities/user.types";
 import { HasLoading } from "../../../types/common.types";
 import { OrderApi, OrderDetailsApi } from "../../../types/entities/order.types";
-import { PatientDoctorGetRes } from "../../../types/api/patients.api.types";
+//import { PatientDoctorGetRes } from "../../../types/api/patients.api.types";
 import { PatientApi } from "../../../types/entities/patients.types";
 import { AnalysisApi } from "../../../types/entities/analysis.types";
 import { AnalysisGetByIdReq } from "../../../types/api/analysis.api.types";
-import { OrdersByPatientGetReq, OrdersByPatientGetRes } from "../../../types/api/orders.api.types";
+import { OrderDetailsReq, OrderDetailsRes, OrdersByPatientGetReq, OrdersByPatientGetRes } from "../../../types/api/orders.api.types";
+import { OrdersApi } from "../../../http/api/orders.api";
+import { AxiosResponse } from "axios";
+import { handleTokenRefreshedRequest } from "../../../utils/handleThunkAuth";
+import { PatientByIdReq, PatientByIdRes } from "../../../types/api/patients.api.types";
+import { PatientsApi } from "../../../http/api/patients.api";
 
 type CurrentData = {
     can_next: {
@@ -97,70 +102,83 @@ const initialState: CurrentData = {
 
 export const getOrderById = createAsyncThunk(
     'order/get',
-    async (id: number, { dispatch }) => {
-        return new Promise<OrderDetailsApi>((res, rej) => {
-            setTimeout(() => {
-                res({
-                    info_order: {
-                        doctor: "Подосёнов",
-                        pacient: "Тузов",
-                        status: "Отправлен",
-                        date: "2023-01-22",
-                        order_id: 1
-                    },
-                    results: [],
-                    analiz_list: [
-                        {
-                            id: 1,
-                            title: "Анализ 1"
-                        }
-                    ]
-                })
-            }, 1000)
-        })
+    async (req: OrderDetailsReq, { dispatch }) => {
+        const res: AxiosResponse<OrderDetailsRes> = await handleTokenRefreshedRequest(OrdersApi.GetById, req)
+        console.log(res.data);
+        return res.data
+        // return new Promise<OrderDetailsApi>((res, rej) => {
+        //     setTimeout(() => {
+        //         res({
+        //             info_order: {
+        //                 doctor: "Подосёнов",
+        //                 pacient: "Тузов",
+        //                 status: "Отправлен",
+        //                 date: "2023-01-22",
+        //                 order_id: 1
+        //             },
+        //             results: [],
+        //             analiz_list: [
+        //                 {
+        //                     id: 1,
+        //                     title: "Анализ 1"
+        //                 }
+        //             ]
+        //         })
+        //     }, 1000)
+        // })
     }
 )
 export const getOrdersByPatientId = createAsyncThunk(
     'patient/orders/get',
     async (req: OrdersByPatientGetReq, { dispatch }) => {
-        return new Promise<OrdersByPatientGetRes>((res, rej) => {
-            setTimeout(() => {
-                res({
-                    first_name: "Артём",
-                    last_name: "Тихомиров",
-                    can_next: true,
-                    total_bonus: 300,
-                    status: true,
-                    orders: Array(8).fill("").map((_, index) => {
-                        return {
-                            id: index,
-                            pacient: "",
-                            status: "Окончено",
-                            date: "2024-02-24",
-                            bonus: 300,
-                            bonus_status: true,
-                        }
-                    })
-                })
-            }, 1000)
-        })
+        const preparedReq: OrdersByPatientGetReq = {
+            part: req.part || 1,
+            pacient: req.pacient
+        }
+        const res: AxiosResponse<OrdersByPatientGetRes> = await handleTokenRefreshedRequest(OrdersApi.GetByPatientId, preparedReq)
+       // console.log(req.pacient);
+        return res.data
+        // return new Promise<OrdersByPatientGetRes>((res, rej) => {
+        //     setTimeout(() => {
+        //         res({
+        //             first_name: "Артём",
+        //             last_name: "Тихомиров",
+        //             can_next: true,
+        //             total_bonus: 300,
+        //             status: true,
+        //             orders: Array(8).fill("").map((_, index) => {
+        //                 return {
+        //                     id: index,
+        //                     pacient: "",
+        //                     status: "Окончено",
+        //                     date: "2024-02-24",
+        //                     bonus: 300,
+        //                     bonus_status: true,
+        //                 }
+        //             })
+        //         })
+        //     }, 1000)
+        // })
     }
 )
 export const getPatientById = createAsyncThunk(
     'patient/get',
-    async (id: number, { dispatch }) => {
-        return new Promise<PatientApi>((res, rej) => {
-            setTimeout(() => {
-                res({
-                    id: 1,
-                    first_name: "Артём",
-                    last_name: "Тихомиров",
-                    bonus: 400,
-                    date: "2024-01-22",
-                    phone: "79211400129"
-                })
-            }, 1000)
-        })
+    async (req: PatientByIdReq, { dispatch }) => {
+        const res: AxiosResponse<PatientByIdRes> = await handleTokenRefreshedRequest(PatientsApi.GetById, req)
+        console.log(res.data);
+        return res.data
+        // return new Promise<PatientApi>((res, rej) => {
+        //     setTimeout(() => {
+        //         res({
+        //             id: 1,
+        //             first_name: "Артём",
+        //             last_name: "Тихомиров",
+        //             bonus: 400,
+        //             date: "2024-01-22",
+        //             phone: "79211400129"
+        //         })
+        //     }, 1000)
+        // })
     }
 )
 export const getProductById = createAsyncThunk(
@@ -206,6 +224,7 @@ export const CurrentDataSlice = createSlice({
             state.patientInfo.orders = initialState.patientInfo.orders
             state.parts.patients_orders = 0
             state.can_next.patients_orders = false
+            state.loadings.patient_orders = true
         },
         incrementPatientOrdersPart: state => {
             state.parts.patients_orders += 1
@@ -217,7 +236,7 @@ export const CurrentDataSlice = createSlice({
             state.loadings.order = true
         })
         builder.addCase(getOrderById.fulfilled, (state, action) => {
-            state.orderInfo = action.payload
+            state.orderInfo = action.payload.order
             state.loadings.order = false
         })
         builder.addCase(getOrderById.rejected, (state, action) => {
@@ -249,7 +268,7 @@ export const CurrentDataSlice = createSlice({
             state.loadings.patient_info = true
         })
         builder.addCase(getPatientById.fulfilled, (state, action) => {
-            state.patientInfo.data = action.payload
+            state.patientInfo.data = action.payload.pacient
             state.loadings.patient_info = false
         })
         builder.addCase(getPatientById.rejected, (state, action) => {

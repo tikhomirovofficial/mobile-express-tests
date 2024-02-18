@@ -77,7 +77,7 @@ export const BonusesChart = () => {
             fromZero={true}
             withInnerLines={true}
             fromNumber={Math.max(...chartData.datasets[0].data)}
-            showValuesOnTopOfBars={true}
+            showValuesOnTopOfBars={false}
             showBarTops={false}
             width={containerStyles.container.maxWidth - 12}
             yLabelsOffset={6}

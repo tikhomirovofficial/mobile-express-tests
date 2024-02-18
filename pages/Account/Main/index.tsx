@@ -19,6 +19,7 @@ import { IOScrollView, InView } from 'react-native-intersection-observer'
 import { PaginationBottom } from '../../../components/PaginationBottom';
 import { usePagination } from '../../../hooks/usePagination';
 import { incrementProductsPart } from '../../../app/features/products/productSlice';
+import { resetPatient } from '../../../app/features/order/orderSlice';
 
 const Main: FC<NavProps> = ({ navigation }) => {
     const dispatch = useAppDispatch()
@@ -36,6 +37,10 @@ const Main: FC<NavProps> = ({ navigation }) => {
             loading: loadings.all_orders_pagination
         }
     )
+    const handleToOrdering = () => {
+        dispatch(resetPatient())
+        navigation.navigate("order_patient")
+    }
 
     useEffect(loadOrders, [part])
 
@@ -72,7 +77,7 @@ const Main: FC<NavProps> = ({ navigation }) => {
 
                             </TouchableOpacity>
                             <TouchableOpacity
-                                onPress={() => navigation.navigate("order_patient")}
+                                onPress={handleToOrdering}
                                 style={[
                                     cs.wBlockShadow,
                                     cs.fColumn,
@@ -103,6 +108,7 @@ const Main: FC<NavProps> = ({ navigation }) => {
                                                 contentContainerStyle={[cs.fColumn, cs.spaceL]}
                                                 renderItem={({ item }) => (
                                                     <OrderCard
+                                                        status={item.status}
                                                         handlePress={() => dispatch(handleOrderInfoModal())}
                                                         key={item.id}
                                                         paid={true}
