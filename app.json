@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "mobile-express-test",
-    "slug": "mobile-express-test",
+    "name": "Express Test",
+    "slug": "Express Test",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
