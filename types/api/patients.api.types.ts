@@ -26,4 +26,6 @@ export type InvitingCreateReq = {
     gender: 0 | 1,
     email: string
 } & Omit<PatientApi, "bonus" | "date" | "id">
-export type InvitingCreateRes = ResponseStatus
+export type InvitingCreateRes = {
+    user_id: number
+} & ResponseStatus

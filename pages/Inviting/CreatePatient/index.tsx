@@ -1,5 +1,5 @@
 import { FC, useEffect } from "react";
-import { View, ScrollView, TouchableOpacity, Text, StyleSheet } from "react-native";
+import { View, ScrollView, TouchableOpacity, Text, StyleSheet, ActivityIndicator } from "react-native";
 import Animated from "react-native-reanimated";
 import { useAppDispatch, useAppSelector } from "../../../app/base/hooks";
 import { createProfile, resetCreateProfileForm, handleCreateProfileGender } from "../../../app/features/profile/profileSlice";
@@ -16,11 +16,12 @@ import { ProfileCreateReq } from "../../../types/api/user.api.types";
 import { NavProps } from "../../../types/common.types";
 import { InvitingCreateReq } from "../../../types/api/patients.api.types";
 import { createInviting, handleCreateInvitingForm, handleCreateInvitingGender, resetCreateInvitingForm, resetSuccessInviting } from "../../../app/features/inviting/invitingSlice";
+import { extractDigits } from "../../../utils/normalizePhone";
 
 
 const CreatePatient: FC<NavProps> = ({ navigation }) => {
     const dispatch = useAppDispatch()
-    const { text_fields, gender, disabled, sending, success } = useAppSelector(state => state.inviting.form)
+    const { text_fields, gender, disabled, sending, success, err } = useAppSelector(state => state.inviting.form)
 
     const toBackScreen = () => {
         navigation.goBack()
@@ -31,7 +32,7 @@ const CreatePatient: FC<NavProps> = ({ navigation }) => {
             first_name: text_fields.first_name,
             last_name: text_fields.last_name,
             subname: text_fields.subname,
-            phone: text_fields.phone,
+            phone: extractDigits(text_fields.phone),
             dob: text_fields.dob,
             email: text_fields.email,
             gender: gender,
@@ -156,10 +157,13 @@ const CreatePatient: FC<NavProps> = ({ navigation }) => {
                                     </View>
                                 </View>
                             </ScrollView>
+                            <View style={[cs.fColumn, cs.spaceS]}>
+                                <Text style={[fs.montR, cs.colorRed]}>{err}</Text>
+                                <ButtonYellow style={{ minHeight: 54 }} disabled={disabled || sending} handlePress={handleCreateInviting}>
+                                    {sending ? <ActivityIndicator color={"black"} /> : <Text style={[cs.fzM, cs.yellowBtnText]}>Далее</Text>}
+                                </ButtonYellow>
+                            </View>
 
-                            <ButtonYellow disabled={disabled} handlePress={handleCreateInviting}>
-                                <Text style={[cs.fzM, cs.yellowBtnText]}>Далее</Text>
-                            </ButtonYellow>
                         </View>
                     </View>
                 </WhiteBorderedLayout>

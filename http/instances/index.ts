@@ -4,7 +4,7 @@ import { getTokens } from "../../utils/storeTokens"
 const currentDomain = 0
 
 const domains = [
-    "https://dev.advafert.ru"
+    "http://dev.advafert.ru"
 ]
 
 export const domain = domains[currentDomain]

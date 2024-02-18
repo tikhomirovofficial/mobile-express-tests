@@ -13,7 +13,7 @@ type ButtonYellowProps = {
 const ButtonYellow: FC<ButtonYellowProps> = ({ children, handlePress, style, isFilled = true, disabled }) => {
     if (disabled) {
         return (
-            <View style={[cs.yellowBtn, cs.fCenterCol, cs.bgDisabled]}>
+            <View style={[cs.yellowBtn, cs.fCenterCol, cs.bgDisabled, style]}>
                 {children}
             </View>
         )

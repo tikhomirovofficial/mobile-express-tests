@@ -6,11 +6,14 @@ import { EMAIL } from "../../../rules/masks.rules";
 import { InvitingTextFields } from "../../../types/entities/patients.types";
 import { InvitingCreateReq, InvitingCreateRes } from "../../../types/api/patients.api.types";
 import { correctFormDate } from "../../../utils/correctFormDate";
+import { PatientsApi } from "../../../http/api/patients.api";
+import { AxiosResponse } from "axios";
+import { handleTokenRefreshedRequest } from "../../../utils/handleThunkAuth";
 
 
 type InvitingSliceState = {
     form: {
-        success: boolean,
+        success: boolean | null,
         sending: boolean
         err: string,
         disabled: boolean,
@@ -21,7 +24,7 @@ type InvitingSliceState = {
 
 const initialState: InvitingSliceState = {
     form: {
-        success: false,
+        success: null,
         sending: false,
         err: "",
         disabled: true,
@@ -39,15 +42,17 @@ const initialState: InvitingSliceState = {
 export const createInviting = createAsyncThunk(
     'inviting/create',
     async (req: InvitingCreateReq, { dispatch }) => {
-        const resp: InvitingCreateRes = { status: true }
-        if (!resp.status) {
+        const res: AxiosResponse<InvitingCreateRes> = await handleTokenRefreshedRequest(PatientsApi.Invite, req)
+        console.log("Приглашение ответ: ", res.data);
+        if (!res.status) {
             throw new Error("Не удалось добавить пациента!")
         }
-        return new Promise<InvitingCreateRes>((res, rej) => {
-            setTimeout(() => {
-                res(resp)
-            }, 1000)
-        })
+        return res.data
+        // return new Promise<InvitingCreateRes>((res, rej) => {
+        //     setTimeout(() => {
+        //         res(resp)
+        //     }, 1000)
+        // })
     }
 )
 
@@ -59,6 +64,9 @@ export const InvitingSlice = createSlice({
             state.form.gender = action.payload
         },
         handleCreateInvitingForm: (state, action: PayloadAction<{ key: keyof typeof initialState.form.text_fields, val: string }>) => {
+            if (state.form.err) {
+                state.form.err = ""
+            }
             const key = action.payload.key
             let val = action.payload.val
             const tempCreatingForm: typeof initialState.form.text_fields = JSON.parse(JSON.stringify(state.form.text_fields))
@@ -90,14 +98,14 @@ export const InvitingSlice = createSlice({
         //INVITING CREATE
         builder.addCase(createInviting.pending, (state, action) => {
             state.form.sending = true
-            state.form.success = false
+            state.form.success = null
         })
         builder.addCase(createInviting.fulfilled, (state, action) => {
             state.form.sending = false
             state.form.success = true
         })
         builder.addCase(createInviting.rejected, (state, action) => {
-            state.form.err = "Не удалось создать профиль!"
+            state.form.err = "Не удалось пригласить пациента!"
             state.form.sending = false
             state.form.success = false
         })

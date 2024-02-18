@@ -29,9 +29,14 @@ const InvitingSent: FC<NavProps> = ({ navigation }) => {
             screen: "orders"
         })
     }
+    const toInviting = () => {
+        navigation.navigate("inviting")
+    }
+
 
     useEffect(() => {
         return () => {
+            alert("res")
             dispatch(resetSuccessInviting())
         }
     }, [])
@@ -54,7 +59,7 @@ const InvitingSent: FC<NavProps> = ({ navigation }) => {
                                 <Text style={[cs.fzM, cs.yellowBtnText]}>Закрыть</Text>
                             </LinearGradient>
                         </TouchableOpacity>
-                        <TouchableOpacity style={{ alignSelf: "center" }}>
+                        <TouchableOpacity onPress={toInviting} style={{ alignSelf: "center" }}>
                             <Text style={[cs.fzM, fs.montR, cs.textYellow, cs.fwMedium]}>Пригласить других пациентов</Text>
                         </TouchableOpacity>
 
