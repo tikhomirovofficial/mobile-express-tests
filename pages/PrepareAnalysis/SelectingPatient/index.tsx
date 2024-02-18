@@ -68,7 +68,7 @@ const SelectingPatient: FC<NavProps> = ({ navigation }) => {
     const openNewPatient = () => {
         navigation.navigate("inviting")
     }
-    
+
     useEffect(() => {
         dispatch(resetSearchedPatients())
     }, [defferedSearchVal])
@@ -133,21 +133,24 @@ const SelectingPatient: FC<NavProps> = ({ navigation }) => {
                                             <SkeletonView width={"100%"} height={50} />
                                         </View>
                                     </SkeletonContainer> :
-                                    <View style={[{ position: "absolute", height: "100%", width: "100%" }]}>
-                                        <FlatList
-                                            data={searched_list}
-                                            showsVerticalScrollIndicator={false}
-                                            onEndReached={loadMore}
-                                            renderItem={({ item }) => (
-                                                <PatientItem
-                                                    handlePress={() => handleSelectPatient(item.id)}
-                                                    isRadio={true}
-                                                    key={item.id}
-                                                    selected={contactsSelected === item.id}
-                                                    {...item} />
-                                            )}
-                                        />
-                                    </View>}
+                                    searched_list.length ?
+                                        <View style={[{ position: "absolute", height: "100%", width: "100%" }]}>
+                                            <FlatList
+                                                data={searched_list}
+                                                showsVerticalScrollIndicator={false}
+                                                onEndReached={loadMore}
+                                                renderItem={({ item }) => (
+                                                    <PatientItem
+                                                        handlePress={() => handleSelectPatient(item.id)}
+                                                        isRadio={true}
+                                                        key={item.id}
+                                                        selected={contactsSelected === item.id}
+                                                        {...item} />
+                                                )}
+                                            />
+                                        </View> :
+                                        <Text style={fs.montR}>Вы пока не пригласили пациентов.</Text>
+                                }
 
                             </View>
                             <View style={{ height: 20 }}>

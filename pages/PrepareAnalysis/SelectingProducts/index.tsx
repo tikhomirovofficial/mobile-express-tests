@@ -50,7 +50,6 @@ const SelectingProducts: FC<NavProps> = ({ navigation }) => {
     }
 
     const loadProducts = () => {
-        console.log(part);
         if (part !== 1) {
             if (part === 0 && !items.length) {
                 dispatch(getProducts({
@@ -170,7 +169,7 @@ const SelectingProducts: FC<NavProps> = ({ navigation }) => {
                             <View style={[cs.fRow, cs.fAlCenter, cs.spaceS]}>
                                 <Text style={[cs.fzM, cs.yellowBtnText]}>Корзина</Text>
                                 {14 > 0 ? <View style={cs.count}>
-                                    <Text style={cs.countText}>{cart.items.length}</Text>
+                                    <Text style={[cs.countText, fs.montR]}>{cart.items.length}</Text>
                                 </View> : null}
                             </View>
                         </ButtonYellow>

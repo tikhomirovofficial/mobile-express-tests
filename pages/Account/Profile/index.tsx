@@ -19,6 +19,7 @@ import { SkeletonContainer } from 'react-native-skeleton-component';
 import { logout } from '../../../app/features/login/loginSlice';
 import { resetAccess } from '../../../app/features/access/accessSlice';
 import { resetProfileData } from '../../../app/features/profile/profileSlice';
+import { formatBonus } from '../../../utils/formatBonusesString';
 
 
 const Profile: FC<NavProps> = ({ navigation }) => {
@@ -68,7 +69,7 @@ const Profile: FC<NavProps> = ({ navigation }) => {
                                             <SkeletonView height={30} width={110} /> :
                                             <View style={[styles.bonuses, cs.bgYellow, cs.fAlCenter, cs.fRow, cs.spaceS, cs.circle]}>
                                                 <HeartIcon />
-                                                <Text style={[cs.fwSemi, cs.colorDark]}>{profile.data.bonus} бонуса</Text>
+                                                <Text style={[cs.fwSemi, cs.colorDark]}>{formatBonus(profile.data.bonus)}</Text>
                                             </View>
                                     }
                                 </SkeletonContainer>

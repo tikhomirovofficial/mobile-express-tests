@@ -61,7 +61,7 @@ const Main: FC<NavProps> = ({ navigation }) => {
                     <View style={[cs.spaceL, cs.fColumn]}>
                         {
                             profile.loadings.profile ? <SkeletonView height={30} width={'100%'} /> :
-                                <Text style={cs.title}>{profile.data.first_name}, {getGreeting()}!</Text>
+                                <Text style={cs.title}>{profile.data.first_name.trim()}, {getGreeting()}!</Text>
                         }
                         <View style={[cs.fRowBetw, styles.buttonsTopContainer]}>
                             <TouchableOpacity

@@ -39,6 +39,9 @@ export type GetAllOrdersRes = {
 } & ResponseStatus & HasNextPart
 
 // Создание заказа
-export type CreateOrderReq = {}
-export type CreateOrderRes = {}
+export type CreateOrderReq = {
+    user_id: number,
+    analiz: number[]
+}
+export type CreateOrderRes = {} & ResponseStatus
 

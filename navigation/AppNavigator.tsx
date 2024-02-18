@@ -76,7 +76,7 @@ const AppNavigator = () => {
     const { data, loadings, has_profile } = useAppSelector(state => state.profile)
     const { alreadyBeen, accepted, pin, faceId } = useAppSelector(state => state.access)
     const inviting = useAppSelector(state => state.inviting)
-    const { patientData } = useAppSelector(state => state.order)
+    const { patientData, success } = useAppSelector(state => state.order)
     const { contacts, media, notifications } = useAppSelector(state => state.permissions)
 
     const getInitialRoute = () => {
@@ -149,7 +149,7 @@ const AppNavigator = () => {
                                             {/* //Информативные экраны */}
                                             {inviting.form.success ? <Stack.Screen name="inviting_sent" component={InvitingSent} /> : null}
 
-                                            <Stack.Screen name="order_sent" component={OrderSent} />
+
                                             <Stack.Screen name="how_get_results" component={HowGetResults} />
 
                                             {/* //Создание заказа */}
@@ -162,6 +162,7 @@ const AppNavigator = () => {
                                                         <Stack.Screen name="order_cart" component={CartProducts} />
                                                     </> : null
                                             }
+                                            {success ? <Stack.Screen name="order_sent" component={OrderSent} /> : null}
                                             {/* <Stack.Screen name="order_category" component={SelectingCategory} />
                                             <Stack.Screen name="order_products" component={SelectingProducts} />
                                             <Stack.Screen name="order_cart" component={CartProducts} /> */}
@@ -169,11 +170,7 @@ const AppNavigator = () => {
                                         </>
                                 }
                             </>
-
                     }
-
-
-
                 </Stack.Navigator>
             </View>
 

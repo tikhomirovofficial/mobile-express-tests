@@ -1,5 +1,5 @@
 import React, { FC, useEffect, useState } from 'react';
-import { Animated, Text, TouchableOpacity, View, StyleSheet, TextInput, ScrollView, Keyboard, Dimensions } from "react-native";
+import { Animated, Text, TouchableOpacity, View, StyleSheet, TextInput, ScrollView, Keyboard, Dimensions, ActivityIndicator } from "react-native";
 import { useAppDispatch, useAppSelector } from '../../app/base/hooks';
 import { handlePatientInvitingModal } from '../../app/features/modals/modalsSlice';
 import { cs } from '../../common/styles';
@@ -21,7 +21,7 @@ import { ProfileCreateReq } from '../../types/api/user.api.types';
 
 const CreateProfile: FC<NavProps> = ({ navigation }) => {
     const dispatch = useAppDispatch()
-    const { text_fields, gender, disabled, sending } = useAppSelector(state => state.profile.creating_form)
+    const { text_fields, gender, disabled, sending, err } = useAppSelector(state => state.profile.creating_form)
 
     const handleCreateProfile = () => {
         const data: ProfileCreateReq = {
@@ -185,10 +185,10 @@ const CreateProfile: FC<NavProps> = ({ navigation }) => {
                                     </View>
                                 </View>
                             </ScrollView>
-
-                            <ButtonYellow disabled={disabled} handlePress={handleCreateProfile}>
-                                <Text style={[cs.fzM, cs.yellowBtnText]}>Сохранить</Text>
+                            <ButtonYellow style={{ minHeight: 54 }} disabled={disabled || sending} handlePress={handleCreateProfile}>
+                                {sending ? <ActivityIndicator color={"black"} /> : <Text style={[cs.fzM, cs.yellowBtnText]}>Сохранить</Text>}
                             </ButtonYellow>
+
                         </View>
                     </View>
                 </WhiteBorderedLayout>

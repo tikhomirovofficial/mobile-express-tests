@@ -1,6 +1,6 @@
 import React, { FC, useEffect, useState } from 'react';
 import WhiteBorderedLayout from "../../../layouts/WhiteBordered";
-import { Animated, Text, TouchableOpacity, View, StyleSheet, TextInput, ScrollView, SectionList, FlatList, Keyboard } from "react-native";
+import { Animated, Text, TouchableOpacity, View, StyleSheet, TextInput, ScrollView, SectionList, FlatList, Keyboard, ActivityIndicator } from "react-native";
 import { cs } from "../../../common/styles";
 import { AddIcon, ArrowLeft, ArrowRightIcon, ClearIcon, HeartIcon, Logo, RemoveIcon, SearchIcon } from "../../../icons";
 import { OrderAnalysisType } from "../../../types/entities/analysis.types";
@@ -12,33 +12,43 @@ import PatientItem from "../../../components/PatientItem";
 import ButtonYellow from "../../../components/Buttons/ButtonYellow";
 import PatientInvitingModal from "../../../components/Modals/PatientInvitingModal";
 import { addToCart, clearCart, removeProduct } from '../../../app/features/cart/cartSlice';
-import { resetPatient, setCurrentCategory, setPatient } from '../../../app/features/order/orderSlice';
+import { createOrder, resetPatient, setCurrentCategory, setPatient } from '../../../app/features/order/orderSlice';
 import CartItem from '../../../components/CartItem';
+import { CreateOrderReq } from '../../../types/api/orders.api.types';
 
 const CartProducts: FC<NavProps> = ({ navigation }) => {
     const dispatch = useAppDispatch()
     const [categoriesLoading, setCategoriesLoading] = useState(false)
+    const [keyboardStatus, setKeyboardStatus] = useState(false);
     const cartProducts = useAppSelector(state => state.cart.items)
+    const { patientData, sending, success, err } = useAppSelector(state => state.order)
 
     const handleClearCart = () => {
         dispatch(clearCart())
     }
 
     const handleOrder = () => {
-        const dateNow = new Date()
-        handleClearCart()
-        dispatch(setCurrentCategory(-1))
-        dispatch(resetPatient())
-
-        navigation.navigate("order_sent")
+        const data: CreateOrderReq = {
+            user_id: patientData.id,
+            analiz: cartProducts.map(item => item.id)
+        }
+        dispatch(createOrder(data))
 
     }
+
     const handleToSelectingCategory = () => {
         navigation.navigate("order_category")
     }
 
-    const [keyboardStatus, setKeyboardStatus] = useState(false);
+    useEffect(() => {
+        if (success) {
+            handleClearCart()
+            dispatch(setCurrentCategory(-1))
+            dispatch(resetPatient())
 
+            navigation.navigate("order_sent")
+        }
+    }, [success])
     useEffect(() => {
         const keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', () => {
             setKeyboardStatus(true);
@@ -100,11 +110,14 @@ const CartProducts: FC<NavProps> = ({ navigation }) => {
                                     />
                                 </View>}
                         </View>
-                        <ButtonYellow disabled={cartProducts.length < 1} handlePress={handleOrder}>
-                            <View style={[cs.fRow, cs.fAlCenter, cs.spaceS]}>
-                                <Text style={[cs.fzM, cs.yellowBtnText]}>Отправить заказ</Text>
-                            </View>
-                        </ButtonYellow>
+                        <View style={[cs.fColumn, cs.spaceS]}>
+                            <Text style={[fs.montR, cs.colorRed]}>{err}</Text>
+                            <ButtonYellow style={{ minHeight: 54 }} disabled={cartProducts.length < 1 || sending} handlePress={handleOrder}>
+                                {sending ? <ActivityIndicator color={"black"} /> : <Text style={[cs.fzM, cs.yellowBtnText]}>Отправить заказ</Text>}
+                            </ButtonYellow>
+                        </View>
+
+
                     </View>
                 </WhiteBorderedLayout>
             </View >

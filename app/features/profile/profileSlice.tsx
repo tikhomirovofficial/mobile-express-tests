@@ -7,6 +7,7 @@ import { AxiosResponse } from "axios";
 import { UserApi } from "../../../http/api/user.api";
 import { handleTokenRefreshedRequest } from "../../../utils/handleThunkAuth";
 import { correctFormDate } from "../../../utils/correctFormDate";
+import { err } from "react-native-svg/lib/typescript/xml";
 
 
 type ProfileSliceState = {
@@ -138,6 +139,9 @@ export const ProfileSlice = createSlice({
             state.form.gender = action.payload
         },
         handleCreateProfileForm: (state, action: PayloadAction<{ key: keyof typeof initialState.creating_form.text_fields, val: string }>) => {
+            if (state.creating_form.err) {
+                state.creating_form.err = ""
+            }
             const key = action.payload.key
             let val = action.payload.val
             const tempCreatingForm: typeof initialState.creating_form.text_fields = JSON.parse(JSON.stringify(state.creating_form.text_fields))

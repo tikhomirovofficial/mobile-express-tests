@@ -189,12 +189,12 @@ export const getProductById = createAsyncThunk(
                 res({
                     id: req.id,
                     cat: 1,
-                    code: "",
+                    code: "1",
                     cost: 300,
-                    info: "Описание",
+                    info: "Временно не доступно",
                     maxdur: 1,
                     mindur: 10,
-                    name: "Какой-то анализ",
+                    name: "Временно не доступно",
                     prepare: [],
                     tags: [],
                     templates: []

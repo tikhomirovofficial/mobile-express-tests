@@ -12,7 +12,7 @@ import ButtonBlue from '../../Buttons/ButtonBlue';
 import { resetProductInfo } from '../../../app/features/current-data/currentData';
 import { SkeletonContainer } from 'react-native-skeleton-component';
 import { SkeletonView } from '../../SkeletonView';
-import { addToCart, CartItem, removeProduct } from '../../../app/features/cart/cartSlice';
+import { addToCart, CartItemType, removeProduct } from '../../../app/features/cart/cartSlice';
 
 const AnalysisInfoModal: FC<NavProps> = ({ navigation }) => {
     const dispatch = useAppDispatch()
@@ -30,7 +30,7 @@ const AnalysisInfoModal: FC<NavProps> = ({ navigation }) => {
     }
 
     const addProduct = () => {
-        dispatch(addToCart({ ...productInfo as CartItem }))
+        dispatch(addToCart({ ...productInfo as CartItemType }))
     }
 
     const removeItem = () => {
@@ -63,14 +63,14 @@ const AnalysisInfoModal: FC<NavProps> = ({ navigation }) => {
                                             <SkeletonView height={30} width={"100%"} /> :
                                             <Text style={[cs.fzXL, cs.fwBold]}>{productInfo.name}</Text>
                                     }
-                                    {
+                                    {/* {
                                         loadings.product_info ?
                                             <SkeletonView height={50} width={"100%"} /> :
                                             <View style={[cs.fRow, cs.spaceL]}>
                                                 <Text style={[cs.colorGray, cs.fzM, fs.montR]}>Биоматериал</Text>
                                                 <Text style={[cs.colorDark, cs.fzM, cs.fwMedium]}>Венозная кровь</Text>
                                             </View>
-                                    }
+                                    } */}
 
                                 </View>
                                 {
