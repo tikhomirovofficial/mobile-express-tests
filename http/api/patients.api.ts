@@ -3,11 +3,18 @@ import { GetAllOrdersReq, GetAllOrdersRes, OrdersByPatientGetRes } from "../../t
 import { authApi } from "../instances";
 import { ORDERS_PATHS, PATIENTS_PATHS, USER_PATHS } from "../paths/index.paths";
 import { ConvertDataToGetParams } from "../../utils/ConvertDataToGetParams";
-import { PatientsDoctorGetReq, PatientsDoctorGetRes } from "../../types/api/patients.api.types";
+import { PatientsBySearchReq, PatientsBySearchRes, PatientsDoctorGetReq, PatientsDoctorGetRes } from "../../types/api/patients.api.types";
 
 export class PatientsApi {
     static async GetAll(req: PatientsDoctorGetReq): Promise<AxiosResponse<PatientsDoctorGetRes>> {
         const res: AxiosResponse<PatientsDoctorGetRes> = await authApi.get(`${PATIENTS_PATHS.GET_PATIENTS}${ConvertDataToGetParams(req)}`);
+        if (!res.data) {
+            throw res
+        }
+        return res
+    }
+    static async GetBySearch(req: PatientsBySearchReq): Promise<AxiosResponse<PatientsBySearchRes>> {
+        const res: AxiosResponse<PatientsBySearchRes> = await authApi.get(`${PATIENTS_PATHS.GET_PATIENTS_SEARCH}${ConvertDataToGetParams(req)}`);
         if (!res.data) {
             throw res
         }

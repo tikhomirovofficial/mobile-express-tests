@@ -40,8 +40,6 @@ const Main: FC<NavProps> = ({ navigation }) => {
     useEffect(loadOrders, [part])
 
     useEffect(() => {
-        console.log(login.auth);
-
         return () => {
             dispatch(resetOrders())
         }
@@ -119,7 +117,7 @@ const Main: FC<NavProps> = ({ navigation }) => {
 
                                         </View>
 
-                                        : <Text>Пока пусто.</Text>
+                                        : <Text style={fs.montR}>Не сделан ни один заказ.</Text>
                             }
                         </View>
                     </View>

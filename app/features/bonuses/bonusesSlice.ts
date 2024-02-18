@@ -1,10 +1,8 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { ProfileData } from "../../../types/entities/user.types";
-import { HasLoading } from "../../../types/common.types";
-import { OrderApi, OrderDetailsApi } from "../../../types/entities/order.types";
-import { PatientDoctorGetRes } from "../../../types/api/patients.api.types";
-import { PatientApi } from "../../../types/entities/patients.types";
 import { BonusesDiagramGetRes } from "../../../types/api/finances.api.types";
+import { BonusesApi } from "../../../http/api/bonuses.api";
+import { AxiosResponse } from "axios";
+import { handleTokenRefreshedRequest } from "../../../utils/handleThunkAuth";
 
 type BonusesSliceData = {
     loadings: {
@@ -37,14 +35,26 @@ const initialState: BonusesSliceData = {
 export const getChartBonusesData = createAsyncThunk(
     'bonuses/chart/get',
     async (_, { dispatch }) => {
+        // const res: AxiosResponse<BonusesDiagramGetRes> = await handleTokenRefreshedRequest(BonusesApi.GetDiagram)
+        // console.log(res.data);
+        // return res.data
         return new Promise<BonusesDiagramGetRes>((res, rej) => {
             setTimeout(() => {
                 res({
                     status: true,
                     bonuses: {
-                        "20.04.2022": 300,
-                        "20.04.2023": 300,
-                        "20.04.2024": 300,
+                        "Янв": 0,
+                        "Фев": 0,
+                        "Мар": 0,
+                        "Апр": 0,
+                        "Май": 0,
+                        "Июн": 0,
+                        "Июл": 0,
+                        "Авг": 0,
+                        "Сен": 0,
+                        "Окт": 0,
+                        "Ноя": 0,
+                        "Дек": 0,
                     },
                 })
             }, 1000)

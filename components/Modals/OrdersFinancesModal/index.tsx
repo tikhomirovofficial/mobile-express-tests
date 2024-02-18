@@ -72,29 +72,26 @@ const OrdersFinancesModal = () => {
                                         <Text style={[cs.colorGray, cs.fzS]}>1 ед. = 1 ₽</Text>
                                     </View>
                                     <View style={[cs.fColumn]}>
-                                        <Text style={[cs.colorBlack, cs.fzS, cs.fwBold]}>34 из 545 </Text>
+                                        <Text style={[cs.colorBlack, cs.fzS, cs.fwBold]}>0 из 0 </Text>
                                         <Text style={[cs.colorGray, cs.fzXS, fs.montR]}>Доступно для вывода</Text>
                                     </View>
                                     <View style={[styles.progressBonuses]}>
-                                        <View style={[styles.progressBonusesFilled, { width: "30%" }]}></View>
+                                        <View style={[styles.progressBonusesFilled, { width: "0%" }]}></View>
                                     </View>
                                 </View>
                                 <Text style={[cs.fzXXS, fs.montR, cs.colorGray]}>Мин. сумма для вывода 500 бонусов</Text>
                             </View>
 
                         </TouchableOpacity>
-                        <View style={[cs.fColumn, cs.spaceL]}>
+                        {/* <View style={[cs.fColumn, cs.spaceL]}>
                             <OrdersDateGroup />
                             <OrdersDateGroup />
-                        </View>
+                        </View> */}
+                        <Text style={fs.montR}>Список заказов временно недоступен.</Text>
                     </View>
                 </View>
             </WhiteBordered>
-            {
-                bonusesModal ? <BonusesModal /> : null
-            }
-            
-            
+            {bonusesModal ? <BonusesModal /> : null}
         </Modal>
     );
 };

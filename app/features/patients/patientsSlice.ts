@@ -6,7 +6,7 @@ import { HasNextPart, HasPart } from "../../../types/common.types";
 import { GetAllOrdersReq, GetAllOrdersRes } from "../../../types/api/orders.api.types";
 import { AxiosResponse } from "axios";
 import { OrdersApi } from "../../../http/api/orders.api";
-import { handleTokenRefreshedRequest} from "../../../utils/handleThunkAuth";
+import { handleTokenRefreshedRequest } from "../../../utils/handleThunkAuth";
 import { PatientsApi } from "../../../http/api/patients.api";
 
 type PatientsSliceState = {
@@ -44,24 +44,31 @@ const initialState: PatientsSliceState = {
 export const getSearchPatients = createAsyncThunk(
     'patients/search/get',
     async (req: PatientsBySearchReq, { dispatch }) => {
-        return new Promise<PatientsBySearchRes>((res, rej) => {
-            setTimeout(() => {
-                res({
-                    status: true,
-                    can_next: true,
-                    pacients: Array(8).fill("").map((_, index) => {
-                        return {
-                            id: index + 1,
-                            bonus: 10,
-                            date: "2024-01-22",
-                            first_name: "Дмитрий",
-                            last_name: "Тихомиров " + index,
-                            phone: "+79005001849"
-                        }
-                    })
-                })
-            }, 1000)
-        })
+        const preparedReq: PatientsBySearchReq = {
+            part: req.part || 1,
+            pacient: req.pacient
+        }
+        const res: AxiosResponse<PatientsBySearchRes> = await handleTokenRefreshedRequest(PatientsApi.GetBySearch, preparedReq)
+        console.log(res.data);
+        return res.data
+        // return new Promise<PatientsBySearchRes>((res, rej) => {
+        //     setTimeout(() => {
+        //         res({
+        //             status: true,
+        //             can_next: true,
+        //             pacients: Array(8).fill("").map((_, index) => {
+        //                 return {
+        //                     id: index + 1,
+        //                     bonus: 10,
+        //                     date: "2024-01-22",
+        //                     first_name: "Дмитрий",
+        //                     last_name: "Тихомиров " + index,
+        //                     phone: "+79005001849"
+        //                 }
+        //             })
+        //         })
+        //     }, 1000)
+        // })
     }
 )
 export const getAllPatients = createAsyncThunk(

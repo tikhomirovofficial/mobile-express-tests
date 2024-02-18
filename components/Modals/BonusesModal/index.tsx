@@ -29,9 +29,10 @@ import { usePagination } from '../../../hooks/usePagination';
 
 const BonusesModal = () => {
     const dispatch = useAppDispatch()
-    const { bonusesModal, bonusesBottomSheet, analysisInfoModal } = useAppSelector(state => state.modals)
+    const { bonusesModal, bonusesBottomSheet } = useAppSelector(state => state.modals)
     const patients = useAppSelector(state => state.patients)
     const bonuses = useAppSelector(state => state.bonuses)
+
     const [loadOrders, loadMore] = usePagination(
         () => { dispatch(getAllPatients({ part: patients.part })) },
         () => { dispatch(incrementPatientsPart()) },
@@ -46,6 +47,7 @@ const BonusesModal = () => {
     const handleModal = () => {
         dispatch(handleBonusesModal())
     }
+
     const handleOpenPatientInfo = (patient: PatientApi) => {
         dispatch(setPatientData(patient))
         // dispatch(getOrdersByPatientId({
@@ -105,33 +107,36 @@ const BonusesModal = () => {
                                         </SkeletonContainer>
                                     </> :
                                     <View style={cs.flexOne}>
-                                        <FlatList
-                                            onEndReached={loadMore}
-                                            data={patients.list}
-                                            style={[cs.fColumn]}
-                                            renderItem={({ item, index }) => (
-                                                <PatientItem
-                                                    handlePress={() => handleOpenPatientInfo(item)}
-                                                    bottomText={`${item.bonus} бонусов за всё время`}
-                                                    neededBottomBorder={index !== patients.list.length - 1}
-                                                    {...item} />
-                                            )} />
-                                        <View style={{ height: 10 }}>
-                                            {patients.loadings.patients_pagination ? <ActivityIndicator color={cs.bgYellow.backgroundColor} /> : null}
-                                        </View>
+                                        {
+                                            patients.list.length ?
+                                                <>
+                                                    <FlatList
+                                                        onEndReached={loadMore}
+                                                        data={patients.list}
+                                                        style={[cs.fColumn]}
+                                                        renderItem={({ item, index }) => (
+                                                            <PatientItem
+                                                                handlePress={() => handleOpenPatientInfo(item)}
+                                                                bottomText={`${item.bonus} бонусов за всё время`}
+                                                                neededBottomBorder={index !== patients.list.length - 1}
+                                                                {...item} />
+                                                        )} />
+                                                    <View style={{ height: 10 }}>
+                                                        {patients.loadings.patients_pagination ? <ActivityIndicator color={cs.bgYellow.backgroundColor} /> : null}
+                                                    </View>
+                                                </>
+                                                :
+                                                <Text style={fs.montR}>Вы пока не пригласили ни одного пациента.</Text>
+                                        }
+
                                     </View>
                             }
-
                         </View>
                     </View>
-
                 </WhiteBordered>
                 {bonusesBottomSheet ? <BottomSheet /> : null}
             </GestureHandlerRootView>
         </Modal>
-
-
-
     );
 };
 

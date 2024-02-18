@@ -3,7 +3,7 @@ import WhiteBorderedLayout from "../../../layouts/WhiteBordered";
 import { Animated, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { cs } from "../../../common/styles";
 import { useAppDispatch, useAppSelector } from "../../../app/base/hooks";
-import { HeartIcon, Logo, PhotoIcon, ProfileIcon, ProfilesIcon, WalletIcon } from "../../../icons";
+import { HeartIcon, Logo, LogoutIcon, PhotoIcon, ProfileIcon, ProfilesIcon, ThemeIcon, WalletIcon } from "../../../icons";
 import { fs } from "../../../navigation/AppNavigator";
 import { handleAboutModal, handleOrdersFinancesModal, handlePatientsModal, handleProfileEditModal } from "../../../app/features/modals/modalsSlice";
 import ProfileEditModal from "../../../components/Modals/ProfileEditModal";
@@ -122,11 +122,28 @@ const Profile: FC<NavProps> = ({ navigation }) => {
                                             информация</Text>
                                     </View>
                                 </TouchableOpacity>
+                                <TouchableOpacity onPress={() => { }}
+                                    style={[styles.profileHubItem, cs.wBlockShadow, cs.fAlCenter, cs.flexOne]}>
+                                    <View style={[styles.profileItemIcon, cs.rootBg, cs.circle, cs.fCenterCol]}>
+                                        <ThemeIcon />
+                                    </View>
+                                    <View style={[cs.fAlCenter]}>
+                                        <Text style={[cs.fzS, fs.montR, cs.txtCenter, cs.fwMedium, { paddingBottom: 8 }]}>Включить тёмную тему</Text>
+                                    </View>
+
+                                </TouchableOpacity>
+                                <TouchableOpacity
+                                    onPress={handleLogout}
+                                    style={[styles.profileHubItem, cs.wBlockShadow, cs.fAlCenter, cs.flexOne]}>
+                                    <View style={[styles.profileItemIcon, cs.rootBg, cs.circle, cs.fCenterCol]}>
+                                        <LogoutIcon />
+                                    </View>
+                                    <View style={[cs.fAlCenter]}>
+                                        <Text style={[cs.fzS, fs.montR, cs.txtCenter, cs.fwMedium, cs.colorRed, { paddingBottom: 8 }]}>Выйти из приложения</Text>
+
+                                    </View>
+                                </TouchableOpacity>
                             </View>
-                            <TouchableOpacity>
-                                <Text onPress={handleLogout} style={[cs.fzM, fs.montR, cs.fwMedium, cs.txtCenter, cs.colorRed]}>Выйти из
-                                    приложения</Text>
-                            </TouchableOpacity>
                         </View>
                     </View>
                 </WhiteBorderedLayout>
@@ -153,7 +170,7 @@ const styles = StyleSheet.create({
     },
     profileHubItem: {
         paddingVertical: 14,
-        paddingHorizontal: 20,
+        paddingHorizontal: 14,
         borderRadius: 16,
         gap: 18,
         minWidth: 140,

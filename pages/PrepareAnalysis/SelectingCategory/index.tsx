@@ -26,7 +26,7 @@ const SelectingCategory: FC<NavProps> = ({ navigation }) => {
     const cart = useAppSelector(state => state.cart)
 
     const [searchVal, setSearchVal] = useState("")
-    const defferedSearchVal = useDeferred(searchVal, 500)
+    const defferedSearchVal = useDeferred(searchVal, 100)
 
     const patient = useAppSelector(state => state.order.patientData)
     const categories = useAppSelector(state => state.categories.items)
@@ -47,7 +47,7 @@ const SelectingCategory: FC<NavProps> = ({ navigation }) => {
     }
 
     useEffect(() => {
-        dispatch(getCategories(defferedSearchVal))
+        dispatch(getCategories({title: defferedSearchVal}))
     }, [defferedSearchVal])
 
     useEffect(() => {
@@ -76,15 +76,13 @@ const SelectingCategory: FC<NavProps> = ({ navigation }) => {
                                 <TouchableOpacity onPress={handleToSelectingPatient}>
                                     <ArrowLeft />
                                 </TouchableOpacity>
-
                                 <Text style={[cs.fwSemi, cs.fwSemi, cs.fzXL]}>{patientFullName}</Text>
                                 <View></View>
                             </View>
                         </AppContainer>
-
                     }
                     style={{ paddingTop: 40, maxHeight: "100%" }}>
-                    <View style={[cs.spaceXL, styles.patientsContent, { minHeight: keyboardStatus ? "99%" : "100%" }]}>
+                    <View style={[cs.spaceXL, styles.patientsContent, { minHeight: keyboardStatus ? "100%" : "100%" }]}>
                         <View style={[cs.spaceL, cs.fColumn]}>
                             <View style={[cs.fRowBetw, cs.spaceM, cs.fAlCenter]}>
                                 <Text style={[cs.fwSemi, cs.fwBold, cs.fzXL]}>Выберите категорию</Text>
@@ -111,6 +109,7 @@ const SelectingCategory: FC<NavProps> = ({ navigation }) => {
                                 :
                                 <View style={[{ position: "absolute", height: "100%", width: "100%" }]}>
                                     <FlatList
+                                        showsVerticalScrollIndicator={false}
                                         contentContainerStyle={[cs.fColumn, cs.spaceS]}
                                         data={categories}
                                         renderItem={({ item, index }) => (
@@ -121,8 +120,6 @@ const SelectingCategory: FC<NavProps> = ({ navigation }) => {
                                 </View>}
 
                         </View>
-
-
                         <ButtonYellow handlePress={toCart}>
                             <View style={[cs.fRow, cs.fAlCenter, cs.spaceS]}>
                                 <Text style={[cs.fzM, cs.yellowBtnText]}>Корзина</Text>
@@ -131,17 +128,10 @@ const SelectingCategory: FC<NavProps> = ({ navigation }) => {
                                 </View> : null}
 
                             </View>
-
-
-
                         </ButtonYellow>
-
-
                     </View>
-
                 </WhiteBorderedLayout>
             </View >
-
         </Animated.View >
 
     );

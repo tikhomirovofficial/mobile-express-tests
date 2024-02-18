@@ -54,9 +54,11 @@ const OrderCard: FC<OrderAnalysisType> = ({
                     <Text style={[cs.fwSemi, cs.colorWhite, cs.fzS]}>{getStatusObj(paid).text}</Text>
                 </View>
                 <TouchableOpacity style={[cs.fAlCenter, cs.fRow, styles.resultsBtn]}>
-                    <DownloadIcon stroke={"#FFCF00"} />
-                    <Text style={[cs.colorGray, cs.fwSemi, cs.fzXXS, styles.resultsText, cs.textYellow]}>
-                        Скачать результаты анализов
+                    <DownloadIcon 
+                    stroke={cs.colorGray.color} 
+                    />
+                    <Text style={[cs.colorGray, cs.fwSemi, cs.fzXXS, styles.resultsText, cs.colorGray]}>
+                        Скачивание пока недоступно.
                     </Text>
                 </TouchableOpacity>
             </View>

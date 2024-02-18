@@ -6,23 +6,22 @@ import { cs } from "../../../common/styles";
 import ButtonYellow from "../../Buttons/ButtonYellow";
 import PatientItem from "../../PatientItem";
 import {
-    handleOrderInfoModal,
-    handlePatientInfoModal, handlePatientInvitingModal,
+    handlePatientInfoModal,
     handlePatientsModal
 } from "../../../app/features/modals/modalsSlice";
-import PatientInfoModal from "../PatientInfoModal";
 import { NavProps } from "../../../types/common.types";
-import { ModalContainer } from '../../ModalContainer';
 import { SkeletonContainer } from 'react-native-skeleton-component';
 import { SkeletonView } from '../../SkeletonView';
 import { getPatientById } from '../../../app/features/current-data/currentData';
 import { getAllPatients, incrementPatientsPart, resetAllPatients } from '../../../app/features/patients/patientsSlice';
 import { usePagination } from '../../../hooks/usePagination';
+import { fs } from '../../../navigation/AppNavigator';
 
 const PatientsModal: FC<NavProps> = ({ navigation }) => {
     const dispatch = useAppDispatch()
-    const { patientsModal, patientInfoModal } = useAppSelector(state => state.modals)
+    const { patientsModal } = useAppSelector(state => state.modals)
     const patients = useAppSelector(state => state.patients)
+
     const [loadOrders, loadMore] = usePagination(
         () => { dispatch(getAllPatients({ part: patients.part })) },
         () => { dispatch(incrementPatientsPart()) },
@@ -79,42 +78,41 @@ const PatientsModal: FC<NavProps> = ({ navigation }) => {
                                     </SkeletonContainer>
                                 </> :
                                 <View style={[cs.flexOne]}>
+                                    {
+                                        patients.list.length ?
+                                            <>
+                                                <View style={[cs.flexOne, { position: "relative" }]}>
+                                                    <View style={[{ position: "absolute", height: "100%", width: "100%" }]}>
+                                                        <FlatList
+                                                            showsVerticalScrollIndicator={false}
+                                                            data={patients.list}
+                                                            onEndReached={loadMore}
+                                                            style={[cs.fColumn]}
+                                                            renderItem={({ item, index }) => (
+                                                                <PatientItem
+                                                                    bottomText={`${item.phone}`}
+                                                                    neededBottomBorder={index < patients.list.length - 1}
+                                                                    handlePress={() => handlePatientInfo(item.id)}
+                                                                    {...item} />
+                                                            )} />
 
-                                    <View style={[cs.flexOne, { position: "relative" }]}>
-                                        <View style={[{ position: "absolute", height: "100%", width: "100%" }]}>
-                                            <FlatList
-                                                showsVerticalScrollIndicator={false}
-                                                data={patients.list}
-                                                onEndReached={loadMore}
-                                                style={[cs.fColumn]}
-                                                renderItem={({ item, index }) => (
-                                                    <PatientItem
-                                                        bottomText={`${item.phone}`}
-                                                        neededBottomBorder={index < patients.list.length - 1}
-                                                        handlePress={() => handlePatientInfo(item.id)}
-                                                        {...item} />
-                                                )} />
-
-                                        </View>
-
-
-                                    </View>
-                                    <View style={{ height: 20 }}>
-                                        {patients.loadings.patients_pagination ? <ActivityIndicator color={cs.bgYellow.backgroundColor} /> : null}
-                                    </View>
-
+                                                    </View>
+                                                </View>
+                                                <View style={{ height: 20 }}>
+                                                    {patients.loadings.patients_pagination ? <ActivityIndicator color={cs.bgYellow.backgroundColor} /> : null}
+                                                </View>
+                                            </>
+                                            :
+                                            <Text style={fs.montR}>Вы пока не пригласили ни одного пациента.</Text>
+                                    }
                                 </View>
                         }
                         <ButtonYellow handlePress={toInviting}>
                             <Text style={[cs.fzM, cs.yellowBtnText]}>Пригласить пациентов</Text>
                         </ButtonYellow>
                     </View>
-
                 </View>
-
-
             </WhiteBordered>
-
         </Modal>
     );
 };

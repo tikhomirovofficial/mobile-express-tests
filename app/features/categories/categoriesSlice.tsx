@@ -1,6 +1,9 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { CategoryApi } from "../../../types/entities/categories.types";
 import { CategoriesGetReq, CategoriesGetRes } from "../../../types/api/categories.api.types";
+import { CategoriesApi } from "../../../http/api/categories.api";
+import { AxiosResponse } from "axios";
+import { handleTokenRefreshedRequest } from "../../../utils/handleThunkAuth";
 
 type CategoriesSliceState = {
     loadings: {
@@ -18,21 +21,24 @@ const initialState: CategoriesSliceState = {
 export const getCategories = createAsyncThunk(
     'all/categories/get',
     async (req: CategoriesGetReq, { dispatch }) => {
-        return new Promise<CategoriesGetRes>((res, rej) => {
-            setTimeout(() => {
-                res({
-                    status: true,
-                    category: [{
-                        color: "#ffffff",
-                        id: 3,
-                        istake: false,
-                        name: "Биохимические исследования крови",
-                        take: 128
-                    }]
-                })
-            }, 1000)
-        })
-})
+        const res: AxiosResponse<CategoriesGetRes> = await handleTokenRefreshedRequest(CategoriesApi.GetByTitle, req)
+        console.log(res.data);
+        return res.data
+        // return new Promise<CategoriesGetRes>((res, rej) => {
+        //     setTimeout(() => {
+        //         res({
+        //             status: true,
+        //             category: [{
+        //                 color: "#ffffff",
+        //                 id: 3,
+        //                 istake: false,
+        //                 name: "Биохимические исследования крови",
+        //                 take: 128
+        //             }]
+        //         })
+        //     }, 1000)
+        // })
+    })
 
 export const CategoriesSlice = createSlice({
     name: "categories",

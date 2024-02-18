@@ -4,6 +4,7 @@ import {StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import {cs} from "../common/styles";
 import {CallIcon, DownloadIcon, HomeIcon, ProfileIcon} from "../icons";
 import {routesNames} from "./routes";
+import { fs } from "./AppNavigator";
 
 const AppTab: FC<BottomTabBarProps> = ({state, descriptors,  navigation}) => {
 
@@ -53,7 +54,7 @@ const AppTab: FC<BottomTabBarProps> = ({state, descriptors,  navigation}) => {
                     >
 
                         <TabIcon/>
-                        <Text style={[{color: isFocused ? '#36CACB' : cs.colorDark.color}, cs.fzXS]}>
+                        <Text style={[{color: isFocused ? '#36CACB' : cs.colorDark.color}, cs.fzXS, fs.montR]}>
                             {routesNames[route.name] || ""}
                         </Text>
                     </TouchableOpacity>
