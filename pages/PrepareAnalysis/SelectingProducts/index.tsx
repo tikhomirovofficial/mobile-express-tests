@@ -168,7 +168,7 @@ const SelectingProducts: FC<NavProps> = ({ navigation }) => {
                         <ButtonYellow handlePress={handleToCart}>
                             <View style={[cs.fRow, cs.fAlCenter, cs.spaceS]}>
                                 <Text style={[cs.fzM, cs.yellowBtnText]}>Корзина</Text>
-                                {14 > 0 ? <View style={cs.count}>
+                                {cart.items.length > 0 ? <View style={cs.count}>
                                     <Text style={[cs.countText, fs.montR]}>{cart.items.length}</Text>
                                 </View> : null}
                             </View>

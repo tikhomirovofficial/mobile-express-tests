@@ -1,5 +1,5 @@
-import React, { FC, ReactNode } from 'react';
-import { Dimensions, ScrollView, StyleSheet, View, ViewStyle, Text } from "react-native";
+import React, { FC, ReactNode, useState } from 'react';
+import { Dimensions, ScrollView, StyleSheet, View, ViewStyle, Text, RefreshControl } from "react-native";
 import AppContainer from "../../components/AppContainer";
 import { cs } from "../../common/styles";
 import { IOScrollView } from 'react-native-intersection-observer';
@@ -13,11 +13,24 @@ type WhiteBorderedProps = {
 const minContainerHeight = Dimensions.get("window").height / 100 * 92
 
 const WhiteBorderedLayout: FC<WhiteBorderedProps> = ({ children, topContent, style, scrollable = true }) => {
+    const [refreshing, setRefreshing] = useState(false);
+    const onRefresh = () => {
+        setRefreshing(true);
+        setTimeout(() => {
+            setRefreshing(false);
+        }, 1000)
+
+    };
     return (
         <View style={styles.baseView}>
             {
                 scrollable ?
-                    <IOScrollView nestedScrollEnabled={true} showsVerticalScrollIndicator={false} contentContainerStyle={styles.scrollContainer} style={cs.flexOne}>
+                    <IOScrollView refreshControl={
+                        <RefreshControl
+                            refreshing={refreshing}
+                            onRefresh={onRefresh}
+                        />
+                    } nestedScrollEnabled={true} showsVerticalScrollIndicator={false} contentContainerStyle={styles.scrollContainer} style={cs.flexOne}>
                         <View style={styles.containerWrapperScroll}>
                             {topContent}
                             <View style={[styles.whiteContainer, style]}>
@@ -31,7 +44,7 @@ const WhiteBorderedLayout: FC<WhiteBorderedProps> = ({ children, topContent, sty
                         <View style={styles.containerWrapperScroll}>
                             {topContent}
                             <View style={[styles.whiteContainer, style]}>
-                                <AppContainer style={{flex: 1}}>
+                                <AppContainer style={{ flex: 1 }}>
                                     {children}
                                 </AppContainer>
                             </View>

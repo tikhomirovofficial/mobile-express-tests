@@ -23,7 +23,19 @@ const initialState: BonusesSliceData = {
         chart: true
     },
     chartData: {
-        labels: [],
+        labels: ["Янв",
+            "Фев",
+            "Мар",
+            "Апр",
+            "Май",
+            "Июн",
+            "Июл",
+            "Авг",
+            "Сен",
+            "Окт",
+            "Ноя",
+            "Дек"
+        ],
         datasets: [
             {
                 data: []
@@ -35,30 +47,30 @@ const initialState: BonusesSliceData = {
 export const getChartBonusesData = createAsyncThunk(
     'bonuses/chart/get',
     async (_, { dispatch }) => {
-        // const res: AxiosResponse<BonusesDiagramGetRes> = await handleTokenRefreshedRequest(BonusesApi.GetDiagram)
-        // console.log(res.data);
-        // return res.data
-        return new Promise<BonusesDiagramGetRes>((res, rej) => {
-            setTimeout(() => {
-                res({
-                    status: true,
-                    bonuses: {
-                        "Янв": 0,
-                        "Фев": 0,
-                        "Мар": 0,
-                        "Апр": 0,
-                        "Май": 0,
-                        "Июн": 0,
-                        "Июл": 0,
-                        "Авг": 0,
-                        "Сен": 0,
-                        "Окт": 0,
-                        "Ноя": 0,
-                        "Дек": 0,
-                    },
-                })
-            }, 1000)
-        })
+        const res: AxiosResponse<BonusesDiagramGetRes> = await handleTokenRefreshedRequest(BonusesApi.GetDiagram)
+        console.log(res.data);
+        return res.data
+        // return new Promise<BonusesDiagramGetRes>((res, rej) => {
+        //     setTimeout(() => {
+        //         res({
+        //             status: true,
+        //             bonuses: [
+        //                 1,
+        //                 123,
+        //                 4234,
+        //                 2342,
+        //                 304,
+        //                 897,
+        //                 2485,
+        //                 2949,
+        //                 2348,
+        //                 2155,
+        //                 230,
+        //                 3432
+        //             ]
+        //         })
+        //     }, 1000)
+        // })
     }
 )
 
@@ -74,17 +86,13 @@ export const BonusesSlice = createSlice({
             state.loadings.chart = true
         })
         builder.addCase(getChartBonusesData.fulfilled, (state, action) => {
-            const months = Object.keys(action.payload.bonuses)
             const bonuses_values = Object.values(action.payload.bonuses)
-
-            state.chartData.labels = months
             state.chartData.datasets[0].data = bonuses_values
             state.loadings.chart = false
         })
         builder.addCase(getChartBonusesData.rejected, (state, action) => {
             state.loadings.chart = false
         })
-
     },
 })
 

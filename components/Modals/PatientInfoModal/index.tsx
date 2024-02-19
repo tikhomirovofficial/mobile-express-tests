@@ -28,6 +28,8 @@ const PatientInfoModal: FC<NavProps> = ({ navigation }) => {
     const { patientInfoModal, patientOrderInfoModal, patientsModal } = useAppSelector(state => state.modals)
     const { patientInfo, loadings, parts, can_next } = useAppSelector(state => state.currentData)
 
+    console.log(patientInfo);
+    
     const handleModal = () => dispatch(handlePatientInfoModal())
 
     const handleToOrder = () => {
@@ -36,7 +38,7 @@ const PatientInfoModal: FC<NavProps> = ({ navigation }) => {
             first_name: patientInfo.data.first_name,
             last_name: patientInfo.data.last_name
         }))
-        alert(patientInfo.data.id)
+        // alert(patientInfo.data.id)
         handleModal()
         if (patientsModal) {
             dispatch(handlePatientsModal())
@@ -157,7 +159,7 @@ const PatientInfoModal: FC<NavProps> = ({ navigation }) => {
 
                                     {
                                         loadings.patient_orders ?
-                                            Array(3).fill("").map(item => (
+                                            Array(3).fill("").map(_ => (
                                                 <SkeletonView height={100} width={"100%"} />
                                             )) :
                                             patientInfo.orders.length > 0 ?

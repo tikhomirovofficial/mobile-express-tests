@@ -52,6 +52,7 @@ const Main: FC<NavProps> = ({ navigation }) => {
 
     return (
         <View
+
             style={{ flex: 1 }}
         >
             <WhiteBorderedLayout style={{

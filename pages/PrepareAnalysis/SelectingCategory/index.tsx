@@ -28,7 +28,7 @@ const SelectingCategory: FC<NavProps> = ({ navigation }) => {
     const [searchVal, setSearchVal] = useState("")
     const defferedSearchVal = useDeferred(searchVal, 100)
 
-    
+
     const patient = useAppSelector(state => state.order.patientData)
     console.log(patient);
     const categories = useAppSelector(state => state.categories.items)
@@ -49,7 +49,7 @@ const SelectingCategory: FC<NavProps> = ({ navigation }) => {
     }
 
     useEffect(() => {
-        dispatch(getCategories({title: defferedSearchVal}))
+        dispatch(getCategories({ title: defferedSearchVal }))
     }, [defferedSearchVal])
 
     useEffect(() => {
@@ -125,10 +125,9 @@ const SelectingCategory: FC<NavProps> = ({ navigation }) => {
                         <ButtonYellow handlePress={toCart}>
                             <View style={[cs.fRow, cs.fAlCenter, cs.spaceS]}>
                                 <Text style={[cs.fzM, cs.yellowBtnText]}>Корзина</Text>
-                                {14 > 0 ? <View style={cs.count}>
-                                    <Text style={cs.countText}>{cart.items.length}</Text>
+                                {cart.items.length > 0 ? <View style={cs.count}>
+                                    <Text style={[cs.countText, fs.montR]}>{cart.items.length}</Text>
                                 </View> : null}
-
                             </View>
                         </ButtonYellow>
                     </View>

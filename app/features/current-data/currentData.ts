@@ -14,6 +14,9 @@ import { PatientByIdReq, PatientByIdRes } from "../../../types/api/patients.api.
 import { PatientsApi } from "../../../http/api/patients.api";
 
 type CurrentData = {
+    errs: {
+        patient: string
+    }
     can_next: {
         patients_orders: boolean,
     }
@@ -40,6 +43,9 @@ type CurrentData = {
 }
 
 const initialState: CurrentData = {
+    errs: {
+        patient: ""
+    },
     parts: {
         patients_orders: 0
     },
@@ -164,6 +170,7 @@ export const getOrdersByPatientId = createAsyncThunk(
 export const getPatientById = createAsyncThunk(
     'patient/get',
     async (req: PatientByIdReq, { dispatch }) => {
+        alert(req.id)
         const res: AxiosResponse<PatientByIdRes> = await handleTokenRefreshedRequest(PatientsApi.GetById, req)
         console.log(res.data);
         return res.data
@@ -219,6 +226,7 @@ export const CurrentDataSlice = createSlice({
         },
         resetProductInfo: (state) => {
             state.productInfo = initialState.productInfo
+            state.errs.patient = initialState.errs.patient
         },
         resetPatientOrders: state => {
             state.patientInfo.orders = initialState.patientInfo.orders
@@ -266,8 +274,10 @@ export const CurrentDataSlice = createSlice({
         //PATIENT  BY ID
         builder.addCase(getPatientById.pending, (state, action) => {
             state.loadings.patient_info = true
+            state.errs.patient = initialState.errs.patient
         })
         builder.addCase(getPatientById.fulfilled, (state, action) => {
+            console.log(action.payload);
             state.patientInfo.data = action.payload.pacient
             state.loadings.patient_info = false
         })

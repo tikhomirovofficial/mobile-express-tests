@@ -43,116 +43,114 @@ const Profile: FC<NavProps> = ({ navigation }) => {
 
     return (
         <>
-            <Animated.ScrollView>
-                <WhiteBorderedLayout style={{
-                    paddingTop: 32
-                }}>
-                    <View style={[cs.fColumn, cs.spaceXXL]}>
-                        <View style={[cs.fCenterCol,]}>
-                            <View style={[cs.spaceM, cs.fAlCenter, styles.profileInfo]}>
-                                <SkeletonContainer>
-                                    {
-                                        profile.loadings.profile ?
-                                            <SkeletonView circle height={styles.avatarBlock.height} width={styles.avatarBlock.width} /> : <View style={[styles.avatarBlock, cs.circle, cs.fCenterCol]}>
-                                                <PhotoIcon />
-                                            </View>
-                                    }
-                                    {
-                                        profile.loadings.profile ?
-                                            <SkeletonView height={50} width={180} /> :
-                                            <Text style={[cs.fwBold, cs.fzXL, cs.txtCenter]}>
-                                                {profile.data.first_name} {profile.data.last_name} {profile.data.subname}
-                                            </Text>
-                                    }
-                                    {
-                                        profile.loadings.profile ?
-                                            <SkeletonView height={30} width={110} /> :
-                                            <View style={[styles.bonuses, cs.bgYellow, cs.fAlCenter, cs.fRow, cs.spaceS, cs.circle]}>
-                                                <HeartIcon />
-                                                <Text style={[cs.fwSemi, cs.colorDark]}>{formatBonus(profile.data.bonus)}</Text>
-                                            </View>
-                                    }
-                                </SkeletonContainer>
-                            </View>
-                        </View>
-                        <View style={[cs.fColumn, cs.spaceM]}>
-                            <View style={[cs.fRowBetw, cs.spaceM, { flexWrap: "wrap" }]}>
-                                <TouchableOpacity onPress={handleProfileDataModal}
-                                    style={[styles.profileHubItem, cs.wBlockShadow, cs.fAlCenter, cs.flexOne]}>
-                                    <View style={[styles.profileItemIcon, cs.rootBg, cs.circle, cs.fCenterCol]}>
-                                        <ProfileIcon />
-                                    </View>
-                                    <View style={[cs.fAlCenter]}>
-                                        <Text style={[cs.fzS, fs.montR, cs.txtCenter, cs.fwMedium]}>Личные данные</Text>
-                                        <Text style={[cs.fzXS, fs.montR, cs.txtCenter, cs.colorGray]}>ФИО, пол, фото</Text>
-                                    </View>
-                                </TouchableOpacity>
-                                <TouchableOpacity onPress={handleFinances}
-                                    style={[styles.profileHubItem, cs.wBlockShadow, cs.fAlCenter, cs.flexOne]}>
-                                    <View style={[styles.profileItemIcon, cs.rootBg, cs.circle, cs.fCenterCol]}>
-                                        <WalletIcon />
-                                    </View>
-                                    <View style={[cs.fAlCenter]}>
-                                        <Text style={[cs.fzS, fs.montR, cs.txtCenter, cs.fwMedium]}>Финансы</Text>
-                                        <Text style={[cs.fzXS, fs.montR, cs.txtCenter, cs.colorGray]}>Бонусы и
-                                            реквизиты</Text>
-                                    </View>
-
-                                </TouchableOpacity>
-                                <TouchableOpacity onPress={handlePatients}
-                                    style={[styles.profileHubItem, cs.wBlockShadow, cs.fAlCenter, cs.flexOne]}>
-                                    <View style={[styles.profileItemIcon, cs.rootBg, cs.circle, cs.fCenterCol]}>
-                                        <ProfilesIcon />
-                                    </View>
-                                    <View style={[cs.fAlCenter]}>
-                                        <Text style={[cs.fzS, fs.montR, cs.txtCenter, cs.fwMedium]}>Мои пациенты</Text>
-                                        <Text style={[cs.fzXS, fs.montR, cs.txtCenter, cs.colorGray]}>Список ваших
-                                            пациентов</Text>
-                                    </View>
-
-                                </TouchableOpacity>
-                                <TouchableOpacity
-                                    onPress={handleAbout}
-                                    style={[styles.profileHubItem, cs.wBlockShadow, cs.fAlCenter, cs.flexOne]}>
-                                    <View style={[styles.profileItemIcon, cs.rootBg, cs.circle, cs.fCenterCol]}>
-                                        <Logo height={24} width={16} />
-                                    </View>
-                                    <View style={[cs.fAlCenter]}>
-                                        <Text style={[cs.fzS, fs.montR, cs.txtCenter, cs.fwMedium]}>О приложении</Text>
-                                        <Text style={[cs.fzXS, fs.montR, cs.txtCenter, cs.colorGray]}>Правовая
-                                            информация</Text>
-                                    </View>
-                                </TouchableOpacity>
-                                <TouchableOpacity onPress={() => { }}
-                                    style={[styles.profileHubItem, cs.wBlockShadow, cs.fAlCenter, cs.flexOne]}>
-                                    <View style={[styles.profileItemIcon, cs.rootBg, cs.circle, cs.fCenterCol]}>
-                                        <ThemeIcon />
-                                    </View>
-                                    <View style={[cs.fAlCenter]}>
-                                        <Text style={[cs.fzS, fs.montR, cs.txtCenter, cs.fwMedium, { paddingBottom: 8 }]}>Включить тёмную тему</Text>
-                                    </View>
-
-                                </TouchableOpacity>
-                                <TouchableOpacity
-                                    onPress={handleLogout}
-                                    style={[styles.profileHubItem, cs.wBlockShadow, cs.fAlCenter, cs.flexOne]}>
-                                    <View style={[styles.profileItemIcon, cs.rootBg, cs.circle, cs.fCenterCol]}>
-                                        <LogoutIcon />
-                                    </View>
-                                    <View style={[cs.fAlCenter]}>
-                                        <Text style={[cs.fzS, fs.montR, cs.txtCenter, cs.fwMedium, cs.colorRed, { paddingBottom: 8 }]}>Выйти из приложения</Text>
-
-                                    </View>
-                                </TouchableOpacity>
-                            </View>
+            <WhiteBorderedLayout style={{
+                paddingTop: 32
+            }}>
+                <View style={[cs.fColumn, cs.spaceXXL]}>
+                    <View style={[cs.fCenterCol,]}>
+                        <View style={[cs.spaceM, cs.fAlCenter, styles.profileInfo]}>
+                            <SkeletonContainer>
+                                {
+                                    profile.loadings.profile ?
+                                        <SkeletonView circle height={styles.avatarBlock.height} width={styles.avatarBlock.width} /> : <View style={[styles.avatarBlock, cs.circle, cs.fCenterCol]}>
+                                            <PhotoIcon />
+                                        </View>
+                                }
+                                {
+                                    profile.loadings.profile ?
+                                        <SkeletonView height={50} width={180} /> :
+                                        <Text style={[cs.fwBold, cs.fzXL, cs.txtCenter]}>
+                                            {profile.data.first_name} {profile.data.last_name} {profile.data.subname}
+                                        </Text>
+                                }
+                                {
+                                    profile.loadings.profile ?
+                                        <SkeletonView height={30} width={110} /> :
+                                        <View style={[styles.bonuses, cs.bgYellow, cs.fAlCenter, cs.fRow, cs.spaceS, cs.circle]}>
+                                            <HeartIcon />
+                                            <Text style={[cs.fwSemi, cs.colorDark]}>{formatBonus(profile.data.bonus)}</Text>
+                                        </View>
+                                }
+                            </SkeletonContainer>
                         </View>
                     </View>
-                </WhiteBorderedLayout>
-                {patientsModal ? <PatientsModal navigation={navigation} /> : null}
-                {profileEditModal ? <ProfileEditModal /> : null}
-                {aboutAppModal ? <AboutAppModal /> : null}
-                {ordersFinancesModal ? <OrdersFinancesModal /> : null}
-            </Animated.ScrollView>
+                    <View style={[cs.fColumn, cs.spaceM]}>
+                        <View style={[cs.fRowBetw, cs.spaceM, { flexWrap: "wrap" }]}>
+                            <TouchableOpacity onPress={handleProfileDataModal}
+                                style={[styles.profileHubItem, cs.wBlockShadow, cs.fAlCenter, cs.flexOne]}>
+                                <View style={[styles.profileItemIcon, cs.rootBg, cs.circle, cs.fCenterCol]}>
+                                    <ProfileIcon />
+                                </View>
+                                <View style={[cs.fAlCenter]}>
+                                    <Text style={[cs.fzS, fs.montR, cs.txtCenter, cs.fwMedium]}>Личные данные</Text>
+                                    <Text style={[cs.fzXS, fs.montR, cs.txtCenter, cs.colorGray]}>ФИО, пол, фото</Text>
+                                </View>
+                            </TouchableOpacity>
+                            <TouchableOpacity onPress={handleFinances}
+                                style={[styles.profileHubItem, cs.wBlockShadow, cs.fAlCenter, cs.flexOne]}>
+                                <View style={[styles.profileItemIcon, cs.rootBg, cs.circle, cs.fCenterCol]}>
+                                    <WalletIcon />
+                                </View>
+                                <View style={[cs.fAlCenter]}>
+                                    <Text style={[cs.fzS, fs.montR, cs.txtCenter, cs.fwMedium]}>Финансы</Text>
+                                    <Text style={[cs.fzXS, fs.montR, cs.txtCenter, cs.colorGray]}>Бонусы и
+                                        реквизиты</Text>
+                                </View>
+
+                            </TouchableOpacity>
+                            <TouchableOpacity onPress={handlePatients}
+                                style={[styles.profileHubItem, cs.wBlockShadow, cs.fAlCenter, cs.flexOne]}>
+                                <View style={[styles.profileItemIcon, cs.rootBg, cs.circle, cs.fCenterCol]}>
+                                    <ProfilesIcon />
+                                </View>
+                                <View style={[cs.fAlCenter]}>
+                                    <Text style={[cs.fzS, fs.montR, cs.txtCenter, cs.fwMedium]}>Мои пациенты</Text>
+                                    <Text style={[cs.fzXS, fs.montR, cs.txtCenter, cs.colorGray]}>Список ваших
+                                        пациентов</Text>
+                                </View>
+
+                            </TouchableOpacity>
+                            <TouchableOpacity
+                                onPress={handleAbout}
+                                style={[styles.profileHubItem, cs.wBlockShadow, cs.fAlCenter, cs.flexOne]}>
+                                <View style={[styles.profileItemIcon, cs.rootBg, cs.circle, cs.fCenterCol]}>
+                                    <Logo height={24} width={16} />
+                                </View>
+                                <View style={[cs.fAlCenter]}>
+                                    <Text style={[cs.fzS, fs.montR, cs.txtCenter, cs.fwMedium]}>О приложении</Text>
+                                    <Text style={[cs.fzXS, fs.montR, cs.txtCenter, cs.colorGray]}>Правовая
+                                        информация</Text>
+                                </View>
+                            </TouchableOpacity>
+                            <TouchableOpacity onPress={() => { }}
+                                style={[styles.profileHubItem, cs.wBlockShadow, cs.fAlCenter, cs.flexOne]}>
+                                <View style={[styles.profileItemIcon, cs.rootBg, cs.circle, cs.fCenterCol]}>
+                                    <ThemeIcon />
+                                </View>
+                                <View style={[cs.fAlCenter]}>
+                                    <Text style={[cs.fzS, fs.montR, cs.txtCenter, cs.fwMedium, { paddingBottom: 8 }]}>Включить тёмную тему</Text>
+                                </View>
+
+                            </TouchableOpacity>
+                            <TouchableOpacity
+                                onPress={handleLogout}
+                                style={[styles.profileHubItem, cs.wBlockShadow, cs.fAlCenter, cs.flexOne]}>
+                                <View style={[styles.profileItemIcon, cs.rootBg, cs.circle, cs.fCenterCol]}>
+                                    <LogoutIcon />
+                                </View>
+                                <View style={[cs.fAlCenter]}>
+                                    <Text style={[cs.fzS, fs.montR, cs.txtCenter, cs.fwMedium, cs.colorRed, { paddingBottom: 8 }]}>Выйти из приложения</Text>
+
+                                </View>
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+                </View>
+            </WhiteBorderedLayout>
+            {patientsModal ? <PatientsModal navigation={navigation} /> : null}
+            {profileEditModal ? <ProfileEditModal /> : null}
+            {aboutAppModal ? <AboutAppModal /> : null}
+            {ordersFinancesModal ? <OrdersFinancesModal /> : null}
         </>
     );
 };
