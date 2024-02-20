@@ -1,13 +1,14 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { CategoryApi } from "../../../types/entities/categories.types";
 import { CategoriesGetReq, CategoriesGetRes } from "../../../types/api/categories.api.types";
+import { Appearance } from "react-native";
 
 type SettingsSliceState = {
     theme: "light" | "dark"
 }
 
 const initialState: SettingsSliceState = {
-    theme: "light"
+    theme: Appearance.getColorScheme() || "light"
 }
 
 export const SettingsSlice = createSlice({
@@ -22,4 +23,4 @@ export const SettingsSlice = createSlice({
 })
 
 export const { setTheme } = SettingsSlice.actions
-export const categoriesReducer = SettingsSlice.reducer
+export const settingsReducer = SettingsSlice.reducer

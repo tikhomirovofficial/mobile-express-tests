@@ -1,5 +1,5 @@
 import { FC, useState, useEffect } from "react";
-import { Keyboard, View, ActivityIndicator, Text } from "react-native";
+import { Keyboard, View, ActivityIndicator, Text, TouchableOpacity } from "react-native";
 import Animated from "react-native-reanimated";
 import { useAppDispatch, useAppSelector } from "../../../app/base/hooks";
 import { sendAuthPhone, resetLoginPhoneStatus, handleLoginForm } from "../../../app/features/login/loginSlice";
@@ -12,6 +12,7 @@ import { phoneMask } from "../../../rules/masks.rules";
 import { NavProps } from "../../../types/common.types";
 import { checkPatientExists, handleCreateInvitingForm } from "../../../app/features/inviting/invitingSlice";
 import { extractDigits } from "../../../utils/normalizePhone";
+import { ArrowLeft } from "../../../icons";
 
 
 
@@ -20,7 +21,10 @@ const CheckExistsPatient: FC<NavProps> = ({ navigation }) => {
     const { already_exists, form } = useAppSelector(state => state.inviting)
     const [keyboardStatus, setKeyboardStatus] = useState(false);
     const disabledBtn = form.text_fields.phone.length < 11
-
+    
+    const toBackScreen = () => {
+        navigation.goBack()
+    }
     const handleCheckExistsPatient = () => {
         dispatch(checkPatientExists({ phone: extractDigits(form.text_fields.phone) }))
     }
@@ -58,8 +62,11 @@ const CheckExistsPatient: FC<NavProps> = ({ navigation }) => {
                 <WhiteBorderedLayout
                     topContent={
                         <AppContainer style={{ paddingBottom: 0 }}>
-                            <View style={[cs.fCenterCol]}>
-                                <Text style={[cs.fwSemi, cs.fwSemi, cs.fzXL]}>Приглашение пациента</Text>
+                            <View style={[cs.fRow, cs.spaceM, cs.fAlCenter]}>
+                                <TouchableOpacity onPress={toBackScreen}>
+                                    <ArrowLeft />
+                                </TouchableOpacity>
+                                <Text style={[cs.fwSemi, cs.fwSemi, cs.fzXL]}>Приглашение пациентов</Text>
                             </View>
                         </AppContainer>
                     }

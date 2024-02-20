@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import useFonts from "./hooks/useFonts";
-import { StyleSheet, Text, View, ScrollView, RefreshControl } from "react-native";
+import { StyleSheet, Text, View, ScrollView, RefreshControl, useColorScheme, Appearance } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import AppNavigator from "./navigation/AppNavigator";
 import { Logo } from './icons';
@@ -15,25 +15,17 @@ import { getHasProfile } from './app/features/profile/profileSlice';
 import { checkContactsPerm, checkMediaPerm, checkNotificationsPerm } from './app/features/permissions/permissionsSlice';
 import PatientInfoModal from './components/Modals/PatientInfoModal';
 import { deletePin } from './utils/storePin';
+import { setTheme } from './app/features/settings/settingsSlice';
 
 
 const Root = () => {
     const dispatch = useAppDispatch()
-
     const { token } = useAppSelector(state => state.login)
-    const { has_profile } = useAppSelector(state => state.profile)
     const { pin, alreadyBeen, faceId } = useAppSelector(state => state.access)
     const { notifications, media, contacts } = useAppSelector(state => state.permissions)
     const [fontsLoaded] = useFonts();
-    const [refreshing, setRefreshing] = React.useState(false);
     const allAccessesAndPermissionsDefined = !token.checking && !pin.checking && !alreadyBeen.checking && !notifications.checking && !contacts.checking && !media.checking
 
-    const onRefresh = React.useCallback(() => {
-        setRefreshing(true);
-        setTimeout(() => {
-            setRefreshing(false);
-        }, 2000);
-    }, []);
 
     useEffect(() => {
         if (allAccessesAndPermissionsDefined) {
@@ -68,6 +60,13 @@ const Root = () => {
         dispatch(checkNotificationsPerm())
         dispatch(checkContactsPerm())
         dispatch(checkMediaPerm())
+
+        const themeListener = Appearance.addChangeListener((e) => {
+            dispatch(setTheme(e.colorScheme || "light"))
+        })
+        return () => {
+            themeListener.remove()
+        }
     }, [])
 
     if (fontsLoaded && allAccessesAndPermissionsDefined) {

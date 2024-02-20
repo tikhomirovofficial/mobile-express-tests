@@ -26,12 +26,15 @@ import { SkeletonView } from '../../SkeletonView';
 import { getChartBonusesData } from '../../../app/features/bonuses/bonusesSlice';
 import { getAllPatients, incrementPatientsPart, resetAllPatients } from '../../../app/features/patients/patientsSlice';
 import { usePagination } from '../../../hooks/usePagination';
+import { useTheme } from '@react-navigation/native';
+import { useAppTheme } from '../../../hooks/useTheme';
 
 const BonusesModal = () => {
     const dispatch = useAppDispatch()
     const { bonusesModal, bonusesBottomSheet } = useAppSelector(state => state.modals)
     const patients = useAppSelector(state => state.patients)
     const bonuses = useAppSelector(state => state.bonuses)
+    const theme = useAppTheme()
 
     const [loadOrders, loadMore] = usePagination(
         () => { dispatch(getAllPatients({ part: patients.part })) },
@@ -86,7 +89,7 @@ const BonusesModal = () => {
                                         <SkeletonView width={"100%"} height={170} />
                                     </SkeletonContainer>
                                     :
-                                    <View style={[cs.wBlockShadow, cs.fCenterCol, { borderRadius: 16, paddingVertical: 10 }]}>
+                                    <View style={[cs.wBlockShadow, cs.fCenterCol, { borderRadius: 16, paddingVertical: 10, backgroundColor: theme.chart}]}>
                                         <BonusesChart />
                                     </View>
                                 }

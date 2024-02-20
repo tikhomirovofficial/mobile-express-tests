@@ -5,6 +5,8 @@ import { cs } from "../../common/styles";
 import { IOScrollView } from 'react-native-intersection-observer';
 import { useRefresh } from '../../hooks/useRefresh';
 import { useAppSelector } from '../../app/base/hooks';
+import { useTheme } from '@react-navigation/native';
+import { useAppTheme } from '../../hooks/useTheme';
 
 type WhiteBorderedProps = {
     children: ReactNode,
@@ -17,6 +19,7 @@ type WhiteBorderedProps = {
 const minContainerHeight = Dimensions.get("window").height / 100 * 92
 
 const WhiteBorderedLayout: FC<WhiteBorderedProps> = ({ children, topContent, style, scrollable = true, onRefresh, refreshing = false }) => {
+    const theme = useAppTheme()
     const { modals } = useAppSelector(state => state)
     const modalsKeys = Object.keys(modals) as [keyof typeof modals]
     const openedSome = modalsKeys.some(key => modals[key])
@@ -33,7 +36,7 @@ const WhiteBorderedLayout: FC<WhiteBorderedProps> = ({ children, topContent, sty
                     } nestedScrollEnabled={true} showsVerticalScrollIndicator={false} contentContainerStyle={styles.scrollContainer} style={cs.flexOne}>
                         <View style={styles.containerWrapperScroll}>
                             {topContent}
-                            <View style={[styles.whiteContainer, style]}>
+                            <View style={[styles.whiteContainer, style, { backgroundColor: theme.borderedBg}]}>
                                 <AppContainer>
                                     {children}
                                 </AppContainer>
@@ -64,7 +67,7 @@ const styles = StyleSheet.create({
     },
 
     baseView: {
-        minHeight: "100%"
+        minHeight: "100%",
     },
     containerWrapper: {
         flex: 1,

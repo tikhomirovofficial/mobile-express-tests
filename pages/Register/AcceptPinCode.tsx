@@ -11,9 +11,12 @@ import { BackspaceIcon, CloseIcon } from '../../icons';
 import { checkValidEnteredPin, resetAcceptedErr } from '../../app/features/access/accessSlice';
 import * as Haptics from 'expo-haptics';
 import { vibrate } from '../../utils/device/vibrate';
+import { useTheme } from '@react-navigation/native';
+import { useAppTheme } from '../../hooks/useTheme';
 
 const AcceptPinCode: FC<NavProps> = ({ navigation }) => {
     const dispatch = useAppDispatch()
+    const theme = useAppTheme()
     const [pin, setPin] = useState<string[]>(["", "", "", ""])
     const [keyboardStatus, setKeyboardStatus] = useState(false);
     const { error } = useAppSelector(state => state.access.accepted)

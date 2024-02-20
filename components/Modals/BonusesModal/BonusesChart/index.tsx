@@ -4,6 +4,8 @@ import { containerStyles } from '../../../AppContainer'
 import { ChartConfig } from 'react-native-chart-kit/dist/HelperTypes';
 import { cs } from '../../../../common/styles';
 import { useAppSelector } from '../../../../app/base/hooks';
+import { Appearance } from 'react-native';
+import { useAppTheme } from '../../../../hooks/useTheme';
 
 const data = {
     labels: [
@@ -27,49 +29,51 @@ const data = {
     ]
 };
 
-const chartConfig: ChartConfig = {
-    backgroundColor: 'black',
-    backgroundGradientFrom: 'white',
-    backgroundGradientTo: 'white',
-    style: {
-        backgroundColor: "red",
-        flex: 1,
-
-    },
-
-    color: (opacity) => `#36CACB`, // Цвет линий графика
-    strokeWidth: 2, // optional, default 3
-    barPercentage: 0.4,
-    scrollableInfoOffset: 0,
-    barRadius: 2,
-    fillShadowGradientFromOpacity: 1,
-    fillShadowGradientToOpacity: 1,
-    scrollableDotFill: "blue",
-    scrollableDotStrokeWidth: 1,
-
-    propsForBackgroundLines: {
-        stroke: "#F0F0F0"
-    },
-    propsForDots: {
-        stroke: "red"
-    },
-    propsForHorizontalLabels: {
-        fill: cs.colorGray.color,
-        fontSize: 8,
-    },
-    propsForVerticalLabels: {
-        fill: cs.colorGray.color,
-        fontSize: 6,
-    },
-    decimalPlaces: 0,
-    useShadowColorFromDataset: false, // optional,
-    labelColor: () => "red",
-    scrollableDotStrokeColor: "green",
-
-};
 
 export const BonusesChart = () => {
     const { chartData } = useAppSelector(state => state.bonuses)
+    const theme = useAppTheme()
+    const chartConfig: ChartConfig = {
+        backgroundColor: theme.chart,
+        backgroundGradientFrom: theme.chart,
+        backgroundGradientTo: theme.chart,
+        style: {
+            backgroundColor: "red",
+            flex: 1,
+
+        },
+
+        color: (opacity) => `#36CACB`, // Цвет линий графика
+        strokeWidth: 2, // optional, default 3
+        barPercentage: 0.4,
+        scrollableInfoOffset: 0,
+        barRadius: 2,
+        fillShadowGradientFromOpacity: 1,
+        fillShadowGradientToOpacity: 1,
+        scrollableDotFill: "blue",
+        scrollableDotStrokeWidth: 1,
+
+        propsForBackgroundLines: {
+            stroke: theme.theme_chart_bg_lines
+        },
+        propsForDots: {
+            stroke: "red"
+        },
+        propsForHorizontalLabels: {
+            fill: cs.colorGray.color,
+            fontSize: 8,
+        },
+        propsForVerticalLabels: {
+            fill: cs.colorGray.color,
+            fontSize: 6,
+        },
+        decimalPlaces: 0,
+        useShadowColorFromDataset: false, // optional,
+        labelColor: () => "red",
+        scrollableDotStrokeColor: "green",
+
+    };
+
     return (
         <BarChart
             segments={5}
@@ -90,7 +94,8 @@ export const BonusesChart = () => {
             verticalLabelRotation={0}
             style={{
                 paddingLeft: 34,
-                paddingRight: 34
+                paddingRight: 34,
+                borderRadius: 10
 
             }}
         />

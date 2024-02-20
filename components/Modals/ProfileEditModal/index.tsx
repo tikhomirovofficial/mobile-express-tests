@@ -84,8 +84,8 @@ const ProfileEditModal = () => {
                             </View>
                         </ScrollView>
 
-                        <ButtonYellow disabled={formAndDataEqual} handlePress={() => { }}>
-                            <Text style={[cs.fzM, cs.yellowBtnText]}>Сохранить</Text>
+                        <ButtonYellow isFilled={true} disabled={formAndDataEqual} handlePress={() => { }}>
+                            <Text style={[cs.fzM, cs.yellowBtnText, cs.colorBlack]}>Сохранить</Text>
                         </ButtonYellow>
                     </View>
 

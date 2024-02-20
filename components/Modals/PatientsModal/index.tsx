@@ -37,7 +37,7 @@ const PatientsModal: FC<NavProps> = ({ navigation }) => {
 
     const toInviting = () => {
         handleModal()
-        navigation.navigate('inviting')
+        navigation.navigate('inviting_exists')
     }
 
     const handlePatientInfo = (id: number) => {

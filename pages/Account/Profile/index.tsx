@@ -35,7 +35,7 @@ const Profile: FC<NavProps> = ({ navigation }) => {
     const handlePatients = () => dispatch(handlePatientsModal())
 
     const handleAbout = () => dispatch(handleAboutModal())
-
+    const handleTheme = () => alert("Функция временно недоступна.")
     const handleFinances = () => dispatch(handleOrdersFinancesModal())
 
     const handleLogout = () => {
@@ -61,7 +61,7 @@ const Profile: FC<NavProps> = ({ navigation }) => {
                                     profile.loadings.profile ?
                                         <SkeletonView height={50} width={180} /> :
                                         <Text style={[cs.fwBold, cs.fzXL, cs.txtCenter]}>
-                                            {profile.data.first_name} {profile.data.last_name} {profile.data.subname}
+                                            {profile.data.last_name} {profile.data.first_name} {profile.data.subname}
                                         </Text>
                                 }
                                 {
@@ -123,7 +123,7 @@ const Profile: FC<NavProps> = ({ navigation }) => {
                                         информация</Text>
                                 </View>
                             </TouchableOpacity>
-                            <TouchableOpacity onPress={() => { }}
+                            <TouchableOpacity onPress={handleTheme}
                                 style={[styles.profileHubItem, cs.wBlockShadow, cs.fAlCenter, cs.flexOne]}>
                                 <View style={[styles.profileItemIcon, cs.rootBg, cs.circle, cs.fCenterCol]}>
                                     <ThemeIcon />

@@ -14,6 +14,7 @@ import { loginReducer } from '../features/login/loginSlice';
 import { accessReducer } from '../features/access/accessSlice';
 import { permissionsReducer } from '../features/permissions/permissionsSlice';
 import { invitingReducer } from '../features/inviting/invitingSlice';
+import { settingsReducer } from '../features/settings/settingsSlice';
 
 export const store = configureStore({
     reducer: {
@@ -31,7 +32,8 @@ export const store = configureStore({
         access: accessReducer,
         login: loginReducer,
         permissions: permissionsReducer,
-        inviting: invitingReducer
+        inviting: invitingReducer,
+        settings: settingsReducer
     }
 })
 
