@@ -28,9 +28,7 @@ const SelectingCategory: FC<NavProps> = ({ navigation }) => {
     const [searchVal, setSearchVal] = useState("")
     const defferedSearchVal = useDeferred(searchVal, 100)
 
-
     const patient = useAppSelector(state => state.order.patientData)
-    console.log(patient);
     const categories = useAppSelector(state => state.categories.items)
     const loadings = useAppSelector(state => state.categories.loadings)
     const patientFullName = `${patient?.first_name || ""} ${patient?.last_name || ""} ${patient?.first_name === undefined && patient?.last_name === undefined ? "Пациент" : ""}`
@@ -137,6 +135,7 @@ const SelectingCategory: FC<NavProps> = ({ navigation }) => {
 
     );
 };
+
 const styles = StyleSheet.create({
     searchInputBlock: {
         backgroundColor: cs.rootBg.backgroundColor,

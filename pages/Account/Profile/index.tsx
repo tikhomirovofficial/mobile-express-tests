@@ -20,10 +20,13 @@ import { logout } from '../../../app/features/login/loginSlice';
 import { resetAccess } from '../../../app/features/access/accessSlice';
 import { resetProfileData } from '../../../app/features/profile/profileSlice';
 import { formatBonus } from '../../../utils/formatBonusesString';
+import { usePagination } from '../../../hooks/usePagination';
+import { useRefresh } from '../../../hooks/useRefresh';
 
 
 const Profile: FC<NavProps> = ({ navigation }) => {
     const dispatch = useAppDispatch()
+    const { refreshing, sendRefresh } = useRefresh()
     const profile = useAppSelector(state => state.profile)
     const { ordersFinancesModal, patientsModal, aboutAppModal, profileEditModal } = useAppSelector(state => state.modals)
 
@@ -43,9 +46,7 @@ const Profile: FC<NavProps> = ({ navigation }) => {
 
     return (
         <>
-            <WhiteBorderedLayout style={{
-                paddingTop: 32
-            }}>
+            <WhiteBorderedLayout onRefresh={sendRefresh} refreshing={refreshing} style={{ paddingTop: 32 }}>
                 <View style={[cs.fColumn, cs.spaceXXL]}>
                     <View style={[cs.fCenterCol,]}>
                         <View style={[cs.spaceM, cs.fAlCenter, styles.profileInfo]}>

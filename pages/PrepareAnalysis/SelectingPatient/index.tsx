@@ -66,7 +66,7 @@ const SelectingPatient: FC<NavProps> = ({ navigation }) => {
     const toSelectCategory = () => navigation.navigate("order_category")
 
     const openNewPatient = () => {
-        navigation.navigate("inviting")
+        navigation.navigate("inviting_exists")
     }
 
     useEffect(() => {

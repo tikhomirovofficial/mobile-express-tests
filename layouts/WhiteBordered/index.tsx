@@ -3,33 +3,33 @@ import { Dimensions, ScrollView, StyleSheet, View, ViewStyle, Text, RefreshContr
 import AppContainer from "../../components/AppContainer";
 import { cs } from "../../common/styles";
 import { IOScrollView } from 'react-native-intersection-observer';
+import { useRefresh } from '../../hooks/useRefresh';
+import { useAppSelector } from '../../app/base/hooks';
 
 type WhiteBorderedProps = {
     children: ReactNode,
     scrollable?: boolean
     style?: ViewStyle | ViewStyle[],
-    topContent?: ReactNode
+    topContent?: ReactNode,
+    onRefresh?: () => any,
+    refreshing?: boolean
 }
 const minContainerHeight = Dimensions.get("window").height / 100 * 92
 
-const WhiteBorderedLayout: FC<WhiteBorderedProps> = ({ children, topContent, style, scrollable = true }) => {
-    const [refreshing, setRefreshing] = useState(false);
-    const onRefresh = () => {
-        setRefreshing(true);
-        setTimeout(() => {
-            setRefreshing(false);
-        }, 1000)
+const WhiteBorderedLayout: FC<WhiteBorderedProps> = ({ children, topContent, style, scrollable = true, onRefresh, refreshing = false }) => {
+    const { modals } = useAppSelector(state => state)
+    const modalsKeys = Object.keys(modals) as [keyof typeof modals]
+    const openedSome = modalsKeys.some(key => modals[key])
 
-    };
     return (
         <View style={styles.baseView}>
             {
                 scrollable ?
                     <IOScrollView refreshControl={
-                        <RefreshControl
+                        onRefresh && !openedSome ? <RefreshControl
                             refreshing={refreshing}
                             onRefresh={onRefresh}
-                        />
+                        /> : undefined
                     } nestedScrollEnabled={true} showsVerticalScrollIndicator={false} contentContainerStyle={styles.scrollContainer} style={cs.flexOne}>
                         <View style={styles.containerWrapperScroll}>
                             {topContent}

@@ -111,7 +111,7 @@ const CreatePatient: FC<NavProps> = ({ navigation }) => {
                                                     onChange={val => dispatch(handleCreateInvitingForm({ key: "subname", val }))}
                                                 />
                                             </View>
-                                            <View style={[cs.fColumn, cs.spaceM]}>
+                                            {/* <View style={[cs.fColumn, cs.spaceM]}>
                                                 <Text style={[cs.fzS, fs.montR, cs.fwMedium]} aria-label="Label for Username"
                                                     nativeID="phone">Номер телефона</Text>
                                                 <InputField
@@ -122,7 +122,7 @@ const CreatePatient: FC<NavProps> = ({ navigation }) => {
                                                     idInput={"phone"}
                                                     onChange={val => dispatch(handleCreateInvitingForm({ key: "phone", val }))}
                                                 />
-                                            </View>
+                                            </View> */}
                                             <View style={[cs.fColumn, cs.spaceM]}>
                                                 <Text style={[cs.fzS, fs.montR, cs.fwMedium]} aria-label="Label for Username"
                                                     nativeID="dateDob">Дата рождения</Text>

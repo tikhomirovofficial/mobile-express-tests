@@ -20,6 +20,15 @@ export type PatientsBySearchRes = {
     pacients: PatientApi[]
 } & ResponseStatus & HasNextPart
 
+//Проверить существование пациента
+export type GetIsExistsPatientReq = {
+    phone: string
+}
+export type GetIsExistsPatientRes = {
+    exists: boolean
+} & ResponseStatus
+
+
 // Приглашение пациента
 export type InvitingCreateReq = {
     dob: string

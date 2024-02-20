@@ -3,7 +3,7 @@ import { GetAllOrdersReq, GetAllOrdersRes, OrdersByPatientGetRes } from "../../t
 import { authApi } from "../instances";
 import { ORDERS_PATHS, PATIENTS_PATHS, USER_PATHS } from "../paths/index.paths";
 import { ConvertDataToGetParams } from "../../utils/ConvertDataToGetParams";
-import { InvitingCreateReq, InvitingCreateRes, PatientByIdReq, PatientByIdRes, PatientsBySearchReq, PatientsBySearchRes, PatientsDoctorGetReq, PatientsDoctorGetRes } from "../../types/api/patients.api.types";
+import { GetIsExistsPatientReq, GetIsExistsPatientRes, InvitingCreateReq, InvitingCreateRes, PatientByIdReq, PatientByIdRes, PatientsBySearchReq, PatientsBySearchRes, PatientsDoctorGetReq, PatientsDoctorGetRes } from "../../types/api/patients.api.types";
 
 export class PatientsApi {
     static async GetAll(req: PatientsDoctorGetReq): Promise<AxiosResponse<PatientsDoctorGetRes>> {
@@ -29,6 +29,13 @@ export class PatientsApi {
     }
     static async GetById(req: PatientByIdReq): Promise<AxiosResponse<PatientByIdRes>> {
         const res: AxiosResponse<PatientByIdRes> = await authApi.get(`${PATIENTS_PATHS.GET_PATIENT_BY_ID}${ConvertDataToGetParams(req)}`);
+        if (!res.data) {
+            throw res
+        }
+        return res
+    }
+    static async CheckExists(req: GetIsExistsPatientReq): Promise<AxiosResponse<GetIsExistsPatientRes>> {
+        const res: AxiosResponse<GetIsExistsPatientRes> = await authApi.get(`${PATIENTS_PATHS.CHECK_EXISTS_PATIENT}${ConvertDataToGetParams(req)}`);
         if (!res.data) {
             throw res
         }

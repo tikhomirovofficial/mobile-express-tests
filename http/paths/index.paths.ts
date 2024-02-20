@@ -12,6 +12,7 @@ export const PATIENTS_PATHS = {
     GET_PATIENTS_SEARCH: "lk/get/pacient/search",
     GET_PATIENT_BY_ID: "lk/get/pacient/info",
     INVITE: "lk/get/pacient/invite",
+    CHECK_EXISTS_PATIENT: "lk/get/pacient/check/lk"
 }
 export const ORDERS_PATHS = {
     GET_ORDERS_BY_PATIENT: "order/get/pacient",

@@ -4,7 +4,7 @@ import { OrderApi } from "../../../types/entities/order.types";
 import { ProfileCreateReq, ProfileCreateRes } from "../../../types/api/user.api.types";
 import { EMAIL } from "../../../rules/masks.rules";
 import { InvitingTextFields } from "../../../types/entities/patients.types";
-import { InvitingCreateReq, InvitingCreateRes } from "../../../types/api/patients.api.types";
+import { GetIsExistsPatientReq, GetIsExistsPatientRes, InvitingCreateReq, InvitingCreateRes } from "../../../types/api/patients.api.types";
 import { correctFormDate } from "../../../utils/correctFormDate";
 import { PatientsApi } from "../../../http/api/patients.api";
 import { AxiosResponse } from "axios";
@@ -12,6 +12,12 @@ import { handleTokenRefreshedRequest } from "../../../utils/handleThunkAuth";
 
 
 type InvitingSliceState = {
+
+    already_exists: {
+        val: boolean | null
+        sending: boolean
+        err: string
+    }
     form: {
         success: boolean | null,
         sending: boolean
@@ -23,6 +29,11 @@ type InvitingSliceState = {
 }
 
 const initialState: InvitingSliceState = {
+    already_exists: {
+        val: null,
+        sending: false,
+        err: ""
+    },
     form: {
         success: null,
         sending: false,
@@ -46,6 +57,23 @@ export const createInviting = createAsyncThunk(
         console.log("Приглашение ответ: ", res.data);
         if (!res.status) {
             throw new Error("Не удалось добавить пациента!")
+        }
+        return res.data
+        // return new Promise<InvitingCreateRes>((res, rej) => {
+        //     setTimeout(() => {
+        //         res(resp)
+        //     }, 1000)
+        // })
+    }
+)
+export const checkPatientExists = createAsyncThunk(
+    'inviting/exists',
+    async (req: GetIsExistsPatientReq, { dispatch }) => {
+        const res: AxiosResponse<GetIsExistsPatientRes> = await handleTokenRefreshedRequest(PatientsApi.CheckExists, req)
+        console.log("exists res ", res.data);
+        
+        if (!res.status) {
+            throw new Error("Не удалось проверить наличие пациента!")
         }
         return res.data
         // return new Promise<InvitingCreateRes>((res, rej) => {
@@ -88,6 +116,7 @@ export const InvitingSlice = createSlice({
             state.form.success = false
         },
         resetCreateInvitingForm: state => {
+            state.already_exists = initialState.already_exists
             state.form.text_fields = initialState.form.text_fields
             state.form.gender = initialState.form.gender,
                 state.form.disabled = initialState.form.disabled,
@@ -95,6 +124,22 @@ export const InvitingSlice = createSlice({
         }
     },
     extraReducers: (builder) => {
+        //CHECK ALDERY PATIENT EXISTS
+        builder.addCase(checkPatientExists.pending, (state, action) => {
+            if (state.already_exists.err) {
+                state.already_exists.err = ""
+            }
+            state.already_exists.sending = true
+
+        })
+        builder.addCase(checkPatientExists.fulfilled, (state, action) => {
+            state.already_exists.sending = false
+            state.already_exists.val = action.payload.exists
+        })
+        builder.addCase(checkPatientExists.rejected, (state, action) => {
+            state.form.err = action.error.message || "Не удалось выполнить запрос."
+            state.already_exists.sending = false
+        })
         //INVITING CREATE
         builder.addCase(createInviting.pending, (state, action) => {
             state.form.sending = true

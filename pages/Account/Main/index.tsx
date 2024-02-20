@@ -20,15 +20,19 @@ import { PaginationBottom } from '../../../components/PaginationBottom';
 import { usePagination } from '../../../hooks/usePagination';
 import { incrementProductsPart } from '../../../app/features/products/productSlice';
 import { resetPatient } from '../../../app/features/order/orderSlice';
+import { useRefresh } from '../../../hooks/useRefresh';
 
 const Main: FC<NavProps> = ({ navigation }) => {
     const dispatch = useAppDispatch()
     const { all_orders, loadings, can_next, part } = useAppSelector(state => state.orders)
-    const login = useAppSelector(state => state.login)
+    const { refreshing, sendRefresh } = useRefresh()
     const profile = useAppSelector(state => state.profile)
 
     const [loadOrders, loadMore] = usePagination(
-        () => { dispatch(getAllOrders({ part })) },
+        () => {
+            dispatch(getAllOrders({ part }
+            ))
+        },
         () => { dispatch(incrementOrdersPart()) },
         {
             part,
@@ -52,12 +56,9 @@ const Main: FC<NavProps> = ({ navigation }) => {
 
     return (
         <View
-
             style={{ flex: 1 }}
         >
-            <WhiteBorderedLayout style={{
-                paddingTop: 32,
-            }}>
+            <WhiteBorderedLayout onRefresh={sendRefresh} refreshing={refreshing} style={{ paddingTop: 32 }}>
                 <SkeletonContainer>
                     <View style={[cs.spaceL, cs.fColumn]}>
                         {
@@ -66,7 +67,7 @@ const Main: FC<NavProps> = ({ navigation }) => {
                         }
                         <View style={[cs.fRowBetw, styles.buttonsTopContainer]}>
                             <TouchableOpacity
-                                onPress={() => navigation.navigate("inviting")}
+                                onPress={() => navigation.navigate("inviting_exists")}
                                 style={[
                                     cs.fColumn,
                                     styles.buttonTop,

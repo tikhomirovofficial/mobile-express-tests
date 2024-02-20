@@ -101,7 +101,15 @@ export const permissionsSlice = createSlice({
     name: "permissions",
     initialState,
     reducers: {
-
+        setNotificationPerm: (state, action: PayloadAction<boolean>) => {
+            state.notifications.granted = action.payload
+        },
+        setMediaPerm: (state, action: PayloadAction<boolean>) => {
+            state.media.granted = action.payload
+        },
+        setContactsPerm: (state, action: PayloadAction<boolean>) => {
+            state.contacts.granted = action.payload
+        }
     },
     extraReducers: (builder) => {
         //CHECK NOTIFICATIONS
@@ -151,7 +159,9 @@ export const permissionsSlice = createSlice({
 })
 
 export const {
-
+    setContactsPerm,
+    setMediaPerm,
+    setNotificationPerm,
 } = permissionsSlice.actions
 
 

@@ -11,10 +11,10 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { fs } from '../../navigation/AppNavigator';
 import { NavProps } from '../../types/common.types';
 import { handlePatientsModal } from '../../app/features/modals/modalsSlice';
-import { resetSuccessInviting } from '../../app/features/inviting/invitingSlice';
+import { resetCreateInvitingForm, resetSuccessInviting} from '../../app/features/inviting/invitingSlice';
 const InfoInvitingSentImage = require('../../assets/info_inviting_sent.jpg')
 
-const InvitingSent: FC<NavProps> = ({ navigation }) => {
+const InvitingLinked: FC<NavProps> = ({ navigation }) => {
     const dispatch = useAppDispatch()
 
     const toMyPatients = () => {
@@ -36,15 +36,15 @@ const InvitingSent: FC<NavProps> = ({ navigation }) => {
 
     useEffect(() => {
         return () => {
-            dispatch(resetSuccessInviting())
+            dispatch(resetCreateInvitingForm())
         }
     }, [])
 
     return (
-        <InfoPageLayout title='Приглашения отправлены' image={InfoInvitingSentImage} content={
+        <InfoPageLayout title='Пациент привязан' image={InfoInvitingSentImage} content={
             <AppContainer style={{ flex: 1, ...cs.spaceXXL }}>
                 <FeauturesLayout features={[
-                    <Text>После перехода по ссылке и регистрации, пациент появится в разделе <Text onPress={toMyPatients} style={cs.textYellow}>«Мои пациенты»</Text> в вашем профиле</Text>
+                    <Text>Пациент успешно привязан, его можно найти в разделе <Text onPress={toMyPatients} style={cs.textYellow}>«Мои пациенты»</Text> в вашем профиле</Text>
                 ]} />
 
                 <View style={[cs.fColumn, cs.flexOne, cs.spaceM, {
@@ -72,4 +72,4 @@ const InvitingSent: FC<NavProps> = ({ navigation }) => {
     );
 };
 
-export default InvitingSent;
+export default InvitingLinked;

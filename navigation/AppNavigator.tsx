@@ -36,6 +36,8 @@ import PatientInfoModal from '../components/Modals/PatientInfoModal';
 import { NavProps } from '../types/common.types';
 import CreatePatient from '../pages/Inviting/CreatePatient';
 import OrderInfoModal from '../components/Modals/OrderInfoModal';
+import CheckExistsPatient from '../pages/Inviting/CheckExistsPatient';
+import InvitingLinked from '../pages/Informational/InvitingLinked';
 
 const Stack = createNativeStackNavigator()
 const Tab = createBottomTabNavigator()
@@ -144,12 +146,16 @@ const AppNavigator = () => {
 
                                             {/* //Приглашение */}
 
-                                            <Stack.Screen name="inviting" component={CreatePatient} />
+                                            <Stack.Screen name="inviting_exists" component={CheckExistsPatient} />
+                                            {inviting.already_exists.val !== null ?
+                                                <Stack.Screen name="inviting" component={CreatePatient} /> : null
+                                            }
+
                                             <Stack.Screen name="inviting_check" component={CheckSelectedPatients} />
                                             {/* //Информативные экраны */}
                                             {inviting.form.success ? <Stack.Screen name="inviting_sent" component={InvitingSent} /> : null}
 
-
+                                            {inviting.already_exists.val ? <Stack.Screen name="inviting_linked" component={InvitingLinked} /> : null}
                                             <Stack.Screen name="how_get_results" component={HowGetResults} />
 
                                             {/* //Создание заказа */}

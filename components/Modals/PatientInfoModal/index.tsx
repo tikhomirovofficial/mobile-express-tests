@@ -87,7 +87,7 @@ const PatientInfoModal: FC<NavProps> = ({ navigation }) => {
                         <View style={[cs.fRowBetw]}>
                             <Text onPress={handleModal} style={[cs.yellowBtnText, cs.textYellow, cs.fzM]}>Закрыть</Text>
                             <View style={[cs.fAlCenter]}>
-                                <Text style={[cs.fzM, cs.colorDark, cs.fzM, cs.colorDark, cs.fwSemi]}>Пациент {patientInfo.data.id}</Text>
+                                <Text style={[cs.fzM, cs.colorDark, cs.fzM, cs.colorDark, cs.fwSemi]}>Пациент</Text>
                             </View>
                             <View style={{ flex: 0.4 }}></View>
                         </View>

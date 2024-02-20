@@ -51,7 +51,7 @@ const AnalysisInfoModal: FC<NavProps> = ({ navigation }) => {
                         <View style={[cs.fRowBetw]}>
                             <Text onPress={handleModal} style={[cs.yellowBtnText, cs.textYellow, cs.fzM]}>Закрыть</Text>
                             <View style={[cs.fAlCenter]}>
-                                <Text style={[cs.fzM, cs.colorDark, cs.fzM, cs.colorDark, cs.fwSemi]}>Подробнее {productInfo.id}</Text>
+                                <Text style={[cs.fzM, cs.colorDark, cs.fzM, cs.colorDark, cs.fwSemi]}>Подробнее</Text>
                             </View>
                             <View style={{ flex: 0.4 }}></View>
                         </View>
@@ -79,7 +79,7 @@ const AnalysisInfoModal: FC<NavProps> = ({ navigation }) => {
                                         <View style={[cs.spaceM, cs.flexOne,]}>
                                             <Text style={[cs.fzM, cs.fwBold]}>Описание</Text>
                                             <Text style={[cs.colorGray, cs.fzS, fs.montR]}>
-                                                {productInfo.info}
+                                                {productInfo.info || "Описание отсутствует."}
                                             </Text>
                                         </View>
                                 }

@@ -5,13 +5,14 @@ import { OrderApi, OrderDetailsApi } from "../../../types/entities/order.types";
 //import { PatientDoctorGetRes } from "../../../types/api/patients.api.types";
 import { PatientApi } from "../../../types/entities/patients.types";
 import { AnalysisApi } from "../../../types/entities/analysis.types";
-import { AnalysisGetByIdReq } from "../../../types/api/analysis.api.types";
+import { AnalysisGetByIdReq, AnalysisGetByIdRes } from "../../../types/api/analysis.api.types";
 import { OrderDetailsReq, OrderDetailsRes, OrdersByPatientGetReq, OrdersByPatientGetRes } from "../../../types/api/orders.api.types";
 import { OrdersApi } from "../../../http/api/orders.api";
 import { AxiosResponse } from "axios";
 import { handleTokenRefreshedRequest } from "../../../utils/handleThunkAuth";
-import { PatientByIdReq, PatientByIdRes } from "../../../types/api/patients.api.types";
+import { PatientByIdReq, PatientByIdRes, } from "../../../types/api/patients.api.types";
 import { PatientsApi } from "../../../http/api/patients.api";
+import { AnalysisServiceApi } from "../../../http/api/analysis.api";
 
 type CurrentData = {
     errs: {
@@ -142,7 +143,7 @@ export const getOrdersByPatientId = createAsyncThunk(
             pacient: req.pacient
         }
         const res: AxiosResponse<OrdersByPatientGetRes> = await handleTokenRefreshedRequest(OrdersApi.GetByPatientId, preparedReq)
-       // console.log(req.pacient);
+        // console.log(req.pacient);
         return res.data
         // return new Promise<OrdersByPatientGetRes>((res, rej) => {
         //     setTimeout(() => {
@@ -170,7 +171,6 @@ export const getOrdersByPatientId = createAsyncThunk(
 export const getPatientById = createAsyncThunk(
     'patient/get',
     async (req: PatientByIdReq, { dispatch }) => {
-        alert(req.id)
         const res: AxiosResponse<PatientByIdRes> = await handleTokenRefreshedRequest(PatientsApi.GetById, req)
         console.log(res.data);
         return res.data
@@ -191,23 +191,27 @@ export const getPatientById = createAsyncThunk(
 export const getProductById = createAsyncThunk(
     'product/get',
     async (req: AnalysisGetByIdReq, { dispatch }) => {
-        return new Promise<AnalysisApi>((res, rej) => {
-            setTimeout(() => {
-                res({
-                    id: req.id,
-                    cat: 1,
-                    code: "1",
-                    cost: 300,
-                    info: "Временно не доступно",
-                    maxdur: 1,
-                    mindur: 10,
-                    name: "Временно не доступно",
-                    prepare: [],
-                    tags: [],
-                    templates: []
-                })
-            }, 1000)
-        })
+        const res: AxiosResponse<AnalysisGetByIdRes> = await handleTokenRefreshedRequest(AnalysisServiceApi.GetById, req)
+        console.log(res.data);
+        return res.data
+        // return new Promise<AnalysisApi>((res, rej) => {
+
+        //     setTimeout(() => {
+        //         res({
+        //             id: req.id,
+        //             cat: 1,
+        //             code: "1",
+        //             cost: 300,
+        //             info: "Временно не доступно",
+        //             maxdur: 1,
+        //             mindur: 10,
+        //             name: "Временно не доступно",
+        //             prepare: [],
+        //             tags: [],
+        //             templates: []
+        //         })
+        //     }, 1000)
+        // })
     }
 )
 
@@ -289,7 +293,7 @@ export const CurrentDataSlice = createSlice({
             state.loadings.product_info = true
         })
         builder.addCase(getProductById.fulfilled, (state, action) => {
-            state.productInfo = action.payload
+            state.productInfo = action.payload.analiz
             state.loadings.product_info = false
         })
         builder.addCase(getProductById.rejected, (state, action) => {

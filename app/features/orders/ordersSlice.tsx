@@ -42,9 +42,10 @@ export const OrdersSlice = createSlice({
     initialState,
     reducers: {
         resetOrders: state => {
+            state.part = initialState.part
+            state.loadings = initialState.loadings
             state.all_orders = initialState.all_orders
-            state.can_next = false
-            state.part = 0
+            state.part = initialState.part
         },
         incrementOrdersPart: state => {
             state.part += 1
@@ -60,7 +61,7 @@ export const OrdersSlice = createSlice({
             state.loadings.all_orders = true
         })
         builder.addCase(getAllOrders.fulfilled, (state, action) => {
-            state.all_orders = [...state.all_orders, ...action.payload.orders]
+            state.all_orders = state.part ? [...state.all_orders, ...action.payload.orders] : action.payload.orders
             state.can_next = action.payload.can_next
             state.loadings.all_orders = false
             state.loadings.all_orders_pagination = false
