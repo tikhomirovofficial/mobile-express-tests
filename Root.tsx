@@ -20,6 +20,7 @@ import { setTheme } from './app/features/settings/settingsSlice';
 
 const Root = () => {
     const dispatch = useAppDispatch()
+    const { theme } = useAppSelector(state => state.settings)
     const { token } = useAppSelector(state => state.login)
     const { pin, alreadyBeen, faceId } = useAppSelector(state => state.access)
     const { notifications, media, contacts } = useAppSelector(state => state.permissions)
@@ -60,9 +61,11 @@ const Root = () => {
         dispatch(checkNotificationsPerm())
         dispatch(checkContactsPerm())
         dispatch(checkMediaPerm())
+        console.log(theme);
 
         const themeListener = Appearance.addChangeListener((e) => {
-            dispatch(setTheme(e.colorScheme || "light"))
+
+            //dispatch(setTheme(e.colorScheme || "light"))
         })
         return () => {
             themeListener.remove()
@@ -72,7 +75,7 @@ const Root = () => {
     if (fontsLoaded && allAccessesAndPermissionsDefined) {
         return (
             <>
-                <StatusBar style={"auto"} />
+                <StatusBar style={theme === "light" ? "dark" : "light"} />
                 <View style={{ flex: 1 }}>
                     <AppNavigator />
                 </View>

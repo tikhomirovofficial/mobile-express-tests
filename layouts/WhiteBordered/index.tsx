@@ -36,7 +36,7 @@ const WhiteBorderedLayout: FC<WhiteBorderedProps> = ({ children, topContent, sty
                     } nestedScrollEnabled={true} showsVerticalScrollIndicator={false} contentContainerStyle={styles.scrollContainer} style={cs.flexOne}>
                         <View style={styles.containerWrapperScroll}>
                             {topContent}
-                            <View style={[styles.whiteContainer, style, { backgroundColor: theme.borderedBg}]}>
+                            <View style={[styles.whiteContainer, style, {backgroundColor: theme.borderedBg}]}>
                                 <AppContainer>
                                     {children}
                                 </AppContainer>
@@ -46,7 +46,7 @@ const WhiteBorderedLayout: FC<WhiteBorderedProps> = ({ children, topContent, sty
                     <View style={[cs.flexOne, styles.scrollContainer]}>
                         <View style={styles.containerWrapperScroll}>
                             {topContent}
-                            <View style={[styles.whiteContainer, style]}>
+                            <View style={[styles.whiteContainer, style, {backgroundColor: theme.borderedBg}]}>
                                 <AppContainer style={{ flex: 1 }}>
                                     {children}
                                 </AppContainer>

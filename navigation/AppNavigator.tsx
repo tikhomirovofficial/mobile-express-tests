@@ -38,6 +38,7 @@ import CreatePatient from '../pages/Inviting/CreatePatient';
 import OrderInfoModal from '../components/Modals/OrderInfoModal';
 import CheckExistsPatient from '../pages/Inviting/CheckExistsPatient';
 import InvitingLinked from '../pages/Informational/InvitingLinked';
+import { useAppTheme } from '../hooks/useTheme';
 
 const Stack = createNativeStackNavigator()
 const Tab = createBottomTabNavigator()
@@ -73,6 +74,7 @@ const MainTabs: FC<NavProps> = ({ navigation }) => {
 
 const AppNavigator = () => {
     const dispatch = useAppDispatch()
+    const theme = useAppTheme()
     //Тут нужно получить состояния авторизованности пользователя, наличия пин-кода, первый ли раз заходит чел
     const { token } = useAppSelector(state => state.login)
     const { data, loadings, has_profile } = useAppSelector(state => state.profile)
@@ -108,10 +110,10 @@ const AppNavigator = () => {
 
     return (
         <NavigationContainer>
-            <View style={styles.main}>
+            <View style={[styles.main, {}]}>
 
                 <Stack.Navigator initialRouteName={getInitialRoute()}
-                    screenOptions={{ headerShown: false, contentStyle: cs.rootBg }}>
+                    screenOptions={{ headerShown: false, contentStyle: {backgroundColor: theme.main_bg} }}>
                     {
                         !token.valid ?
                             <>
@@ -188,7 +190,7 @@ const styles = StyleSheet.create({
         flex: 1,
         flexDirection: "column",
         gap: 16,
-        backgroundColor: "#F4FAFA",
+
     },
     mainScroll: {
         flex: 1,

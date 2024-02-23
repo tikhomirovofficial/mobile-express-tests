@@ -17,7 +17,6 @@
     "ios": {
       "supportsTablet": true,
       "userInterfaceStyle": "automatic"
-    
     },
     "android": {
       "userInterfaceStyle": "automatic",
@@ -48,6 +47,10 @@
             "deploymentTarget": "13.0"
           }
         }
+      ],
+      [
+        "./plugin/withDisableForcedDarkModeAndroid.js",
+        {}
       ]
     ]
   }

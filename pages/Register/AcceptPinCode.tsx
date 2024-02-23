@@ -53,7 +53,7 @@ const AcceptPinCode: FC<NavProps> = ({ navigation }) => {
             }
             return
         }
-        if(error) {
+        if (error) {
             dispatch(resetAcceptedErr())
         }
 
@@ -83,7 +83,7 @@ const AcceptPinCode: FC<NavProps> = ({ navigation }) => {
                     topContent={
                         <AppContainer style={{ paddingBottom: 0 }}>
                             <View style={[cs.fCenterCol]}>
-                                <Text style={[cs.fwSemi, cs.fwSemi, cs.fzXL]}>Подтвердите вход</Text>
+                                <Text style={[cs.fwSemi, cs.fwSemi, cs.fzXL, { color: theme.title }]}>Подтвердите вход</Text>
                             </View>
                         </AppContainer>
                     }
@@ -102,52 +102,52 @@ const AcceptPinCode: FC<NavProps> = ({ navigation }) => {
                                             <View style={[styles.pinDot, (!error ? item !== "" ? cs.bgYellow : null : cs.errBg)]}></View>
                                         ))
                                     }
-                                </View> 
+                                </View>
                             </View>
                         </View>
                         <View style={[cs.fColumn, cs.spaceXXL]}>
                             <View style={[cs.fColumn, cs.spaceL]}>
                                 <View style={[cs.fCenterRow, cs.spaceXXL]}>
-                                    <TouchableOpacity onPress={() => handlePin("1")} style={[styles.pinKeyBtn, cs.fCenterCol]}>
+                                    <TouchableOpacity onPress={() => handlePin("1")} style={[styles.pinKeyBtn, cs.fCenterCol, { backgroundColor: theme.pin_btns }]}>
                                         <Text style={[styles.pinKey, cs.textYellow, fs.montR]}>1</Text>
                                     </TouchableOpacity>
-                                    <TouchableOpacity onPress={() => handlePin("2")} style={[styles.pinKeyBtn, cs.fCenterCol]}>
+                                    <TouchableOpacity onPress={() => handlePin("2")} style={[styles.pinKeyBtn, cs.fCenterCol, { backgroundColor: theme.pin_btns }]}>
                                         <Text style={[styles.pinKey, cs.textYellow, fs.montR]}>2</Text>
                                     </TouchableOpacity>
-                                    <TouchableOpacity onPress={() => handlePin("3")} style={[styles.pinKeyBtn, cs.fCenterCol]}>
+                                    <TouchableOpacity onPress={() => handlePin("3")} style={[styles.pinKeyBtn, cs.fCenterCol, { backgroundColor: theme.pin_btns }]}>
                                         <Text style={[styles.pinKey, cs.textYellow, fs.montR]}>3</Text>
                                     </TouchableOpacity>
                                 </View>
                                 <View style={[cs.fCenterRow, cs.spaceXXL]}>
-                                    <TouchableOpacity onPress={() => handlePin("4")} style={[styles.pinKeyBtn, cs.fCenterCol]}>
+                                    <TouchableOpacity onPress={() => handlePin("4")} style={[styles.pinKeyBtn, cs.fCenterCol, { backgroundColor: theme.pin_btns }]}>
                                         <Text style={[styles.pinKey, cs.textYellow, fs.montR]}>4</Text>
                                     </TouchableOpacity>
-                                    <TouchableOpacity onPress={() => handlePin("5")} style={[styles.pinKeyBtn, cs.fCenterCol]}>
+                                    <TouchableOpacity onPress={() => handlePin("5")} style={[styles.pinKeyBtn, cs.fCenterCol, { backgroundColor: theme.pin_btns }]}>
                                         <Text style={[styles.pinKey, cs.textYellow, fs.montR]}>5</Text>
                                     </TouchableOpacity>
-                                    <TouchableOpacity onPress={() => handlePin("6")} style={[styles.pinKeyBtn, cs.fCenterCol]}>
+                                    <TouchableOpacity onPress={() => handlePin("6")} style={[styles.pinKeyBtn, cs.fCenterCol, { backgroundColor: theme.pin_btns }]}>
                                         <Text style={[styles.pinKey, cs.textYellow, fs.montR]}>6</Text>
                                     </TouchableOpacity>
                                 </View>
                                 <View style={[cs.fCenterRow, cs.spaceXXL]}>
-                                    <TouchableOpacity onPress={() => handlePin("7")} style={[styles.pinKeyBtn, cs.fCenterCol]}>
+                                    <TouchableOpacity onPress={() => handlePin("7")} style={[styles.pinKeyBtn, cs.fCenterCol, { backgroundColor: theme.pin_btns }]}>
                                         <Text style={[styles.pinKey, cs.textYellow, fs.montR]}>7</Text>
                                     </TouchableOpacity>
-                                    <TouchableOpacity onPress={() => handlePin("8")} style={[styles.pinKeyBtn, cs.fCenterCol]}>
+                                    <TouchableOpacity onPress={() => handlePin("8")} style={[styles.pinKeyBtn, cs.fCenterCol, { backgroundColor: theme.pin_btns }]}>
                                         <Text style={[styles.pinKey, cs.textYellow, fs.montR]}>8</Text>
                                     </TouchableOpacity>
-                                    <TouchableOpacity onPress={() => handlePin("9")} style={[styles.pinKeyBtn, cs.fCenterCol]}>
+                                    <TouchableOpacity onPress={() => handlePin("9")} style={[styles.pinKeyBtn, cs.fCenterCol, { backgroundColor: theme.pin_btns }]}>
                                         <Text style={[styles.pinKey, cs.textYellow, fs.montR]}>9</Text>
                                     </TouchableOpacity>
                                 </View>
                                 <View style={[cs.fCenterRow, cs.spaceXXL]}>
-                                    <TouchableOpacity onPress={() => handlePin("reset")} style={[styles.pinKeyBtn, cs.fCenterCol]}>
+                                    <TouchableOpacity onPress={() => handlePin("reset")} style={[styles.pinKeyBtn, cs.fCenterCol, { backgroundColor: theme.pin_btns }]}>
                                         <CloseIcon width={30} height={27} />
                                     </TouchableOpacity>
-                                    <TouchableOpacity onPress={() => handlePin("0")} style={[styles.pinKeyBtn, cs.fCenterCol]}>
+                                    <TouchableOpacity onPress={() => handlePin("0")} style={[styles.pinKeyBtn, cs.fCenterCol, { backgroundColor: theme.pin_btns }]}>
                                         <Text style={[styles.pinKey, cs.textYellow, fs.montR]}>0</Text>
                                     </TouchableOpacity>
-                                    <TouchableOpacity onPress={() => handlePin("clear")} style={[styles.pinKeyBtn, cs.fCenterCol]}>
+                                    <TouchableOpacity onPress={() => handlePin("clear")} style={[styles.pinKeyBtn, cs.fCenterCol, { backgroundColor: theme.pin_btns }]}>
                                         <BackspaceIcon width={30} height={27} />
                                     </TouchableOpacity>
                                 </View>
