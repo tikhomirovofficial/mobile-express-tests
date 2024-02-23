@@ -22,9 +22,12 @@ import { getOrdersByPatientId, incrementPatientOrdersPart, resetPatientInfo, res
 import { PaginationBottom } from '../../PaginationBottom';
 import { usePagination } from '../../../hooks/usePagination';
 import { fs } from '../../../navigation/AppNavigator';
+import { useAppTheme } from '../../../hooks/useTheme';
+import { formatPhoneNumber } from '../../../utils/formatePhone';
 
 const PatientInfoModal: FC<NavProps> = ({ navigation }) => {
     const dispatch = useAppDispatch()
+    const theme = useAppTheme()
     const { patientInfoModal, patientOrderInfoModal, patientsModal } = useAppSelector(state => state.modals)
     const { patientInfo, loadings, parts, can_next } = useAppSelector(state => state.currentData)
 
@@ -87,7 +90,7 @@ const PatientInfoModal: FC<NavProps> = ({ navigation }) => {
                         <View style={[cs.fRowBetw]}>
                             <Text onPress={handleModal} style={[cs.yellowBtnText, cs.textYellow, cs.fzM]}>Закрыть</Text>
                             <View style={[cs.fAlCenter]}>
-                                <Text style={[cs.fzM, cs.colorDark, cs.fzM, cs.colorDark, cs.fwSemi]}>Пациент</Text>
+                                <Text style={[cs.fzM, cs.colorDark, cs.fzM, cs.colorDark, cs.fwSemi, {color: theme.text_label}]}>Пациент</Text>
                             </View>
                             <View style={{ flex: 0.4 }}></View>
                         </View>
@@ -116,7 +119,7 @@ const PatientInfoModal: FC<NavProps> = ({ navigation }) => {
 
 
                                     :
-                                    <Text style={[cs.fwBold, cs.fzXL, cs.txtCenter, styles.name]}>
+                                    <Text style={[cs.fwBold, cs.fzXL, cs.txtCenter, styles.name, {color: theme.title}]}>
                                         {patientInfo.data.last_name} {patientInfo.data.first_name} {patientInfo.data.subname || ""}
                                     </Text>
                             }
@@ -127,7 +130,7 @@ const PatientInfoModal: FC<NavProps> = ({ navigation }) => {
                         </View>
                         <View style={[cs.spaceXL]}>
                             <View style={[cs.spaceM]}>
-                                <Text style={[cs.fzXL, cs.fwBold]}>Личная информация</Text>
+                                <Text style={[cs.fzXL, cs.fwBold, {color: theme.title}]}>Личная информация</Text>
                                 <View style={[styles.orderInfo]}>
                                     {
                                         loadings.patient_info ?
@@ -146,15 +149,15 @@ const PatientInfoModal: FC<NavProps> = ({ navigation }) => {
                                                     <Text style={[cs.colorDark, cs.fzM, cs.fwMedium]}>Мужской</Text>
                                                 </View> */}
                                                 <View style={[cs.fRowBetw]}>
-                                                    <Text style={[cs.colorGray, cs.fzM]}>Телефон</Text>
-                                                    <Text style={[cs.colorDark, cs.fzM, cs.fwMedium]}>{patientInfo.data.phone}</Text>
+                                                    <Text style={[cs.colorGray, cs.fzM, fs.montR]}>Телефон</Text>
+                                                    <Text style={[cs.colorDark, cs.fzM, cs.fwMedium, {color: theme.text_label}]}>{formatPhoneNumber(patientInfo.data.phone)}</Text>
                                                 </View>
                                             </>
                                     }
                                 </View>
                             </View>
                             <View style={[cs.spaceM]}>
-                                <Text style={[cs.fzXL, cs.fwBold]}>Анализы</Text>
+                                <Text style={[cs.fzXL, cs.fwBold, {color: theme.title}]}>Анализы</Text>
                                 <View style={[cs.spaceS]}>
 
                                     {
@@ -167,7 +170,6 @@ const PatientInfoModal: FC<NavProps> = ({ navigation }) => {
                                                     <FlatList
                                                         scrollEnabled={false}
                                                         data={patientInfo.orders}
-
                                                         style={{ overflow: "visible" }}
                                                         contentContainerStyle={[cs.fColumn, cs.spaceL]}
                                                         renderItem={({ item }) => (
@@ -187,7 +189,7 @@ const PatientInfoModal: FC<NavProps> = ({ navigation }) => {
 
                                                 </View>
 
-                                                : <Text style={fs.montR}>Анализы ещё не назначались.</Text>
+                                                : <Text style={[fs.montR, {color: theme.title}]}>Анализы ещё не назначались.</Text>
                                     }
 
                                 </View>

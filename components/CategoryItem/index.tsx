@@ -8,6 +8,7 @@ import { useAppDispatch, useAppSelector } from '../../app/base/hooks'
 import { addToCart, removeProduct } from '../../app/features/cart/cartSlice'
 import { setCurrentCategory } from '../../app/features/order/orderSlice'
 import { CategoryApi } from '../../types/entities/categories.types'
+import { useAppTheme } from '../../hooks/useTheme'
 
 type CategoryItemProps = {
     category: CategoryApi,
@@ -16,14 +17,17 @@ type CategoryItemProps = {
 }
 export const CategoryItem: FC<CategoryItemProps> = ({ category, index, clickHandle }) => {
     const dispatch = useAppDispatch()
+    const theme = useAppTheme()
+
     const toProducts = (categoryId: number) => {
         dispatch(setCurrentCategory(categoryId))
         clickHandle()
     }
+
     return (
         <TouchableOpacity key={category.id} onPress={() => toProducts(category.id)} style={[cs.fRowBetw, cs.spaceS]}>
             <View key={category.id} style={[cs.fRow, cs.spaceS, { maxWidth: "86%" }]}>
-                <Text style={[cs.fwMedium, fs.montR, cs.fzS, cs.colorDark]}>{category.name}</Text>
+                <Text style={[cs.fwMedium, fs.montR, cs.fzS, {color: theme.text_label}]}>{category.name}</Text>
                 {/* <Text style={[cs.fwMedium, fs.montR, cs.fzS, cs.colorDark, cs.colorGray]}>300</Text> */}
             </View>
             <View style={[{ marginTop: 3 }]}>

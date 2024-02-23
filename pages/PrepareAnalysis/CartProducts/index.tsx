@@ -15,9 +15,11 @@ import { addToCart, clearCart, removeProduct } from '../../../app/features/cart/
 import { createOrder, resetPatient, setCurrentCategory, setPatient } from '../../../app/features/order/orderSlice';
 import CartItem from '../../../components/CartItem';
 import { CreateOrderReq } from '../../../types/api/orders.api.types';
+import { useAppTheme } from '../../../hooks/useTheme';
 
 const CartProducts: FC<NavProps> = ({ navigation }) => {
     const dispatch = useAppDispatch()
+    const theme = useAppTheme()
     const [categoriesLoading, setCategoriesLoading] = useState(false)
     const [keyboardStatus, setKeyboardStatus] = useState(false);
     const cartProducts = useAppSelector(state => state.cart.items)
@@ -75,7 +77,7 @@ const CartProducts: FC<NavProps> = ({ navigation }) => {
                                 <TouchableOpacity onPress={handleToSelectingCategory}>
                                     <ArrowLeft />
                                 </TouchableOpacity>
-                                <Text style={[cs.fwSemi, cs.fwSemi, cs.fzXL]}>Корзина</Text>
+                                <Text style={[cs.fwSemi, cs.fwSemi, cs.fzXL, {color: theme.title}]}>Корзина</Text>
                                 <View></View>
                             </View>
                         </AppContainer>
@@ -84,7 +86,7 @@ const CartProducts: FC<NavProps> = ({ navigation }) => {
                     <View style={[cs.spaceXL, styles.patientsContent, { minHeight: keyboardStatus ? "99%" : "100%" }]}>
                         <View style={[cs.spaceL, cs.fColumn]}>
                             <View style={[cs.fRowBetw, cs.spaceM, cs.fAlCenter]}>
-                                <Text style={[cs.fwSemi, cs.fwBold, cs.fzXL]}>Всего анализов: {cartProducts.length}</Text>
+                                <Text style={[cs.fwSemi, cs.fwBold, cs.fzXL, {color: theme.title}]}>Всего анализов: {cartProducts.length}</Text>
                                 <View style={[cs.fRow, cs.fAlCenter, cs.spaceS, { backgroundColor: "#36CACB", paddingHorizontal: 15, paddingVertical: 6, borderRadius: 300 }]}>
                                     <HeartIcon stroke={"#ffffff"} />
                                     <Text style={[cs.fwSemi, cs.colorWhite]}>{cartProducts.length * 3}</Text>
@@ -116,8 +118,6 @@ const CartProducts: FC<NavProps> = ({ navigation }) => {
                                 {sending ? <ActivityIndicator color={"black"} /> : <Text style={[cs.fzM, cs.yellowBtnText]}>Отправить заказ</Text>}
                             </ButtonYellow>
                         </View>
-
-
                     </View>
                 </WhiteBorderedLayout>
             </View >

@@ -42,7 +42,7 @@ const PatientItem: FC<PatientItemProps> = ({
     const GetSelectedIcon = useCallback(() => {
         if (selected !== undefined) {
             if (!selected) {
-                return !isRadio ? <UncheckedBorderedIcon /> : <UncheckedCircleIcon />
+                return !isRadio ? <UncheckedBorderedIcon  /> : <UncheckedCircleIcon stroke={theme.borderedBg}  />
             }
             return !isRadio ? <CheckedBorderedIcon /> : <CheckedCircleIcon />
         }

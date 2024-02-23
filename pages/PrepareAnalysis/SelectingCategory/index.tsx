@@ -20,9 +20,11 @@ import { useDeferred } from '../../../hooks/useDeffered';
 import { SkeletonContainer } from 'react-native-skeleton-component';
 import { SkeletonView } from '../../../components/SkeletonView';
 import { CategoryItem } from '../../../components/CategoryItem';
+import { useAppTheme } from '../../../hooks/useTheme';
 
 const SelectingCategory: FC<NavProps> = ({ navigation }) => {
     const dispatch = useAppDispatch()
+    const theme = useAppTheme()
     const cart = useAppSelector(state => state.cart)
 
     const [searchVal, setSearchVal] = useState("")
@@ -76,7 +78,7 @@ const SelectingCategory: FC<NavProps> = ({ navigation }) => {
                                 <TouchableOpacity onPress={handleToSelectingPatient}>
                                     <ArrowLeft />
                                 </TouchableOpacity>
-                                <Text style={[cs.fwSemi, cs.fwSemi, cs.fzXL]}>{patientFullName}</Text>
+                                <Text style={[cs.fwSemi, cs.fwSemi, cs.fzXL, { color: theme.title }]}>{patientFullName}</Text>
                                 <View></View>
                             </View>
                         </AppContainer>
@@ -85,16 +87,16 @@ const SelectingCategory: FC<NavProps> = ({ navigation }) => {
                     <View style={[cs.spaceXL, styles.patientsContent, { minHeight: keyboardStatus ? "100%" : "100%" }]}>
                         <View style={[cs.spaceL, cs.fColumn]}>
                             <View style={[cs.fRowBetw, cs.spaceM, cs.fAlCenter]}>
-                                <Text style={[cs.fwSemi, cs.fwBold, cs.fzXL]}>Выберите категорию</Text>
+                                <Text style={[cs.fwSemi, cs.fwBold, cs.fzXL, { color: theme.title }]}>Выберите категорию</Text>
                                 <View style={[cs.fRow, cs.fAlCenter, cs.spaceS]}>
                                     <View style={[cs.sliderDot]}></View>
                                     <View style={[cs.sliderDot, , cs.sliderDotActive]}></View>
                                     <View style={[cs.sliderDot]}></View>
                                 </View>
                             </View>
-                            <View style={[cs.fRow, cs.fAlCenter, cs.spaceS, styles.searchInputBlock]}>
-                                <SearchIcon />
-                                <TextInput value={searchVal} onChangeText={(text) => setSearchVal(text)} style={[cs.fzS, fs.montR, cs.flexOne]} placeholder={"Название категории"} />
+                            <View style={[cs.fRow, cs.fAlCenter, cs.spaceS, styles.searchInputBlock, {backgroundColor: theme.main_bg}]}>
+                                <SearchIcon stroke={theme.text_label}/>
+                                <TextInput value={searchVal} onChangeText={(text) => setSearchVal(text)}  placeholderTextColor={theme.text_label} style={[cs.fzS, fs.montR, cs.flexOne, {color: theme.title}]} placeholder={"Название категории"} />
                             </View>
 
                         </View>

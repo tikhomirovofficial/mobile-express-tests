@@ -13,11 +13,14 @@ import { NavProps } from "../../../types/common.types";
 import { checkPatientExists, handleCreateInvitingForm } from "../../../app/features/inviting/invitingSlice";
 import { extractDigits } from "../../../utils/normalizePhone";
 import { ArrowLeft } from "../../../icons";
+import { useTheme } from "@react-navigation/native";
+import { useAppTheme } from "../../../hooks/useTheme";
 
 
 
 const CheckExistsPatient: FC<NavProps> = ({ navigation }) => {
     const dispatch = useAppDispatch()
+    const theme = useAppTheme()
     const { already_exists, form } = useAppSelector(state => state.inviting)
     const [keyboardStatus, setKeyboardStatus] = useState(false);
     const disabledBtn = form.text_fields.phone.length < 11
@@ -66,7 +69,7 @@ const CheckExistsPatient: FC<NavProps> = ({ navigation }) => {
                                 <TouchableOpacity onPress={toBackScreen}>
                                     <ArrowLeft />
                                 </TouchableOpacity>
-                                <Text style={[cs.fwSemi, cs.fwSemi, cs.fzXL]}>Приглашение пациентов</Text>
+                                <Text style={[cs.fwSemi, cs.fwSemi, cs.fzXL, {color: theme.title}]}>Приглашение пациентов</Text>
                             </View>
                         </AppContainer>
                     }

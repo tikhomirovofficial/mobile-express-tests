@@ -9,7 +9,7 @@ type SettingsSliceState = {
 
 const initialState: SettingsSliceState = {
     //theme: Appearance.getColorScheme() || "dark"
-    theme: "light"
+    theme: "dark"
 }
 
 export const SettingsSlice = createSlice({

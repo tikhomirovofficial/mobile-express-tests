@@ -17,6 +17,7 @@ import { usePagination } from '../../hooks/usePagination'
 import { PaginationBottom } from '../PaginationBottom'
 import { IOScrollView } from 'react-native-intersection-observer'
 import { fs } from '../../navigation/AppNavigator'
+import { useAppTheme } from '../../hooks/useTheme'
 
 
 
@@ -24,6 +25,7 @@ const { width, height } = Dimensions.get("screen")
 
 export const BottomSheet = () => {
     const dispatch = useAppDispatch()
+    const theme = useAppTheme()
     const { patientInfo, loadings, parts, can_next } = useAppSelector(state => state.currentData)
     const translateY = useSharedValue(1)
     const ctx = useSharedValue({ y: 1 })
@@ -93,7 +95,7 @@ export const BottomSheet = () => {
                 <Animated.View
                     entering={SlideInDown.springify().damping(10)}
                     exiting={SlideOutDown.springify().damping(10)}
-                    style={[styles.bottomSheetBlock, bSheetStyle]}>
+                    style={[styles.bottomSheetBlock, bSheetStyle, {backgroundColor: theme.borderedBg}]}>
 
                     <View style={[styles.bottomSheetHeader]}>
                         <LinearGradient start={{ x: 0.2, y: 1 }}
@@ -108,7 +110,6 @@ export const BottomSheet = () => {
                                         <View style={[styles.avatar, cs.fCenterCol]}>
                                             <BorderedProfileIcon />
                                         </View>
-
                                     </View>
                                 </View>
                             </AppContainer>
@@ -118,8 +119,8 @@ export const BottomSheet = () => {
 
                         <AppContainer style={[cs.flexOne, cs.spaceM]}>
                             <View style={[cs.fRowBetw]}>
-                                <Text style={[cs.title]}>Всего</Text>
-                                <Text style={[cs.title]}>{patientInfo.data.bonus}</Text>
+                                <Text style={[cs.title, {color: theme.title}]}>Всего</Text>
+                                <Text style={[cs.title, {color: theme.title}]}>{patientInfo.data.bonus}</Text>
                             </View>
                             {
                                 loadings.patient_orders ?
@@ -138,13 +139,14 @@ export const BottomSheet = () => {
                                         renderItem={({ item }) => (
                                             <OrderItem
                                                 codeText={String(item.id)}
+                                                topRightStyles={[cs.fwBold, {color: theme.title}]}
                                                 bottomLeftText={`От ${normalizeDate(item.date)}`}
                                                 bottomRightText={item.status}
                                                 topRightText={String(item.bonus)}
                                             />
                                         )}
                                     /> :
-                                    <Text style={fs.montR}>Не сделан ни один заказ.</Text>
+                                    <Text style={[fs.montR, {color: theme.title}]}>Не сделан ни один заказ.</Text>
 
 
                             }

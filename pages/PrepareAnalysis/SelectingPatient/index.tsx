@@ -20,9 +20,11 @@ import { useDeferred } from '../../../hooks/useDeffered';
 import { SkeletonContainer } from 'react-native-skeleton-component';
 import { SkeletonView } from '../../../components/SkeletonView';
 import { usePagination } from '../../../hooks/usePagination';
+import { useAppTheme } from '../../../hooks/useTheme';
 
 const SelectingPatient: FC<NavProps> = ({ navigation }) => {
     const dispatch = useAppDispatch()
+    const theme = useAppTheme()
     const { patientData } = useAppSelector(state => state.order)
     const { searched_list, loadings, searched_can_next, searched_part } = useAppSelector(state => state.patients)
     const { patientInvitingModal } = useAppSelector(state => state.modals)
@@ -100,7 +102,7 @@ const SelectingPatient: FC<NavProps> = ({ navigation }) => {
                                 <TouchableOpacity onPress={handleToMyPatients}>
                                     <ArrowLeft />
                                 </TouchableOpacity>
-                                <Text style={[cs.fwSemi, cs.fwSemi, cs.fzXL]}>Подготовка анализов</Text>
+                                <Text style={[cs.fwSemi, cs.fwSemi, cs.fzXL, {color: theme.title}]}>Подготовка анализов</Text>
                             </View>
                         </AppContainer>
 
@@ -109,16 +111,16 @@ const SelectingPatient: FC<NavProps> = ({ navigation }) => {
                     <View style={[cs.spaceS, styles.patientsContent]}>
                         <View style={[cs.spaceL, cs.fColumn]}>
                             <View style={[cs.fRowBetw, cs.spaceM, cs.fAlCenter]}>
-                                <Text style={[cs.fwSemi, cs.fwBold, cs.fzXL]}>Выберите пациента</Text>
+                                <Text style={[cs.fwSemi, cs.fwBold, cs.fzXL, {color: theme.title}]}>Выберите пациента</Text>
                                 <View style={[cs.fRow, cs.fAlCenter, cs.spaceS]}>
                                     <View style={[cs.sliderDot, cs.sliderDotActive]}></View>
                                     <View style={[cs.sliderDot]}></View>
                                     <View style={[cs.sliderDot]}></View>
                                 </View>
                             </View>
-                            <View style={[cs.fRow, cs.fAlCenter, cs.spaceS, styles.searchInputBlock]}>
-                                <SearchIcon />
-                                <TextInput value={searchVal} onChangeText={(text) => setSearchVal(text)} style={[cs.fzS, fs.montR, cs.flexOne]} placeholder={"Найти по имени или номеру"} />
+                            <View style={[cs.fRow, cs.fAlCenter, cs.spaceS, styles.searchInputBlock, {backgroundColor: theme.main_bg}]}>
+                                <SearchIcon stroke={theme.text_label}/>
+                                <TextInput value={searchVal} onChangeText={(text) => setSearchVal(text)}  placeholderTextColor={theme.text_label} style={[cs.fzS, fs.montR, cs.flexOne, {color: theme.title}]} placeholder={"Найти по имени или номеру"} />
                             </View>
                             <TouchableOpacity onPress={openNewPatient}>
                                 <Text style={[cs.textYellow, cs.fwSemi, { textDecorationLine: "underline" }]}>Пригласить пациента</Text>

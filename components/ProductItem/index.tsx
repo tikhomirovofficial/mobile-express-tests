@@ -6,6 +6,7 @@ import { fs } from '../../navigation/AppNavigator'
 import { AnalysisApi } from '../../types/entities/analysis.types'
 import { useAppDispatch, useAppSelector } from '../../app/base/hooks'
 import { CartItemType, addToCart, removeProduct } from '../../app/features/cart/cartSlice'
+import { useAppTheme } from '../../hooks/useTheme'
 
 type ProductItemProps = {
     product: AnalysisApi,
@@ -15,6 +16,7 @@ type ProductItemProps = {
 }
 const ProductItem: FC<ProductItemProps> = ({ product, index, isInCart, clickHandle }) => {
     const dispatch = useAppDispatch()
+    const theme = useAppTheme()
 
     const addProduct = useCallback(() => {
         dispatch(addToCart({ ...product as CartItemType }))
@@ -28,8 +30,8 @@ const ProductItem: FC<ProductItemProps> = ({ product, index, isInCart, clickHand
         <TouchableOpacity onPress={clickHandle} style={[cs.fRowBetw, cs.spaceS, cs.fAlCenter, { paddingBottom: 16, paddingTop: index ? 16 : 0, borderBottomWidth: 1, borderBottomColor: "#f3f3f3" }]} >
             <View key={product.id} style={[cs.fRow, cs.spaceS, { maxWidth: "90%" }]}>
                 <View style={[cs.fColumn]}>
-                    <Text style={[cs.fwMedium, fs.montR, cs.fzS, cs.colorDark]}>{product.name}</Text>
-                    <Text style={[cs.fwBold, fs.montR, cs.fzS, cs.colorDark]}>{product.cost} ₽</Text>
+                    <Text style={[cs.fwMedium, fs.montR, cs.fzS, {color: theme.text_label}]}>{product.name}</Text>
+                    <Text style={[cs.fwBold, fs.montR, cs.fzS, cs.colorDark, {color: theme.text_label}]}>{product.cost} ₽</Text>
                 </View>
             </View>
             <TouchableOpacity onPress={!isInCart ? addProduct : removeItem}>

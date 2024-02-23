@@ -20,9 +20,12 @@ import { SkeletonView } from '../../../components/SkeletonView';
 import { getProducts, incrementProductsPart, resetPart, resetProducts } from '../../../app/features/products/productSlice';
 import ProductItem from '../../../components/ProductItem';
 import { getProductById } from '../../../app/features/current-data/currentData';
+import { useAppTheme } from '../../../hooks/useTheme';
 
 const SelectingProducts: FC<NavProps> = ({ navigation }) => {
     const dispatch = useAppDispatch()
+    const theme = useAppTheme()
+
     const cart = useAppSelector(state => state.cart)
     const categories = useAppSelector(state => state.categories.items)
     const cartProducts = useAppSelector(state => state.cart.items)
@@ -105,7 +108,7 @@ const SelectingProducts: FC<NavProps> = ({ navigation }) => {
                                 <TouchableOpacity onPress={handleToSelectingCategory}>
                                     <ArrowLeft />
                                 </TouchableOpacity>
-                                <Text style={[cs.fwSemi, cs.fwSemi, cs.fzXL]}>{currentCategory !== undefined ? currentCategory.name.slice(0, 17) : ""}</Text>
+                                <Text style={[cs.fwSemi, cs.fwSemi, cs.fzXL, {color: theme.title}]}>{currentCategory !== undefined ? currentCategory.name.slice(0, 17) : ""} {currentCategory.name.length >= 16 ? "..." : ""}</Text>
                                 <View></View>
                             </View>
                         </AppContainer>
@@ -115,16 +118,16 @@ const SelectingProducts: FC<NavProps> = ({ navigation }) => {
                     <View style={[cs.spaceXL, styles.patientsContent, { minHeight: keyboardStatus ? "100%" : "100%" }]}>
                         <View style={[cs.spaceL, cs.fColumn]}>
                             <View style={[cs.fRowBetw, cs.spaceM, cs.fAlCenter]}>
-                                <Text style={[cs.fwSemi, cs.fwBold, cs.fzXL]}>Выберите анализы</Text>
+                                <Text style={[cs.fwSemi, cs.fwBold, cs.fzXL, {color: theme.title}]}>Выберите анализы</Text>
                                 <View style={[cs.fRow, cs.fAlCenter, cs.spaceS]}>
                                     <View style={[cs.sliderDot]}></View>
                                     <View style={[cs.sliderDot]}></View>
                                     <View style={[cs.sliderDot, cs.sliderDotActive]}></View>
                                 </View>
                             </View>
-                            <View style={[cs.fRow, cs.fAlCenter, cs.spaceS, styles.searchInputBlock]}>
-                                <SearchIcon />
-                                <TextInput value={searchVal} onChangeText={(text) => setSearchVal(text)} style={[cs.fzS, fs.montR, cs.flexOne]} placeholder={"Введите название анализа"} />
+                            <View style={[cs.fRow, cs.fAlCenter, cs.spaceS, styles.searchInputBlock, {backgroundColor: theme.main_bg}]}>
+                                <SearchIcon stroke={theme.text_label}/>
+                                <TextInput value={searchVal} onChangeText={(text) => setSearchVal(text)}  placeholderTextColor={theme.text_label} style={[cs.fzS, fs.montR, cs.flexOne, {color: theme.title}]} placeholder={"Найти по имени или номеру"} />
                             </View>
 
                         </View>

@@ -17,10 +17,12 @@ import { NavProps } from "../../../types/common.types";
 import { InvitingCreateReq } from "../../../types/api/patients.api.types";
 import { createInviting, handleCreateInvitingForm, handleCreateInvitingGender, resetCreateInvitingForm, resetSuccessInviting } from "../../../app/features/inviting/invitingSlice";
 import { extractDigits } from "../../../utils/normalizePhone";
+import { useAppTheme } from "../../../hooks/useTheme";
 
 
 const CreatePatient: FC<NavProps> = ({ navigation }) => {
     const dispatch = useAppDispatch()
+    const theme = useAppTheme()
     const { text_fields, gender, disabled, sending, success, err } = useAppSelector(state => state.inviting.form)
 
     const toBackScreen = () => {
@@ -63,7 +65,7 @@ const CreatePatient: FC<NavProps> = ({ navigation }) => {
                                 <TouchableOpacity onPress={toBackScreen}>
                                     <ArrowLeft />
                                 </TouchableOpacity>
-                                <Text style={[cs.fwSemi, cs.fwSemi, cs.fzXL]}>Приглашение пациентов</Text>
+                                <Text style={[cs.fwSemi, cs.fwSemi, cs.fzXL, { color: theme.title }]}>Приглашение пациентов</Text>
                             </View>
                         </AppContainer>
 
@@ -75,42 +77,36 @@ const CreatePatient: FC<NavProps> = ({ navigation }) => {
                                 <View style={[cs.spaceXL]}>
                                     <View style={[cs.fColumn, cs.spaceL]}>
                                         <View style={[cs.fColumn, cs.spaceM]}>
-                                            <Text style={[cs.title]}>Приглашение пациента</Text>
+                                            <Text style={[cs.title, { color: theme.title }]}>Приглашение пациента</Text>
                                             <Text style={[cs.fzS, fs.montR, cs.colorGray]}>Заполните данные ниже, чтобы пригласить пациента в приложение</Text>
                                         </View>
                                         <View style={[cs.spaceXL]}>
 
                                             <View style={[cs.fColumn, cs.spaceM]}>
-                                                <Text style={[cs.fzS, fs.montR, cs.fwMedium]} aria-label="Label for Username"
-                                                    nativeID="labelLastName">Фамилия</Text>
                                                 <InputField
+                                                    label="Фамилия"
                                                     val={text_fields.last_name}
                                                     placeholder={"Фамилия"}
                                                     idInput={"labelLastName"}
                                                     onChange={val => dispatch(handleCreateInvitingForm({ key: "last_name", val }))}
                                                 />
+                                            </View>
 
-                                            </View>
-                                            <View style={[cs.fColumn, cs.spaceM]}>
-                                                <Text style={[cs.fzS, fs.montR, cs.fwMedium]} aria-label="Label for Username"
-                                                    nativeID="labelFirstName">Имя</Text>
-                                                <InputField
-                                                    val={text_fields.first_name}
-                                                    placeholder={"Имя"}
-                                                    idInput={"labelFirstName"}
-                                                    onChange={val => dispatch(handleCreateInvitingForm({ key: "first_name", val }))}
-                                                />
-                                            </View>
-                                            <View style={[cs.fColumn, cs.spaceM]}>
-                                                <Text style={[cs.fzS, fs.montR, cs.fwMedium]} aria-label="Label for Username"
-                                                    nativeID="labelMiddleName">Отчество</Text>
-                                                <InputField
-                                                    val={text_fields.subname || ""}
-                                                    placeholder={"Отчество"}
-                                                    idInput={"labelMiddleName"}
-                                                    onChange={val => dispatch(handleCreateInvitingForm({ key: "subname", val }))}
-                                                />
-                                            </View>
+                                            <InputField
+                                                label="Имя"
+                                                val={text_fields.first_name}
+                                                placeholder={"Имя"}
+                                                idInput={"labelFirstName"}
+                                                onChange={val => dispatch(handleCreateInvitingForm({ key: "first_name", val }))}
+                                            />
+                                            <InputField
+                                                label="Отчество"
+                                                val={text_fields.subname || ""}
+                                                placeholder={"Отчество"}
+                                                idInput={"labelMiddleName"}
+                                                onChange={val => dispatch(handleCreateInvitingForm({ key: "subname", val }))}
+                                            />
+
                                             {/* <View style={[cs.fColumn, cs.spaceM]}>
                                                 <Text style={[cs.fzS, fs.montR, cs.fwMedium]} aria-label="Label for Username"
                                                     nativeID="phone">Номер телефона</Text>
@@ -123,18 +119,16 @@ const CreatePatient: FC<NavProps> = ({ navigation }) => {
                                                     onChange={val => dispatch(handleCreateInvitingForm({ key: "phone", val }))}
                                                 />
                                             </View> */}
-                                            <View style={[cs.fColumn, cs.spaceM]}>
-                                                <Text style={[cs.fzS, fs.montR, cs.fwMedium]} aria-label="Label for Username"
-                                                    nativeID="dateDob">Дата рождения</Text>
-                                                <InputField
-                                                    mask={dateMask}
-                                                    type={"number-pad"}
-                                                    val={text_fields.dob}
-                                                    placeholder={"ДД.ММ.ГГГГ"}
-                                                    idInput={"dateDob"}
-                                                    onChange={val => dispatch(handleCreateInvitingForm({ key: "dob", val }))}
-                                                />
-                                            </View>
+
+                                            <InputField
+                                                label="Дата рождения"
+                                                mask={dateMask}
+                                                type={"number-pad"}
+                                                val={text_fields.dob}
+                                                placeholder={"ДД.ММ.ГГГГ"}
+                                                idInput={"dateDob"}
+                                                onChange={val => dispatch(handleCreateInvitingForm({ key: "dob", val }))}
+                                            />
                                             <View style={[cs.fColumn, cs.spaceM]}>
                                                 <Text style={[cs.fzS, fs.montR, cs.fwMedium]} aria-label="Label for Username"
                                                     nativeID="labelFirstName">Пол</Text>
@@ -143,16 +137,13 @@ const CreatePatient: FC<NavProps> = ({ navigation }) => {
                                                     <SelectableBtn isFilled={gender === 0} style={[styles.selectableBtn]} text={"Женский"} handlePress={() => dispatch(handleCreateInvitingGender(0))} />
                                                 </View>
                                             </View>
-                                            <View style={[cs.fColumn, cs.spaceM]}>
-                                                <Text style={[cs.fzS, fs.montR, cs.fwMedium]} aria-label="Label for Username"
-                                                    nativeID="labelMiddleName">E-mail</Text>
-                                                <InputField
-                                                    val={text_fields.email}
-                                                    placeholder={"E-mail"}
-                                                    idInput={"labelMiddleName"}
-                                                    onChange={val => dispatch(handleCreateInvitingForm({ key: "email", val }))}
-                                                />
-                                            </View>
+                                            <InputField
+                                                label="E-mail"
+                                                val={text_fields.email}
+                                                placeholder={"E-mail"}
+                                                idInput={"labelMiddleName"}
+                                                onChange={val => dispatch(handleCreateInvitingForm({ key: "email", val }))}
+                                            />
                                         </View>
                                     </View>
                                 </View>

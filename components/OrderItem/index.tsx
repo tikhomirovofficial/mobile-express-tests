@@ -1,25 +1,27 @@
-import { Dimensions, FlatList, Modal, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View, ViewStyle } from "react-native";
+import { Dimensions, FlatList, Modal, ScrollView, StyleProp, StyleSheet, Text, TextInput, TextStyle, TouchableOpacity, View, ViewStyle } from "react-native";
 import { cs } from "../../common/styles";
 import { fs } from "../../navigation/AppNavigator";
 import { FC } from "react";
+import { useAppTheme } from "../../hooks/useTheme";
 
 type OrderItemProps = {
     codeText: string
     bottomLeftText: string
     bottomRightText: string
     topRightText: string,
-    topRightStyles?: ViewStyle | ViewStyle[]
+    topRightStyles?: ViewStyle | ViewStyle[] | StyleProp<TextStyle>
 
 }
 
 export const OrderItem: FC<OrderItemProps> = ({ codeText = "code", bottomLeftText = "bottomLeftText", bottomRightText = "bottomRightText", topRightText="100", topRightStyles }) => {
+    const theme = useAppTheme()
     return (
         <TouchableOpacity style={[cs.fColumn, cs.spaceS, cs.bottomBorder, styles.orderItem]}>
             <View style={[cs.fRowBetw, cs.fAlCenter]}>
                 <View style={[cs.fAlCenter, cs.fRow, cs.spaceM]}>
-                    <Text style={[cs.fzS, cs.colorDark, fs.montR]}>Заказ №</Text>
-                    <View style={[cs.lightGray]}>
-                        <Text style={[fs.montR]}>{codeText}</Text>
+                    <Text style={[cs.fzS, cs.colorDark, fs.montR, {color: theme.text_label}]}>Заказ №</Text>
+                    <View style={[cs.lightGray, {backgroundColor: theme.light_gray_bg}]}>
+                        <Text style={[fs.montR, {color: theme.text_label}]}>{codeText}</Text>
                     </View>
                 </View>
                 <Text style={[cs.colorGray, cs.fzS, fs.montR, topRightStyles]}>

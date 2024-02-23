@@ -111,7 +111,7 @@ export const ArrowLeft: FC<IconProps> = ({ width = 10, height = 16, stroke = "#F
     )
 }
 
-export const SearchIcon: FC<IconProps> = ({ width = 17, height = 18 }) => {
+export const SearchIcon: FC<IconProps> = ({ width = 17, height = 18, stroke = "" }) => {
     return (
         <Svg width="17" height="18" viewBox="0 0 17 18" fill="none">
             <Path
@@ -124,7 +124,7 @@ export const SearchIcon: FC<IconProps> = ({ width = 17, height = 18 }) => {
                 17.1143C14.7671 17.07 14.6592 17.0008 14.5596 16.9067L10.4756 12.8145C9.93327 13.2018 9.33561 13.5062 8.68262 13.7275C8.02962
                 13.9489 7.34342 14.0596 6.62402 14.0596C5.71094 14.0596 4.85319 13.888 4.05078 13.5449C3.25391 13.2018 2.55111 12.7259 1.94238 12.1172C1.33366 11.5085
                 0.857747 10.8057 0.514648 10.0088C0.171549 9.20638 0 8.34863 0 7.43555ZM1.41943 7.43555C1.41943 8.15495 1.55225 8.83008 1.81787 9.46094C2.08903 10.0863 2.46257 10.6369 2.93848 11.1128C3.41992 11.5887 3.97331 11.9622 4.59863 12.2334C5.22949 12.5046 5.90462 12.6401 6.62402 12.6401C7.34342 12.6401 8.01579 12.5046 8.64111 12.2334C9.27197 11.9622 9.82536 11.5887 10.3013 11.1128C10.7772 10.6369 11.1507 10.0863 11.4219 9.46094C11.693 8.83008 11.8286 8.15495 11.8286 7.43555C11.8286 6.71615 11.693 6.04378 11.4219 5.41846C11.1507 4.7876 10.7772 4.23421 10.3013 3.7583C9.82536 3.27686 9.27197 2.90332 8.64111 2.6377C8.01579 2.36654 7.34342 2.23096 6.62402 2.23096C5.90462 2.23096 5.22949 2.36654 4.59863 2.6377C3.97331 2.90332 3.41992 3.27686 2.93848 3.7583C2.46257 4.23421 2.08903 4.7876 1.81787 5.41846C1.55225 6.04378 1.41943 6.71615 1.41943 7.43555Z"
-                fill="#3C3C43" fillOpacity="0.6" />
+                fill={stroke} fillOpacity="0.6" />
         </Svg>
 
     )
@@ -149,10 +149,10 @@ export const CheckedCircleIcon: FC<IconProps> = ({ width = 22, height = 22 }) =>
 
     )
 }
-export const UncheckedCircleIcon: FC<IconProps> = ({ width = 22, height = 22 }) => {
+export const UncheckedCircleIcon: FC<IconProps> = ({ width = 22, height = 22, stroke = "white" }) => {
     return (
         <Svg width={width} height={height} viewBox="0 0 24 24" fill="none">
-            <Circle cx="12" cy="12" r="9.25" fill="white" stroke="#4D4D4D" strokeWidth="1.5" />
+            <Circle cx="12" cy="12" r="9.25" fill={stroke} stroke="#4D4D4D" strokeWidth="1.5" />
         </Svg>
 
     )
@@ -417,7 +417,7 @@ export const CallIcon: FC<IconProps> = ({ width = 21, height = 21, stroke = "#4D
 
 export const HomeIcon: FC<IconProps> = ({ width = 20, height = 21, stroke = "#4D4D4D" }) => {
     return (
-        <Svg  width={width} height={height} viewBox="0 0 22 22" fill="none">
+        <Svg width={width} height={height} viewBox="0 0 22 22" fill="none">
             <Path
                 d="M8.15722 19.7714V16.7047C8.1572 15.9246 8.79312 15.2908 9.58101 15.2856H12.4671C13.2587 15.2856 13.9005 15.9209 13.9005 16.7047V16.7047V19.7809C13.9003 20.4432 14.4343 20.9845 15.103 21H17.0271C18.9451 21 20.5 19.4607 20.5 17.5618V17.5618V8.83784C20.4898 8.09083 20.1355 7.38935 19.538 6.93303L12.9577 1.6853C11.8049 0.771566 10.1662 0.771566 9.01342 1.6853L2.46203 6.94256C1.86226 7.39702 1.50739 8.09967 1.5 8.84736V17.5618C1.5 19.4607 3.05488 21 4.97291 21H6.89696C7.58235 21 8.13797 20.4499 8.13797 19.7714V19.7714"
                 stroke={stroke} strokeWidth="1.5" strokeLinecap="round" stroke-linejoin="round" />

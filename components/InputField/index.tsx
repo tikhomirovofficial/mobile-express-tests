@@ -34,6 +34,7 @@ export const InputField: FC<InputFieldProps> = ({ mask, label, placeholder, val,
                         onBlur={() => setFocused(false)}
                         nativeID={idInput}
                         onChangeText={onChange}
+                        placeholderTextColor={theme.text_label}
                         accessibilityLabelledBy={idInput}
                         placeholder={placeholder}
                         style={[styles.inputField, cs.fzM, { backgroundColor: theme.card_bg, borderColor: theme.input_border, color: theme.title }, fs.montR, (error ? [cs.errBorderColor, cs.colorRed] : null), (focused ? cs.focusedInput : null)]} />
@@ -44,6 +45,7 @@ export const InputField: FC<InputFieldProps> = ({ mask, label, placeholder, val,
                             value={val}
                             keyboardType={type}
                             nativeID={idInput}
+                            placeholderTextColor={theme.text_label}
                             onChangeText={onChange}
                             accessibilityLabelledBy={idInput}
                             placeholder={placeholder}

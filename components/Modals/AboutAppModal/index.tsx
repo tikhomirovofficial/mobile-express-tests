@@ -9,6 +9,7 @@ import { fs } from "../../../navigation/AppNavigator";
 import SelectableBtn from "../../SelectableBtn";
 import { handleAboutModal, handleProfileEditModal } from "../../../app/features/modals/modalsSlice";
 import { ModalContainer } from '../../ModalContainer';
+import { useAppTheme } from '../../../hooks/useTheme';
 
 
 type DocumentItemProps = {
@@ -16,12 +17,13 @@ type DocumentItemProps = {
 }
 
 const DocumentItem: FC<DocumentItemProps> = ({ neededBorder = true }) => {
+    const theme = useAppTheme()
     return (
         <TouchableOpacity style={[cs.dF, cs.fRow, cs.fAlCenter, cs.spaceM, styles.documentItem, (neededBorder ? cs.bottomBorder : null)]}>
             <View style={[styles.documentIcon, cs.circle, cs.fCenterCol]}>
                 <DocumentIcon />
             </View>
-            <Text style={[styles.documentFile, cs.fzS, fs.montR, cs.colorBlack]}>Согласие на обработку персональных данных</Text>
+            <Text style={[styles.documentFile, cs.fzS, fs.montR, cs.colorBlack, {color: theme.title}]}>Согласие на обработку персональных данных</Text>
         </TouchableOpacity>
     )
 }
@@ -30,6 +32,7 @@ const docsArr = [1, 3, 34, 5]
 
 const AboutAppModal = () => {
     const dispatch = useAppDispatch()
+    const theme = useAppTheme()
     const { aboutAppModal } = useAppSelector(state => state.modals)
 
     const handleModal = () => {
@@ -44,7 +47,7 @@ const AboutAppModal = () => {
                         <Text onPress={handleModal}
                             style={[cs.yellowBtnText, cs.textYellow, cs.fzM]}>Закрыть</Text>
                         <View style={[cs.fAlCenter]}>
-                            <Text style={[cs.fzM, cs.colorDark, cs.fzM, cs.colorDark, cs.fwSemi]}>О приложении</Text>
+                            <Text style={[cs.fzM, cs.colorDark, cs.fzM, cs.colorDark, cs.fwSemi, {color: theme.text_label}]}>О приложении</Text>
                         </View>
                         <View style={{ flex: 0.4 }}></View>
                     </View>
