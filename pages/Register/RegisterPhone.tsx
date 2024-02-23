@@ -17,11 +17,13 @@ import { createNumberMask, Masks } from 'react-native-mask-input';
 import { handleLoginForm, resetLoginCodeStatus, resetLoginPhoneStatus, sendAuthPhone } from '../../app/features/login/loginSlice';
 import { phoneMask } from '../../rules/masks.rules';
 import { InputField } from '../../components/InputField';
+import { useAppTheme } from '../../hooks/useTheme';
 
 
 
 const LoginPhone: FC<NavProps> = ({ navigation }) => {
     const dispatch = useAppDispatch()
+    const theme = useAppTheme()
     const { auth } = useAppSelector(state => state.login)
     const [keyboardStatus, setKeyboardStatus] = useState(false);
     const disabledBtn = auth.form.phone.length < 11
@@ -61,7 +63,7 @@ const LoginPhone: FC<NavProps> = ({ navigation }) => {
                     topContent={
                         <AppContainer style={{ paddingBottom: 0 }}>
                             <View style={[cs.fCenterCol]}>
-                                <Text style={[cs.fwSemi, cs.fwSemi, cs.fzXL]}>Вход</Text>
+                                <Text style={[cs.fwSemi, cs.fwSemi, cs.fzXL, {color: theme.title}]}>Вход</Text>
                             </View>
                         </AppContainer>
                     }

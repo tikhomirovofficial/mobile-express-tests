@@ -5,6 +5,7 @@ import ContentWrapper from "../../components/ContentWrapper";
 import AppContainer from "../../components/AppContainer";
 import { cs } from "../../common/styles";
 import { CheckboxIcon } from "../../icons";
+import { useAppTheme } from '../../hooks/useTheme';
 
 interface WelcomeStepProps {
     features: Array<ReactNode>
@@ -12,9 +13,8 @@ interface WelcomeStepProps {
 }
 
 const FeauturesLayout: FC<WelcomeStepProps> = ({ step, features }) => {
-    useEffect(() => {
+    const theme = useAppTheme()
 
-    }, [])
     return (
         <View style={{ flex: 1 }}>
             <View style={[{ flex: 1, flexDirection: "column", justifyContent: "space-between", gap: 15}]}>
@@ -22,7 +22,7 @@ const FeauturesLayout: FC<WelcomeStepProps> = ({ step, features }) => {
                     {features.map((item, index) => (
                         <View key={index} style={[cs.dF, { flexDirection: "row", gap: 8 }]}>
                             <CheckboxIcon />
-                            <Text style={[cs.fzM, styles.welcomeStepFeatureText]}>
+                            <Text style={[cs.fzM, styles.welcomeStepFeatureText, {color: theme.title}]}>
                                 {item}
                             </Text>
                         </View>

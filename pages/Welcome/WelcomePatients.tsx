@@ -23,7 +23,7 @@ const WelcomePatients: FC<NavProps> = ({ navigation }) => {
     
     return (
         <InfoPageLayout handleSkip={toLoginStep} title='Ваше сотрудничество с нашей лабораторией' image={WelcomePatientsImage} content={
-            <AppContainer style={{ flex: 1, ...cs.spaceXXL }}>
+            <AppContainer style={{ flex: 1, ...cs.spaceXXL}}>
                 <FeauturesLayout step={0} features={[
                     "Приглашайте своих пациентов по номеру телефона",
                     "Назначайте им необходимые анализы",

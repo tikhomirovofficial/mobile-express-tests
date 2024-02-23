@@ -50,9 +50,9 @@ const Root = () => {
     }, [token.valid])
 
     useEffect(() => {
-        // deleteTokens()
-        // deleteAlreadyBeen()
-        // deleteAccessed()
+        deleteTokens()
+        deleteAlreadyBeen()
+        deleteAccessed()
         // deletePin()
         dispatch(checkToken())
         dispatch(checkPinCodeExists())

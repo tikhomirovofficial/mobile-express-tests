@@ -3,6 +3,7 @@ import { View, StyleSheet, TextInput, KeyboardType, Text } from 'react-native'
 import { cs } from '../../common/styles'
 import { fs } from '../../navigation/AppNavigator'
 import MaskInput from 'react-native-mask-input'
+import { useAppTheme } from '../../hooks/useTheme'
 
 type InputFieldProps = {
     mask?: string | RegExp | RegExp[] | (string | RegExp)[],
@@ -16,11 +17,13 @@ type InputFieldProps = {
 
 }
 export const InputField: FC<InputFieldProps> = ({ mask, label, placeholder, val, type, onChange, idInput, error }) => {
+    const theme = useAppTheme()
     const [focused, setFocused] = useState(false)
+
     if (label) {
         return (
             <View style={[cs.fColumn, cs.spaceM]}>
-                <Text style={[cs.fzS, fs.montR, (error ? cs.colorRed : null)]}
+                <Text style={[cs.fzS, fs.montR, {color: theme.title},(error ? cs.colorRed : null)]}
                     nativeID="labelFirstName">{error || label}</Text>
                 {
                     mask ? <MaskInput
@@ -33,7 +36,7 @@ export const InputField: FC<InputFieldProps> = ({ mask, label, placeholder, val,
                         onChangeText={onChange}
                         accessibilityLabelledBy={idInput}
                         placeholder={placeholder}
-                        style={[styles.inputField, cs.fzM, fs.montR, (error ? [cs.errBorderColor, cs.colorRed] : null), (focused ? cs.focusedInput : null)]} />
+                        style={[styles.inputField, cs.fzM, {backgroundColor: theme.card_bg, color: theme.title}, fs.montR, (error ? [cs.errBorderColor, cs.colorRed] : null), (focused ? cs.focusedInput : null)]} />
                         :
                         <TextInput
                             onFocus={() => setFocused(true)}
