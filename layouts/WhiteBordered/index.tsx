@@ -14,18 +14,19 @@ type WhiteBorderedProps = {
     style?: ViewStyle | ViewStyle[],
     topContent?: ReactNode,
     onRefresh?: () => any,
-    refreshing?: boolean
+    refreshing?: boolean,
+    transparentBg?: boolean
 }
 const minContainerHeight = Dimensions.get("window").height / 100 * 92
 
-const WhiteBorderedLayout: FC<WhiteBorderedProps> = ({ children, topContent, style, scrollable = true, onRefresh, refreshing = false }) => {
+const WhiteBorderedLayout: FC<WhiteBorderedProps> = ({ children, topContent, style, scrollable = true, onRefresh, refreshing = false, transparentBg = true }) => {
     const theme = useAppTheme()
     const { modals } = useAppSelector(state => state)
     const modalsKeys = Object.keys(modals) as [keyof typeof modals]
     const openedSome = modalsKeys.some(key => modals[key])
 
     return (
-        <View style={styles.baseView}>
+        <View style={[styles.baseView]}>
             {
                 scrollable ?
                     <IOScrollView refreshControl={
@@ -34,19 +35,19 @@ const WhiteBorderedLayout: FC<WhiteBorderedProps> = ({ children, topContent, sty
                             onRefresh={onRefresh}
                         /> : undefined
                     } nestedScrollEnabled={true} showsVerticalScrollIndicator={false} contentContainerStyle={styles.scrollContainer} style={cs.flexOne}>
-                        <View style={styles.containerWrapperScroll}>
+                        <View style={[styles.containerWrapperScroll, { backgroundColor: transparentBg ? "transparent" : theme.main_bg }]}>
                             {topContent}
-                            <View style={[styles.whiteContainer, style, {backgroundColor: theme.borderedBg}]}>
+                            <View style={[styles.whiteContainer, style, { backgroundColor: theme.borderedBg }]}>
                                 <AppContainer>
                                     {children}
                                 </AppContainer>
                             </View>
                         </View>
                     </IOScrollView> :
-                    <View style={[cs.flexOne, styles.scrollContainer]}>
+                    <View style={[cs.flexOne, styles.scrollContainer, { backgroundColor: transparentBg ? "transparent" : theme.main_bg }]}>
                         <View style={styles.containerWrapperScroll}>
                             {topContent}
-                            <View style={[styles.whiteContainer, style, {backgroundColor: theme.borderedBg}]}>
+                            <View style={[styles.whiteContainer, style, { backgroundColor: theme.borderedBg }]}>
                                 <AppContainer style={{ flex: 1 }}>
                                     {children}
                                 </AppContainer>

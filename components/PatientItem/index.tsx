@@ -7,6 +7,7 @@ import { PatientApi, PatientType } from "../../types/entities/patients.types";
 import { useAppDispatch } from '../../app/base/hooks';
 import { getPatientById } from '../../app/features/current-data/currentData';
 import { handlePatientInfoModal } from '../../app/features/modals/modalsSlice';
+import { useAppTheme } from '../../hooks/useTheme';
 
 type PatientItemProps = {
     selected?: boolean,
@@ -28,7 +29,7 @@ const PatientItem: FC<PatientItemProps> = ({
     phone,
     id }) => {
     const dispatch = useAppDispatch()
-
+    const theme = useAppTheme()
     const handleOpenPatientInfo = useCallback(() => {
         if (handlePress) {
             handlePress()
@@ -55,7 +56,7 @@ const PatientItem: FC<PatientItemProps> = ({
                     <ProfileIcon height={12} />
                 </View>
                 <View style={[cs.fColumn]}>
-                    <Text style={[cs.fzS, cs.fwSemi, cs.colorDark]}>{`${first_name} ${last_name}`}</Text>
+                    <Text style={[cs.fzS, cs.fwSemi, cs.colorDark, {color: theme.text_label}]}>{`${first_name} ${last_name}`}</Text>
                     <Text style={[cs.colorGray, fs.montR, cs.fzXS]}>{bottomText || phone}</Text>
                 </View>
             </View>

@@ -53,7 +53,6 @@ const MainTabs: FC<NavProps> = ({ navigation }) => {
 
     return (
         <>
-
             <Tab.Navigator initialRouteName={"orders"} tabBar={(props) => <AppTab key={props.state.index} {...props} />}
                 sceneContainerStyle={styles.main}
                 screenOptions={{ headerShown: false, unmountOnBlur: true }}>
@@ -110,7 +109,7 @@ const AppNavigator = () => {
 
     return (
         <NavigationContainer>
-            <View style={[styles.main, {}]}>
+            <View style={[styles.main, {backgroundColor: theme.main_bg}]}>
 
                 <Stack.Navigator initialRouteName={getInitialRoute()}
                     screenOptions={{ headerShown: false, contentStyle: {backgroundColor: theme.main_bg} }}>

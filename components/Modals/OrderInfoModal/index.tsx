@@ -10,9 +10,11 @@ import { getOrderById, resetOrderInfo } from '../../../app/features/current-data
 import { fs } from '../../../navigation/AppNavigator';
 import { SkeletonView } from '../../SkeletonView';
 import { SkeletonContainer } from 'react-native-skeleton-component';
+import { useAppTheme } from '../../../hooks/useTheme';
 
 const OrderInfoModal = () => {
     const dispatch = useAppDispatch()
+    const theme = useAppTheme()
     const handleModal = () => dispatch(handleOrderInfoModal())
     const { orderInfoModal } = useAppSelector(state => state.modals)
     const { orderInfo: { info_order, analiz_list, results }, loadings } = useAppSelector(state => state.currentData)
@@ -32,11 +34,11 @@ const OrderInfoModal = () => {
                             <Text onPress={handleModal}
                                 style={[cs.yellowBtnText, cs.textYellow, cs.fzM]}>Закрыть</Text>
                             <View style={[cs.fAlCenter]}>
-                                <Text style={[cs.fzM, cs.colorDark, styles.labelOrderNum, cs.fwMedium]}>Заказ №</Text>
+                                <Text style={[cs.fzM, cs.colorDark, styles.labelOrderNum, cs.fwMedium, { color: theme.text_label }]}>Заказ №</Text>
                                 {loadings.order ? <SkeletonView height={22} width={60} /> :
-                                    <View style={[cs.lightGray]}>
+                                    <View style={[cs.lightGray, { backgroundColor: theme.light_gray_bg }]}>
 
-                                        <Text style={[cs.colorDark, styles.orderNumber, fs.montR]}>{info_order.order_id}</Text>
+                                        <Text style={[cs.colorDark, styles.orderNumber, fs.montR, { color: theme.text_label }]}>{info_order.order_id}</Text>
                                     </View>}
                             </View>
                             {
@@ -46,21 +48,21 @@ const OrderInfoModal = () => {
                         </View>
                         <View style={[styles.analysisOrderColumn]}>
                             <View style={[cs.spaceM]}>
-                                <Text style={[cs.fzXL, cs.fwBold]}>Информация о заказе</Text>
+                                <Text style={[cs.fzXL, cs.fwBold, { color: theme.title }]}>Информация о заказе</Text>
                                 {
                                     loadings.order ? <SkeletonView height={82} width={"100%"} /> :
 
                                         <View style={[styles.orderInfo]}>
                                             <View style={[cs.fRowBetw]}>
-                                                <Text style={[cs.colorGray, cs.fzM]}>Статус</Text>
+                                                <Text style={[cs.colorGray, cs.fzM, fs.montR]}>Статус</Text>
                                                 <Text style={[cs.colorDark, cs.fzM, cs.fwMedium]}>{info_order.status}</Text>
                                             </View>
                                             <View style={[cs.fRowBetw]}>
-                                                <Text style={[cs.colorGray, cs.fzM]}>Назначил(а)</Text>
+                                                <Text style={[cs.colorGray, cs.fzM, fs.montR]}>Назначил(а)</Text>
                                                 <Text style={[cs.colorDark, cs.fzM, cs.fwMedium]}>{info_order.doctor}</Text>
                                             </View>
                                             <View style={[cs.fRowBetw]}>
-                                                <Text style={[cs.colorGray, cs.fzM]}>Пациент</Text>
+                                                <Text style={[cs.colorGray, cs.fzM, fs.montR]}>Пациент</Text>
                                                 <Text style={[cs.colorDark, cs.fzM, cs.fwMedium]}>{info_order.pacient}</Text>
                                             </View>
                                         </View>}
@@ -69,7 +71,7 @@ const OrderInfoModal = () => {
                                 <Text style={[cs.fzXL, cs.fwBold]}>Результаты анализов</Text>
                                 {
                                     loadings.order ? <SkeletonView height={60} width={"100%"} /> :
-                                        <Text style={[cs.colorGray, cs.fzM]}>
+                                        <Text style={[cs.colorGray, cs.fzM, fs.montR]}>
                                             Здесь появится возможность скачать результаты анализов после того, как пациент
                                             оплатит и сдаст анализы в нашей лаборатории.
                                         </Text>
@@ -78,7 +80,7 @@ const OrderInfoModal = () => {
                             </View>
                             <View style={[cs.spaceM]}>
                                 <View style={[cs.dF, cs.fRow, cs.fAlCenter, cs.spaceS]}>
-                                    <Text style={[styles.analysisCount, cs.fzXL, cs.fwBold]}>Список анализов</Text>
+                                    <Text style={[styles.analysisCount, cs.fzXL, cs.fwBold, { color: theme.title }]}>Список анализов</Text>
                                     {
                                         loadings.order ? null : <View style={[cs.fAlCenter, cs.fRow, styles.analysisCountCircle, cs.bgYellow]}>
                                             <Text style={[]}>{analiz_list.length}</Text>
@@ -93,10 +95,12 @@ const OrderInfoModal = () => {
                                             <SkeletonView height={20} width={"100%"} />
                                             <SkeletonView height={20} width={"100%"} />
                                             <SkeletonView height={20} width={"100%"} />
-                                        </View> : <View style={[cs.fColumn]}>
+                                        </View> :
+                                        
+                                        <View style={[cs.fColumn]}>
                                             {
                                                 analiz_list.map((item, index) => (
-                                                    <Text key={item.id} style={[cs.fwMedium, cs.colorDark, cs.fzM]}>{index + 1}. {item.title}</Text>
+                                                    <Text key={item.id} style={[cs.fwMedium, cs.colorDark, cs.fzM, { color: theme.text_label }]}>{index + 1}. {item.title}</Text>
                                                 ))
                                             }
                                         </View>

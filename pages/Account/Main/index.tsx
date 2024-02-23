@@ -21,9 +21,11 @@ import { usePagination } from '../../../hooks/usePagination';
 import { incrementProductsPart } from '../../../app/features/products/productSlice';
 import { resetPatient } from '../../../app/features/order/orderSlice';
 import { useRefresh } from '../../../hooks/useRefresh';
+import { useAppTheme } from '../../../hooks/useTheme';
 
 const Main: FC<NavProps> = ({ navigation }) => {
     const dispatch = useAppDispatch()
+    const theme = useAppTheme()
     const { all_orders, loadings, can_next, part } = useAppSelector(state => state.orders)
     const { refreshing, sendRefresh } = useRefresh()
     const profile = useAppSelector(state => state.profile)
@@ -58,12 +60,12 @@ const Main: FC<NavProps> = ({ navigation }) => {
         <View
             style={{ flex: 1 }}
         >
-            <WhiteBorderedLayout onRefresh={sendRefresh} refreshing={refreshing} style={{ paddingTop: 32 }}>
+            <WhiteBorderedLayout transparentBg={false} onRefresh={sendRefresh} refreshing={refreshing} style={{ paddingTop: 32 }}>
                 <SkeletonContainer>
                     <View style={[cs.spaceL, cs.fColumn]}>
                         {
                             profile.loadings.profile ? <SkeletonView height={30} width={'100%'} /> :
-                                <Text style={cs.title}>{profile.data.first_name.trim()}, {getGreeting()}!</Text>
+                                <Text style={[cs.title, {color: theme.title}]}>{profile.data.first_name.trim()}, {getGreeting()}!</Text>
                         }
                         <View style={[cs.fRowBetw, styles.buttonsTopContainer]}>
                             <TouchableOpacity
@@ -84,15 +86,16 @@ const Main: FC<NavProps> = ({ navigation }) => {
                                     cs.wBlockShadow,
                                     cs.fColumn,
                                     styles.buttonTop,
-                                    cs.flexOne
+                                    cs.flexOne,
+                                    {backgroundColor: theme.chart}
                                 ]}>
                                 <AnalysisIcon />
-                                <Text style={[cs.fzS, cs.txtCenter, fs.montR]}>Назначить анализы</Text>
+                                <Text style={[cs.fzS, cs.txtCenter, fs.montR, {color: theme.title}]}>Назначить анализы</Text>
                             </TouchableOpacity>
                         </View>
                     </View>
                     <View style={[cs.spaceL, cs.fColumn]}>
-                        <Text style={cs.title}>Заказы анализов</Text>
+                        <Text style={[cs.title, {color: theme.title}]}>Заказы анализов</Text>
 
                         <View style={[cs.fColumn, cs.spaceM]}>
                             {

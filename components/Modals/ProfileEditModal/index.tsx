@@ -11,9 +11,11 @@ import { handleProfileEditModal } from "../../../app/features/modals/modalsSlice
 import { handleEditProfileGender, handleProfileForm, setDefaultProfileForm } from '../../../app/features/profile/profileSlice';
 import { ProfileData, ProfileEditTextFields } from '../../../types/entities/user.types';
 import { InputField } from '../../InputField';
+import { useAppTheme } from '../../../hooks/useTheme';
 
 const ProfileEditModal = () => {
     const dispatch = useAppDispatch()
+    const theme = useAppTheme()
     const { profileEditModal } = useAppSelector(state => state.modals)
     const { form, data } = useAppSelector(state => state.profile)
 
@@ -37,7 +39,7 @@ const ProfileEditModal = () => {
                         <Text onPress={handleModal}
                             style={[cs.yellowBtnText, cs.textYellow, cs.fzM]}>Закрыть</Text>
                         <View style={[cs.fAlCenter]}>
-                            <Text style={[cs.fzM, cs.colorDark, cs.fzM, cs.colorDark, cs.fwSemi]}>Личные данные</Text>
+                            <Text style={[cs.fzM, cs.colorDark, cs.fzM, cs.colorDark, cs.fwSemi, { color: theme.text_label }]}>Личные данные</Text>
                         </View>
                         <View style={{ flex: 0.4 }}></View>
                     </View>
@@ -61,18 +63,20 @@ const ProfileEditModal = () => {
                                     val={form.last_name}
                                     onChange={val => dispatch(handleProfileForm({ key: "last_name", val }))}
                                 />
-                                <View style={[cs.fColumn, cs.spaceM]}>
-                                    <Text style={[cs.fzS, fs.montR]} aria-label="Label for Username"
-                                        nativeID="labelFirstName">Имя</Text>
-                                    <TextInput onChangeText={val => dispatch(handleProfileForm({ key: "first_name", val }))} value={form.first_name} accessibilityLabelledBy={"labelFirstName"} placeholder={"Имя"}
-                                        style={[styles.inputField, cs.fzM, fs.montR]} />
-                                </View>
-                                <View style={[cs.fColumn, cs.spaceM]}>
-                                    <Text style={[cs.fzS, fs.montR]} aria-label="Label for Username"
-                                        nativeID="labelMiddleName">Отчество</Text>
-                                    <TextInput onChangeText={val => dispatch(handleProfileForm({ key: "subname", val }))} value={form.subname} accessibilityLabelledBy={"labelMiddleName"} placeholder={"Отчество"}
-                                        style={[styles.inputField, cs.fzM, fs.montR]} />
-                                </View>
+                                <InputField
+                                    error={""}
+                                    label={"Имя"}
+                                    idInput={"labelFirstName"}
+                                    val={form.first_name}
+                                    onChange={val => dispatch(handleProfileForm({ key: "first_name", val }))}
+                                />
+                                 <InputField
+                                    error={""}
+                                    label={"Отчество"}
+                                    idInput={"labelMiddleName"}
+                                    val={form.subname}
+                                    onChange={val => dispatch(handleProfileForm({ key: "subname", val }))}
+                                />
                                 <View style={[cs.fColumn, cs.spaceM]}>
                                     <Text style={[cs.fzS, fs.montR]} aria-label="Label for Username"
                                         nativeID="labelFirstName">Пол</Text>

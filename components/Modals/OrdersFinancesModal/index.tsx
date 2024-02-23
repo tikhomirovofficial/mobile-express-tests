@@ -9,6 +9,7 @@ import { fs } from "../../../navigation/AppNavigator";
 import SelectableBtn from "../../SelectableBtn";
 import { handleAboutModal, handleBonusesModal, handleOrdersFinancesModal, handleProfileEditModal } from "../../../app/features/modals/modalsSlice";
 import BonusesModal from '../BonusesModal';
+import { useAppTheme } from '../../../hooks/useTheme';
 
 
 const OrderItem = () => {
@@ -42,6 +43,7 @@ const OrdersDateGroup = () => {
 
 const OrdersFinancesModal = () => {
     const dispatch = useAppDispatch()
+    const theme = useAppTheme()
     const { ordersFinancesModal, bonusesModal } = useAppSelector(state => state.modals)
 
     const handleModal = () => {
@@ -56,23 +58,23 @@ const OrdersFinancesModal = () => {
                         <Text onPress={handleModal}
                             style={[cs.yellowBtnText, cs.textYellow, cs.fzM]}>Закрыть</Text>
                         <View style={[cs.fAlCenter]}>
-                            <Text style={[cs.fzM, cs.colorDark, cs.fzM, cs.colorDark, cs.fwSemi]}>Финансы</Text>
+                            <Text style={[cs.fzM, cs.colorDark, cs.fzM, cs.colorDark, cs.fwSemi, {color: theme.text_label}]}>Финансы</Text>
                         </View>
                         <View style={{ flex: 0.4 }}></View>
                     </View>
                     <View style={[cs.flexOne, cs.spaceXL]}>
-                        <TouchableOpacity onPress={() => dispatch(handleBonusesModal())} style={[styles.bonusesBlock, cs.wBlockShadow]}>
+                        <TouchableOpacity onPress={() => dispatch(handleBonusesModal())} style={[styles.bonusesBlock, cs.wBlockShadow, {backgroundColor: theme.card_bg || cs.wBlockShadow.backgroundColor}]}>
                             <View style={[cs.fColumn, cs.spaceM, styles.bonusesBlockContent]}>
                                 <View style={[cs.fColumn, cs.spaceS,]}>
                                     <View style={[cs.dF, cs.fAlCenter, cs.fRow, cs.spaceS]}>
                                         <View style={[cs.dF, cs.fAlCenter, cs.fRow, cs.spaceS]}>
-                                            <HeartIcon height={18} width={18} />
-                                            <Text style={[cs.colorDark, cs.fwSemi, cs.fzM]}>Бонусы</Text>
+                                            <HeartIcon stroke={theme.text_label} height={18} width={18} />
+                                            <Text style={[cs.colorDark, cs.fwSemi, cs.fzM, {color: theme.text_label}]}>Бонусы</Text>
                                         </View>
                                         <Text style={[cs.colorGray, cs.fzS]}>1 ед. = 1 ₽</Text>
                                     </View>
                                     <View style={[cs.fColumn]}>
-                                        <Text style={[cs.colorBlack, cs.fzS, cs.fwBold]}>0 из 0 </Text>
+                                        <Text style={[cs.colorBlack, cs.fzS, cs.fwBold, {color: theme.title}]}>0 из 0 </Text>
                                         <Text style={[cs.colorGray, cs.fzXS, fs.montR]}>Доступно для вывода</Text>
                                     </View>
                                     <View style={[styles.progressBonuses]}>
@@ -87,7 +89,7 @@ const OrdersFinancesModal = () => {
                             <OrdersDateGroup />
                             <OrdersDateGroup />
                         </View> */}
-                        <Text style={fs.montR}>Список заказов временно недоступен.</Text>
+                        <Text style={[fs.montR, {color: theme.title}]}>Список заказов временно недоступен.</Text>
                     </View>
                 </View>
             </WhiteBordered>

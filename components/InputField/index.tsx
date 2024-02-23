@@ -23,7 +23,7 @@ export const InputField: FC<InputFieldProps> = ({ mask, label, placeholder, val,
     if (label) {
         return (
             <View style={[cs.fColumn, cs.spaceM]}>
-                <Text style={[cs.fzS, fs.montR, {color: theme.title},(error ? cs.colorRed : null)]}
+                <Text style={[cs.fzS, fs.montR, { color: theme.title }, (error ? cs.colorRed : null)]}
                     nativeID="labelFirstName">{error || label}</Text>
                 {
                     mask ? <MaskInput
@@ -36,7 +36,7 @@ export const InputField: FC<InputFieldProps> = ({ mask, label, placeholder, val,
                         onChangeText={onChange}
                         accessibilityLabelledBy={idInput}
                         placeholder={placeholder}
-                        style={[styles.inputField, cs.fzM, {backgroundColor: theme.card_bg, color: theme.title}, fs.montR, (error ? [cs.errBorderColor, cs.colorRed] : null), (focused ? cs.focusedInput : null)]} />
+                        style={[styles.inputField, cs.fzM, { backgroundColor: theme.card_bg, borderColor: theme.input_border, color: theme.title }, fs.montR, (error ? [cs.errBorderColor, cs.colorRed] : null), (focused ? cs.focusedInput : null)]} />
                         :
                         <TextInput
                             onFocus={() => setFocused(true)}
@@ -47,7 +47,7 @@ export const InputField: FC<InputFieldProps> = ({ mask, label, placeholder, val,
                             onChangeText={onChange}
                             accessibilityLabelledBy={idInput}
                             placeholder={placeholder}
-                            style={[styles.inputField, cs.fzM, fs.montR, (error ? [cs.errBorderColor, cs.colorRed] : null), (focused ? cs.focusedInput : null)]} />
+                            style={[styles.inputField, cs.fzM, { backgroundColor: theme.card_bg || "transparent", borderColor: theme.input_border, color: theme.title }, fs.montR, (error ? [cs.errBorderColor, cs.colorRed] : null), (focused ? cs.focusedInput : null)]} />
                 }
             </View>
         )

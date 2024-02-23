@@ -22,10 +22,14 @@ import { resetProfileData } from '../../../app/features/profile/profileSlice';
 import { formatBonus } from '../../../utils/formatBonusesString';
 import { usePagination } from '../../../hooks/usePagination';
 import { useRefresh } from '../../../hooks/useRefresh';
+import { setTheme } from '../../../app/features/settings/settingsSlice';
+import { useAppTheme } from '../../../hooks/useTheme';
 
 
 const Profile: FC<NavProps> = ({ navigation }) => {
     const dispatch = useAppDispatch()
+    const _theme = useAppTheme()
+    const { theme } = useAppSelector(state => state.settings)
     const { refreshing, sendRefresh } = useRefresh()
     const profile = useAppSelector(state => state.profile)
     const { ordersFinancesModal, patientsModal, aboutAppModal, profileEditModal } = useAppSelector(state => state.modals)
@@ -35,7 +39,13 @@ const Profile: FC<NavProps> = ({ navigation }) => {
     const handlePatients = () => dispatch(handlePatientsModal())
 
     const handleAbout = () => dispatch(handleAboutModal())
-    const handleTheme = () => alert("Функция временно недоступна.")
+    const handleTheme = () => {
+        if(theme === "light") {
+            dispatch(setTheme("dark"))
+            return
+        }
+        dispatch(setTheme("light"))
+    }
     const handleFinances = () => dispatch(handleOrdersFinancesModal())
 
     const handleLogout = () => {
@@ -46,7 +56,7 @@ const Profile: FC<NavProps> = ({ navigation }) => {
 
     return (
         <>
-            <WhiteBorderedLayout onRefresh={sendRefresh} refreshing={refreshing} style={{ paddingTop: 32 }}>
+            <WhiteBorderedLayout transparentBg={false} onRefresh={sendRefresh} refreshing={refreshing} style={{ paddingTop: 32 }}>
                 <View style={[cs.fColumn, cs.spaceXXL]}>
                     <View style={[cs.fCenterCol,]}>
                         <View style={[cs.spaceM, cs.fAlCenter, styles.profileInfo]}>
@@ -60,7 +70,7 @@ const Profile: FC<NavProps> = ({ navigation }) => {
                                 {
                                     profile.loadings.profile ?
                                         <SkeletonView height={50} width={180} /> :
-                                        <Text style={[cs.fwBold, cs.fzXL, cs.txtCenter]}>
+                                        <Text style={[cs.fwBold, cs.fzXL, cs.txtCenter, {color: _theme.title}]}>
                                             {profile.data.last_name} {profile.data.first_name} {profile.data.subname}
                                         </Text>
                                 }
@@ -78,34 +88,34 @@ const Profile: FC<NavProps> = ({ navigation }) => {
                     <View style={[cs.fColumn, cs.spaceM]}>
                         <View style={[cs.fRowBetw, cs.spaceM, { flexWrap: "wrap" }]}>
                             <TouchableOpacity onPress={handleProfileDataModal}
-                                style={[styles.profileHubItem, cs.wBlockShadow, cs.fAlCenter, cs.flexOne]}>
+                                style={[styles.profileHubItem, cs.wBlockShadow, cs.fAlCenter, cs.flexOne, {backgroundColor: _theme.card_bg || cs.wBlockShadow.backgroundColor}]}>
                                 <View style={[styles.profileItemIcon, cs.rootBg, cs.circle, cs.fCenterCol]}>
                                     <ProfileIcon />
                                 </View>
                                 <View style={[cs.fAlCenter]}>
-                                    <Text style={[cs.fzS, fs.montR, cs.txtCenter, cs.fwMedium]}>Личные данные</Text>
+                                    <Text style={[cs.fzS, fs.montR, cs.txtCenter, cs.fwMedium, {color: _theme.title}]}>Личные данные</Text>
                                     <Text style={[cs.fzXS, fs.montR, cs.txtCenter, cs.colorGray]}>ФИО, пол, фото</Text>
                                 </View>
                             </TouchableOpacity>
                             <TouchableOpacity onPress={handleFinances}
-                                style={[styles.profileHubItem, cs.wBlockShadow, cs.fAlCenter, cs.flexOne]}>
+                                style={[styles.profileHubItem, cs.wBlockShadow, cs.fAlCenter, cs.flexOne, {backgroundColor: _theme.card_bg || cs.wBlockShadow.backgroundColor}]}>
                                 <View style={[styles.profileItemIcon, cs.rootBg, cs.circle, cs.fCenterCol]}>
                                     <WalletIcon />
                                 </View>
                                 <View style={[cs.fAlCenter]}>
-                                    <Text style={[cs.fzS, fs.montR, cs.txtCenter, cs.fwMedium]}>Финансы</Text>
+                                    <Text style={[cs.fzS, fs.montR, cs.txtCenter, cs.fwMedium, {color: _theme.title}]}>Финансы</Text>
                                     <Text style={[cs.fzXS, fs.montR, cs.txtCenter, cs.colorGray]}>Бонусы и
                                         реквизиты</Text>
                                 </View>
 
                             </TouchableOpacity>
                             <TouchableOpacity onPress={handlePatients}
-                                style={[styles.profileHubItem, cs.wBlockShadow, cs.fAlCenter, cs.flexOne]}>
+                                style={[styles.profileHubItem, cs.wBlockShadow, cs.fAlCenter, cs.flexOne, {backgroundColor: _theme.card_bg || cs.wBlockShadow.backgroundColor}]}>
                                 <View style={[styles.profileItemIcon, cs.rootBg, cs.circle, cs.fCenterCol]}>
                                     <ProfilesIcon />
                                 </View>
                                 <View style={[cs.fAlCenter]}>
-                                    <Text style={[cs.fzS, fs.montR, cs.txtCenter, cs.fwMedium]}>Мои пациенты</Text>
+                                    <Text style={[cs.fzS, fs.montR, cs.txtCenter, cs.fwMedium, {color: _theme.title}]}>Мои пациенты</Text>
                                     <Text style={[cs.fzXS, fs.montR, cs.txtCenter, cs.colorGray]}>Список ваших
                                         пациентов</Text>
                                 </View>
@@ -113,29 +123,29 @@ const Profile: FC<NavProps> = ({ navigation }) => {
                             </TouchableOpacity>
                             <TouchableOpacity
                                 onPress={handleAbout}
-                                style={[styles.profileHubItem, cs.wBlockShadow, cs.fAlCenter, cs.flexOne]}>
+                                style={[styles.profileHubItem, cs.wBlockShadow, cs.fAlCenter, cs.flexOne, {backgroundColor: _theme.card_bg || cs.wBlockShadow.backgroundColor}]}>
                                 <View style={[styles.profileItemIcon, cs.rootBg, cs.circle, cs.fCenterCol]}>
                                     <Logo height={24} width={16} />
                                 </View>
                                 <View style={[cs.fAlCenter]}>
-                                    <Text style={[cs.fzS, fs.montR, cs.txtCenter, cs.fwMedium]}>О приложении</Text>
+                                    <Text style={[cs.fzS, fs.montR, cs.txtCenter, cs.fwMedium, {color: _theme.title}]}>О приложении</Text>
                                     <Text style={[cs.fzXS, fs.montR, cs.txtCenter, cs.colorGray]}>Правовая
                                         информация</Text>
                                 </View>
                             </TouchableOpacity>
                             <TouchableOpacity onPress={handleTheme}
-                                style={[styles.profileHubItem, cs.wBlockShadow, cs.fAlCenter, cs.flexOne]}>
+                                style={[styles.profileHubItem, cs.wBlockShadow, cs.fAlCenter, cs.flexOne, {backgroundColor: _theme.card_bg || cs.wBlockShadow.backgroundColor}]}>
                                 <View style={[styles.profileItemIcon, cs.rootBg, cs.circle, cs.fCenterCol]}>
                                     <ThemeIcon />
                                 </View>
                                 <View style={[cs.fAlCenter]}>
-                                    <Text style={[cs.fzS, fs.montR, cs.txtCenter, cs.fwMedium, { paddingBottom: 8 }]}>Включить тёмную тему</Text>
+                                    <Text style={[cs.fzS, fs.montR, cs.txtCenter, cs.fwMedium, { paddingBottom: 8 }, {color: _theme.title}]}>Включить тёмную тему</Text>
                                 </View>
 
                             </TouchableOpacity>
                             <TouchableOpacity
                                 onPress={handleLogout}
-                                style={[styles.profileHubItem, cs.wBlockShadow, cs.fAlCenter, cs.flexOne]}>
+                                style={[styles.profileHubItem, cs.wBlockShadow, cs.fAlCenter, cs.flexOne, {backgroundColor: _theme.card_bg || cs.wBlockShadow.backgroundColor}]}>
                                 <View style={[styles.profileItemIcon, cs.rootBg, cs.circle, cs.fCenterCol]}>
                                     <LogoutIcon />
                                 </View>

@@ -16,9 +16,11 @@ import { getPatientById } from '../../../app/features/current-data/currentData';
 import { getAllPatients, incrementPatientsPart, resetAllPatients } from '../../../app/features/patients/patientsSlice';
 import { usePagination } from '../../../hooks/usePagination';
 import { fs } from '../../../navigation/AppNavigator';
+import { useAppTheme } from '../../../hooks/useTheme';
 
 const PatientsModal: FC<NavProps> = ({ navigation }) => {
     const dispatch = useAppDispatch()
+    const theme = useAppTheme()
     const { patientsModal } = useAppSelector(state => state.modals)
     const patients = useAppSelector(state => state.patients)
 
@@ -60,7 +62,7 @@ const PatientsModal: FC<NavProps> = ({ navigation }) => {
                     <View style={[cs.fRowBetw]}>
                         <Text onPress={handleModal} style={[cs.yellowBtnText, cs.textYellow, cs.fzM]}>Закрыть</Text>
                         <View style={[cs.fAlCenter]}>
-                            <Text style={[cs.fzM, cs.colorDark, cs.fzM, cs.colorDark, cs.fwSemi]}>Мои пациенты</Text>
+                            <Text style={[cs.fzM, cs.colorDark, cs.fzM, cs.colorDark, cs.fwSemi, {color: theme.text_label}]}>Мои пациенты</Text>
                         </View>
                         <View style={{ flex: 0.4 }}></View>
                     </View>

@@ -11,9 +11,11 @@ import { checkToken, resetLoginCodeStatus, resetLoginPhoneStatus, sendAuthCode, 
 import { resetAcceptedErr } from '../../app/features/access/accessSlice';
 import { useInterval } from '../../hooks/useInterval';
 import ButtonYellow from '../../components/Buttons/ButtonYellow';
+import { useAppTheme } from '../../hooks/useTheme';
 
 const CodePhoneAccept: FC<NavProps> = ({ navigation }) => {
     const dispatch = useAppDispatch()
+    const theme = useAppTheme()
     const { auth } = useAppSelector(state => state.login)
     const [code, setCode] = useState<string[]>(["", "", "", ""])
     const [keyboardStatus, setKeyboardStatus] = useState(false);
@@ -126,7 +128,7 @@ const CodePhoneAccept: FC<NavProps> = ({ navigation }) => {
                     topContent={
                         <AppContainer style={{ paddingBottom: 0 }}>
                             <View style={[cs.fCenterCol]}>
-                                <Text style={[cs.fwSemi, cs.fwSemi, cs.fzXL]}>Код из СМС</Text>
+                                <Text style={[cs.fwSemi, cs.fwSemi, cs.fzXL, {color: theme.title}]}>Код из СМС</Text>
                             </View>
                         </AppContainer>
                     }
@@ -134,7 +136,7 @@ const CodePhoneAccept: FC<NavProps> = ({ navigation }) => {
                     <View style={[cs.fColumnBetw, cs.flexOne, { minHeight: !keyboardStatus ? "100%" : "99%", paddingBottom: 32 }]}>
                         <View style={[cs.spaceM]}>
                             <View style={[cs.fColumn, cs.spaceM]}>
-                                <Text style={[cs.fzS, fs.montR, cs.fwMedium, (auth.success.code === false ? cs.colorRed : null)]} aria-label="Label for Usernam"
+                                <Text style={[cs.fzS, fs.montR, cs.fwMedium, {color: theme.title}, (auth.success.code === false ? cs.colorRed : null)]} aria-label="Label for Usernam"
                                     nativeID="labelFirstName">
                                     {
                                        auth.success.code === false ? auth.errors.code : ` Введите код из СМС ${auth.form.maskedPhone}`
@@ -148,7 +150,7 @@ const CodePhoneAccept: FC<NavProps> = ({ navigation }) => {
                                                     handleBackspace(index);
                                                 }
                                             }} value={item} onChangeText={(text) => handleCodeInput(text, index)} ref={(ref) => (inputRefs.current[index] = ref as TextInput)} keyboardType={"numeric"} maxLength={1} accessibilityLabelledBy={"labelFirstName"} placeholder={item}
-                                                style={[cs.inputField, cs.fzM, fs.montR, cs.txtCenter, styles.smsCodeField, cs.fwBold, (auth.success.code === false ? [cs.errBorderColor, cs.colorRed] : null)]} />
+                                                style={[cs.inputField, cs.fzM, fs.montR, cs.txtCenter, styles.smsCodeField, cs.fwBold, {color: theme.title}, (auth.success.code === false ? [cs.errBorderColor, cs.colorRed] : null)]} />
                                         ))
                                     }
                                 </View>

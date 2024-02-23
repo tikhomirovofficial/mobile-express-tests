@@ -5,22 +5,23 @@ import {cs} from "../common/styles";
 import {CallIcon, DownloadIcon, HomeIcon, ProfileIcon} from "../icons";
 import {routesNames} from "./routes";
 import { fs } from "./AppNavigator";
+import { useAppTheme } from "../hooks/useTheme";
 
 const AppTab: FC<BottomTabBarProps> = ({state, descriptors,  navigation}) => {
-
+    const theme = useAppTheme()
     return (
-        <View key={state.index} style={[cs.dF, cs.fRow, styles.tabsContainer]}>
+        <View key={state.index} style={[cs.dF, cs.fRow, styles.tabsContainer, {backgroundColor: theme.chart}]}>
             {state.routes.map((route, index) => {
                 const {options} = descriptors[route.key];
                 const isFocused = state.index === index;
                 const TabIcon = () => {
                     switch (route.name) {
                         case "support":
-                            return <CallIcon stroke={isFocused ? "#36CACB": "#4D4D4D"}/>
+                            return <CallIcon stroke={isFocused ? "#36CACB":  theme.text_label}/>
                         case "profile":
-                            return <ProfileIcon stroke={isFocused ? "#36CACB": "#4D4D4D"}/>
+                            return <ProfileIcon stroke={isFocused ? "#36CACB":  theme.text_label}/>
                         default:
-                            return <HomeIcon stroke={isFocused ? "#36CACB": "#4D4D4D"}/>
+                            return <HomeIcon stroke={isFocused ? "#36CACB":  theme.text_label}/>
                     }
                 }
                 const onPress = () => {
@@ -54,7 +55,7 @@ const AppTab: FC<BottomTabBarProps> = ({state, descriptors,  navigation}) => {
                     >
 
                         <TabIcon/>
-                        <Text style={[{color: isFocused ? '#36CACB' : cs.colorDark.color}, cs.fzXS, fs.montR]}>
+                        <Text style={[{color: isFocused ? '#36CACB' : theme.text_label}, cs.fzXS, fs.montR,]}>
                             {routesNames[route.name] || ""}
                         </Text>
                     </TouchableOpacity>

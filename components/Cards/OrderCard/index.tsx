@@ -7,6 +7,7 @@ import { useAppDispatch, useAppSelector } from "../../../app/base/hooks";
 import { handleOrderInfoModal } from "../../../app/features/modals/modalsSlice";
 import { fs } from '../../../navigation/AppNavigator';
 import { getOrderById } from '../../../app/features/current-data/currentData';
+import { useAppTheme } from '../../../hooks/useTheme';
 
 
 const OrderCard: FC<OrderAnalysisType> = ({
@@ -18,7 +19,7 @@ const OrderCard: FC<OrderAnalysisType> = ({
     handlePress,
 }) => {
     const dispatch = useAppDispatch()
-
+    const theme = useAppTheme()
 
     const getStatusObj = useCallback(() => {
         const statusObj = {
@@ -42,13 +43,13 @@ const OrderCard: FC<OrderAnalysisType> = ({
     }
 
     return (
-        <TouchableOpacity onPress={handleOpenInfo} style={[styles.card, cs.spaceL]}>
+        <TouchableOpacity onPress={handleOpenInfo} style={[styles.card, cs.spaceL, {backgroundColor: theme.card_bg || styles.card.backgroundColor, borderColor: theme.card_border}]}>
             <View style={[cs.fColumn, styles.cardTop]}>
                 <View style={[cs.fRowBetw, cs.fAlCenter]}>
                     <View style={[styles.orderNum, cs.fAlCenter, cs.fRow]}>
-                        <Text style={[cs.fzS, cs.colorDark, styles.orderNumText, cs.fwMedium]}>Заказ №</Text>
-                        <View style={[cs.lightGray]}>
-                            <Text style={[fs.montR]}>{id}</Text>
+                        <Text style={[cs.fzS, cs.colorDark, styles.orderNumText, cs.fwMedium, {color: theme.text_label}]}>Заказ №</Text>
+                        <View style={[cs.lightGray, {backgroundColor: theme.light_gray_bg}]}>
+                            <Text style={[fs.montR, {color: theme.text_label}]}>{id}</Text>
                         </View>
                     </View>
                     <Text style={[cs.colorGray, cs.fzS, fs.montR]}>{date}</Text>
@@ -57,7 +58,7 @@ const OrderCard: FC<OrderAnalysisType> = ({
             </View>
             <View style={[cs.fRowBetw, cs.fAlCenter, cs.flexOne, styles.cardBottom]}>
                 <View style={[getStatusObj().styleBlock, styles.statusBlock]}>
-                    <Text style={[cs.fwSemi, cs.colorWhite, cs.fzS]}>{getStatusObj().text}</Text>
+                    <Text style={[cs.fwSemi, cs.colorWhite, cs.fzS, {color: theme.text_status}]}>{getStatusObj().text}</Text>
                 </View>
                 <TouchableOpacity style={[cs.fAlCenter, cs.fRow, styles.resultsBtn]}>
                     <DownloadIcon
@@ -68,10 +69,7 @@ const OrderCard: FC<OrderAnalysisType> = ({
                     </Text>
                 </TouchableOpacity>
             </View>
-
-
         </TouchableOpacity>
-
     );
 };
 
