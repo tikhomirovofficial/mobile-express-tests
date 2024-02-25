@@ -19,6 +19,8 @@ type ProfileSliceState = {
         text_fields: ProfileCreateForm
     }
     has_profile: boolean | null
+    has_docs: boolean | null
+    docs_url: string
     data: ProfileData,
     form: Omit<ProfileData, "bonus">,
     loadings: {
@@ -45,7 +47,9 @@ const initialState: ProfileSliceState = {
             email: ""
         }
     },
+    has_docs: null,
     has_profile: null,
+    docs_url: "",
     data: {
         first_name: "",
         last_name: "",
@@ -203,6 +207,7 @@ export const ProfileSlice = createSlice({
         })
         builder.addCase(createProfile.fulfilled, (state, action) => {
             state.has_profile = action.payload.status
+            state.docs_url = action.payload.url
             state.creating_form.sending = false
         })
         builder.addCase(createProfile.rejected, (state, action) => {

@@ -81,7 +81,7 @@ const AcceptPinCode: FC<NavProps> = ({ navigation }) => {
             <View style={[cs.fColumn, cs.spaceM, { minHeight: "100%" }]}>
                 <WhiteBorderedLayout
                     topContent={
-                        <AppContainer style={{ paddingBottom: 0 }}>
+                        <AppContainer style={{ paddingBottom: 32 }}>
                             <View style={[cs.fCenterCol]}>
                                 <Text style={[cs.fwSemi, cs.fwSemi, cs.fzXL, { color: theme.title }]}>Подтвердите вход</Text>
                             </View>

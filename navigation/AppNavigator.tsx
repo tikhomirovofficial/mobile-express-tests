@@ -39,6 +39,7 @@ import OrderInfoModal from '../components/Modals/OrderInfoModal';
 import CheckExistsPatient from '../pages/Inviting/CheckExistsPatient';
 import InvitingLinked from '../pages/Informational/InvitingLinked';
 import { useAppTheme } from '../hooks/useTheme';
+import DocsAccept from '../pages/Register/DocsAccept';
 
 const Stack = createNativeStackNavigator()
 const Tab = createBottomTabNavigator()
@@ -82,29 +83,34 @@ const AppNavigator = () => {
     const { patientData, success } = useAppSelector(state => state.order)
     const { contacts, media, notifications } = useAppSelector(state => state.permissions)
 
+    // const getInitialRoute = () => {
+    //     if (token.valid) {
+    //         if (accepted.valid) {
+    //             if (!faceId.connected && !faceId.asked) {
+    //                 return 'bio_connect'
+    //             }
+    //             if (!notifications.granted) {
+    //                 return "info_notifications"
+    //             }
+    //             if (!media.granted) {
+    //                 return "info_media"
+    //             }
+    //             // if (!contacts.granted) {
+    //             //     return "info_contacts"
+    //             // }
+    //             return "home"
+    //         }
+    //         return "pin_accept"
+    //     }
+    //     if (!alreadyBeen.valid) {
+    //         return "welcome"
+    //     }
+    //     return "login_phone"
+    // }
+
     const getInitialRoute = () => {
-        if (token.valid) {
-            if (accepted.valid) {
-                if (!faceId.connected && !faceId.asked) {
-                    return 'bio_connect'
-                }
-                if (!notifications.granted) {
-                    return "info_notifications"
-                }
-                if (!media.granted) {
-                    return "info_media"
-                }
-                // if (!contacts.granted) {
-                //     return "info_contacts"
-                // }
-                return "home"
-            }
-            return "pin_accept"
-        }
-        if (!alreadyBeen.valid) {
-            return "welcome"
-        }
-        return "login_phone"
+        
+        return "docs_accept"
     }
 
     return (
@@ -113,6 +119,7 @@ const AppNavigator = () => {
 
                 <Stack.Navigator initialRouteName={getInitialRoute()}
                     screenOptions={{ headerShown: false, contentStyle: { backgroundColor: theme.main_bg } }}>
+                         <Stack.Screen name="docs_accept" component={DocsAccept} />
                     {
                         !token.valid ?
                             <>

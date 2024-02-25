@@ -31,4 +31,6 @@ export type GetProfileFilledRes = {
 
 // Регистрация профиля
 export type ProfileCreateReq = Omit<ProfileData, "bonus" | "image"> & ProfilePersonData
-export type ProfileCreateRes = ResponseStatus
+export type ProfileCreateRes = {
+    url: string
+} & ResponseStatus

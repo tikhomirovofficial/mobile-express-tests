@@ -11,7 +11,7 @@ type SettingsSliceState = {
 
 const initialState: SettingsSliceState = {
     loading: true,
-    theme: "light"
+    theme: "dark"
 }
 export const initAppTheme = createAsyncThunk(
     'theme/get',
@@ -37,6 +37,7 @@ export const SettingsSlice = createSlice({
     extraReducers(builder) {
         builder.addCase(initAppTheme.fulfilled, (state, action) => {
             state.theme = action.payload as "light" | "dark"
+            //state.theme = "dark"
             state.loading = false
         })
         builder.addCase(initAppTheme.rejected, (state, action) => {

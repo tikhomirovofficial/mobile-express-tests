@@ -10,23 +10,10 @@ import SelectableBtn from "../../SelectableBtn";
 import { handleAboutModal, handleProfileEditModal } from "../../../app/features/modals/modalsSlice";
 import { ModalContainer } from '../../ModalContainer';
 import { useAppTheme } from '../../../hooks/useTheme';
+import { DocumentItem } from '../../DocumentItem';
 
 
-type DocumentItemProps = {
-    neededBorder?: boolean
-}
 
-const DocumentItem: FC<DocumentItemProps> = ({ neededBorder = true }) => {
-    const theme = useAppTheme()
-    return (
-        <TouchableOpacity style={[cs.dF, cs.fRow, cs.fAlCenter, cs.spaceM, styles.documentItem, (neededBorder ? cs.bottomBorder : null)]}>
-            <View style={[styles.documentIcon, cs.circle, cs.fCenterCol]}>
-                <DocumentIcon />
-            </View>
-            <Text style={[styles.documentFile, cs.fzS, fs.montR, cs.colorBlack, {color: theme.title}]}>Согласие на обработку персональных данных</Text>
-        </TouchableOpacity>
-    )
-}
 
 const docsArr = [1, 3, 34, 5]
 
@@ -62,7 +49,7 @@ const AboutAppModal = () => {
                         <View style={[cs.spaceM, cs.fColumn]}>
                             {
                                 docsArr.map((item, index) => (
-                                    <DocumentItem neededBorder={index !== docsArr.length - 1} />
+                                    <DocumentItem title={"Документ"} neededBorder={index !== docsArr.length - 1} />
                                 ))
                             }
 

@@ -52,6 +52,7 @@ const Root = () => {
         }
     }, [token.valid])
 
+
     useEffect(() => {
         // deleteTokens()
         // deleteAlreadyBeen()
@@ -90,7 +91,7 @@ const Root = () => {
     }
     return (
         <View style={[cs.flexOne, cs.fCenterCol, { backgroundColor: appTheme.borderedBg }]}>
-            <Logo height={100} width={70} />
+            <Logo height={120} width={90} />
         </View>
 
     );
