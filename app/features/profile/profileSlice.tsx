@@ -155,7 +155,6 @@ export const ProfileSlice = createSlice({
             }
             tempCreatingForm[key] = val
             state.creating_form.text_fields = tempCreatingForm
-
             const datesAreValid = tempCreatingForm.dob.length === 10 && tempCreatingForm.passport_issue_date.length === 10
             const pass = tempCreatingForm.passport_numbers.length === 11
             const allFieldsAreNotEmpty = Object.values(tempCreatingForm).every((val) => val.length > 0)
@@ -169,6 +168,9 @@ export const ProfileSlice = createSlice({
         resetCreateProfileForm: state => {
             state.creating_form = initialState.creating_form
         },
+        setHasDocs: (state, action: PayloadAction<boolean>) => {
+            state.has_docs = action.payload
+        },
         resetProfileData: state => {
             state.data = initialState.data
             state.form = initialState.form
@@ -180,6 +182,7 @@ export const ProfileSlice = createSlice({
         builder.addCase(getHasProfile.fulfilled, (state, action) => {
             console.log(`Профиль заполнен: ${action.payload.is_fill_fio}`);
             state.has_profile = action.payload.is_fill_fio
+            state.has_docs = action.payload.is_doc_signed
         })
         builder.addCase(getHasProfile.rejected, (state, action) => {
             console.log(action.error);
@@ -222,6 +225,7 @@ export const {
     handleCreateProfileForm,
     handleCreateProfileGender,
     resetCreateProfileForm,
+    setHasDocs,
     handleEditProfileGender,
     setDefaultProfileForm,
     resetProfileData

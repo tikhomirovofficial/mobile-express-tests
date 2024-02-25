@@ -13,9 +13,23 @@ type DocumentItemProps = {
 
 export const DocumentItem: FC<DocumentItemProps> = ({ neededBorder = true, title = "", to = "" }) => {
     const theme = useAppTheme()
+    const toDoc = () => {
+        if (!to) {
+            return undefined
+        }
+        return () => {
+            try {
+                Linking.openURL(to)
+            } catch {
+                console.log("Ошибка перехода на файл");
+
+            }
+        }
+
+    }
 
     return (
-        <TouchableOpacity onPress={to ? () => Linking.openURL(to) : undefined} style={[cs.dF, cs.fRow, cs.fAlCenter, cs.spaceM, styles.documentItem, (neededBorder ? cs.bottomBorder : null)]}>
+        <TouchableOpacity onPress={toDoc} style={[cs.dF, cs.fRow, cs.fAlCenter, cs.spaceM, styles.documentItem, (neededBorder ? cs.bottomBorder : null)]}>
             <View style={[styles.documentIcon, cs.circle, cs.fCenterCol]}>
                 <DocumentIcon />
             </View>

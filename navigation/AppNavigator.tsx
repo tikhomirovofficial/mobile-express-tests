@@ -77,41 +77,38 @@ const AppNavigator = () => {
     const theme = useAppTheme()
     //Тут нужно получить состояния авторизованности пользователя, наличия пин-кода, первый ли раз заходит чел
     const { token } = useAppSelector(state => state.login)
-    const { data, loadings, has_profile } = useAppSelector(state => state.profile)
+    const { data, loadings, has_profile, has_docs } = useAppSelector(state => state.profile)
     const { alreadyBeen, accepted, pin, faceId } = useAppSelector(state => state.access)
     const inviting = useAppSelector(state => state.inviting)
     const { patientData, success } = useAppSelector(state => state.order)
     const { contacts, media, notifications } = useAppSelector(state => state.permissions)
 
-    // const getInitialRoute = () => {
-    //     if (token.valid) {
-    //         if (accepted.valid) {
-    //             if (!faceId.connected && !faceId.asked) {
-    //                 return 'bio_connect'
-    //             }
-    //             if (!notifications.granted) {
-    //                 return "info_notifications"
-    //             }
-    //             if (!media.granted) {
-    //                 return "info_media"
-    //             }
-    //             // if (!contacts.granted) {
-    //             //     return "info_contacts"
-    //             // }
-    //             return "home"
-    //         }
-    //         return "pin_accept"
-    //     }
-    //     if (!alreadyBeen.valid) {
-    //         return "welcome"
-    //     }
-    //     return "login_phone"
-    // }
-
     const getInitialRoute = () => {
-        
-        return "docs_accept"
+        if (token.valid) {
+            if (accepted.valid) {
+                if (!faceId.connected && !faceId.asked) {
+                    return 'bio_connect'
+                }
+                if (!notifications.granted) {
+                    return "info_notifications"
+                }
+                // if (!media.granted) {
+                //     return "info_media"
+                // }
+                // if (!contacts.granted) {
+                //     return "info_contacts"
+                // }
+                return "home"
+            }
+            return "pin_accept"
+        }
+        if (!alreadyBeen.valid) {
+            return "welcome"
+        }
+        return "login_phone"
     }
+
+
 
     return (
         <NavigationContainer>
@@ -119,7 +116,7 @@ const AppNavigator = () => {
 
                 <Stack.Navigator initialRouteName={getInitialRoute()}
                     screenOptions={{ headerShown: false, contentStyle: { backgroundColor: theme.main_bg } }}>
-                         <Stack.Screen name="docs_accept" component={DocsAccept} />
+
                     {
                         !token.valid ?
                             <>
@@ -147,7 +144,10 @@ const AppNavigator = () => {
                                             {/* {!contacts.granted ? <Stack.Screen name="info_contacts" component={AccessContacts} /> : null} */}
                                             {
                                                 has_profile ?
-                                                    <Stack.Screen name="home" component={MainTabs} />
+                                                    <>
+                                                        {!has_docs ? <Stack.Screen name="docs_accept" component={DocsAccept} /> : null}
+                                                        <Stack.Screen name="home" component={MainTabs} />
+                                                    </>
                                                     :
                                                     <Stack.Screen name="profile_create" component={CreateProfile} />
                                             }

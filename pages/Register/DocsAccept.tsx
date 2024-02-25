@@ -1,24 +1,17 @@
 import React, { FC, useEffect, useState } from 'react';
-import { Animated, Text, TouchableOpacity, View, StyleSheet, TextInput, ScrollView, Keyboard, ActivityIndicator } from "react-native";
+import { Animated, Text, TouchableOpacity, View, StyleSheet, TextInput, ScrollView, Keyboard, ActivityIndicator, Linking } from "react-native";
 import { useAppDispatch, useAppSelector } from '../../app/base/hooks';
-import { handlePatientInvitingModal } from '../../app/features/modals/modalsSlice';
 import { cs } from '../../common/styles';
 import AppContainer from '../../components/AppContainer';
-import PatientInvitingModal from '../../components/Modals/PatientInvitingModal';
-import PatientItem from '../../components/PatientItem';
-import ButtonYellow from '../../components/Buttons/ButtonYellow';
-import { SearchIcon } from '../../icons';
 import { fs } from '../../navigation/AppNavigator';
 import { NavProps } from '../../types/common.types';
 import { LinearGradient } from 'expo-linear-gradient';
 import WhiteBorderedLayout from '../../layouts/WhiteBordered';
-import MaskInput from 'react-native-mask-input';
-import { createNumberMask, Masks } from 'react-native-mask-input';
-import { handleLoginForm, resetLoginCodeStatus, resetLoginPhoneStatus, sendAuthPhone } from '../../app/features/login/loginSlice';
-import { phoneMask } from '../../rules/masks.rules';
-import { InputField } from '../../components/InputField';
+import * as FileSystem from 'expo-file-system';
 import { useAppTheme } from '../../hooks/useTheme';
 import { DocumentItem } from '../../components/DocumentItem';
+import { setHasDocs } from '../../app/features/profile/profileSlice';
+import ButtonYellow from '../../components/Buttons/ButtonYellow';
 
 
 
@@ -28,9 +21,21 @@ const DocsAccept: FC<NavProps> = ({ navigation }) => {
     const { docs_url } = useAppSelector(state => state.profile)
 
     const downloadDocs = () => {
-        const url = "https://iit.csu.ru/content/docs/students/science/Nauchnaja_statja_magistra.pdf"
-        
+        if (!docs_url) {
+            return undefined
+        }
+        if (docs_url) {
+            return () => {
+                try {
+                    Linking.openURL(docs_url)
+                } catch {
+                    console.log("Ошибка перехода на файл");
+                }
+            }
+        }
+
     }
+    const acceptDocs = () => dispatch(setHasDocs(true))
 
     return (
         <Animated.ScrollView contentContainerStyle={{ minHeight: "100%" }}>
@@ -53,14 +58,11 @@ const DocsAccept: FC<NavProps> = ({ navigation }) => {
                                 </View>
                                 <DocumentItem to={docs_url} title={"Агентский договор"} neededBorder={false} />
                             </View>
-                            <TouchableOpacity>
-                                <LinearGradient style={[cs.yellowBtn, cs.fCenterCol]}
-                                    colors={["#FB0", "#FFCB3D", "#FFDA75"]}>
-                                    <Text style={[cs.fzM, cs.yellowBtnText]}>Подписать</Text>
-                                </LinearGradient>
-                            </TouchableOpacity>
+                            <ButtonYellow handlePress={acceptDocs}>
+                                <Text style={[cs.fzM, cs.yellowBtnText]}>Подписать</Text>
+                            </ButtonYellow>
                             <View style={[cs.fCenterCol]}>
-                                <TouchableOpacity onPress={() => { }}>
+                                <TouchableOpacity onPress={downloadDocs}>
                                     <Text style={[cs.fClickableGray, cs.fzM, cs.fwMedium, cs.textYellow]}>Скачать</Text>
                                 </TouchableOpacity>
                             </View>
