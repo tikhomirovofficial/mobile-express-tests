@@ -11,7 +11,7 @@ type SettingsSliceState = {
 
 const initialState: SettingsSliceState = {
     loading: true,
-    theme: "dark"
+    theme: "light"
 }
 export const initAppTheme = createAsyncThunk(
     'theme/get',
