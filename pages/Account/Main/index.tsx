@@ -119,7 +119,7 @@ const Main: FC<NavProps> = ({ navigation }) => {
                                                         paid={true}
                                                         date={normalizeDate(item.date)}
                                                         id={item.id}
-                                                        customer={`Имя Фамилия`}
+                                                        customer={item.pacient || "Имя Фамилия"}
                                                         analysisList={[]} />
                                                 )}
                                             />

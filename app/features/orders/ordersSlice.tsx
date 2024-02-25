@@ -63,6 +63,8 @@ export const OrdersSlice = createSlice({
         builder.addCase(getAllOrders.fulfilled, (state, action) => {
             state.all_orders = state.part ? [...state.all_orders, ...action.payload.orders] : action.payload.orders
             state.can_next = action.payload.can_next
+            console.log(action.payload.orders);
+            
             state.loadings.all_orders = false
             state.loadings.all_orders_pagination = false
             if (state.part === 0) {

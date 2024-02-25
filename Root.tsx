@@ -18,6 +18,7 @@ import { deletePin } from './utils/storePin';
 import { initAppTheme, setTheme } from './app/features/settings/settingsSlice';
 import { useAppTheme } from './hooks/useTheme';
 import { storeTheme } from './utils/storeTheme';
+import { WithNetwork } from './containers/WithNetwork';
 
 
 const Root = () => {
@@ -82,9 +83,12 @@ const Root = () => {
         return (
             <>
                 <StatusBar style={theme === "light" ? "dark" : "light"} />
-                <View style={{ flex: 1 }}>
-                    <AppNavigator />
-                </View>
+                <WithNetwork>
+                    <View style={{ flex: 1 }}>
+                        <AppNavigator />
+                    </View>
+                </WithNetwork>
+
 
             </>
         )

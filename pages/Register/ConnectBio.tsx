@@ -33,7 +33,7 @@ const ConnectBio: FC<NavProps> = ({ navigation }) => {
                     topContent={
                         <AppContainer style={{ paddingBottom: 0 }}>
                             <View style={[cs.fCenterCol]}>
-                                <Text style={[cs.fwSemi, cs.fwSemi, cs.fzXL, {color: theme.title}]}>Подключите биометрию</Text>
+                                <Text style={[cs.fwSemi, cs.fwSemi, cs.fzXL, { color: theme.title }]}>Подключите биометрию</Text>
                             </View>
                         </AppContainer>
                     }
@@ -42,7 +42,7 @@ const ConnectBio: FC<NavProps> = ({ navigation }) => {
                         <View style={{ flex: 0.4, justifyContent: 'flex-end' }}>
                             <View style={[cs.spaceM, cs.fColumn, cs.fAlCenter, { gap: 64 }]}>
                                 <FaceIdIcon />
-                                <Text style={[cs.fzS, fs.montR, cs.fwMedium, cs.txtCenter, styles.bioConnectText, {color: theme.title}]}>Подключите вход с помощью Face ID, чтобы не вводить код доступа</Text>
+                                <Text style={[cs.fzS, fs.montR, cs.fwMedium, cs.txtCenter, styles.bioConnectText, { color: theme.title }]}>Подключите вход с помощью Face ID, чтобы не вводить код доступа</Text>
                             </View>
                         </View>
 
@@ -56,7 +56,7 @@ const ConnectBio: FC<NavProps> = ({ navigation }) => {
                             </TouchableOpacity>
                             <View style={[cs.fCenterCol]}>
                                 <TouchableOpacity onPress={handleToNotifications}>
-                                    <Text onPress={handleSkip} style={[cs.fClickableGray, cs.fzM, cs.fwMedium, {color: theme.title}]}>Пропустить</Text>
+                                    <Text onPress={handleSkip} style={[cs.fClickableGray, cs.fzM, cs.fwMedium, { color: theme.title }]}>Пропустить</Text>
                                 </TouchableOpacity>
                             </View>
 

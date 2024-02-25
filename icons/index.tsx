@@ -47,7 +47,17 @@ export const ThemeIcon: FC<IconProps> = ({ width = 24, height = 24 }) => {
         </Svg>
     )
 }
-export const LightThemeIcon: FC<IconProps> = ({ width = 24, height = 24, stroke="white" }) => {
+export const WifiProblemIcon: FC<IconProps> = ({ width = 140, height = 116 }) => {
+    return (
+        <Svg width={width} height={height} viewBox="0 0 140 116" fill="none">
+            <Path d="M70 108H70.062M8 36.7956C18.5209 26.6702 31.1983 19.0825 45.2 14.9271M26.6 63.7229C31.9476 58.0862 38.2407 53.4828 45.2 50.2135M94.8 14.9271C108.801 19.0825 121.479 26.6702 132 36.7956M94.8 50.2135C101.759 53.4828 108.052 58.0862 113.4 63.7229M70 8V81.3331" stroke="#FFCF00" strokeWidth="16" stroke-linecap="round" stroke-linejoin="round" />
+        </Svg>
+
+    )
+}
+
+
+export const LightThemeIcon: FC<IconProps> = ({ width = 24, height = 24, stroke = "white" }) => {
     return (
         <Svg width={width} height={height} viewBox="0 0 24 24" fill="none">
             <Path d="M17 12C17 14.7614 14.7614 17 12 17C9.23858 17 7 14.7614 7 12C7 9.23858 9.23858 7 12 7C14.7614 7 17 9.23858 17 12Z" stroke={stroke} strokeWidth="1.5" />
