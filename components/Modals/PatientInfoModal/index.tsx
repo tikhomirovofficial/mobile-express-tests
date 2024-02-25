@@ -24,6 +24,7 @@ import { usePagination } from '../../../hooks/usePagination';
 import { fs } from '../../../navigation/AppNavigator';
 import { useAppTheme } from '../../../hooks/useTheme';
 import { formatPhoneNumber } from '../../../utils/formatePhone';
+import { getAgeByDob } from '../../../utils/getAgeByDob';
 
 const PatientInfoModal: FC<NavProps> = ({ navigation }) => {
     const dispatch = useAppDispatch()
@@ -32,7 +33,7 @@ const PatientInfoModal: FC<NavProps> = ({ navigation }) => {
     const { patientInfo, loadings, parts, can_next } = useAppSelector(state => state.currentData)
 
     console.log(patientInfo);
-    
+
     const handleModal = () => dispatch(handlePatientInfoModal())
 
     const handleToOrder = () => {
@@ -85,12 +86,12 @@ const PatientInfoModal: FC<NavProps> = ({ navigation }) => {
     return (
         <Modal animationType={"slide"} visible={patientInfoModal} transparent={true}>
             <WhiteBordered style={{ ...cs.modalSlidedBottom }}>
-                <SkeletonContainer>
+                <SkeletonContainer backgroundColor={theme.skeleton}>
                     <View style={[cs.spaceXXL, styles.patientsModalBlock]}>
                         <View style={[cs.fRowBetw]}>
                             <Text onPress={handleModal} style={[cs.yellowBtnText, cs.textYellow, cs.fzM]}>Закрыть</Text>
                             <View style={[cs.fAlCenter]}>
-                                <Text style={[cs.fzM, cs.colorDark, cs.fzM, cs.colorDark, cs.fwSemi, {color: theme.text_label}]}>Пациент</Text>
+                                <Text style={[cs.fzM, cs.colorDark, cs.fzM, cs.colorDark, cs.fwSemi, { color: theme.text_label }]}>Пациент</Text>
                             </View>
                             <View style={{ flex: 0.4 }}></View>
                         </View>
@@ -115,11 +116,8 @@ const PatientInfoModal: FC<NavProps> = ({ navigation }) => {
                                         <SkeletonView height={20} width={190}></SkeletonView>
                                         <SkeletonView height={20} width={160}></SkeletonView>
                                     </View>
-
-
-
                                     :
-                                    <Text style={[cs.fwBold, cs.fzXL, cs.txtCenter, styles.name, {color: theme.title}]}>
+                                    <Text style={[cs.fwBold, cs.fzXL, cs.txtCenter, styles.name, { color: theme.title }]}>
                                         {patientInfo.data.last_name} {patientInfo.data.first_name} {patientInfo.data.subname || ""}
                                     </Text>
                             }
@@ -130,7 +128,7 @@ const PatientInfoModal: FC<NavProps> = ({ navigation }) => {
                         </View>
                         <View style={[cs.spaceXL]}>
                             <View style={[cs.spaceM]}>
-                                <Text style={[cs.fzXL, cs.fwBold, {color: theme.title}]}>Личная информация</Text>
+                                <Text style={[cs.fzXL, cs.fwBold, { color: theme.title }]}>Личная информация</Text>
                                 <View style={[styles.orderInfo]}>
                                     {
                                         loadings.patient_info ?
@@ -150,14 +148,22 @@ const PatientInfoModal: FC<NavProps> = ({ navigation }) => {
                                                 </View> */}
                                                 <View style={[cs.fRowBetw]}>
                                                     <Text style={[cs.colorGray, cs.fzM, fs.montR]}>Телефон</Text>
-                                                    <Text style={[cs.colorDark, cs.fzM, cs.fwMedium, {color: theme.text_label}]}>{formatPhoneNumber(patientInfo.data.phone)}</Text>
+                                                    <Text style={[cs.colorDark, cs.fzM, cs.fwMedium, { color: theme.text_label }]}>{formatPhoneNumber(patientInfo.data.phone)}</Text>
+                                                </View>
+                                                <View style={[cs.fRowBetw]}>
+                                                    <Text style={[cs.colorGray, cs.fzM, fs.montR]}>Пол</Text>
+                                                    <Text style={[cs.colorDark, cs.fzM, cs.fwMedium, { color: theme.text_label }]}>{patientInfo.data.sex ? "Мужской" : "Женский"}</Text>
+                                                </View>
+                                                <View style={[cs.fRowBetw]}>
+                                                    <Text style={[cs.colorGray, cs.fzM, fs.montR]}>Возраст</Text>
+                                                    <Text style={[cs.colorDark, cs.fzM, cs.fwMedium, { color: theme.text_label }]}>{patientInfo.data?.dob ? getAgeByDob(patientInfo.data?.dob || "") : "Не указан"}</Text>
                                                 </View>
                                             </>
                                     }
                                 </View>
                             </View>
                             <View style={[cs.spaceM]}>
-                                <Text style={[cs.fzXL, cs.fwBold, {color: theme.title}]}>Анализы</Text>
+                                <Text style={[cs.fzXL, cs.fwBold, { color: theme.title }]}>Анализы</Text>
                                 <View style={[cs.spaceS]}>
 
                                     {
@@ -189,7 +195,7 @@ const PatientInfoModal: FC<NavProps> = ({ navigation }) => {
 
                                                 </View>
 
-                                                : <Text style={[fs.montR, {color: theme.title}]}>Анализы ещё не назначались.</Text>
+                                                : <Text style={[fs.montR, { color: theme.title }]}>Анализы ещё не назначались.</Text>
                                     }
 
                                 </View>

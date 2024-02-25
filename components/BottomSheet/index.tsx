@@ -124,7 +124,7 @@ export const BottomSheet = () => {
                             </View>
                             {
                                 loadings.patient_orders ?
-                                    <SkeletonContainer>
+                                    <SkeletonContainer backgroundColor={theme.skeleton}>
                                         <View style={[cs.fColumn, cs.spaceS]}>
                                             <SkeletonView width={"100%"} height={80} />
                                             <SkeletonView width={"100%"} height={80} />

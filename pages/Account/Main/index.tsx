@@ -61,7 +61,7 @@ const Main: FC<NavProps> = ({ navigation }) => {
             style={{ flex: 1 }}
         >
             <WhiteBorderedLayout transparentBg={false} onRefresh={sendRefresh} refreshing={refreshing} style={{ paddingTop: 32 }}>
-                <SkeletonContainer>
+                <SkeletonContainer backgroundColor={theme.skeleton}>
                     <View style={[cs.spaceL, cs.fColumn]}>
                         {
                             profile.loadings.profile ? <SkeletonView height={30} width={'100%'} /> :

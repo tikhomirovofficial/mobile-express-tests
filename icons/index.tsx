@@ -28,8 +28,8 @@ export const BorderedProfileIcon: FC<IconProps> = ({ width = 82, height = 82 }) 
         <Svg width={width} height={height} viewBox="0 0 82 82" fill="none" >
             < Circle cx={height / 2
             } cy={width / 2} r="38.5" fill="#F4FAFA" stroke="white" strokeWidth="5" />
-            <Circle cx="40.4386" cy="34.7042" r="6.37071" stroke="#4D4D4D" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-            <Path fill-rule="evenodd" clip-rule="evenodd" d="M30.3335 49.9354C30.3318 49.4876 30.432 49.0452 30.6264 48.6417C31.2366 47.4213 32.9575 46.7745 34.3854 46.4816C35.4152 46.2618 36.4592 46.115 37.5097 46.0422C39.4546 45.8714 41.4107 45.8714 43.3556 46.0422C44.406 46.1158 45.45 46.2626 46.48 46.4816C47.9079 46.7745 49.6287 47.3603 50.2389 48.6417C50.63 49.4641 50.63 50.4189 50.2389 51.2413C49.6287 52.5227 47.9079 53.1086 46.48 53.3893C45.4514 53.6181 44.407 53.7691 43.3556 53.8408C41.7727 53.975 40.1823 53.9995 38.5959 53.914C38.2298 53.914 37.8759 53.914 37.5097 53.8408C36.4623 53.77 35.4219 53.619 34.3976 53.3893C32.9575 53.1086 31.2488 52.5227 30.6264 51.2413C30.433 50.8332 30.3329 50.3871 30.3335 49.9354Z" stroke="#4D4D4D" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+            <Circle cx="40.4386" cy="34.7042" r="6.37071" stroke="#4D4D4D" strokeWidth="1.5" stroke-linecap="round" stroke-linejoin="round" />
+            <Path fill-rule="evenodd" clip-rule="evenodd" d="M30.3335 49.9354C30.3318 49.4876 30.432 49.0452 30.6264 48.6417C31.2366 47.4213 32.9575 46.7745 34.3854 46.4816C35.4152 46.2618 36.4592 46.115 37.5097 46.0422C39.4546 45.8714 41.4107 45.8714 43.3556 46.0422C44.406 46.1158 45.45 46.2626 46.48 46.4816C47.9079 46.7745 49.6287 47.3603 50.2389 48.6417C50.63 49.4641 50.63 50.4189 50.2389 51.2413C49.6287 52.5227 47.9079 53.1086 46.48 53.3893C45.4514 53.6181 44.407 53.7691 43.3556 53.8408C41.7727 53.975 40.1823 53.9995 38.5959 53.914C38.2298 53.914 37.8759 53.914 37.5097 53.8408C36.4623 53.77 35.4219 53.619 34.3976 53.3893C32.9575 53.1086 31.2488 52.5227 30.6264 51.2413C30.433 50.8332 30.3329 50.3871 30.3335 49.9354Z" stroke="#4D4D4D" strokeWidth="1.5" stroke-linecap="round" stroke-linejoin="round" />
         </Svg >
 
 
@@ -47,12 +47,21 @@ export const ThemeIcon: FC<IconProps> = ({ width = 24, height = 24 }) => {
         </Svg>
     )
 }
+export const LightThemeIcon: FC<IconProps> = ({ width = 24, height = 24, stroke="white" }) => {
+    return (
+        <Svg width={width} height={height} viewBox="0 0 24 24" fill="none">
+            <Path d="M17 12C17 14.7614 14.7614 17 12 17C9.23858 17 7 14.7614 7 12C7 9.23858 9.23858 7 12 7C14.7614 7 17 9.23858 17 12Z" stroke={stroke} strokeWidth="1.5" />
+            <Path d="M18.3117 5.68834L18.4286 5.57143M5.57144 18.4286L5.68832 18.3117M12 3.07394V3M12 21V20.9261M3.07394 12H3M21 12H20.9261M5.68831 5.68834L5.5714 5.57143M18.4286 18.4286L18.3117 18.3117" stroke={stroke} strokeWidth="1.5" strokeLinecap="round" stroke-linejoin="round" />
+        </Svg>
+    )
+}
+
 export const LogoutIcon: FC<IconProps> = ({ width = 21, height = 21 }) => {
     return (
         <Svg width={width} height={height} viewBox="0 0 21 21" fill="none">
-            <Path d="M13.016 5.38948V4.45648C13.016 2.42148 11.366 0.771484 9.33097 0.771484H4.45597C2.42197 0.771484 0.771973 2.42148 0.771973 4.45648V15.5865C0.771973 17.6215 2.42197 19.2715 4.45597 19.2715H9.34097C11.37 19.2715 13.016 17.6265 13.016 15.5975V14.6545" stroke="#4D4D4D" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-            <Path d="M19.8094 10.0215H7.76843" stroke="#4D4D4D" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-            <Path d="M16.8812 7.1062L19.8092 10.0212L16.8812 12.9372" stroke="#4D4D4D" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+            <Path d="M13.016 5.38948V4.45648C13.016 2.42148 11.366 0.771484 9.33097 0.771484H4.45597C2.42197 0.771484 0.771973 2.42148 0.771973 4.45648V15.5865C0.771973 17.6215 2.42197 19.2715 4.45597 19.2715H9.34097C11.37 19.2715 13.016 17.6265 13.016 15.5975V14.6545" stroke="#4D4D4D" strokeWidth="1.5" stroke-linecap="round" stroke-linejoin="round" />
+            <Path d="M19.8094 10.0215H7.76843" stroke="#4D4D4D" strokeWidth="1.5" stroke-linecap="round" stroke-linejoin="round" />
+            <Path d="M16.8812 7.1062L19.8092 10.0212L16.8812 12.9372" stroke="#4D4D4D" strokeWidth="1.5" stroke-linecap="round" stroke-linejoin="round" />
         </Svg>
     )
 }

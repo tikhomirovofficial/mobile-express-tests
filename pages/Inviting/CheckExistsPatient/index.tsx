@@ -15,6 +15,7 @@ import { extractDigits } from "../../../utils/normalizePhone";
 import { ArrowLeft } from "../../../icons";
 import { useTheme } from "@react-navigation/native";
 import { useAppTheme } from "../../../hooks/useTheme";
+import { BackButton } from "../../../components/BackButton";
 
 
 
@@ -66,9 +67,7 @@ const CheckExistsPatient: FC<NavProps> = ({ navigation }) => {
                     topContent={
                         <AppContainer style={{ paddingBottom: 0 }}>
                             <View style={[cs.fRow, cs.spaceM, cs.fAlCenter]}>
-                                <TouchableOpacity onPress={toBackScreen}>
-                                    <ArrowLeft />
-                                </TouchableOpacity>
+                                <BackButton handleBack={toBackScreen}/>
                                 <Text style={[cs.fwSemi, cs.fwSemi, cs.fzXL, {color: theme.title}]}>Приглашение пациентов</Text>
                             </View>
                         </AppContainer>

@@ -109,10 +109,10 @@ const AppNavigator = () => {
 
     return (
         <NavigationContainer>
-            <View style={[styles.main, {backgroundColor: theme.main_bg}]}>
+            <View style={[styles.main, { backgroundColor: theme.main_bg }]}>
 
                 <Stack.Navigator initialRouteName={getInitialRoute()}
-                    screenOptions={{ headerShown: false, contentStyle: {backgroundColor: theme.main_bg} }}>
+                    screenOptions={{ headerShown: false, contentStyle: { backgroundColor: theme.main_bg } }}>
                     {
                         !token.valid ?
                             <>

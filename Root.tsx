@@ -15,12 +15,15 @@ import { getHasProfile } from './app/features/profile/profileSlice';
 import { checkContactsPerm, checkMediaPerm, checkNotificationsPerm } from './app/features/permissions/permissionsSlice';
 import PatientInfoModal from './components/Modals/PatientInfoModal';
 import { deletePin } from './utils/storePin';
-import { setTheme } from './app/features/settings/settingsSlice';
+import { initAppTheme, setTheme } from './app/features/settings/settingsSlice';
+import { useAppTheme } from './hooks/useTheme';
+import { storeTheme } from './utils/storeTheme';
 
 
 const Root = () => {
     const dispatch = useAppDispatch()
-    const { theme } = useAppSelector(state => state.settings)
+    const appTheme = useAppTheme()
+    const { theme, loading } = useAppSelector(state => state.settings)
     const { token } = useAppSelector(state => state.login)
     const { pin, alreadyBeen, faceId } = useAppSelector(state => state.access)
     const { notifications, media, contacts } = useAppSelector(state => state.permissions)
@@ -41,7 +44,7 @@ const Root = () => {
             media_perm: ${media.granted},\n
             `);
         }
-    }, [pin.checking, token.checking, pin.checking, alreadyBeen.checking, notifications.checking, contacts.checking, media.checking])
+    }, [pin.checking, token.checking, pin.checking, alreadyBeen.checking, notifications.checking, contacts.checking, media.checking, loading])
 
     useEffect(() => {
         if (token.valid) {
@@ -54,11 +57,13 @@ const Root = () => {
         // deleteAlreadyBeen()
         // deleteAccessed()
         // deletePin()
+        dispatch(initAppTheme())
         dispatch(checkToken())
         dispatch(checkPinCodeExists())
         dispatch(checkFirstTime())
 
         dispatch(checkNotificationsPerm())
+
         dispatch(checkContactsPerm())
         dispatch(checkMediaPerm())
         console.log(theme);
@@ -84,7 +89,7 @@ const Root = () => {
         )
     }
     return (
-        <View style={[cs.flexOne, cs.fCenterCol]}>
+        <View style={[cs.flexOne, cs.fCenterCol, { backgroundColor: appTheme.borderedBg }]}>
             <Logo height={100} width={70} />
         </View>
 

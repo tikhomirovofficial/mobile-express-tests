@@ -6,6 +6,7 @@ export const getColors = (theme: "light" | "dark") => {
 
     return {
         //common
+        skeleton: is_lt ? "#E1E9EE": "#1c1c1e",
         title: is_lt ? "black" : "white",
         card_bg: is_lt ? null : "#1C1C1E",
         text_label: is_lt ? "#4d4d4d" : "#A9A9A9",

@@ -15,6 +15,7 @@ import { handlePatientInvitingModal } from "../../../app/features/modals/modalsS
 import * as Contacts from 'expo-contacts';
 import * as Permissions from 'expo-permissions';
 import { addInvitingsId, removeInvitingsId, setPatients } from '../../../app/features/patients/patientsSlice';
+import { BackButton } from '../../../components/BackButton';
 
 const SelectingPatients: FC<NavProps> = ({ navigation }) => {
     const dispatch = useAppDispatch()
@@ -69,10 +70,7 @@ const SelectingPatients: FC<NavProps> = ({ navigation }) => {
                     topContent={
                         <AppContainer style={{ paddingBottom: 0 }}>
                             <View style={[cs.fRow, cs.spaceM, cs.fAlCenter]}>
-                                <TouchableOpacity onPress={handleToMyPatients}>
-                                    <ArrowLeft />
-                                </TouchableOpacity>
-
+                                <BackButton handleBack={handleToMyPatients} />
                                 <Text style={[cs.fwSemi, cs.fwSemi, cs.fzXL]}>Приглашение пациентов</Text>
                             </View>
                         </AppContainer>

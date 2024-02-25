@@ -49,7 +49,7 @@ const AnalysisInfoModal: FC<NavProps> = ({ navigation }) => {
     return (
         <Modal animationType={"slide"} visible={analysisInfoModal} transparent={true}>
             <WhiteBordered style={[cs.modalSlidedBottom]}>
-                <SkeletonContainer>
+                <SkeletonContainer backgroundColor={theme.skeleton}>
                     <View style={[cs.spaceXXL, styles.patientsModalBlock]}>
                         <View style={[cs.fRowBetw]}>
                             <Text onPress={handleModal} style={[cs.yellowBtnText, cs.textYellow, cs.fzM]}>Закрыть</Text>

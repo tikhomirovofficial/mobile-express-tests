@@ -3,7 +3,7 @@ import WhiteBorderedLayout from "../../../layouts/WhiteBordered";
 import { Animated, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { cs } from "../../../common/styles";
 import { useAppDispatch, useAppSelector } from "../../../app/base/hooks";
-import { HeartIcon, Logo, LogoutIcon, PhotoIcon, ProfileIcon, ProfilesIcon, ThemeIcon, WalletIcon } from "../../../icons";
+import { HeartIcon, LightThemeIcon, Logo, LogoutIcon, PhotoIcon, ProfileIcon, ProfilesIcon, ThemeIcon, WalletIcon } from "../../../icons";
 import { fs } from "../../../navigation/AppNavigator";
 import { handleAboutModal, handleOrdersFinancesModal, handlePatientsModal, handleProfileEditModal } from "../../../app/features/modals/modalsSlice";
 import ProfileEditModal from "../../../components/Modals/ProfileEditModal";
@@ -24,6 +24,7 @@ import { usePagination } from '../../../hooks/usePagination';
 import { useRefresh } from '../../../hooks/useRefresh';
 import { setTheme } from '../../../app/features/settings/settingsSlice';
 import { useAppTheme } from '../../../hooks/useTheme';
+import { storeTheme } from '../../../utils/storeTheme';
 
 
 const Profile: FC<NavProps> = ({ navigation }) => {
@@ -39,12 +40,14 @@ const Profile: FC<NavProps> = ({ navigation }) => {
     const handlePatients = () => dispatch(handlePatientsModal())
 
     const handleAbout = () => dispatch(handleAboutModal())
-    const handleTheme = () => {
-        if(theme === "light") {
+    const handleTheme = async () => {
+        if (theme === "light") {
             dispatch(setTheme("dark"))
+            await storeTheme("dark")
             return
         }
         dispatch(setTheme("light"))
+        await storeTheme("light")
     }
     const handleFinances = () => dispatch(handleOrdersFinancesModal())
 
@@ -60,7 +63,7 @@ const Profile: FC<NavProps> = ({ navigation }) => {
                 <View style={[cs.fColumn, cs.spaceXXL]}>
                     <View style={[cs.fCenterCol,]}>
                         <View style={[cs.spaceM, cs.fAlCenter, styles.profileInfo]}>
-                            <SkeletonContainer>
+                            <SkeletonContainer backgroundColor={_theme.skeleton}>
                                 {
                                     profile.loadings.profile ?
                                         <SkeletonView circle height={styles.avatarBlock.height} width={styles.avatarBlock.width} /> : <View style={[styles.avatarBlock, cs.circle, cs.fCenterCol]}>
@@ -70,7 +73,7 @@ const Profile: FC<NavProps> = ({ navigation }) => {
                                 {
                                     profile.loadings.profile ?
                                         <SkeletonView height={50} width={180} /> :
-                                        <Text style={[cs.fwBold, cs.fzXL, cs.txtCenter, {color: _theme.title}]}>
+                                        <Text style={[cs.fwBold, cs.fzXL, cs.txtCenter, { color: _theme.title }]}>
                                             {profile.data.last_name} {profile.data.first_name} {profile.data.subname}
                                         </Text>
                                 }
@@ -88,34 +91,34 @@ const Profile: FC<NavProps> = ({ navigation }) => {
                     <View style={[cs.fColumn, cs.spaceM]}>
                         <View style={[cs.fRowBetw, cs.spaceM, { flexWrap: "wrap" }]}>
                             <TouchableOpacity onPress={handleProfileDataModal}
-                                style={[styles.profileHubItem, cs.wBlockShadow, cs.fAlCenter, cs.flexOne, {backgroundColor: _theme.card_bg || cs.wBlockShadow.backgroundColor}]}>
+                                style={[styles.profileHubItem, cs.wBlockShadow, cs.fAlCenter, cs.flexOne, { backgroundColor: _theme.card_bg || cs.wBlockShadow.backgroundColor }]}>
                                 <View style={[styles.profileItemIcon, cs.rootBg, cs.circle, cs.fCenterCol]}>
                                     <ProfileIcon />
                                 </View>
                                 <View style={[cs.fAlCenter]}>
-                                    <Text style={[cs.fzS, fs.montR, cs.txtCenter, cs.fwMedium, {color: _theme.title}]}>Личные данные</Text>
+                                    <Text style={[cs.fzS, fs.montR, cs.txtCenter, cs.fwMedium, { color: _theme.title }]}>Личные данные</Text>
                                     <Text style={[cs.fzXS, fs.montR, cs.txtCenter, cs.colorGray]}>ФИО, пол, фото</Text>
                                 </View>
                             </TouchableOpacity>
                             <TouchableOpacity onPress={handleFinances}
-                                style={[styles.profileHubItem, cs.wBlockShadow, cs.fAlCenter, cs.flexOne, {backgroundColor: _theme.card_bg || cs.wBlockShadow.backgroundColor}]}>
+                                style={[styles.profileHubItem, cs.wBlockShadow, cs.fAlCenter, cs.flexOne, { backgroundColor: _theme.card_bg || cs.wBlockShadow.backgroundColor }]}>
                                 <View style={[styles.profileItemIcon, cs.rootBg, cs.circle, cs.fCenterCol]}>
                                     <WalletIcon />
                                 </View>
                                 <View style={[cs.fAlCenter]}>
-                                    <Text style={[cs.fzS, fs.montR, cs.txtCenter, cs.fwMedium, {color: _theme.title}]}>Финансы</Text>
+                                    <Text style={[cs.fzS, fs.montR, cs.txtCenter, cs.fwMedium, { color: _theme.title }]}>Финансы</Text>
                                     <Text style={[cs.fzXS, fs.montR, cs.txtCenter, cs.colorGray]}>Бонусы и
                                         реквизиты</Text>
                                 </View>
 
                             </TouchableOpacity>
                             <TouchableOpacity onPress={handlePatients}
-                                style={[styles.profileHubItem, cs.wBlockShadow, cs.fAlCenter, cs.flexOne, {backgroundColor: _theme.card_bg || cs.wBlockShadow.backgroundColor}]}>
+                                style={[styles.profileHubItem, cs.wBlockShadow, cs.fAlCenter, cs.flexOne, { backgroundColor: _theme.card_bg || cs.wBlockShadow.backgroundColor }]}>
                                 <View style={[styles.profileItemIcon, cs.rootBg, cs.circle, cs.fCenterCol]}>
                                     <ProfilesIcon />
                                 </View>
                                 <View style={[cs.fAlCenter]}>
-                                    <Text style={[cs.fzS, fs.montR, cs.txtCenter, cs.fwMedium, {color: _theme.title}]}>Мои пациенты</Text>
+                                    <Text style={[cs.fzS, fs.montR, cs.txtCenter, cs.fwMedium, { color: _theme.title }]}>Мои пациенты</Text>
                                     <Text style={[cs.fzXS, fs.montR, cs.txtCenter, cs.colorGray]}>Список ваших
                                         пациентов</Text>
                                 </View>
@@ -123,29 +126,33 @@ const Profile: FC<NavProps> = ({ navigation }) => {
                             </TouchableOpacity>
                             <TouchableOpacity
                                 onPress={handleAbout}
-                                style={[styles.profileHubItem, cs.wBlockShadow, cs.fAlCenter, cs.flexOne, {backgroundColor: _theme.card_bg || cs.wBlockShadow.backgroundColor}]}>
+                                style={[styles.profileHubItem, cs.wBlockShadow, cs.fAlCenter, cs.flexOne, { backgroundColor: _theme.card_bg || cs.wBlockShadow.backgroundColor }]}>
                                 <View style={[styles.profileItemIcon, cs.rootBg, cs.circle, cs.fCenterCol]}>
                                     <Logo height={24} width={16} />
                                 </View>
                                 <View style={[cs.fAlCenter]}>
-                                    <Text style={[cs.fzS, fs.montR, cs.txtCenter, cs.fwMedium, {color: _theme.title}]}>О приложении</Text>
+                                    <Text style={[cs.fzS, fs.montR, cs.txtCenter, cs.fwMedium, { color: _theme.title }]}>О приложении</Text>
                                     <Text style={[cs.fzXS, fs.montR, cs.txtCenter, cs.colorGray]}>Правовая
                                         информация</Text>
                                 </View>
                             </TouchableOpacity>
                             <TouchableOpacity onPress={handleTheme}
-                                style={[styles.profileHubItem, cs.wBlockShadow, cs.fAlCenter, cs.flexOne, {backgroundColor: _theme.card_bg || cs.wBlockShadow.backgroundColor}]}>
+                                style={[styles.profileHubItem, cs.wBlockShadow, cs.fAlCenter, cs.flexOne, { backgroundColor: _theme.card_bg || cs.wBlockShadow.backgroundColor }]}>
                                 <View style={[styles.profileItemIcon, cs.rootBg, cs.circle, cs.fCenterCol]}>
-                                    <ThemeIcon />
+                                    {
+                                        theme === "dark" ?
+                                            <LightThemeIcon stroke={"#4d4d4d"} /> :
+                                            <ThemeIcon />
+                                    }
                                 </View>
                                 <View style={[cs.fAlCenter]}>
-                                    <Text style={[cs.fzS, fs.montR, cs.txtCenter, cs.fwMedium, { paddingBottom: 8 }, {color: _theme.title}]}>Включить тёмную тему</Text>
+                                    <Text style={[cs.fzS, fs.montR, cs.txtCenter, cs.fwMedium, { paddingBottom: 8 }, { color: _theme.title }]}>Включить {theme === "light" ? "тёмную" : "светлую"} тему</Text>
                                 </View>
 
                             </TouchableOpacity>
                             <TouchableOpacity
                                 onPress={handleLogout}
-                                style={[styles.profileHubItem, cs.wBlockShadow, cs.fAlCenter, cs.flexOne, {backgroundColor: _theme.card_bg || cs.wBlockShadow.backgroundColor}]}>
+                                style={[styles.profileHubItem, cs.wBlockShadow, cs.fAlCenter, cs.flexOne, { backgroundColor: _theme.card_bg || cs.wBlockShadow.backgroundColor }]}>
                                 <View style={[styles.profileItemIcon, cs.rootBg, cs.circle, cs.fCenterCol]}>
                                     <LogoutIcon />
                                 </View>

@@ -85,7 +85,7 @@ const BonusesModal = () => {
                         <View style={[cs.flexOne, cs.spaceM]}>
                             <View style={[cs.fColumn, cs.spaceM]}>
                                 {bonuses.loadings.chart ?
-                                    <SkeletonContainer>
+                                    <SkeletonContainer backgroundColor={theme.skeleton}>
                                         <SkeletonView width={"100%"} height={170} />
                                     </SkeletonContainer>
                                     :
@@ -101,7 +101,7 @@ const BonusesModal = () => {
                             {
                                 patients.loadings.patients ?
                                     <>
-                                        <SkeletonContainer>
+                                        <SkeletonContainer backgroundColor={theme.skeleton}>
                                             <View style={[cs.flexOne, cs.spaceS, cs.fColumn]}>
                                                 <SkeletonView height={60} width={"100%"}></SkeletonView>
                                                 <SkeletonView height={60} width={"100%"}></SkeletonView>

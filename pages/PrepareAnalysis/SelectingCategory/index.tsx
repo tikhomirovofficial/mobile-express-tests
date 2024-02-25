@@ -21,6 +21,7 @@ import { SkeletonContainer } from 'react-native-skeleton-component';
 import { SkeletonView } from '../../../components/SkeletonView';
 import { CategoryItem } from '../../../components/CategoryItem';
 import { useAppTheme } from '../../../hooks/useTheme';
+import { BackButton } from '../../../components/BackButton';
 
 const SelectingCategory: FC<NavProps> = ({ navigation }) => {
     const dispatch = useAppDispatch()
@@ -75,9 +76,7 @@ const SelectingCategory: FC<NavProps> = ({ navigation }) => {
                     topContent={
                         <AppContainer style={{ paddingBottom: 0 }}>
                             <View style={[cs.fRowBetw, cs.spaceM, cs.fAlCenter]}>
-                                <TouchableOpacity onPress={handleToSelectingPatient}>
-                                    <ArrowLeft />
-                                </TouchableOpacity>
+                                <BackButton handleBack={handleToSelectingPatient}/>
                                 <Text style={[cs.fwSemi, cs.fwSemi, cs.fzXL, { color: theme.title }]}>{patientFullName}</Text>
                                 <View></View>
                             </View>
@@ -102,7 +101,7 @@ const SelectingCategory: FC<NavProps> = ({ navigation }) => {
                         </View>
                         <View style={[cs.flexOne, { position: "relative" }]}>
                             {loadings.categories ?
-                                <SkeletonContainer>
+                                <SkeletonContainer backgroundColor={theme.skeleton}>
                                     <View style={[cs.fColumn, cs.spaceS]}>
                                         <SkeletonView width={"100%"} height={50} />
                                         <SkeletonView width={"100%"} height={50} />

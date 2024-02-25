@@ -18,9 +18,12 @@ import { dateMask, passport, phoneMask } from '../../rules/masks.rules';
 import { createProfile, handleCreateProfileForm, handleCreateProfileGender, resetCreateProfileForm } from '../../app/features/profile/profileSlice';
 import { InputField } from '../../components/InputField';
 import { ProfileCreateReq } from '../../types/api/user.api.types';
+import { useAppTheme } from '../../hooks/useTheme';
 
 const CreateProfile: FC<NavProps> = ({ navigation }) => {
     const dispatch = useAppDispatch()
+    const theme = useAppTheme()
+
     const { text_fields, gender, disabled, sending, err } = useAppSelector(state => state.profile.creating_form)
 
     const handleCreateProfile = () => {
@@ -54,7 +57,7 @@ const CreateProfile: FC<NavProps> = ({ navigation }) => {
                     topContent={
                         <AppContainer style={{ paddingBottom: 0 }}>
                             <View style={[cs.fCenterCol]}>
-                                <Text style={[cs.fwSemi, cs.fwSemi, cs.fzXL]}>Настройки</Text>
+                                <Text style={[cs.fwSemi, cs.fwSemi, cs.fzXL, { color: theme.title }]}>Настройки</Text>
                             </View>
                         </AppContainer>
                     }
@@ -64,7 +67,7 @@ const CreateProfile: FC<NavProps> = ({ navigation }) => {
                             <ScrollView>
                                 <View style={[cs.spaceXL]}>
                                     <View style={[cs.fColumn, cs.spaceXXL]}>
-                                        <Text style={[cs.title, styles.title]}>Укажите информацию о себе для пациентов</Text>
+                                        <Text style={[cs.title, styles.title, { color: theme.title }]}>Укажите информацию о себе для пациентов</Text>
                                         <View style={[cs.spaceXL]}>
                                             {/* <View style={[cs.fCenterCol, cs.spaceM]}>
                                                 <View style={[styles.avatarBlock, cs.circle, cs.fCenterCol]}>
@@ -76,111 +79,84 @@ const CreateProfile: FC<NavProps> = ({ navigation }) => {
                                                 </TouchableOpacity>
 
                                             </View> */}
+                                            <InputField
+                                                label={"Фамилия"}
+                                                val={text_fields.last_name}
+                                                placeholder={"Фамилия"}
+                                                idInput={"labelLastName"}
+                                                onChange={val => dispatch(handleCreateProfileForm({ key: "last_name", val }))}
+                                            />
+                                            <InputField
+                                                label={"Имя"}
+                                                val={text_fields.first_name}
+                                                placeholder={"Имя"}
+                                                idInput={"labelFirstName"}
+                                                onChange={val => dispatch(handleCreateProfileForm({ key: "first_name", val }))}
+                                            />
+                                            <InputField
+                                                label={"Отчество"}
+                                                val={text_fields.subname}
+                                                placeholder={"Отчество"}
+                                                idInput={"labelMiddleName"}
+                                                onChange={val => dispatch(handleCreateProfileForm({ key: "subname", val }))}
+                                            />
                                             <View style={[cs.fColumn, cs.spaceM]}>
-                                                <Text style={[cs.fzS, fs.montR, cs.fwMedium]} aria-label="Label for Username"
-                                                    nativeID="labelLastName">Фамилия</Text>
-                                                <InputField
-                                                    val={text_fields.last_name}
-                                                    placeholder={"Фамилия"}
-                                                    idInput={"labelLastName"}
-                                                    onChange={val => dispatch(handleCreateProfileForm({ key: "last_name", val }))}
-                                                />
-
-                                            </View>
-                                            <View style={[cs.fColumn, cs.spaceM]}>
-                                                <Text style={[cs.fzS, fs.montR, cs.fwMedium]} aria-label="Label for Username"
-                                                    nativeID="labelFirstName">Имя</Text>
-                                                <InputField
-                                                    val={text_fields.first_name}
-                                                    placeholder={"Имя"}
-                                                    idInput={"labelFirstName"}
-                                                    onChange={val => dispatch(handleCreateProfileForm({ key: "first_name", val }))}
-                                                />
-                                            </View>
-                                            <View style={[cs.fColumn, cs.spaceM]}>
-                                                <Text style={[cs.fzS, fs.montR, cs.fwMedium]} aria-label="Label for Username"
-                                                    nativeID="labelMiddleName">Отчество</Text>
-                                                <InputField
-                                                    val={text_fields.subname}
-                                                    placeholder={"Отчество"}
-                                                    idInput={"labelMiddleName"}
-                                                    onChange={val => dispatch(handleCreateProfileForm({ key: "subname", val }))}
-                                                />
-                                            </View>
-                                            <View style={[cs.fColumn, cs.spaceM]}>
-                                                <Text style={[cs.fzS, fs.montR, cs.fwMedium]} aria-label="Label for Username"
+                                                <Text style={[cs.fzS, fs.montR, cs.fwMedium, { color: theme.title }]} aria-label="Label for Username"
                                                     nativeID="labelFirstName">Пол</Text>
                                                 <View style={[cs.dF, cs.fRowBetw, cs.spaceS, cs.flexOne]}>
                                                     <SelectableBtn isFilled={gender} style={[styles.selectableBtn]} text={"Мужской"} handlePress={() => dispatch(handleCreateProfileGender(true))} />
                                                     <SelectableBtn isFilled={!gender} style={[styles.selectableBtn]} text={"Женский"} handlePress={() => dispatch(handleCreateProfileGender(false))} />
                                                 </View>
                                             </View>
-                                            <View style={[cs.fColumn, cs.spaceM]}>
-                                                <Text style={[cs.fzS, fs.montR, cs.fwMedium]} aria-label="Label for Username"
-                                                    nativeID="dateDob">Дата рождения</Text>
-                                                <InputField
-                                                    mask={dateMask}
-                                                    type={"number-pad"}
-                                                    val={text_fields.dob}
-                                                    placeholder={"ДД.ММ.ГГГГ"}
-                                                    idInput={"dateDob"}
-                                                    onChange={val => dispatch(handleCreateProfileForm({ key: "dob", val }))}
-                                                />
-                                            </View>
-                                            <View style={[cs.fColumn, cs.spaceM]}>
-                                                <Text style={[cs.fzS, fs.montR, cs.fwMedium]} aria-label="Label for Username"
-                                                    nativeID="pob">Место рождения</Text>
-                                                <InputField
-                                                    val={text_fields.pob}
-                                                    placeholder={"Место рождения"}
-                                                    idInput={"pob"}
-                                                    onChange={val => dispatch(handleCreateProfileForm({ key: "pob", val }))}
-                                                />
-                                            </View>
-                                            <View style={[cs.fColumn, cs.spaceM]}>
-                                                <Text style={[cs.fzS, fs.montR, cs.fwMedium]} aria-label="Label for Username"
-                                                    nativeID="pass">Серия и номер паспорта</Text>
-                                                <InputField
-                                                    mask={passport}
-                                                    type={"number-pad"}
-                                                    val={text_fields.passport_numbers}
-                                                    placeholder={"СССС НННННН"}
-                                                    idInput={"pass"}
-                                                    onChange={val => dispatch(handleCreateProfileForm({ key: "passport_numbers", val }))}
-                                                />
-                                            </View>
-                                            <View style={[cs.fColumn, cs.spaceM]}>
-                                                <Text style={[cs.fzS, fs.montR, cs.fwMedium]} aria-label="Label for Username"
-                                                    nativeID="pass-date">Когда выдан</Text>
-                                                <InputField
-                                                    mask={dateMask}
-                                                    type={"number-pad"}
-                                                    val={text_fields.passport_issue_date}
-                                                    placeholder={"ДД.ММ.ГГГГ"}
-                                                    idInput={"pass-date"}
-                                                    onChange={val => dispatch(handleCreateProfileForm({ key: "passport_issue_date", val }))}
-                                                />
-                                            </View>
-                                            <View style={[cs.fColumn, cs.spaceM]}>
-                                                <Text style={[cs.fzS, fs.montR, cs.fwMedium]} aria-label="Label for Username"
-                                                    nativeID="labelMiddleName">Кем выдан</Text>
-                                                <InputField
-                                                    val={text_fields.passport_issued_by}
-                                                    placeholder={"Кем выдан паспорт"}
-                                                    idInput={"labelMiddleName"}
-                                                    onChange={val => dispatch(handleCreateProfileForm({ key: "passport_issued_by", val }))}
-                                                />
-                                            </View>
-                                            <View style={[cs.fColumn, cs.spaceM]}>
-                                                <Text style={[cs.fzS, fs.montR, cs.fwMedium]} aria-label="Label for Username"
-                                                    nativeID="labelMiddleName">E-mail</Text>
-                                                <InputField
-                                                    val={text_fields.email}
-                                                    placeholder={"E-mail"}
-                                                    idInput={"labelMiddleName"}
-                                                    onChange={val => dispatch(handleCreateProfileForm({ key: "email", val }))}
-                                                />
-                                            </View>
+                                            <InputField
+                                                label={"Дата рождения"}
+                                                mask={dateMask}
+                                                type={"number-pad"}
+                                                val={text_fields.dob}
+                                                placeholder={"ДД.ММ.ГГГГ"}
+                                                idInput={"dateDob"}
+                                                onChange={val => dispatch(handleCreateProfileForm({ key: "dob", val }))}
+                                            />
+                                            <InputField
+                                                label={"Место рождения"}
+                                                val={text_fields.pob}
+                                                placeholder={"Место рождения"}
+                                                idInput={"pob"}
+                                                onChange={val => dispatch(handleCreateProfileForm({ key: "pob", val }))}
+                                            />
+                                            <InputField
+                                                label={"Серия и номер паспорта"}
+                                                mask={passport}
+                                                type={"number-pad"}
+                                                val={text_fields.passport_numbers}
+                                                placeholder={"СССС НННННН"}
+                                                idInput={"pass"}
+                                                onChange={val => dispatch(handleCreateProfileForm({ key: "passport_numbers", val }))}
+                                            />
+
+                                            <InputField
+                                                label={"Когда выдан"}
+                                                mask={dateMask}
+                                                type={"number-pad"}
+                                                val={text_fields.passport_issue_date}
+                                                placeholder={"ДД.ММ.ГГГГ"}
+                                                idInput={"pass-date"}
+                                                onChange={val => dispatch(handleCreateProfileForm({ key: "passport_issue_date", val }))}
+                                            />
+                                            <InputField
+                                                label={"Кем выдан"}
+                                                val={text_fields.passport_issued_by}
+                                                placeholder={"Кем выдан паспорт"}
+                                                idInput={"labelMiddleName"}
+                                                onChange={val => dispatch(handleCreateProfileForm({ key: "passport_issued_by", val }))}
+                                            />
+                                            <InputField
+                                                label={"E-mail"}
+                                                val={text_fields.email}
+                                                placeholder={"E-mail"}
+                                                idInput={"labelMiddleName"}
+                                                onChange={val => dispatch(handleCreateProfileForm({ key: "email", val }))}
+                                            />
                                         </View>
                                     </View>
                                 </View>

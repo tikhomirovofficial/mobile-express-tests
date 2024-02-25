@@ -71,7 +71,7 @@ const PatientsModal: FC<NavProps> = ({ navigation }) => {
                         {
                             patients.loadings.patients ?
                                 <>
-                                    <SkeletonContainer>
+                                    <SkeletonContainer backgroundColor={theme.skeleton}>
                                         <View style={[cs.flexOne, cs.spaceM, cs.fColumn]}>
                                             <SkeletonView height={60} width={"100%"}></SkeletonView>
                                             <SkeletonView height={60} width={"100%"}></SkeletonView>

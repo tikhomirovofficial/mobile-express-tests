@@ -18,6 +18,7 @@ import { InvitingCreateReq } from "../../../types/api/patients.api.types";
 import { createInviting, handleCreateInvitingForm, handleCreateInvitingGender, resetCreateInvitingForm, resetSuccessInviting } from "../../../app/features/inviting/invitingSlice";
 import { extractDigits } from "../../../utils/normalizePhone";
 import { useAppTheme } from "../../../hooks/useTheme";
+import { BackButton } from "../../../components/BackButton";
 
 
 const CreatePatient: FC<NavProps> = ({ navigation }) => {
@@ -62,9 +63,8 @@ const CreatePatient: FC<NavProps> = ({ navigation }) => {
                     topContent={
                         <AppContainer style={{ paddingBottom: 0 }}>
                             <View style={[cs.fRow, cs.spaceM, cs.fAlCenter]}>
-                                <TouchableOpacity onPress={toBackScreen}>
-                                    <ArrowLeft />
-                                </TouchableOpacity>
+
+                                <BackButton handleBack={toBackScreen} />
                                 <Text style={[cs.fwSemi, cs.fwSemi, cs.fzXL, { color: theme.title }]}>Приглашение пациентов</Text>
                             </View>
                         </AppContainer>

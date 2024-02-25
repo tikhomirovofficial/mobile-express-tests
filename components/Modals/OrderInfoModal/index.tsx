@@ -28,7 +28,7 @@ const OrderInfoModal = () => {
     return (
         <Modal animationType={"slide"} visible={orderInfoModal} transparent={true}>
             <WhiteBordered style={cs.modalSlidedBottom}>
-                <SkeletonContainer>
+                <SkeletonContainer backgroundColor={theme.skeleton}>
                     <View style={styles.analysisOrderContent}>
                         <View style={[cs.fRowBetw]}>
                             <Text onPress={handleModal}

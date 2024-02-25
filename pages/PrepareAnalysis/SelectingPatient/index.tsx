@@ -21,6 +21,7 @@ import { SkeletonContainer } from 'react-native-skeleton-component';
 import { SkeletonView } from '../../../components/SkeletonView';
 import { usePagination } from '../../../hooks/usePagination';
 import { useAppTheme } from '../../../hooks/useTheme';
+import { BackButton } from '../../../components/BackButton';
 
 const SelectingPatient: FC<NavProps> = ({ navigation }) => {
     const dispatch = useAppDispatch()
@@ -99,9 +100,7 @@ const SelectingPatient: FC<NavProps> = ({ navigation }) => {
                     topContent={
                         <AppContainer style={{ paddingBottom: 0 }}>
                             <View style={[cs.fRow, cs.spaceM, cs.fAlCenter]}>
-                                <TouchableOpacity onPress={handleToMyPatients}>
-                                    <ArrowLeft />
-                                </TouchableOpacity>
+                                <BackButton handleBack={handleToMyPatients}/>
                                 <Text style={[cs.fwSemi, cs.fwSemi, cs.fzXL, {color: theme.title}]}>Подготовка анализов</Text>
                             </View>
                         </AppContainer>
@@ -129,7 +128,7 @@ const SelectingPatient: FC<NavProps> = ({ navigation }) => {
                         <View style={cs.flexOne}>
                             <View style={[cs.flexOne, { position: "relative" }]}>
                                 {loadings.search_patients ?
-                                    <SkeletonContainer>
+                                    <SkeletonContainer backgroundColor={theme.skeleton}>
                                         <View style={[cs.fColumn, cs.spaceS]}>
                                             <SkeletonView width={"100%"} height={50} />
                                             <SkeletonView width={"100%"} height={50} />

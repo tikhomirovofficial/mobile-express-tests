@@ -16,6 +16,7 @@ import { createOrder, resetPatient, setCurrentCategory, setPatient } from '../..
 import CartItem from '../../../components/CartItem';
 import { CreateOrderReq } from '../../../types/api/orders.api.types';
 import { useAppTheme } from '../../../hooks/useTheme';
+import { BackButton } from '../../../components/BackButton';
 
 const CartProducts: FC<NavProps> = ({ navigation }) => {
     const dispatch = useAppDispatch()
@@ -51,6 +52,7 @@ const CartProducts: FC<NavProps> = ({ navigation }) => {
             navigation.navigate("order_sent")
         }
     }, [success])
+
     useEffect(() => {
         const keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', () => {
             setKeyboardStatus(true);
@@ -74,9 +76,7 @@ const CartProducts: FC<NavProps> = ({ navigation }) => {
                     topContent={
                         <AppContainer style={{ paddingBottom: 0 }}>
                             <View style={[cs.fRowBetw, cs.spaceM, cs.fAlCenter]}>
-                                <TouchableOpacity onPress={handleToSelectingCategory}>
-                                    <ArrowLeft />
-                                </TouchableOpacity>
+                                <BackButton handleBack={handleToSelectingCategory}/>
                                 <Text style={[cs.fwSemi, cs.fwSemi, cs.fzXL, {color: theme.title}]}>Корзина</Text>
                                 <View></View>
                             </View>
