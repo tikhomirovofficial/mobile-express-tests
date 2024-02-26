@@ -26,6 +26,7 @@ import { usePagination } from '../../../hooks/usePagination';
 import { CategoriesApi } from '../../../http/api/categories.api';
 import { CategoryApi } from '../../../types/entities/categories.types';
 import ProductItem from '../../../components/ProductItem';
+import { CategoryOrProductItem } from '../../../components/CategoryOrProductItem';
 
 const SelectingCategory: FC<NavProps> = ({ navigation }) => {
     const dispatch = useAppDispatch()
@@ -134,20 +135,8 @@ const SelectingCategory: FC<NavProps> = ({ navigation }) => {
                                                 onEndReached={loadMore}
                                                 contentContainerStyle={[cs.fColumn, cs.spaceS]}
                                                 data={[...categories, ...analisys] as (CategoryApi | AnalysisApi)[]}
-                                                renderItem={({ item, index }) => {
-                                                    const itemTyped = item as CategoryApi & AnalysisApi
-                                                    const isCategory = Object.hasOwn(itemTyped, "istake")
-                                                    if (isCategory) {
-                                                        const current = itemTyped as CategoryApi
-                                                        return (
-                                                            <CategoryItem clickHandle={toProducts} index={index} category={current} />
-                                                        )
-                                                    }
-                                                    const current = itemTyped as AnalysisApi
-                                                    return (
-                                                        <ProductItem product={current} index={index} isInCart={cartProducts.some(cartProduct => cartProduct.id === item.id)} />
-                                                    )
-
+                                                renderItem={({ item }) => {
+                                                    return <CategoryOrProductItem item={item} toProducts={toProducts} cartProducts={cartProducts} />
                                                 }}
                                             />
                                         </View> :
