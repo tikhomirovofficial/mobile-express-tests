@@ -6,8 +6,9 @@ import { WifiProblem } from '../../pages/Problems/WifiProblem';
 type WithNetworkProps = {
     children: ReactNode
 }
+
 export const WithNetwork: FC<WithNetworkProps> = ({ children }) => {
-    const [connected, setConnected] = useState(false)
+    const [connected, setConnected] = useState(true)
 
     const refreshNetState = () => {
         NetInfo.fetch().then(state => {

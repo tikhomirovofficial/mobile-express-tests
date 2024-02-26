@@ -195,7 +195,7 @@ const PatientInfoModal: FC<NavProps> = ({ navigation }) => {
 
                                                 </View>
 
-                                                : <Text style={[fs.montR, { color: theme.title }]}>Анализы ещё не назначались.</Text>
+                                                : <Text style={[fs.montR, { color: theme.text_label }]}>Анализы ещё не назначались.</Text>
                                     }
 
                                 </View>

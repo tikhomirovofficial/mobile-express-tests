@@ -65,7 +65,7 @@ const Main: FC<NavProps> = ({ navigation }) => {
                     <View style={[cs.spaceL, cs.fColumn]}>
                         {
                             profile.loadings.profile ? <SkeletonView height={30} width={'100%'} /> :
-                                <Text style={[cs.title, {color: theme.title}]}>{profile.data.first_name.trim()}, {getGreeting()}!</Text>
+                                <Text style={[cs.title, { color: theme.title }]}>{profile.data.first_name.trim()}, {getGreeting()}!</Text>
                         }
                         <View style={[cs.fRowBetw, styles.buttonsTopContainer]}>
                             <TouchableOpacity
@@ -87,15 +87,15 @@ const Main: FC<NavProps> = ({ navigation }) => {
                                     cs.fColumn,
                                     styles.buttonTop,
                                     cs.flexOne,
-                                    {backgroundColor: theme.chart}
+                                    { backgroundColor: theme.chart }
                                 ]}>
                                 <AnalysisIcon />
-                                <Text style={[cs.fzS, cs.txtCenter, fs.montR, {color: theme.title}]}>Назначить анализы</Text>
+                                <Text style={[cs.fzS, cs.txtCenter, fs.montR, { color: theme.title }]}>Назначить анализы</Text>
                             </TouchableOpacity>
                         </View>
                     </View>
                     <View style={[cs.spaceL, cs.fColumn]}>
-                        <Text style={[cs.title, {color: theme.title}]}>Заказы анализов</Text>
+                        <Text style={[cs.title, { color: theme.title }]}>Заказы анализов</Text>
 
                         <View style={[cs.fColumn, cs.spaceM]}>
                             {
@@ -128,7 +128,7 @@ const Main: FC<NavProps> = ({ navigation }) => {
 
                                         </View>
 
-                                        : <Text style={fs.montR}>Не сделан ни один заказ.</Text>
+                                        : <Text style={[fs.montR, {color: theme.text_label}]}>Не сделан ни один заказ.</Text>
                             }
                         </View>
                     </View>

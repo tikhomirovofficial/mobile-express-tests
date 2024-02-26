@@ -150,7 +150,7 @@ const SelectingPatient: FC<NavProps> = ({ navigation }) => {
                                                 )}
                                             />
                                         </View> :
-                                        <Text style={fs.montR}>Вы пока не пригласили пациентов.</Text>
+                                        <Text style={[fs.montR, {color: theme.text_label}]}>Вы пока не пригласили пациентов.</Text>
                                 }
 
                             </View>

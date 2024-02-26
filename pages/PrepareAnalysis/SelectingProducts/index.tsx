@@ -1,6 +1,6 @@
 import React, { FC, useEffect, useState } from 'react';
 import WhiteBorderedLayout from "../../../layouts/WhiteBordered";
-import { Animated, Text, TouchableOpacity, View, StyleSheet, TextInput, ScrollView, SectionList, FlatList, Keyboard } from "react-native";
+import { Animated, Text, TouchableOpacity, View, StyleSheet, TextInput, ScrollView, SectionList, FlatList, Keyboard, ActivityIndicator } from "react-native";
 import { cs } from "../../../common/styles";
 import { AddIcon, ArrowLeft, ArrowRightIcon, Logo, RemoveIcon, SearchIcon } from "../../../icons";
 import { OrderAnalysisType } from "../../../types/entities/analysis.types";
@@ -22,13 +22,14 @@ import ProductItem from '../../../components/ProductItem';
 import { getProductById } from '../../../app/features/current-data/currentData';
 import { useAppTheme } from '../../../hooks/useTheme';
 import { BackButton } from '../../../components/BackButton';
+import { usePagination } from '../../../hooks/usePagination';
 
 const SelectingProducts: FC<NavProps> = ({ navigation }) => {
     const dispatch = useAppDispatch()
     const theme = useAppTheme()
 
     const cart = useAppSelector(state => state.cart)
-    const categories = useAppSelector(state => state.categories.items)
+    const categories = useAppSelector(state => state.categories.categories)
     const cartProducts = useAppSelector(state => state.cart.items)
     const { analysisInfoModal } = useAppSelector(state => state.modals)
     const { items, part, loadings, can_next } = useAppSelector(state => state.products)
@@ -40,6 +41,17 @@ const SelectingProducts: FC<NavProps> = ({ navigation }) => {
     const currentCategoryId = useAppSelector(state => state.order.currentCategorySelected)
     const currentCategory = categories.filter(ctg => ctg.id === currentCategoryId)[0]
 
+    const [loadProducts, loadMore] = usePagination(
+        () => dispatch(getProducts({ part, title: searchVal, id: currentCategoryId })),
+        () => dispatch(incrementProductsPart()),
+        {
+            part,
+            can_more: can_next,
+            items,
+            loading: loadings.pagination
+        },
+        [currentCategoryId]
+    )
     const handleToCart = () => {
         navigation.navigate("order_cart")
     }
@@ -53,29 +65,29 @@ const SelectingProducts: FC<NavProps> = ({ navigation }) => {
         dispatch(getProductById({ id: product_id }))
     }
 
-    const loadProducts = () => {
-        if (part !== 1) {
-            if (part === 0 && !items.length) {
-                dispatch(getProducts({
-                    id: currentCategoryId,
-                    title: defferedSearchVal,
-                    part
-                }));
-            } else if (can_next) {
-                dispatch(getProducts({
-                    id: currentCategoryId,
-                    title: defferedSearchVal,
-                    part
-                }));
-            }
-        }
-    }
+    // const loadProducts = () => {
+    //     if (part !== 1) {
+    //         if (part === 0 && !items.length) {
+    //             dispatch(getProducts({
+    //                 id: currentCategoryId,
+    //                 title: defferedSearchVal,
+    //                 part
+    //             }));
+    //         } else if (can_next) {
+    //             dispatch(getProducts({
+    //                 id: currentCategoryId,
+    //                 title: defferedSearchVal,
+    //                 part
+    //             }));
+    //         }
+    //     }
+    // }
 
-    const loadMore = () => {
-        if (can_next && items.length, !loadings.pagination) {
-            dispatch(incrementProductsPart())
-        }
-    }
+    // const loadMore = () => {
+    //     if (can_next && items.length, !loadings.pagination) {
+    //         dispatch(incrementProductsPart())
+    //     }
+    // }
 
     useEffect(() => {
         dispatch(resetProducts())
@@ -126,7 +138,7 @@ const SelectingProducts: FC<NavProps> = ({ navigation }) => {
                             </View>
                             <View style={[cs.fRow, cs.fAlCenter, cs.spaceS, styles.searchInputBlock, { backgroundColor: theme.main_bg }]}>
                                 <SearchIcon stroke={theme.text_label} />
-                                <TextInput value={searchVal} onChangeText={(text) => setSearchVal(text)} placeholderTextColor={theme.text_label} style={[cs.fzS, fs.montR, cs.flexOne, { color: theme.title }]} placeholder={"Найти по имени или номеру"} />
+                                <TextInput value={searchVal} onChangeText={(text) => setSearchVal(text)} placeholderTextColor={theme.text_label} style={[cs.fzS, fs.montR, cs.flexOne, { color: theme.title }]} placeholder={"Найти названию"} />
                             </View>
 
                         </View>
@@ -139,31 +151,33 @@ const SelectingProducts: FC<NavProps> = ({ navigation }) => {
                                             <SkeletonView width={"100%"} height={50} />
                                         </View>
                                     </SkeletonContainer> :
-                                    <View style={[{ position: "absolute", height: "100%", width: "100%" }]}>
-                                        <FlatList
-                                            contentContainerStyle={[cs.fColumn, cs.spaceS]}
-                                            onEndReached={loadMore}
-                                            getItemLayout={(data, index) => ({
-                                                length: 50,
-                                                offset: 50 * index,
-                                                index,
-                                            })}
-                                            initialNumToRender={5}
-                                            showsVerticalScrollIndicator={false}
-                                            data={items}
-                                            renderItem={({ item, index }) =>
-                                                <ProductItem
-                                                    clickHandle={() => handleOpenProductInfo(item.id)}
-                                                    product={item}
-                                                    isInCart={cartProducts.some(cartProduct => cartProduct.id === item.id)}
-                                                    index={index}
-                                                ></ProductItem>}
-                                        />
-                                    </View>}
+                                    items.length ?
+                                        <View style={[{ position: "absolute", height: "100%", width: "100%" }]}>
+                                            <FlatList
+                                                contentContainerStyle={[cs.fColumn, cs.spaceS]}
+                                                onEndReached={loadMore}
+                                                getItemLayout={(data, index) => ({
+                                                    length: 50,
+                                                    offset: 50 * index,
+                                                    index,
+                                                })}
+                                                initialNumToRender={5}
+                                                showsVerticalScrollIndicator={false}
+                                                data={items}
+                                                renderItem={({ item, index }) =>
+                                                    <ProductItem
+                                                        clickHandle={() => handleOpenProductInfo(item.id)}
+                                                        product={item}
+                                                        isInCart={cartProducts.some(cartProduct => cartProduct.id === item.id)}
+                                                        index={index}
+                                                    ></ProductItem>}
+                                            />
+                                        </View> :
+                                        <Text style={[fs.montR, { color: theme.text_label }]}>По вашему запросу ничего не найдено.</Text>
+                                }
                             </View>
-                            <View style={[{ height: 20 }]}>
-                                {loadings.pagination ? <Text>Подгружаем...</Text> : null}
-
+                            <View style={{ height: 20 }}>
+                                {loadings.pagination ? <ActivityIndicator color={cs.bgYellow.backgroundColor} /> : null}
                             </View>
                         </View>
 

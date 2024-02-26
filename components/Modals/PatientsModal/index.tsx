@@ -44,7 +44,7 @@ const PatientsModal: FC<NavProps> = ({ navigation }) => {
 
     const handlePatientInfo = (id: number) => {
         dispatch(handlePatientInfoModal())
-        dispatch(getPatientById({id}))
+        dispatch(getPatientById({ id }))
     }
 
     useEffect(loadOrders, [patients.part])
@@ -62,7 +62,7 @@ const PatientsModal: FC<NavProps> = ({ navigation }) => {
                     <View style={[cs.fRowBetw]}>
                         <Text onPress={handleModal} style={[cs.yellowBtnText, cs.textYellow, cs.fzM]}>Закрыть</Text>
                         <View style={[cs.fAlCenter]}>
-                            <Text style={[cs.fzM, cs.colorDark, cs.fzM, cs.colorDark, cs.fwSemi, {color: theme.text_label}]}>Мои пациенты</Text>
+                            <Text style={[cs.fzM, cs.colorDark, cs.fzM, cs.colorDark, cs.fwSemi, { color: theme.text_label }]}>Мои пациенты</Text>
                         </View>
                         <View style={{ flex: 0.4 }}></View>
                     </View>
@@ -105,7 +105,7 @@ const PatientsModal: FC<NavProps> = ({ navigation }) => {
                                                 </View>
                                             </>
                                             :
-                                            <Text style={fs.montR}>Вы пока не пригласили ни одного пациента.</Text>
+                                            <Text style={[fs.montR, { color: theme.text_label }]}>Вы пока не пригласили ни одного пациента.</Text>
                                     }
                                 </View>
                         }
