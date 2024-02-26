@@ -114,6 +114,7 @@ const BonusesModal = () => {
                                             patients.list.length ?
                                                 <>
                                                     <FlatList
+                                                        showsVerticalScrollIndicator={false}
                                                         onEndReached={loadMore}
                                                         data={patients.list}
                                                         style={[cs.fColumn]}

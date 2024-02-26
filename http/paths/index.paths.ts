@@ -19,7 +19,8 @@ export const ORDERS_PATHS = {
     GET_DETAILED_ORDERS_BY_PATIENT: "order/get/pacient/orders",
     GET_ORDER_BY_ID: "order/get",
     GET_ORDERS: "order/get/all",
-    CREATE_ORDER: "order/create"
+    CREATE_ORDER: "order/create",
+    GET_ORDERS_CHRONO: "lk/get/bonus/list"
 }
 export const ANALYSIS_PATHS = {
     GET_CATEGORIES: "analiz/get/category",

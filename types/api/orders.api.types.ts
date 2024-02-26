@@ -1,6 +1,6 @@
 import { HasNextPart, HasPart, ResponseStatus } from "../common.types"
 import { OrderAnalysisDetails } from "../entities/analysis.types"
-import { OrderApi, OrderDetailsApi } from "../entities/order.types"
+import { OrderApi, OrderByDateApi, OrderDetailsApi } from "../entities/order.types"
 
 // Получить информацию о заказе 
 export type OrderDetailsReq = {
@@ -8,7 +8,7 @@ export type OrderDetailsReq = {
 }
 export type OrderDetailsRes = {
     order: OrderDetailsApi
-} & ResponseStatus 
+} & ResponseStatus
 
 // Получить заказы пациента (Краткие данные (Получение бонуса))
 export type OrdersByPatientGetReq = {
@@ -36,6 +36,13 @@ export type OrdersByPatientDetailedGetRes = {
 export type GetAllOrdersReq = HasPart
 export type GetAllOrdersRes = {
     orders: OrderApi[]
+} & ResponseStatus & HasNextPart
+
+// Получить все заказы для страницы финансов за каждую дату
+export type GetAllFinancesOrdersReq = HasPart
+export type GetAllFinancesOrdersRes = {
+    total_bonus: number
+    orders: OrderByDateApi[]
 } & ResponseStatus & HasNextPart
 
 // Создание заказа

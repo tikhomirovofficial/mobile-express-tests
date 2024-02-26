@@ -62,7 +62,7 @@ function App() {
         registerForPushNotificationsAsync().then(token => setExpoPushToken(token));
 
         notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
-            setNotification(Boolean(notification));
+            setNotification(Boolean(notification) );
         });
 
         responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
@@ -77,7 +77,7 @@ function App() {
     return (
         <>
             <View style={{ alignItems: 'center', justifyContent: 'center' }}>
-
+                
             </View>
             <Provider store={store}>
 

@@ -19,3 +19,7 @@ export type OrderDetailsApi = {
     results: string[]
     analiz_list: Array<{ title: string } & HasId>
 }
+export type OrderByDateApi = {
+    date: string,
+    orders: OrderApi[]
+}

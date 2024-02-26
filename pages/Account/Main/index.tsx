@@ -127,8 +127,7 @@ const Main: FC<NavProps> = ({ navigation }) => {
                                             {loadings.all_orders_pagination ? <ActivityIndicator color={cs.bgYellow.backgroundColor} /> : null}
 
                                         </View>
-
-                                        : <Text style={[fs.montR, {color: theme.text_label}]}>Не сделан ни один заказ.</Text>
+                                        : <Text style={[fs.montR, { color: theme.text_label }]}>Не сделан ни один заказ.</Text>
                             }
                         </View>
                     </View>

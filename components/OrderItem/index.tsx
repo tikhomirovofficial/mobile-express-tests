@@ -1,10 +1,14 @@
 import { Dimensions, FlatList, Modal, ScrollView, StyleProp, StyleSheet, Text, TextInput, TextStyle, TouchableOpacity, View, ViewStyle } from "react-native";
 import { cs } from "../../common/styles";
 import { fs } from "../../navigation/AppNavigator";
-import { FC } from "react";
+import { FC, useCallback } from "react";
 import { useAppTheme } from "../../hooks/useTheme";
+import { getOrderById } from "../../app/features/current-data/currentData";
+import { handleOrderInfoModal } from "../../app/features/modals/modalsSlice";
+import { useAppDispatch } from "../../app/base/hooks";
 
 type OrderItemProps = {
+    id?: number,
     codeText: string
     bottomLeftText: string
     bottomRightText: string
@@ -13,15 +17,22 @@ type OrderItemProps = {
 
 }
 
-export const OrderItem: FC<OrderItemProps> = ({ codeText = "code", bottomLeftText = "bottomLeftText", bottomRightText = "bottomRightText", topRightText="100", topRightStyles }) => {
+export const OrderItem: FC<OrderItemProps> = ({ id, codeText = "code", bottomLeftText = "bottomLeftText", bottomRightText = "bottomRightText", topRightText = "100", topRightStyles }) => {
     const theme = useAppTheme()
+    const dispatch = useAppDispatch()
+
+    const handleOpenInfo = id ? useCallback(() => {
+        dispatch(handleOrderInfoModal())
+        dispatch(getOrderById({ id }))
+    }, [id]) : undefined
+    
     return (
-        <TouchableOpacity style={[cs.fColumn, cs.spaceS, cs.bottomBorder, styles.orderItem]}>
+        <TouchableOpacity onPress={handleOpenInfo} style={[cs.fColumn, cs.spaceS, cs.bottomBorder, styles.orderItem]}>
             <View style={[cs.fRowBetw, cs.fAlCenter]}>
                 <View style={[cs.fAlCenter, cs.fRow, cs.spaceM]}>
-                    <Text style={[cs.fzS, cs.colorDark, fs.montR, {color: theme.text_label}]}>Заказ №</Text>
-                    <View style={[cs.lightGray, {backgroundColor: theme.light_gray_bg}]}>
-                        <Text style={[fs.montR, {color: theme.text_label}]}>{codeText}</Text>
+                    <Text style={[cs.fzS, cs.colorDark, fs.montR, { color: theme.text_label }]}>Заказ №</Text>
+                    <View style={[cs.lightGray, { backgroundColor: theme.light_gray_bg }]}>
+                        <Text style={[fs.montR, { color: theme.text_label }]}>{codeText}</Text>
                     </View>
                 </View>
                 <Text style={[cs.colorGray, cs.fzS, fs.montR, topRightStyles]}>
