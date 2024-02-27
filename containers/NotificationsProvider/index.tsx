@@ -1,36 +1,29 @@
-import { useEffect, useState, FC, useRef } from 'react'
-import { HasNodeChildren } from '../../types/common.types';
-import { registerForPushNotificationsAsync } from '../../notifications';
-import * as Notifications from 'expo-notifications';
+import { useEffect } from 'react'
+import { initNotificationsListen, registerForPushNotificationsAsync } from '../../notifications';
 import { useAppSelector } from '../../app/base/hooks';
 
-export const NotificationsProvider: FC<HasNodeChildren> = ({ children }) => {
+export const NotificationsProvider = () => {
+    const notificationsGranted = useAppSelector(state => state.permissions.notifications.granted)
+    const { token } = useAppSelector(state => state.login)
     const { has_docs } = useAppSelector(state => state.profile)
-    const [expoPushToken, setExpoPushToken] = useState('');
-    const [_, setNotification] = useState(false);
-    const notificationListener = useRef<any>();
-    const responseListener = useRef<any>();
+    const has_notif_token = false
 
     useEffect(() => {
-        console.log(expoPushToken);
-    }, [expoPushToken])
+        if (token.valid && notificationsGranted && has_docs !== null) {
+            (async () => {
+                //если в ответ от has_token false, то делаем запрос к владу для записи токена
+                if (!has_docs) {
+                    const token = await registerForPushNotificationsAsync()
+                    console.log(token);
+                    return
+                }
+                //Слушаются уведомления
+                console.log("Слушаем");
+                
+                initNotificationsListen()
+            })()
+        }
+    }, [notificationsGranted, token.valid, has_docs])
 
-    useEffect(() => {
-        registerForPushNotificationsAsync().then(token => setExpoPushToken(token));
-
-        notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
-            setNotification(Boolean(notification));
-        });
-
-        responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
-            console.log(response);
-        });
-
-        return () => {
-            Notifications.removeNotificationSubscription(notificationListener.current);
-            Notifications.removeNotificationSubscription(responseListener.current);
-        };
-    }, []);
-
-    return children
+    return <></>
 }

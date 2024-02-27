@@ -19,6 +19,7 @@ import { initAppTheme, setTheme } from './app/features/settings/settingsSlice';
 import { useAppTheme } from './hooks/useTheme';
 import { storeTheme } from './utils/storeTheme';
 import { WithNetwork } from './containers/WithNetwork';
+import { NotificationsProvider } from './containers/NotificationsProvider';
 
 
 const Root = () => {
@@ -83,6 +84,8 @@ const Root = () => {
         return (
             <>
                 <StatusBar style={theme === "light" ? "dark" : "light"} />
+                
+                <NotificationsProvider/>
                 <WithNetwork>
                     <View style={{ flex: 1 }}>
                         <AppNavigator />
