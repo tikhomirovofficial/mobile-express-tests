@@ -13,6 +13,11 @@ Notifications.setNotificationHandler({
         shouldSetBadge: false,
     }),
 });
+Notifications.addNotificationResponseReceivedListener(handleNotificationResponse);
+
+function handleNotificationResponse(response: any) {
+    console.log(response);
+}
 
 async function sendPushNotification(expoPushToken: string) {
     const message = {
@@ -59,10 +64,15 @@ function App() {
     const responseListener = useRef<any>();
 
     useEffect(() => {
+        console.log(expoPushToken);
+
+    }, [])
+
+    useEffect(() => {
         registerForPushNotificationsAsync().then(token => setExpoPushToken(token));
 
         notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
-            setNotification(Boolean(notification) );
+            setNotification(Boolean(notification));
         });
 
         responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
@@ -74,13 +84,10 @@ function App() {
             Notifications.removeNotificationSubscription(responseListener.current);
         };
     }, []);
+    
     return (
         <>
-            <View style={{ alignItems: 'center', justifyContent: 'center' }}>
-                
-            </View>
             <Provider store={store}>
-
                 <Root />
             </Provider>
         </>

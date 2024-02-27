@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "300991587190",
+    "project_id": "express-test-a98c6",
+    "storage_bucket": "express-test-a98c6.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:300991587190:android:1ad5396e2d014613961057",
+        "android_client_info": {
+          "package_name": "com.anonymous.mobileexpresstest"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCSc81KAkdMCVsZ259UwdZDTX6nWF9LECI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
