@@ -1,13 +1,9 @@
-import React, { useEffect, useState, ReactNode, FC } from 'react'
-import { Text } from 'react-native'
-import NetInfo, { NetInfoState } from '@react-native-community/netinfo';
+import React, { useEffect, useState, FC } from 'react'
+import NetInfo from '@react-native-community/netinfo';
 import { WifiProblem } from '../../pages/Problems/WifiProblem';
+import { HasNodeChildren } from '../../types/common.types';
 
-type WithNetworkProps = {
-    children: ReactNode
-}
-
-export const WithNetwork: FC<WithNetworkProps> = ({ children }) => {
+export const WithNetwork: FC<HasNodeChildren> = ({ children }) => {
     const [connected, setConnected] = useState(true)
 
     const refreshNetState = () => {
@@ -18,7 +14,7 @@ export const WithNetwork: FC<WithNetworkProps> = ({ children }) => {
 
     useEffect(() => {
         const unsubscribe = NetInfo.addEventListener(state => setConnected(state.isConnected || false));
-        
+
         return () => {
             unsubscribe();
         }

@@ -1,7 +1,11 @@
 import { NavigationProp, ParamListBase, RouteProp } from "@react-navigation/native";
+import { ReactNode } from "react";
 
 export type HasId = {
     id: number
+}
+export type HasNodeChildren = {
+    children: ReactNode
 }
 export type HasLoading = {
     loading: boolean
