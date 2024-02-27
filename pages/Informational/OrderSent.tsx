@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 import FeauturesLayout from "../../layouts/FeaturesLayout";
 import { Text, TouchableOpacity, View, Linking } from "react-native";
 import { cs } from "../../common/styles";
-import { useAppDispatch } from "../../app/base/hooks";
+import { useAppDispatch, useAppSelector } from "../../app/base/hooks";
 import { setWelcomeStep } from "../../app/features/welcome/welcomeSlice";
 import ButtonYellow from "../../components/Buttons/ButtonYellow";
 import InfoPageLayout from '../../layouts/InfoPageLayout';
@@ -10,10 +10,12 @@ import AppContainer from '../../components/AppContainer';
 import { LinearGradient } from 'expo-linear-gradient';
 import { fs } from '../../navigation/AppNavigator';
 import { NavProps } from '../../types/common.types';
+import { formatBonus } from '../../utils/formatBonusesString';
 const OrderSentImage = require('../../assets/order_sent.jpg')
 
-const OrderSent: FC<NavProps> = ({navigation}) => {
+const OrderSent: FC<NavProps> = ({ navigation }) => {
     const dispatch = useAppDispatch()
+    const { order_total } = useAppSelector(state => state.order.bonuses)
 
     const toOrders = () => {
         navigation.navigate("home", {
@@ -28,7 +30,7 @@ const OrderSent: FC<NavProps> = ({navigation}) => {
             <AppContainer style={{ flex: 1, ...cs.spaceXXL }}>
                 <View style={[cs.fColumn, cs.spaceL]}>
                     <FeauturesLayout features={[
-                        <Text>После подтверждения заказа будет начислено <Text style={cs.textBlue}>до 1000 бонусов</Text></Text>,
+                        <Text>После подтверждения заказа будет начислено <Text style={cs.textBlue}>до {formatBonus(order_total)}</Text></Text>,
                         <Text>Пациент может сдать часть анализов по своему выбору, либо отказаться от заказа полностью</Text>
                     ]} />
                     <TouchableOpacity onPress={toHowGetResults} >

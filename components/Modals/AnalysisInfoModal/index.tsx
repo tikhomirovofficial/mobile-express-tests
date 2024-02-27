@@ -102,7 +102,7 @@ const AnalysisInfoModal: FC<NavProps> = ({ navigation }) => {
                                                 <ButtonYellow style={[cs.fRow, cs.spaceS, { minWidth: "60%" }]} handlePress={handleToCart}>
                                                     <Text style={[cs.fzM, cs.yellowBtnText]}>В корзине</Text>
                                                     <View style={[cs.count]}>
-                                                        <Text style={cs.countText}>{cartProducts.length}</Text>
+                                                        <Text style={[cs.countText, fs.montR]}>{cartProducts.length}</Text>
                                                     </View>
                                                 </ButtonYellow>
                                                 <ButtonBlue style={[cs.fRow, cs.spaceS]} handlePress={removeItem}>

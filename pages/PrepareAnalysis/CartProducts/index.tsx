@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useEffect, useMemo, useState } from 'react';
 import WhiteBorderedLayout from "../../../layouts/WhiteBordered";
 import { Animated, Text, TouchableOpacity, View, StyleSheet, TextInput, ScrollView, SectionList, FlatList, Keyboard, ActivityIndicator } from "react-native";
 import { cs } from "../../../common/styles";
@@ -12,7 +12,7 @@ import PatientItem from "../../../components/PatientItem";
 import ButtonYellow from "../../../components/Buttons/ButtonYellow";
 import PatientInvitingModal from "../../../components/Modals/PatientInvitingModal";
 import { addToCart, clearCart, removeProduct } from '../../../app/features/cart/cartSlice';
-import { createOrder, resetPatient, setCurrentCategory, setPatient } from '../../../app/features/order/orderSlice';
+import { createOrder, resetPatient, setCurrentCategory, setOrderBonusesTotal, setPatient } from '../../../app/features/order/orderSlice';
 import CartItem from '../../../components/CartItem';
 import { CreateOrderReq } from '../../../types/api/orders.api.types';
 import { useAppTheme } from '../../../hooks/useTheme';
@@ -21,10 +21,15 @@ import { BackButton } from '../../../components/BackButton';
 const CartProducts: FC<NavProps> = ({ navigation }) => {
     const dispatch = useAppDispatch()
     const theme = useAppTheme()
-    const [categoriesLoading, setCategoriesLoading] = useState(false)
     const [keyboardStatus, setKeyboardStatus] = useState(false);
     const cartProducts = useAppSelector(state => state.cart.items)
-    const { patientData, sending, success, err } = useAppSelector(state => state.order)
+    const { patientData, sending, success, err, bonuses } = useAppSelector(state => state.order)
+    const orderTotalSum = useMemo(() => {
+        return cartProducts.reduce((a, b) => {
+            return a + b.cost
+        }, 0)
+    }, [cartProducts])
+
 
     const handleClearCart = () => {
         dispatch(clearCart())
@@ -45,10 +50,10 @@ const CartProducts: FC<NavProps> = ({ navigation }) => {
 
     useEffect(() => {
         if (success) {
+            dispatch(setOrderBonusesTotal((orderTotalSum / 100) * bonuses.percent))
             handleClearCart()
             dispatch(setCurrentCategory(-1))
             dispatch(resetPatient())
-
             navigation.navigate("order_sent")
         }
     }, [success])
@@ -76,8 +81,8 @@ const CartProducts: FC<NavProps> = ({ navigation }) => {
                     topContent={
                         <AppContainer style={{ paddingBottom: 0 }}>
                             <View style={[cs.fRowBetw, cs.spaceM, cs.fAlCenter]}>
-                                <BackButton handleBack={handleToSelectingCategory}/>
-                                <Text style={[cs.fwSemi, cs.fwSemi, cs.fzXL, {color: theme.title}]}>Корзина</Text>
+                                <BackButton handleBack={handleToSelectingCategory} />
+                                <Text style={[cs.fwSemi, cs.fwSemi, cs.fzXL, { color: theme.title }]}>Корзина</Text>
                                 <View></View>
                             </View>
                         </AppContainer>
@@ -86,10 +91,10 @@ const CartProducts: FC<NavProps> = ({ navigation }) => {
                     <View style={[cs.spaceXL, styles.patientsContent, { minHeight: keyboardStatus ? "99%" : "100%" }]}>
                         <View style={[cs.spaceL, cs.fColumn]}>
                             <View style={[cs.fRowBetw, cs.spaceM, cs.fAlCenter]}>
-                                <Text style={[cs.fwSemi, cs.fwBold, cs.fzXL, {color: theme.title}]}>Всего анализов: {cartProducts.length}</Text>
+                                <Text style={[cs.fwSemi, cs.fwBold, cs.fzXL, { color: theme.title }]}>Всего анализов: {cartProducts.length}</Text>
                                 <View style={[cs.fRow, cs.fAlCenter, cs.spaceS, { backgroundColor: "#36CACB", paddingHorizontal: 15, paddingVertical: 6, borderRadius: 300 }]}>
                                     <HeartIcon stroke={"#ffffff"} />
-                                    <Text style={[cs.fwSemi, cs.colorWhite]}>{cartProducts.length * 3}</Text>
+                                    <Text style={[cs.fwSemi, cs.colorWhite]}>{(orderTotalSum / 100) * bonuses.percent}</Text>
                                 </View>
                             </View>
                             <TouchableOpacity onPress={handleClearCart} style={[cs.fRow, cs.fAlCenter, cs.spaceS]}>
@@ -98,19 +103,19 @@ const CartProducts: FC<NavProps> = ({ navigation }) => {
                             </TouchableOpacity>
                         </View>
                         <View style={[cs.flexOne, { position: "relative" }]}>
-                            {categoriesLoading ? <Text style={[cs.txtCenter]}>Загрузка...</Text> :
-                                <View style={[{ position: "absolute", height: "100%", width: "100%" }]}>
-                                    <FlatList
-                                        contentContainerStyle={[cs.fColumn, cs.spaceS]}
-                                        data={cartProducts}
-                                        renderItem={({ item }) => (
-                                            <CartItem
-                                                removeItem={() => dispatch(removeProduct(item.id))}
-                                                item={item}
-                                            />
-                                        )}
-                                    />
-                                </View>}
+                            <View style={[{ position: "absolute", height: "100%", width: "100%" }]}>
+                                <FlatList
+                                    showsVerticalScrollIndicator={false}
+                                    contentContainerStyle={[cs.fColumn, cs.spaceS]}
+                                    data={cartProducts}
+                                    renderItem={({ item }) => (
+                                        <CartItem
+                                            removeItem={() => dispatch(removeProduct(item.id))}
+                                            item={item}
+                                        />
+                                    )}
+                                />
+                            </View>
                         </View>
                         <View style={[cs.fColumn, cs.spaceS]}>
                             <Text style={[fs.montR, cs.colorRed]}>{err}</Text>

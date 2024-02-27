@@ -15,13 +15,14 @@ import { handlePatientInvitingModal } from "../../../app/features/modals/modalsS
 import * as Contacts from 'expo-contacts';
 import * as Permissions from 'expo-permissions';
 import { getSearchPatients, incrementSearchedPatientsPart, resetSearchedPatients, setPatients } from '../../../app/features/patients/patientsSlice';
-import { resetPatient, setPatient } from '../../../app/features/order/orderSlice';
+import { resetOrderBonusesTotal, resetPatient, setPatient } from '../../../app/features/order/orderSlice';
 import { useDeferred } from '../../../hooks/useDeffered';
 import { SkeletonContainer } from 'react-native-skeleton-component';
 import { SkeletonView } from '../../../components/SkeletonView';
 import { usePagination } from '../../../hooks/usePagination';
 import { useAppTheme } from '../../../hooks/useTheme';
 import { BackButton } from '../../../components/BackButton';
+import { clearCart } from '../../../app/features/cart/cartSlice';
 
 const SelectingPatient: FC<NavProps> = ({ navigation }) => {
     const dispatch = useAppDispatch()
@@ -58,13 +59,10 @@ const SelectingPatient: FC<NavProps> = ({ navigation }) => {
                 first_name: patientData.first_name || "",
                 last_name: patientData.last_name || ""
             }))
+            dispatch(clearCart())
         }
 
     }
-    useEffect(() => {
-        console.log(patientData);
-
-    }, [patientData])
 
     const toSelectCategory = () => navigation.navigate("order_category")
 
@@ -79,6 +77,7 @@ const SelectingPatient: FC<NavProps> = ({ navigation }) => {
     useEffect(loadSearchedPatients, [searched_part])
 
     useEffect(() => {
+        dispatch(resetOrderBonusesTotal())
         const keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', () => {
             setKeyboardStatus(true);
         });
@@ -100,8 +99,8 @@ const SelectingPatient: FC<NavProps> = ({ navigation }) => {
                     topContent={
                         <AppContainer style={{ paddingBottom: 0 }}>
                             <View style={[cs.fRow, cs.spaceM, cs.fAlCenter]}>
-                                <BackButton handleBack={handleToMyPatients}/>
-                                <Text style={[cs.fwSemi, cs.fwSemi, cs.fzXL, {color: theme.title}]}>Подготовка анализов</Text>
+                                <BackButton handleBack={handleToMyPatients} />
+                                <Text style={[cs.fwSemi, cs.fwSemi, cs.fzXL, { color: theme.title }]}>Подготовка анализов</Text>
                             </View>
                         </AppContainer>
 
@@ -110,16 +109,16 @@ const SelectingPatient: FC<NavProps> = ({ navigation }) => {
                     <View style={[cs.spaceS, styles.patientsContent]}>
                         <View style={[cs.spaceL, cs.fColumn]}>
                             <View style={[cs.fRowBetw, cs.spaceM, cs.fAlCenter]}>
-                                <Text style={[cs.fwSemi, cs.fwBold, cs.fzXL, {color: theme.title}]}>Выберите пациента</Text>
+                                <Text style={[cs.fwSemi, cs.fwBold, cs.fzXL, { color: theme.title }]}>Выберите пациента</Text>
                                 <View style={[cs.fRow, cs.fAlCenter, cs.spaceS]}>
                                     <View style={[cs.sliderDot, cs.sliderDotActive]}></View>
                                     <View style={[cs.sliderDot]}></View>
                                     <View style={[cs.sliderDot]}></View>
                                 </View>
                             </View>
-                            <View style={[cs.fRow, cs.fAlCenter, cs.spaceS, styles.searchInputBlock, {backgroundColor: theme.main_bg}]}>
-                                <SearchIcon stroke={theme.text_label}/>
-                                <TextInput value={searchVal} onChangeText={(text) => setSearchVal(text)}  placeholderTextColor={theme.text_label} style={[cs.fzS, fs.montR, cs.flexOne, {color: theme.title}]} placeholder={"Найти по имени или номеру"} />
+                            <View style={[cs.fRow, cs.fAlCenter, cs.spaceS, styles.searchInputBlock, { backgroundColor: theme.main_bg }]}>
+                                <SearchIcon stroke={theme.text_label} />
+                                <TextInput value={searchVal} onChangeText={(text) => setSearchVal(text)} placeholderTextColor={theme.text_label} style={[cs.fzS, fs.montR, cs.flexOne, { color: theme.title }]} placeholder={"Найти по имени или номеру"} />
                             </View>
                             <TouchableOpacity onPress={openNewPatient}>
                                 <Text style={[cs.textYellow, cs.fwSemi, { textDecorationLine: "underline" }]}>Пригласить пациента</Text>
@@ -150,7 +149,7 @@ const SelectingPatient: FC<NavProps> = ({ navigation }) => {
                                                 )}
                                             />
                                         </View> :
-                                        <Text style={[fs.montR, {color: theme.text_label}]}>Вы пока не пригласили пациентов.</Text>
+                                        <Text style={[fs.montR, { color: theme.text_label }]}>Вы пока не пригласили пациентов.</Text>
                                 }
 
                             </View>

@@ -186,7 +186,7 @@ const PatientInfoModal: FC<NavProps> = ({ navigation }) => {
                                                                 paid={true}
                                                                 date={normalizeDate(item.date)}
                                                                 id={item.id}
-                                                                customer={`Имя Фамилия`}
+                                                                customer={String(item.pacient)}
                                                                 analysisList={[]} />
                                                         )}
                                                     />

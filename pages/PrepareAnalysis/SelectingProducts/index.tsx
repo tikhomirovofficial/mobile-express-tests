@@ -138,7 +138,7 @@ const SelectingProducts: FC<NavProps> = ({ navigation }) => {
                             </View>
                             <View style={[cs.fRow, cs.fAlCenter, cs.spaceS, styles.searchInputBlock, { backgroundColor: theme.main_bg }]}>
                                 <SearchIcon stroke={theme.text_label} />
-                                <TextInput value={searchVal} onChangeText={(text) => setSearchVal(text)} placeholderTextColor={theme.text_label} style={[cs.fzS, fs.montR, cs.flexOne, { color: theme.title }]} placeholder={"Найти названию"} />
+                                <TextInput value={searchVal} onChangeText={(text) => setSearchVal(text)} placeholderTextColor={theme.text_label} style={[cs.fzS, fs.montR, cs.flexOne, { color: theme.title }]} placeholder={"Найти по названию"} />
                             </View>
 
                         </View>

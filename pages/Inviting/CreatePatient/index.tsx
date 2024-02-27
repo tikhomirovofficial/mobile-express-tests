@@ -65,7 +65,8 @@ const CreatePatient: FC<NavProps> = ({ navigation }) => {
                             <View style={[cs.fRow, cs.spaceM, cs.fAlCenter]}>
 
                                 <BackButton handleBack={toBackScreen} />
-                                <Text style={[cs.fwSemi, cs.fwSemi, cs.fzXL, { color: theme.title }]}>Приглашение пациентов</Text>
+                                <Text style={[cs.fwSemi, cs.fwSemi, cs.fzXL, { color: theme.title }]}>Пригласить пациента</Text>
+                                <View style={{width: 1, height: 1}}></View>
                             </View>
                         </AppContainer>
 

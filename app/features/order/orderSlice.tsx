@@ -13,7 +13,11 @@ type OrderSliceState = {
     currentCategorySelected: number,
     success: boolean | null,
     sending: boolean
-    err: string
+    err: string,
+    bonuses: {
+        percent: number,
+        order_total: number
+    }
 }
 
 const initialState: OrderSliceState = {
@@ -25,6 +29,10 @@ const initialState: OrderSliceState = {
         last_name: ""
     },
     err: "",
+    bonuses: {
+        percent: 10,
+        order_total: 0
+    },
     currentCategorySelected: -1
 }
 // export const createOrder = createAsyncThunk(
@@ -61,6 +69,12 @@ export const OrderSlice = createSlice({
     name: "order",
     initialState,
     reducers: {
+        setOrderBonusesTotal(state, action: PayloadAction<number>) {
+            state.bonuses.order_total = action.payload
+        },
+        resetOrderBonusesTotal(state) {
+            state.bonuses.order_total = initialState.bonuses.order_total
+        },
         setPatient(state, action: PayloadAction<PatientOrderData>) {
             state.patientData = action.payload
         },
@@ -94,7 +108,9 @@ export const OrderSlice = createSlice({
 export const {
     setPatient,
     setCurrentCategory,
-    resetPatient
+    resetPatient,
+    resetOrderBonusesTotal,
+    setOrderBonusesTotal
 } = OrderSlice.actions
 
 export const orderReducer = OrderSlice.reducer
