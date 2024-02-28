@@ -36,7 +36,7 @@ const SelectingProducts: FC<NavProps> = ({ navigation }) => {
 
     const [keyboardStatus, setKeyboardStatus] = useState(false);
     const [searchVal, setSearchVal] = useState("")
-    const defferedSearchVal = useDeferred(searchVal, 200)
+    const defferedSearchVal = useDeferred(searchVal, 500)
 
     const currentCategoryId = useAppSelector(state => state.order.currentCategorySelected)
     const currentCategory = categories.filter(ctg => ctg.id === currentCategoryId)[0]

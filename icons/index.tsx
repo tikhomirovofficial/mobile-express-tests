@@ -66,12 +66,12 @@ export const LightThemeIcon: FC<IconProps> = ({ width = 24, height = 24, stroke 
     )
 }
 
-export const LogoutIcon: FC<IconProps> = ({ width = 21, height = 21 }) => {
+export const LogoutIcon: FC<IconProps> = ({ width = 21, height = 21, stroke = "#4D4D4D" }) => {
     return (
         <Svg width={width} height={height} viewBox="0 0 21 21" fill="none">
-            <Path d="M13.016 5.38948V4.45648C13.016 2.42148 11.366 0.771484 9.33097 0.771484H4.45597C2.42197 0.771484 0.771973 2.42148 0.771973 4.45648V15.5865C0.771973 17.6215 2.42197 19.2715 4.45597 19.2715H9.34097C11.37 19.2715 13.016 17.6265 13.016 15.5975V14.6545" stroke="#4D4D4D" strokeWidth="1.5" stroke-linecap="round" stroke-linejoin="round" />
-            <Path d="M19.8094 10.0215H7.76843" stroke="#4D4D4D" strokeWidth="1.5" stroke-linecap="round" stroke-linejoin="round" />
-            <Path d="M16.8812 7.1062L19.8092 10.0212L16.8812 12.9372" stroke="#4D4D4D" strokeWidth="1.5" stroke-linecap="round" stroke-linejoin="round" />
+            <Path d="M13.016 5.38948V4.45648C13.016 2.42148 11.366 0.771484 9.33097 0.771484H4.45597C2.42197 0.771484 0.771973 2.42148 0.771973 4.45648V15.5865C0.771973 17.6215 2.42197 19.2715 4.45597 19.2715H9.34097C11.37 19.2715 13.016 17.6265 13.016 15.5975V14.6545" stroke={stroke} strokeWidth="1.5" stroke-linecap="round" stroke-linejoin="round" />
+            <Path d="M19.8094 10.0215H7.76843" stroke={stroke} strokeWidth="1.5" stroke-linecap="round" stroke-linejoin="round" />
+            <Path d="M16.8812 7.1062L19.8092 10.0212L16.8812 12.9372" stroke={stroke} strokeWidth="1.5" stroke-linecap="round" stroke-linejoin="round" />
         </Svg>
     )
 }

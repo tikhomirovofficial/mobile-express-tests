@@ -28,6 +28,8 @@ export class OrdersApi {
         return res
     }
     static async Create(req: CreateOrderReq): Promise<AxiosResponse<CreateOrderRes>> {
+        console.log(req);
+        
         const res: AxiosResponse<CreateOrderRes> = await authApi.post(ORDERS_PATHS.CREATE_ORDER, req);
         if (!res.data) {
             throw res

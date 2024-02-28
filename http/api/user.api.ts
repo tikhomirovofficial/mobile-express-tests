@@ -1,7 +1,7 @@
 import { AxiosResponse } from "axios";
 import { api, authApi } from "../instances";
 import { USER_PATHS } from "../paths/index.paths";
-import { AuthAcceptReq, AuthAcceptRes, AuthRefreshReq, AuthRefreshRes, AuthReq, AuthRes, GetProfileFilledRes, ProfileCreateReq, ProfileCreateRes, ProfileGetRes } from "../../types/api/user.api.types";
+import { AuthAcceptReq, AuthAcceptRes, AuthRefreshReq, AuthRefreshRes, AuthReq, AuthRes, GetProfileFilledRes, ProfileCreateReq, ProfileCreateRes, ProfileGetRes, StorePushTokenReq, StorePushTokenRes } from "../../types/api/user.api.types";
 import { ProfileCreateForm } from "../../types/entities/user.types";
 
 export class UserApi {
@@ -19,6 +19,13 @@ export class UserApi {
     }
     static async GetProfileFilled(): Promise<AxiosResponse<GetProfileFilledRes>> {
         const res: AxiosResponse<GetProfileFilledRes> = await authApi.get(USER_PATHS.GET_FILLED_PROFILE);
+        if (!res.data) {
+            throw res
+        }
+        return res;
+    }
+    static async StorePushToken(req: StorePushTokenReq): Promise<AxiosResponse<StorePushTokenRes>> {
+        const res: AxiosResponse<StorePushTokenRes> = await authApi.post(USER_PATHS.STORE_PUSH_TOKEN, req);
         if (!res.data) {
             throw res
         }

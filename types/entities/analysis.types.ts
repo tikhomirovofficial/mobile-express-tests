@@ -9,6 +9,7 @@ export type OrderAnalysisType = {
     date: string,
     status: string,
     customer: string,
+    customerHide?: boolean,
     handlePress?: () => void,
     paid: boolean
     analysisList?: AnalysisType[]

@@ -7,19 +7,22 @@ import { fs } from '../../navigation/AppNavigator';
 import { NavProps } from '../../types/common.types';
 import { LinearGradient } from 'expo-linear-gradient';
 import WhiteBorderedLayout from '../../layouts/WhiteBordered';
-import { BackspaceIcon, CloseIcon } from '../../icons';
+import { BackspaceIcon, CloseIcon, LogoutIcon } from '../../icons';
 import { checkValidEnteredPin, resetAcceptedErr } from '../../app/features/access/accessSlice';
 import * as Haptics from 'expo-haptics';
 import { vibrate } from '../../utils/device/vibrate';
 import { useTheme } from '@react-navigation/native';
 import { useAppTheme } from '../../hooks/useTheme';
+import { useLogout } from '../../hooks/useLogout';
 
 const AcceptPinCode: FC<NavProps> = ({ navigation }) => {
     const dispatch = useAppDispatch()
     const theme = useAppTheme()
     const [pin, setPin] = useState<string[]>(["", "", "", ""])
-    const [keyboardStatus, setKeyboardStatus] = useState(false);
+    const [_, setKeyboardStatus] = useState(false);
     const { error } = useAppSelector(state => state.access.accepted)
+
+    const { handleLogout } = useLogout()
 
     const handlePin = (digit: string) => {
         vibrate(80)
@@ -105,7 +108,7 @@ const AcceptPinCode: FC<NavProps> = ({ navigation }) => {
                                 </View>
                             </View>
                         </View>
-                        <View style={[cs.fColumn, cs.spaceXXL]}>
+                        <View style={[cs.fColumn, cs.spaceL]}>
                             <View style={[cs.fColumn, cs.spaceL]}>
                                 <View style={[cs.fCenterRow, cs.spaceXXL]}>
                                     <TouchableOpacity onPress={() => handlePin("1")} style={[styles.pinKeyBtn, cs.fCenterCol, { backgroundColor: theme.pin_btns }]}>
@@ -151,6 +154,9 @@ const AcceptPinCode: FC<NavProps> = ({ navigation }) => {
                                         <BackspaceIcon width={30} height={27} />
                                     </TouchableOpacity>
                                 </View>
+                            </View>
+                            <View style={[cs.fCenterRow, cs.spaceXXL]}>
+                                <Text onPress={handleLogout} style={[cs.textRed, fs.montR]}>Выйти</Text>
                             </View>
                         </View>
 

@@ -16,13 +16,13 @@ const CartItem: FC<CartItemProps> = ({ item, removeItem }) => {
     const theme = useAppTheme()
     return (
         <TouchableOpacity style={[cs.fRowBetw, cs.spaceS, cs.fAlCenter]} >
-            <View key={item.id} style={[cs.fRow, cs.spaceS, { maxWidth: "90%" }]}>
+            <View key={item.id} style={[cs.fRow, cs.spaceS, { maxWidth: "80%" }]}>
                 <View style={[cs.fColumn]}>
                     <Text style={[cs.fwMedium, fs.montR, cs.fzS, { color: theme.text_label }]}>{item.name}</Text>
                     <Text style={[cs.fwBold, fs.montR, cs.fzS, { color: theme.text_label }]}>{item.cost} ₽</Text>
                 </View>
             </View>
-            <TouchableOpacity onPress={removeItem}>
+            <TouchableOpacity style={[{paddingVertical: 10, paddingLeft: 10}]} onPress={removeItem}>
                 <RemoveIcon />
             </TouchableOpacity>
         </TouchableOpacity>)

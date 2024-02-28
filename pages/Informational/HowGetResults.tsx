@@ -12,7 +12,7 @@ import { fs } from '../../navigation/AppNavigator';
 import { NavProps } from '../../types/common.types';
 const InfoGetResultsImage = require('../../assets/info_get_results.jpg')
 
-const HowGetResults: FC<NavProps> = ({navigation}) => {
+const HowGetResults: FC<NavProps> = ({ navigation }) => {
     const dispatch = useAppDispatch()
 
     const toHome = () => {
@@ -27,18 +27,10 @@ const HowGetResults: FC<NavProps> = ({navigation}) => {
                     "По готовности вам придёт уведомление в приложении",
                     "Информацию по заказу вы можете найти на главном экране в разделе “Заказы анализов”."
                 ]} />
-                <View style={[cs.fRowBetw, cs.fAlCenter]}>
-                    <TouchableOpacity onPress={toHome} style={[cs.flexOne]}>
-                        <LinearGradient style={[cs.yellowBtn, cs.fCenterCol]}
-                            colors={["#FB0", "#FFCB3D", "#FFDA75"]}>
-                            <Text style={[cs.fzM, cs.yellowBtnText]}>Закрыть</Text>
-                        </LinearGradient>
-                    </TouchableOpacity>
-                </View>
-               
-
+                <ButtonYellow style={{ minHeight: 54, flex: 1 }} handlePress={toHome}>
+                    <Text style={[cs.fzM, cs.yellowBtnText]}>Закрыть</Text>
+                </ButtonYellow>
             </AppContainer>
-
         }></InfoPageLayout>
     );
 };

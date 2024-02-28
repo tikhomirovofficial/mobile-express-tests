@@ -14,6 +14,7 @@ const OrderCard: FC<OrderAnalysisType> = ({
     id,
     date,
     customer,
+    customerHide = false,
     status,
     paid,
     handlePress,
@@ -43,22 +44,22 @@ const OrderCard: FC<OrderAnalysisType> = ({
     }
 
     return (
-        <TouchableOpacity onPress={handleOpenInfo} style={[styles.card, cs.spaceL, {backgroundColor: theme.card_bg || styles.card.backgroundColor, borderColor: theme.card_border}]}>
+        <TouchableOpacity onPress={handleOpenInfo} style={[styles.card, cs.spaceL, { backgroundColor: theme.card_bg || styles.card.backgroundColor, borderColor: theme.card_border }]}>
             <View style={[cs.fColumn, styles.cardTop]}>
                 <View style={[cs.fRowBetw, cs.fAlCenter]}>
                     <View style={[styles.orderNum, cs.fAlCenter, cs.fRow]}>
-                        <Text style={[cs.fzS, cs.colorDark, styles.orderNumText, cs.fwMedium, {color: theme.text_label}]}>Заказ №</Text>
-                        <View style={[cs.lightGray, {backgroundColor: theme.light_gray_bg}]}>
-                            <Text style={[fs.montR, {color: theme.text_label}]}>{id}</Text>
+                        <Text style={[cs.fzS, cs.colorDark, styles.orderNumText, cs.fwMedium, { color: theme.text_label }]}>Заказ №</Text>
+                        <View style={[cs.lightGray, { backgroundColor: theme.light_gray_bg }]}>
+                            <Text style={[fs.montR, { color: theme.text_label }]}>{id}</Text>
                         </View>
                     </View>
                     <Text style={[cs.colorGray, cs.fzS, fs.montR]}>{date}</Text>
                 </View>
-                {customer.length ? <Text style={[cs.colorGray, cs.fzXS, fs.montR]}>{customer}</Text> : null}
+                {customer.length && !customerHide ? <Text style={[cs.colorGray, cs.fzXS, fs.montR]}>{customer}</Text> : null}
             </View>
             <View style={[cs.fRowBetw, cs.fAlCenter, cs.flexOne, styles.cardBottom]}>
                 <View style={[getStatusObj().styleBlock, styles.statusBlock]}>
-                    <Text style={[cs.fwSemi, cs.colorWhite, cs.fzS, {color: theme.text_status}]}>{getStatusObj().text}</Text>
+                    <Text style={[cs.fwSemi, cs.colorWhite, cs.fzS, { color: theme.text_status }]}>{getStatusObj().text}</Text>
                 </View>
                 <TouchableOpacity style={[cs.fAlCenter, cs.fRow, styles.resultsBtn]}>
                     <DownloadIcon

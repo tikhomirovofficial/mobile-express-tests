@@ -10,6 +10,11 @@ import { deletePin, storePin } from "../../../utils/storePin";
 import { vibrate } from "../../../utils/device/vibrate";
 
 type AcecssSliceType = {
+    bio: {
+        hard_used: boolean
+        checking: boolean,
+        registered: number
+    }
     faceId: {
         connected: boolean,
         asked: boolean,
@@ -32,6 +37,11 @@ type AcecssSliceType = {
 }
 
 const initialState: AcecssSliceType = {
+    bio: {
+        hard_used: false,
+        checking: true,
+        registered: 0
+    },
     faceId: {
         connected: true,
         asked: false,

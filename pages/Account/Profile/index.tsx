@@ -25,6 +25,7 @@ import { useRefresh } from '../../../hooks/useRefresh';
 import { setTheme } from '../../../app/features/settings/settingsSlice';
 import { useAppTheme } from '../../../hooks/useTheme';
 import { storeTheme } from '../../../utils/storeTheme';
+import { useLogout } from '../../../hooks/useLogout';
 
 
 const Profile: FC<NavProps> = ({ navigation }) => {
@@ -34,12 +35,14 @@ const Profile: FC<NavProps> = ({ navigation }) => {
     const { refreshing, sendRefresh } = useRefresh()
     const profile = useAppSelector(state => state.profile)
     const { ordersFinancesModal, patientsModal, aboutAppModal, profileEditModal } = useAppSelector(state => state.modals)
+    const { handleLogout } = useLogout()
 
     const handleProfileDataModal = () => dispatch(handleProfileEditModal())
 
     const handlePatients = () => dispatch(handlePatientsModal())
 
     const handleAbout = () => dispatch(handleAboutModal())
+
     const handleTheme = async () => {
         if (theme === "light") {
             dispatch(setTheme("dark"))
@@ -49,13 +52,8 @@ const Profile: FC<NavProps> = ({ navigation }) => {
         dispatch(setTheme("light"))
         await storeTheme("light")
     }
+    
     const handleFinances = () => dispatch(handleOrdersFinancesModal())
-
-    const handleLogout = () => {
-        dispatch(logout())
-        dispatch(resetProfileData())
-        dispatch(resetAccess())
-    }
 
     return (
         <>

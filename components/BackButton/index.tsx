@@ -7,7 +7,7 @@ export type BackButtonProps = {
 }
 export const BackButton: FC<BackButtonProps> = ({handleBack}) => {
     return (
-        <TouchableOpacity style={{ paddingVertical: 8, paddingRight: 14}} onPress={handleBack}>
+        <TouchableOpacity style={{ paddingVertical: 12, paddingRight: 16}} onPress={handleBack}>
             <ArrowLeft />
         </TouchableOpacity>
     )

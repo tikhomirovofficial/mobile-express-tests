@@ -28,13 +28,13 @@ const ProductItem: FC<ProductItemProps> = ({ product, index, isInCart, clickHand
 
     return (
         <TouchableOpacity onPress={clickHandle} style={[cs.fRowBetw, cs.spaceS, cs.fAlCenter, { paddingBottom: 16, paddingTop: index ? 16 : 0, borderBottomWidth: 1, borderBottomColor: "#f3f3f3" }]} >
-            <View key={product.id} style={[cs.fRow, cs.spaceS, { maxWidth: "90%" }]}>
+            <View key={product.id} style={[cs.fRow, cs.spaceS, { maxWidth: "80%" }]}>
                 <View style={[cs.fColumn]}>
-                    <Text style={[cs.fwMedium, fs.montR, cs.fzS, {color: theme.text_label}]}>{product.name}</Text>
-                    <Text style={[cs.fwBold, fs.montR, cs.fzS, cs.colorDark, {color: theme.text_label}]}>{product.cost} ₽</Text>
+                    <Text style={[cs.fwMedium, fs.montR, cs.fzS, { color: theme.text_label }]}>{product.name}</Text>
+                    <Text style={[cs.fwBold, fs.montR, cs.fzS, cs.colorDark, { color: theme.text_label }]}>{product.cost} ₽</Text>
                 </View>
             </View>
-            <TouchableOpacity onPress={!isInCart ? addProduct : removeItem}>
+            <TouchableOpacity style={[{ paddingVertical: 10, paddingLeft: 10 }]} onPress={!isInCart ? addProduct : removeItem}>
                 {isInCart ? <RemoveIcon /> : <AddIcon />}
             </TouchableOpacity>
         </TouchableOpacity>

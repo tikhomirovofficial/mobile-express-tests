@@ -5,6 +5,7 @@ export const USER_PATHS = {
     CREATE_PROFILE: "lk/fill_fio_or_passport",
     GET_PROFILE: "lk/get",
     GET_FILLED_PROFILE: "lk/get/pacient/status-fill",
+    STORE_PUSH_TOKEN: "lk/add/push/token"
 }
 export const PATIENTS_PATHS = {
     GET_PATIENTS_GRAF: "lk/get/pacient/graf",

@@ -69,6 +69,9 @@ export const OrderSlice = createSlice({
     name: "order",
     initialState,
     reducers: {
+        resetOrderErr(state) {
+            state.err = ""
+        },
         setOrderBonusesTotal(state, action: PayloadAction<number>) {
             state.bonuses.order_total = action.payload
         },
@@ -109,6 +112,7 @@ export const {
     setPatient,
     setCurrentCategory,
     resetPatient,
+    resetOrderErr,
     resetOrderBonusesTotal,
     setOrderBonusesTotal
 } = OrderSlice.actions

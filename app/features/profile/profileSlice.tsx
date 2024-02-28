@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { ProfileCreateForm, ProfileData, ProfileEditTextFields } from "../../../types/entities/user.types";
 import { OrderApi } from "../../../types/entities/order.types";
-import { GetProfileFilledRes, ProfileCreateReq, ProfileCreateRes, ProfileGetRes } from "../../../types/api/user.api.types";
+import { GetProfileFilledRes, ProfileCreateReq, ProfileCreateRes, ProfileGetRes, StorePushTokenReq, StorePushTokenRes } from "../../../types/api/user.api.types";
 import { EMAIL } from "../../../rules/masks.rules";
 import { AxiosResponse } from "axios";
 import { UserApi } from "../../../http/api/user.api";
@@ -11,6 +11,11 @@ import { err } from "react-native-svg/lib/typescript/xml";
 
 
 type ProfileSliceState = {
+    notifictaions_store: {
+        sending: boolean,
+        err: string
+        success: boolean | null
+    },
     creating_form: {
         sending: boolean
         err: string,
@@ -20,6 +25,7 @@ type ProfileSliceState = {
     }
     has_profile: boolean | null
     has_docs: boolean | null
+    push_token: string | null
     docs_url: string
     data: ProfileData,
     form: Omit<ProfileData, "bonus">,
@@ -30,6 +36,11 @@ type ProfileSliceState = {
 }
 
 const initialState: ProfileSliceState = {
+    notifictaions_store: {
+        sending: false,
+        err: "",
+        success: null
+    },
     creating_form: {
         sending: false,
         err: "",
@@ -49,6 +60,7 @@ const initialState: ProfileSliceState = {
     },
     has_docs: null,
     has_profile: null,
+    push_token: null,
     docs_url: "",
     data: {
         first_name: "",
@@ -101,6 +113,16 @@ export const createProfile = createAsyncThunk(
         const res: AxiosResponse<ProfileCreateRes> = await handleTokenRefreshedRequest(UserApi.Create, req)
         if (!res.status) {
             throw new Error("Не удалось создать профиль!")
+        }
+        return res.data
+    }
+)
+export const storePushToken = createAsyncThunk(
+    'profile/notifications-token/store',
+    async (req: StorePushTokenReq, { dispatch }) => {
+        const res: AxiosResponse<StorePushTokenRes> = await handleTokenRefreshedRequest(UserApi.StorePushToken, req)
+        if (!res.status) {
+            throw new Error("Не удалось отправить push-токен!")
         }
         return res.data
     }
@@ -168,6 +190,9 @@ export const ProfileSlice = createSlice({
         resetCreateProfileForm: state => {
             state.creating_form = initialState.creating_form
         },
+        resetStorePushToken: state => {
+            state.notifictaions_store = initialState.notifictaions_store
+        },
         setHasDocs: (state, action: PayloadAction<boolean>) => {
             state.has_docs = action.payload
         },
@@ -175,6 +200,7 @@ export const ProfileSlice = createSlice({
             state.data = initialState.data
             state.form = initialState.form
             state.has_profile = initialState.has_profile
+            state.push_token = initialState.push_token
         }
     },
     extraReducers: (builder) => {
@@ -183,10 +209,10 @@ export const ProfileSlice = createSlice({
             console.log(`Профиль заполнен: ${action.payload.is_fill_fio}`);
             state.has_profile = action.payload.is_fill_fio
             state.has_docs = action.payload.is_doc_signed
+            state.push_token = action.payload.push_token
         })
         builder.addCase(getHasProfile.rejected, (state, action) => {
             console.log(action.error);
-
         })
         //PROFILE
         builder.addCase(getProfile.pending, (state, action) => {
@@ -217,6 +243,22 @@ export const ProfileSlice = createSlice({
             state.creating_form.err = "Не удалось создать профиль!"
             state.creating_form.sending = false
         })
+        //PROFILE PUSH TOKEN STORE
+        builder.addCase(storePushToken.pending, (state, action) => {
+            state.notifictaions_store.sending = true
+            if (state.notifictaions_store.err) {
+                state.notifictaions_store.err = ""
+            }
+        })
+        builder.addCase(storePushToken.fulfilled, (state, action) => {
+            state.notifictaions_store.success = action.payload.status
+            state.notifictaions_store.sending = false
+        })
+        builder.addCase(storePushToken.rejected, (state, action) => {
+            state.notifictaions_store.err = "Не удалось создать профиль!"
+            state.notifictaions_store.sending = false
+            state.notifictaions_store.success = false
+        })
     },
 })
 
@@ -228,6 +270,7 @@ export const {
     setHasDocs,
     handleEditProfileGender,
     setDefaultProfileForm,
+    resetStorePushToken,
     resetProfileData
 } = ProfileSlice.actions
 

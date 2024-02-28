@@ -13,7 +13,7 @@ import {
 import { PhotoIcon } from "../../../icons";
 import OrderCard from "../../Cards/OrderCard";
 import OrderInfoModal from "../OrderInfoModal";
-import { setPatient } from '../../../app/features/order/orderSlice';
+import { resetOrderBonusesTotal, setPatient } from '../../../app/features/order/orderSlice';
 import { NavProps } from '../../../types/common.types';
 import { SkeletonContainer } from 'react-native-skeleton-component';
 import { SkeletonView } from '../../SkeletonView';
@@ -25,6 +25,7 @@ import { fs } from '../../../navigation/AppNavigator';
 import { useAppTheme } from '../../../hooks/useTheme';
 import { formatPhoneNumber } from '../../../utils/formatePhone';
 import { getAgeByDob } from '../../../utils/getAgeByDob';
+import { clearCart } from '../../../app/features/cart/cartSlice';
 
 const PatientInfoModal: FC<NavProps> = ({ navigation }) => {
     const dispatch = useAppDispatch()
@@ -43,7 +44,9 @@ const PatientInfoModal: FC<NavProps> = ({ navigation }) => {
             last_name: patientInfo.data.last_name
         }))
         // alert(patientInfo.data.id)
+        dispatch(clearCart())
         handleModal()
+        dispatch(resetOrderBonusesTotal())
         if (patientsModal) {
             dispatch(handlePatientsModal())
         }
@@ -180,6 +183,7 @@ const PatientInfoModal: FC<NavProps> = ({ navigation }) => {
                                                         contentContainerStyle={[cs.fColumn, cs.spaceL]}
                                                         renderItem={({ item }) => (
                                                             <OrderCard
+                                                                customerHide
                                                                 status={item.status}
                                                                 handlePress={() => dispatch(handleOrderInfoModal())}
                                                                 key={item.id}

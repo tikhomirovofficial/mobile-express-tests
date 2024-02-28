@@ -2,7 +2,7 @@ import React, { FC, useEffect } from 'react';
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack"
 import Main from "../pages/Account/Main";
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, View, Text } from "react-native";
 import { cs } from "../common/styles";
 import WelcomeContainer from "../containers/WelcomeContainer";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
@@ -40,6 +40,7 @@ import CheckExistsPatient from '../pages/Inviting/CheckExistsPatient';
 import InvitingLinked from '../pages/Informational/InvitingLinked';
 import { useAppTheme } from '../hooks/useTheme';
 import DocsAccept from '../pages/Register/DocsAccept';
+import { LoadingScreen } from '../pages/LoadingScreen';
 
 const Stack = createNativeStackNavigator()
 const Tab = createBottomTabNavigator()
@@ -83,32 +84,34 @@ const AppNavigator = () => {
     const { patientData, success } = useAppSelector(state => state.order)
     const { contacts, media, notifications } = useAppSelector(state => state.permissions)
 
+    // const getInitialRoute = () => {
+    //     if (token.valid) {
+    //         if (accepted.valid) {
+    //             if (!faceId.connected && !faceId.asked) {
+    //                 return 'bio_connect'
+    //             }
+    //             if (!notifications.granted) {
+    //                 return "info_notifications"
+    //             }
+    //             // if (!media.granted) {
+    //             //     return "info_media"
+    //             // }
+    //             // if (!contacts.granted) {
+    //             //     return "info_contacts"
+    //             // }
+    //             return "home"
+    //         }
+    //         return "pin_accept"
+    //     }
+    //     if (!alreadyBeen.valid) {
+    //         return "welcome"
+    //     }
+    //     return "login_phone"
+    // }
+
     const getInitialRoute = () => {
-        if (token.valid) {
-            if (accepted.valid) {
-                if (!faceId.connected && !faceId.asked) {
-                    return 'bio_connect'
-                }
-                if (!notifications.granted) {
-                    return "info_notifications"
-                }
-                // if (!media.granted) {
-                //     return "info_media"
-                // }
-                // if (!contacts.granted) {
-                //     return "info_contacts"
-                // }
-                return "home"
-            }
-            return "pin_accept"
-        }
-        if (!alreadyBeen.valid) {
-            return "welcome"
-        }
-        return "login_phone"
+        return "loading"
     }
-
-
 
     return (
         <NavigationContainer>
@@ -116,6 +119,7 @@ const AppNavigator = () => {
 
                 <Stack.Navigator initialRouteName={getInitialRoute()}
                     screenOptions={{ headerShown: false, contentStyle: { backgroundColor: theme.main_bg } }}>
+
 
                     {
                         !token.valid ?
@@ -143,13 +147,17 @@ const AppNavigator = () => {
                                             {/* {!media.granted ? <Stack.Screen name="info_media" component={AccessMedia} /> : null} */}
                                             {/* {!contacts.granted ? <Stack.Screen name="info_contacts" component={AccessContacts} /> : null} */}
                                             {
-                                                has_profile ?
+                                                has_profile === null ?
                                                     <>
-                                                        {!has_docs ? <Stack.Screen name="docs_accept" component={DocsAccept} /> : null}
-                                                        <Stack.Screen name="home" component={MainTabs} />
-                                                    </>
-                                                    :
-                                                    <Stack.Screen name="profile_create" component={CreateProfile} />
+                                                        <Stack.Screen name="loading" component={LoadingScreen} />
+                                                    </> :
+                                                    has_profile ?
+                                                        <>
+                                                            {!has_docs ? <Stack.Screen name="docs_accept" component={DocsAccept} /> : null}
+                                                            <Stack.Screen name="home" component={MainTabs} />
+                                                        </>
+                                                        :
+                                                        <Stack.Screen name="profile_create" component={CreateProfile} />
                                             }
 
                                             {/* //Приглашение */}

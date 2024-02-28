@@ -12,7 +12,7 @@ import PatientItem from "../../../components/PatientItem";
 import ButtonYellow from "../../../components/Buttons/ButtonYellow";
 import PatientInvitingModal from "../../../components/Modals/PatientInvitingModal";
 import { addToCart, clearCart, removeProduct } from '../../../app/features/cart/cartSlice';
-import { createOrder, resetPatient, setCurrentCategory, setOrderBonusesTotal, setPatient } from '../../../app/features/order/orderSlice';
+import { createOrder, resetOrderErr, resetPatient, setCurrentCategory, setOrderBonusesTotal, setPatient } from '../../../app/features/order/orderSlice';
 import CartItem from '../../../components/CartItem';
 import { CreateOrderReq } from '../../../types/api/orders.api.types';
 import { useAppTheme } from '../../../hooks/useTheme';
@@ -59,6 +59,7 @@ const CartProducts: FC<NavProps> = ({ navigation }) => {
     }, [success])
 
     useEffect(() => {
+       
         const keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', () => {
             setKeyboardStatus(true);
         });
@@ -68,6 +69,7 @@ const CartProducts: FC<NavProps> = ({ navigation }) => {
         });
 
         return () => {
+            dispatch(resetOrderErr())
             keyboardDidShowListener.remove();
             keyboardDidHideListener.remove();
         };
@@ -94,7 +96,7 @@ const CartProducts: FC<NavProps> = ({ navigation }) => {
                                 <Text style={[cs.fwSemi, cs.fwBold, cs.fzXL, { color: theme.title }]}>Всего анализов: {cartProducts.length}</Text>
                                 <View style={[cs.fRow, cs.fAlCenter, cs.spaceS, { backgroundColor: "#36CACB", paddingHorizontal: 15, paddingVertical: 6, borderRadius: 300 }]}>
                                     <HeartIcon stroke={"#ffffff"} />
-                                    <Text style={[cs.fwSemi, cs.colorWhite]}>{(orderTotalSum / 100) * bonuses.percent}</Text>
+                                    <Text style={[cs.fwSemi, cs.colorWhite]}>{~~((orderTotalSum / 100) * bonuses.percent)}</Text>
                                 </View>
                             </View>
                             <TouchableOpacity onPress={handleClearCart} style={[cs.fRow, cs.fAlCenter, cs.spaceS]}>

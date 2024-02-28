@@ -93,10 +93,10 @@ const BonusesModal = () => {
                                         <BonusesChart />
                                     </View>
                                 }
-                                <ButtonYellow style={[cs.fCenterRow, cs.spaceS]} handlePress={() => { }}>
+                                {/* <ButtonYellow style={[cs.fCenterRow, cs.spaceS]} handlePress={() => { }}>
                                     <HeartIcon />
                                     <Text style={[cs.colorDark, cs.fwSemi, cs.fzM]}>Вывести бонусы</Text>
-                                </ButtonYellow>
+                                </ButtonYellow> */}
                             </View>
                             {
                                 patients.loadings.patients ?

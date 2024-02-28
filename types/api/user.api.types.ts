@@ -21,12 +21,20 @@ export type AuthRefreshRes = Pick<JWT, "access">
 // Получить данные пользователя
 export type ProfileGetRes = ProfileData & ResponseStatus
 
+// Записать токен пуш-уведомлений
+export type StorePushTokenReq = {
+    token: string
+    is_push: boolean
+}
+export type StorePushTokenRes = ResponseStatus
+
 // Получить статус заполненности профиля
 export type GetProfileFilledRes = {
     id: number,
     is_doc_signed: boolean,
     is_phone_confirm: boolean,
-    is_fill_fio: boolean
+    is_fill_fio: boolean,
+    push_token: string
 } & HasId & ResponseStatus
 
 // Регистрация профиля

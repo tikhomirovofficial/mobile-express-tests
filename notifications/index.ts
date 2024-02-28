@@ -29,7 +29,7 @@ export function handleNotificationResponse(response: any) {
     console.log(response);
 }
 
-export async function registerForPushNotificationsAsync() {
+export async function getOrRegisterPushToken() {
     const { status: existingStatus } = await Notifications.getPermissionsAsync()
     if (existingStatus === "granted") {
         const token = await Notifications.getExpoPushTokenAsync({

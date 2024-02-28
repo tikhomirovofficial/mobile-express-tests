@@ -34,7 +34,7 @@ const SelectingCategory: FC<NavProps> = ({ navigation }) => {
     const cart = useAppSelector(state => state.cart)
 
     const [searchVal, setSearchVal] = useState("")
-    const defferedSearchVal = useDeferred(searchVal, 100)
+    const defferedSearchVal = useDeferred(searchVal, 500)
 
     const patient = useAppSelector(state => state.order.patientData)
     const cartProducts = useAppSelector(state => state.cart.items)

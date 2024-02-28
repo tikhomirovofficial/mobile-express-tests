@@ -84,8 +84,8 @@ const Root = () => {
         return (
             <>
                 <StatusBar style={theme === "light" ? "dark" : "light"} />
-                
-                <NotificationsProvider/>
+
+                {notifications.granted ? <NotificationsProvider /> : null}
                 <WithNetwork>
                     <View style={{ flex: 1 }}>
                         <AppNavigator />

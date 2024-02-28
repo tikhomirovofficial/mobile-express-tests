@@ -44,12 +44,9 @@ const OrderSent: FC<NavProps> = ({ navigation }) => {
                 }]}>
 
                     <View style={[cs.fColumn, cs.spaceXL]}>
-                        <TouchableOpacity style={[cs.flexOne]} onPress={toOrders}>
-                            <LinearGradient style={[cs.yellowBtn, cs.fCenterCol]}
-                                colors={["#FB0", "#FFCB3D", "#FFDA75"]}>
-                                <Text style={[cs.fzM, cs.yellowBtnText]}>Закрыть</Text>
-                            </LinearGradient>
-                        </TouchableOpacity>
+                        <ButtonYellow style={{ minHeight: 54 }} handlePress={toOrders}>
+                            <Text style={[cs.fzM, cs.yellowBtnText]}>Закрыть</Text>
+                        </ButtonYellow>
                     </View>
 
                 </View>
