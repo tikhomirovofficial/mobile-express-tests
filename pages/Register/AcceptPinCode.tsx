@@ -1,26 +1,25 @@
-import React, { ChangeEvent, FC, useEffect, useState, useRef } from 'react';
-import { Animated, Text, TouchableOpacity, View, StyleSheet, TextInput, ScrollView, Keyboard } from "react-native";
+import React, { FC, useEffect, useState } from 'react';
+import { Animated, Text, TouchableOpacity, View, StyleSheet, Keyboard } from "react-native";
 import { useAppDispatch, useAppSelector } from '../../app/base/hooks';
 import { cs } from '../../common/styles';
 import AppContainer from '../../components/AppContainer';
 import { fs } from '../../navigation/AppNavigator';
 import { NavProps } from '../../types/common.types';
-import { LinearGradient } from 'expo-linear-gradient';
 import WhiteBorderedLayout from '../../layouts/WhiteBordered';
-import { BackspaceIcon, CloseIcon, LogoutIcon } from '../../icons';
-import { checkValidEnteredPin, resetAcceptedErr } from '../../app/features/access/accessSlice';
-import * as Haptics from 'expo-haptics';
+import { BackspaceIcon, CloseIcon } from '../../icons';
+import { checkBioEntered, checkValidEnteredPin, resetAcceptedErr } from '../../app/features/access/accessSlice';
 import { vibrate } from '../../utils/device/vibrate';
-import { useTheme } from '@react-navigation/native';
 import { useAppTheme } from '../../hooks/useTheme';
 import { useLogout } from '../../hooks/useLogout';
+import { FACEID_TYPE, FINGERPRINT_TYPE } from '../../common/contants';
+import * as LocalAuthentication from 'expo-local-authentication';
 
 const AcceptPinCode: FC<NavProps> = ({ navigation }) => {
     const dispatch = useAppDispatch()
     const theme = useAppTheme()
     const [pin, setPin] = useState<string[]>(["", "", "", ""])
     const [_, setKeyboardStatus] = useState(false);
-    const { error } = useAppSelector(state => state.access.accepted)
+    const { accepted: { error }, bio } = useAppSelector(state => state.access)
 
     const { handleLogout } = useLogout()
 
@@ -63,6 +62,18 @@ const AcceptPinCode: FC<NavProps> = ({ navigation }) => {
     }, [pin, error])
 
     useEffect(() => {
+        (async () => {
+            if (bio.device_compatible) {
+                if (bio.device_supported_types?.includes(FACEID_TYPE)) {
+                    dispatch(checkBioEntered(2))
+                }
+                if (bio.device_supported_types?.includes(FINGERPRINT_TYPE)) {
+                    dispatch(checkBioEntered(1))
+
+                }
+            }
+        })()
+
         Keyboard.dismiss()
         const keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', () => {
             setKeyboardStatus(true);

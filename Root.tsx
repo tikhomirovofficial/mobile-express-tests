@@ -7,7 +7,7 @@ import { Logo } from './icons';
 import { cs } from './common/styles';
 import { useAppDispatch, useAppSelector } from './app/base/hooks';
 import { checkToken } from './app/features/login/loginSlice';
-import { checkPinCodeExists, checkFirstTime } from './app/features/access/accessSlice';
+import { checkPinCodeExists, checkFirstTime, checkBioSupportedOnDevice } from './app/features/access/accessSlice';
 import { deleteTokens, getTokens, storeTokens } from './utils/storeTokens';
 import { deleteAlreadyBeen } from './utils/storeFirstTime';
 import { deleteAccessed } from './utils/storeAccessed';
@@ -27,10 +27,10 @@ const Root = () => {
     const appTheme = useAppTheme()
     const { theme, loading } = useAppSelector(state => state.settings)
     const { token } = useAppSelector(state => state.login)
-    const { pin, alreadyBeen, faceId } = useAppSelector(state => state.access)
+    const { pin, alreadyBeen, faceId, bio} = useAppSelector(state => state.access)
     const { notifications, media, contacts } = useAppSelector(state => state.permissions)
     const [fontsLoaded] = useFonts();
-    const allAccessesAndPermissionsDefined = !token.checking && !pin.checking && !alreadyBeen.checking && !notifications.checking && !contacts.checking && !media.checking
+    const allAccessesAndPermissionsDefined = !bio.checking && !token.checking && !pin.checking && !alreadyBeen.checking && !notifications.checking && !contacts.checking && !media.checking
 
 
     useEffect(() => {
@@ -61,6 +61,7 @@ const Root = () => {
         // deleteAccessed()
         // deletePin()
         dispatch(initAppTheme())
+        dispatch(checkBioSupportedOnDevice())
         dispatch(checkToken())
         dispatch(checkPinCodeExists())
         dispatch(checkFirstTime())

@@ -8,12 +8,14 @@ import { storeAlreadyBeen } from "../../../utils/storeFirstTime";
 import { checkEnteredPin } from "../../../utils/checkEnteredPin";
 import { deletePin, storePin } from "../../../utils/storePin";
 import { vibrate } from "../../../utils/device/vibrate";
+import * as LocalAuthentication from 'expo-local-authentication'
 
 type AcecssSliceType = {
     bio: {
-        hard_used: boolean
+        device_compatible: boolean
+        device_supported_types: number[] | null
+        device_saved: boolean
         checking: boolean,
-        registered: number
     }
     faceId: {
         connected: boolean,
@@ -38,9 +40,10 @@ type AcecssSliceType = {
 
 const initialState: AcecssSliceType = {
     bio: {
-        hard_used: false,
+        device_compatible: false,
+        device_supported_types: null,
+        device_saved: false,
         checking: true,
-        registered: 0
     },
     faceId: {
         connected: true,
@@ -63,6 +66,26 @@ const initialState: AcecssSliceType = {
 
 }
 
+export const checkBioSupportedOnDevice = createAsyncThunk(
+    'bio/supporting',
+    async (_, { dispatch }) => {
+        const compatible = await LocalAuthentication.hasHardwareAsync();
+        const supportedTypes = await LocalAuthentication.supportedAuthenticationTypesAsync()
+        const savedAuth = await LocalAuthentication.isEnrolledAsync()
+
+        const initResults: Omit<typeof initialState.bio, "checking"> = {
+            device_compatible: compatible,
+            device_saved: savedAuth,
+            device_supported_types: supportedTypes
+        }
+        console.log(initResults);
+
+        return new Promise<typeof initResults>((res, rej) => {
+            res(initResults)
+        })
+
+    }
+)
 export const checkFirstTime = createAsyncThunk(
     'access/is-first-time',
     async (_, { dispatch }) => {
@@ -118,6 +141,31 @@ export const checkValidEnteredPin = createAsyncThunk(
 
     }
 )
+export const checkBioEntered = createAsyncThunk(
+    'access/bio/entered',
+    async (bio_type: number, { dispatch }) => {
+        //Проветить тип поддерживаемого распознания
+        let promptMessage = ""
+        if (bio_type === 1) {
+            promptMessage = "Вход по отпечатку пальца"
+        } else if (bio_type === 2) {
+            promptMessage = "Вход по распознанию лица"
+        }
+        const { success } = await LocalAuthentication.authenticateAsync({
+            promptMessage
+        })
+        console.log("sas");
+        
+        if (!success) {
+            throw success
+        }
+        //Выполним отделную функцию для проверки заполненности профиля
+        return new Promise<boolean>((res, rej) => {
+            res(success)
+        })
+
+    }
+)
 
 export const accessSlice = createSlice({
     name: "access",
@@ -129,11 +177,25 @@ export const accessSlice = createSlice({
         resetAcceptedErr: (state) => {
             state.accepted.error = ""
         },
+
         resetAccess: state => {
             state.accepted.valid = false
         }
     },
     extraReducers: (builder) => {
+        //CHECK SUPPORTING BIO LOCAL AUTH
+        builder.addCase(checkBioSupportedOnDevice.pending, (state, action) => {
+            state.bio.checking = true
+        })
+        builder.addCase(checkBioSupportedOnDevice.fulfilled, (state, action) => {
+            state.bio = {
+                checking: false,
+                ...action.payload
+            }
+        })
+        builder.addCase(checkBioSupportedOnDevice.rejected, (state, action) => {
+            state.bio.checking = false
+        })
         //CHECK FIRST TIME
         builder.addCase(checkFirstTime.pending, (state, action) => {
             state.alreadyBeen.checking = true
@@ -171,6 +233,18 @@ export const accessSlice = createSlice({
             state.accepted.valid = false
             state.accepted.checking = false
             state.accepted.error = "Неверный код"
+        })
+        //CHECK ACCEPTED BY TOUCH OR FACE
+        builder.addCase(checkBioEntered.pending, (state, action) => {
+            state.accepted.error = ""
+        })
+        builder.addCase(checkBioEntered.fulfilled, (state, action) => {
+            state.accepted.checking = false
+            state.accepted.valid = action.payload
+        })
+        builder.addCase(checkBioEntered.rejected, (state, action) => {
+            state.accepted.valid = false
+            state.accepted.checking = false
         })
         //SETTING PIN-CODE
         builder.addCase(setPinCode.fulfilled, (state, action) => {
