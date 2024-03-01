@@ -3,33 +3,28 @@ import { useAppDispatch, useAppSelector } from "../../../app/base/hooks";
 import { ActivityIndicator, Dimensions, FlatList, Modal, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import WhiteBordered from "../../../layouts/WhiteBordered";
 import { cs } from "../../../common/styles";
-import ButtonYellow from "../../Buttons/ButtonYellow";
-import { DocumentIcon, HeartIcon, LogoLong, PhotoIcon } from "../../../icons";
 import { fs } from "../../../navigation/AppNavigator";
 import SelectableBtn from "../../SelectableBtn";
 import { handleAboutModal, handleBonusesBottomSheet, handleBonusesModal, handleOrdersFinancesModal, handleProfileEditModal } from "../../../app/features/modals/modalsSlice";
 import PatientItem from '../../PatientItem';
 import { BarChart } from 'react-native-chart-kit';
-import { ChartConfig, ChartData } from 'react-native-chart-kit/dist/HelperTypes';
-import { BarChartProps } from 'react-native-chart-kit/dist/BarChart';
-import { containerStyles } from '../../AppContainer';
-import { OrderItem } from '../../OrderItem';
-import { BonusesChart } from './BonusesChart';
 import { BottomSheet } from '../../BottomSheet';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import Animated, { SlideInDown, SlideOutDown } from 'react-native-reanimated';
-import { ModalContainer } from '../../ModalContainer';
-import { getOrdersByPatientId, setPatientData } from '../../../app/features/current-data/currentData';
+
 import { PatientApi } from '../../../types/entities/patients.types';
 import { SkeletonContainer } from 'react-native-skeleton-component';
 import { SkeletonView } from '../../SkeletonView';
 import { getChartBonusesData } from '../../../app/features/bonuses/bonusesSlice';
 import { getAllPatients, incrementPatientsPart, resetAllPatients } from '../../../app/features/patients/patientsSlice';
 import { usePagination } from '../../../hooks/usePagination';
-import { useTheme } from '@react-navigation/native';
 import { useAppTheme } from '../../../hooks/useTheme';
+import { ModalCustomProps } from '../../../types/common.types';
+import { BonusesChart } from './BonusesChart';
+import { setPatientData } from '../../../app/features/current-data/currentData';
+import { ModalShadow } from '../../ModalShadow';
 
-const BonusesModal = () => {
+const BonusesModal: FC<ModalCustomProps> = ({ level = 2 }) => {
     const dispatch = useAppDispatch()
     const { bonusesModal, bonusesBottomSheet } = useAppSelector(state => state.modals)
     const patients = useAppSelector(state => state.patients)
@@ -70,15 +65,16 @@ const BonusesModal = () => {
     }, [])
 
     return (
-        <Modal animationType={"slide"} visible={bonusesModal} transparent={true}>
+        <Modal style={{ position: "relative" }} animationType={"slide"} visible={bonusesModal} transparent={true}>
+            <ModalShadow show={bonusesModal} />
             <GestureHandlerRootView style={[cs.flexOne]}>
-                <WhiteBordered scrollable={false} style={{ ...cs.modalSlidedBottom }}>
+                <WhiteBordered modalLevel={level} isModal transparentBg scrollable={false} style={{ ...cs.modalSlidedBottom, paddingTop: 10 }}>
                     <View style={[cs.flexOne, cs.fColumnBetw, cs.spaceXXL]}>
-                        <View style={[cs.fRowBetw]}>
+                        <View style={[cs.fRowBetw, cs.fAlCenter]}>
                             <Text onPress={handleModal}
-                                style={[cs.yellowBtnText, cs.textYellow, cs.fzM]}>Закрыть</Text>
+                                style={[cs.yellowBtnText, cs.textYellow, cs.fzM, cs.modalCloseText]}>Закрыть</Text>
                             <View style={[cs.fAlCenter]}>
-                                <Text style={[cs.fzM, cs.fzM, cs.fwSemi, {color: theme.text_label}]}>Бонусы</Text>
+                                <Text style={[cs.fzM, cs.fzM, cs.fwSemi, { color: theme.text_label }]}>Бонусы</Text>
                             </View>
                             <View style={{ flex: 0.4 }}></View>
                         </View>
@@ -89,7 +85,7 @@ const BonusesModal = () => {
                                         <SkeletonView width={"100%"} height={170} />
                                     </SkeletonContainer>
                                     :
-                                    <View style={[cs.wBlockShadow, cs.fCenterCol, { borderRadius: 16, paddingVertical: 10, backgroundColor: theme.chart}]}>
+                                    <View style={[cs.wBlockShadow, cs.fCenterCol, { borderRadius: 16, paddingVertical: 10, backgroundColor: theme.chart }]}>
                                         <BonusesChart />
                                     </View>
                                 }

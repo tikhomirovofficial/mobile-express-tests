@@ -2,35 +2,32 @@ import React, { FC, useEffect, useState } from 'react';
 import WhiteBorderedLayout from "../../../layouts/WhiteBordered";
 import { Animated, Text, TouchableOpacity, View, StyleSheet, TextInput, ScrollView, SectionList, FlatList, Keyboard, ActivityIndicator } from "react-native";
 import { cs } from "../../../common/styles";
-import { ArrowLeft, ArrowRightIcon, Logo, SearchIcon } from "../../../icons";
-import { AnalysisApi, OrderAnalysisType } from "../../../types/entities/analysis.types";
+import { SearchIcon } from "../../../icons";
+import { AnalysisApi } from "../../../types/entities/analysis.types";
 import { useAppDispatch, useAppSelector } from "../../../app/base/hooks";
 import { NavProps } from "../../../types/common.types";
 import AppContainer from "../../../components/AppContainer";
 import { fs } from "../../../navigation/AppNavigator";
-import PatientItem from "../../../components/PatientItem";
 import ButtonYellow from "../../../components/Buttons/ButtonYellow";
-import PatientInvitingModal from "../../../components/Modals/PatientInvitingModal";
-import { handlePatientInvitingModal } from "../../../app/features/modals/modalsSlice";
-import * as Contacts from 'expo-contacts';
-import * as Permissions from 'expo-permissions';
-import { setCurrentCategory } from '../../../app/features/order/orderSlice';
+import { handleAnalysisInfoModal } from "../../../app/features/modals/modalsSlice";
+
 import { getCategories, incrementCategoriesProductsPart, resetCategoriesProducts } from '../../../app/features/categories/categoriesSlice';
 import { useDeferred } from '../../../hooks/useDeffered';
 import { SkeletonContainer } from 'react-native-skeleton-component';
 import { SkeletonView } from '../../../components/SkeletonView';
-import { CategoryItem } from '../../../components/CategoryItem';
 import { useAppTheme } from '../../../hooks/useTheme';
 import { BackButton } from '../../../components/BackButton';
 import { usePagination } from '../../../hooks/usePagination';
-import { CategoriesApi } from '../../../http/api/categories.api';
 import { CategoryApi } from '../../../types/entities/categories.types';
-import ProductItem from '../../../components/ProductItem';
+
 import { CategoryOrProductItem } from '../../../components/CategoryOrProductItem';
+import { getProductById } from '../../../app/features/current-data/currentData';
+import AnalysisInfoModal from '../../../components/Modals/AnalysisInfoModal';
 
 const SelectingCategory: FC<NavProps> = ({ navigation }) => {
     const dispatch = useAppDispatch()
     const theme = useAppTheme()
+    const { analysisInfoModal } = useAppSelector(state => state.modals)
     const cart = useAppSelector(state => state.cart)
 
     const [searchVal, setSearchVal] = useState("")
@@ -64,6 +61,10 @@ const SelectingCategory: FC<NavProps> = ({ navigation }) => {
 
     const toCart = () => {
         navigation.navigate("order_cart")
+    }
+    const handleOpenProductInfo = (product_id: number) => {
+        dispatch(handleAnalysisInfoModal())
+        dispatch(getProductById({ id: product_id }))
     }
 
     useEffect(() => {
@@ -114,7 +115,7 @@ const SelectingCategory: FC<NavProps> = ({ navigation }) => {
                             </View>
                             <View style={[cs.fRow, cs.fAlCenter, cs.spaceS, styles.searchInputBlock, { backgroundColor: theme.main_bg }]}>
                                 <SearchIcon stroke={theme.text_label} />
-                                <TextInput value={searchVal} onChangeText={(text) => setSearchVal(text)} placeholderTextColor={theme.text_label} style={[cs.fzS, fs.montR, cs.flexOne, { color: theme.title }]} placeholder={"Название категории или анализа"} />
+                                <TextInput value={searchVal} onChangeText={(text) => setSearchVal(text)} placeholderTextColor={theme.text_label} style={[cs.fzS, fs.montR, cs.flexOne, cs.searchInput, { color: theme.title }]} placeholder={"Название категории или анализа"} />
                             </View>
 
                         </View>
@@ -136,7 +137,7 @@ const SelectingCategory: FC<NavProps> = ({ navigation }) => {
                                                 contentContainerStyle={[cs.fColumn, cs.spaceS]}
                                                 data={[...categories, ...analisys] as (CategoryApi | AnalysisApi)[]}
                                                 renderItem={({ item }) => {
-                                                    return <CategoryOrProductItem item={item} toProducts={toProducts} cartProducts={cartProducts} />
+                                                    return <CategoryOrProductItem openAnalysisInfo={() => handleOpenProductInfo(item.id)} item={item} toProducts={toProducts} cartProducts={cartProducts} />
                                                 }}
                                             />
                                         </View> :
@@ -160,6 +161,9 @@ const SelectingCategory: FC<NavProps> = ({ navigation }) => {
                     </View>
                 </WhiteBorderedLayout>
             </View >
+            {
+                analysisInfoModal ? <AnalysisInfoModal navigation={navigation} /> : null
+            }
         </Animated.View >
 
     );

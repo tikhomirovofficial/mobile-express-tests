@@ -107,7 +107,7 @@ export const BottomSheet = () => {
                                     <View style={[styles.line]}></View>
                                     <Text style={[cs.title, cs.txtCenter, cs.colorWhite]}>{patientInfo.data.first_name} {patientInfo.data.last_name}</Text>
                                     <View style={[cs.flexOne, { backgroundColor: "black", position: "relative" }]}>
-                                        <View style={[styles.avatar, cs.fCenterCol]}>
+                                        <View style={[styles.avatar, cs.fCenterCol, cs.wBlockShadow]}>
                                             <BorderedProfileIcon />
                                         </View>
                                     </View>
@@ -204,7 +204,8 @@ const styles = StyleSheet.create({
         maxHeight: 106,
     },
     headerContent: {
-        padding: 8
+        padding: 8,
+        overflow: "visible"
     },
     line: {
         backgroundColor: "rgba(1,1,1, 0.3)",
@@ -215,8 +216,11 @@ const styles = StyleSheet.create({
     },
     avatar: {
         height: 74,
+        backgroundColor: "white",
+        borderRadius: 1000,
         position: "absolute",
         top: 14,
+        zIndex: 10,
         alignSelf: "center"
     },
     patientSheetContent: {

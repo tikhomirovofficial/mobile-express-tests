@@ -48,24 +48,20 @@ const AccessNotifications: FC<NavProps> = ({ navigation }) => {
                     "Вы не пропустите информацию о готовности анализов",
                     "Получите уведомление о зачислении бонусов"
                 ]} />
+                <View style={cs.flexOne}></View>
+                <View style={[cs.flexOne]}>
 
-                <View style={[cs.fColumn, cs.flexOne, cs.spaceM]}>
-                    <View style={[cs.flexOne]}>
-                        <Text style={[cs.flexOne, fs.montR, cs.fzXS, cs.fwMedium, cs.colorGray]}>
+                    <View style={[cs.fColumn, cs.flexOne, cs.spaceM]}>
+                        <Text style={[fs.montR, cs.fzXS, cs.fwMedium, cs.colorGray]}>
                             Нажав кнопку «Разрешить», вы соглашаетесь с <Text onPress={() => { }} style={cs.textYellow}>пользовательским соглашением</Text> и подтверждаете, что ознакомились с <Text onPress={() => { }} style={cs.textYellow}>политикой конфиденциальности</Text>
                         </Text>
-                    </View>
-                    <TouchableOpacity style={[cs.flexOne]} onPress={getNotificationPermission}>
-                        <LinearGradient style={[cs.yellowBtn, cs.fCenterCol]}
-                            colors={["#FB0", "#FFCB3D", "#FFDA75"]}>
+                        <ButtonYellow style={{ minHeight: 54, flex: 1, width: "100%" }} handlePress={getNotificationPermission}>
                             <Text style={[cs.fzM, cs.yellowBtnText]}>Разрешить</Text>
-                        </LinearGradient>
-                    </TouchableOpacity>
-
+                        </ButtonYellow>
+                    </View>
                 </View>
 
             </AppContainer>
-
         }></InfoPageLayout>
     );
 };

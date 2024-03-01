@@ -138,7 +138,7 @@ const SelectingProducts: FC<NavProps> = ({ navigation }) => {
                             </View>
                             <View style={[cs.fRow, cs.fAlCenter, cs.spaceS, styles.searchInputBlock, { backgroundColor: theme.main_bg }]}>
                                 <SearchIcon stroke={theme.text_label} />
-                                <TextInput value={searchVal} onChangeText={(text) => setSearchVal(text)} placeholderTextColor={theme.text_label} style={[cs.fzS, fs.montR, cs.flexOne, { color: theme.title }]} placeholder={"Найти по названию"} />
+                                <TextInput value={searchVal} onChangeText={(text) => setSearchVal(text)} placeholderTextColor={theme.text_label} style={[cs.fzS, fs.montR, cs.flexOne, cs.searchInput, { color: theme.title }]} placeholder={"Найти по названию"} />
                             </View>
 
                         </View>
@@ -173,7 +173,7 @@ const SelectingProducts: FC<NavProps> = ({ navigation }) => {
                                                     ></ProductItem>}
                                             />
                                         </View> :
-                                        <Text style={[fs.montR, { color: theme.text_label }]}>По вашему запросу ничего не найдено.</Text>
+                                        <Text style={[fs.montR, { color: theme.text_label }]}>Ничего не найдено</Text>
                                 }
                             </View>
                             <View style={{ height: 20 }}>

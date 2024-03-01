@@ -1,12 +1,12 @@
 import React, { FC, useEffect, useState } from 'react';
-import { Animated, Text, TouchableOpacity, View, StyleSheet, Keyboard } from "react-native";
+import { Animated, Text, TouchableOpacity, View, StyleSheet, Keyboard, ActivityIndicator } from "react-native";
 import { useAppDispatch, useAppSelector } from '../../app/base/hooks';
 import { cs } from '../../common/styles';
 import AppContainer from '../../components/AppContainer';
 import { fs } from '../../navigation/AppNavigator';
 import { NavProps } from '../../types/common.types';
 import WhiteBorderedLayout from '../../layouts/WhiteBordered';
-import { BackspaceIcon, CloseIcon } from '../../icons';
+import { BackspaceIcon, CloseIcon, TouchIdIcon } from '../../icons';
 import { checkBioEntered, checkValidEnteredPin, resetAcceptedErr } from '../../app/features/access/accessSlice';
 import { vibrate } from '../../utils/device/vibrate';
 import { useAppTheme } from '../../hooks/useTheme';
@@ -19,7 +19,7 @@ const AcceptPinCode: FC<NavProps> = ({ navigation }) => {
     const theme = useAppTheme()
     const [pin, setPin] = useState<string[]>(["", "", "", ""])
     const [_, setKeyboardStatus] = useState(false);
-    const { accepted: { error }, bio } = useAppSelector(state => state.access)
+    const { accepted: { error, sending }, bio } = useAppSelector(state => state.access)
 
     const { handleLogout } = useLogout()
 
@@ -67,10 +67,6 @@ const AcceptPinCode: FC<NavProps> = ({ navigation }) => {
                 if (bio.device_supported_types?.includes(FACEID_TYPE)) {
                     dispatch(checkBioEntered(2))
                 }
-                if (bio.device_supported_types?.includes(FINGERPRINT_TYPE)) {
-                    dispatch(checkBioEntered(1))
-
-                }
             }
         })()
 
@@ -110,18 +106,25 @@ const AcceptPinCode: FC<NavProps> = ({ navigation }) => {
                                         nativeID="labelFirstName">{error || "Чтобы войти, введите пин-код"}</Text>
 
                                 </View>
-                                <View style={[cs.fRow, cs.spaceXL, cs.jcCenter]}>
-                                    {
-                                        pin.map(item => (
-                                            <View style={[styles.pinDot, (!error ? item !== "" ? cs.bgYellow : null : cs.errBg)]}></View>
-                                        ))
-                                    }
-                                </View>
+                                {
+                                    sending ?
+                                        <View style={[cs.fCenterRow]}>
+                                            <ActivityIndicator color={cs.bgYellow.backgroundColor} />
+                                        </View>
+                                        :
+                                        <View style={[cs.fRow, cs.spaceXL, cs.jcCenter]}>
+                                            {
+                                                pin.map(item => (
+                                                    <View style={[styles.pinDot, (!error ? item !== "" ? cs.bgYellow : null : cs.errBg)]}></View>
+                                                ))
+                                            }
+                                        </View>
+                                }
                             </View>
                         </View>
-                        <View style={[cs.fColumn, cs.spaceL]}>
-                            <View style={[cs.fColumn, cs.spaceL]}>
-                                <View style={[cs.fCenterRow, cs.spaceXXL]}>
+                        <View style={[cs.fColumn, cs.spaceL, cs.fAlCenter,]}>
+                            <View style={[cs.fColumn, cs.spaceL, { maxWidth: "85%" }]}>
+                                <View style={[cs.fRowBetw, cs.spaceXXL, { width: "100%" }]}>
                                     <TouchableOpacity onPress={() => handlePin("1")} style={[styles.pinKeyBtn, cs.fCenterCol, { backgroundColor: theme.pin_btns }]}>
                                         <Text style={[styles.pinKey, cs.textYellow, fs.montR]}>1</Text>
                                     </TouchableOpacity>
@@ -132,7 +135,7 @@ const AcceptPinCode: FC<NavProps> = ({ navigation }) => {
                                         <Text style={[styles.pinKey, cs.textYellow, fs.montR]}>3</Text>
                                     </TouchableOpacity>
                                 </View>
-                                <View style={[cs.fCenterRow, cs.spaceXXL]}>
+                                <View style={[cs.fRowBetw, cs.spaceXXL, { width: "100%" }]}>
                                     <TouchableOpacity onPress={() => handlePin("4")} style={[styles.pinKeyBtn, cs.fCenterCol, { backgroundColor: theme.pin_btns }]}>
                                         <Text style={[styles.pinKey, cs.textYellow, fs.montR]}>4</Text>
                                     </TouchableOpacity>
@@ -143,7 +146,7 @@ const AcceptPinCode: FC<NavProps> = ({ navigation }) => {
                                         <Text style={[styles.pinKey, cs.textYellow, fs.montR]}>6</Text>
                                     </TouchableOpacity>
                                 </View>
-                                <View style={[cs.fCenterRow, cs.spaceXXL]}>
+                                <View style={[cs.fRowBetw, cs.spaceXXL, { width: "100%" }]}>
                                     <TouchableOpacity onPress={() => handlePin("7")} style={[styles.pinKeyBtn, cs.fCenterCol, { backgroundColor: theme.pin_btns }]}>
                                         <Text style={[styles.pinKey, cs.textYellow, fs.montR]}>7</Text>
                                     </TouchableOpacity>
@@ -154,7 +157,7 @@ const AcceptPinCode: FC<NavProps> = ({ navigation }) => {
                                         <Text style={[styles.pinKey, cs.textYellow, fs.montR]}>9</Text>
                                     </TouchableOpacity>
                                 </View>
-                                <View style={[cs.fCenterRow, cs.spaceXXL]}>
+                                <View style={[cs.fRowBetw, cs.spaceXXL, { width: "100%" }]}>
                                     <TouchableOpacity onPress={() => handlePin("reset")} style={[styles.pinKeyBtn, cs.fCenterCol, { backgroundColor: theme.pin_btns }]}>
                                         <CloseIcon width={30} height={27} />
                                     </TouchableOpacity>
@@ -165,10 +168,18 @@ const AcceptPinCode: FC<NavProps> = ({ navigation }) => {
                                         <BackspaceIcon width={30} height={27} />
                                     </TouchableOpacity>
                                 </View>
+                                <View style={[(bio.device_supported_types?.includes(FINGERPRINT_TYPE) ? cs.fRowBetw : cs.fCenterRow), cs.spaceXXL, cs.fAlCenter, { width: "100%" }]}>
+                                    {
+                                        bio.device_supported_types?.includes(FINGERPRINT_TYPE) ?
+                                            <TouchableOpacity onPress={() => dispatch(checkBioEntered(1))} style={[styles.pinKeyBtn, cs.fCenterCol, { backgroundColor: theme.pin_btns }]}>
+                                                <TouchIdIcon width={35} height={35} />
+                                            </TouchableOpacity> : null
+                                    }
+
+                                    <Text onPress={handleLogout} style={[cs.textRed, fs.montR]}>Выйти</Text>
+                                </View>
                             </View>
-                            <View style={[cs.fCenterRow, cs.spaceXXL]}>
-                                <Text onPress={handleLogout} style={[cs.textRed, fs.montR]}>Выйти</Text>
-                            </View>
+
                         </View>
 
                     </View>

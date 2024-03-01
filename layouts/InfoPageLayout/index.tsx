@@ -66,7 +66,7 @@ const styles = StyleSheet.create({
     backgroundWrapper: {
         borderBottomLeftRadius: 40,
         height: "100%",
-        maxHeight: 420,
+        maxHeight: 410,
         overflow: "hidden",
         position: "relative",
         shadowColor: "rgba(0, 64, 128, 0.3)",

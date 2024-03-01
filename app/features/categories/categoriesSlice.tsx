@@ -85,6 +85,7 @@ export const CategoriesSlice = createSlice({
             console.log(`Ошибка при получении категорий: ${action.error.message}`);
             state.loadings.categories = false
             state.loadings.pagination = false
+            state.can_next = false
         })
     },
 })

@@ -8,6 +8,7 @@ import { setWelcomeStep } from "../../app/features/welcome/welcomeSlice";
 import AppContainer from '../../components/AppContainer';
 import InfoPageLayout from '../../layouts/InfoPageLayout';
 import { NavProps } from '../../types/common.types';
+import ButtonYellow from '../../components/Buttons/ButtonYellow';
 const WelcomeConditionsImage = require('../../assets/welcome_conditions.jpg')
 
 const WelcomePatients: FC<NavProps> = ({ navigation }) => {
@@ -37,12 +38,10 @@ const WelcomePatients: FC<NavProps> = ({ navigation }) => {
                             <Text style={[cs.fClickableGray, cs.fzM]}>назад</Text>
                         </TouchableOpacity>
                     </View>
-                    <TouchableOpacity style={[cs.flexOne]} onPress={toNextStep}>
-                        <LinearGradient style={[cs.yellowBtn, cs.fCenterCol]}
-                            colors={["#FB0", "#FFCB3D", "#FFDA75"]}>
-                            <Text style={[cs.fzM, cs.yellowBtnText]}>Далее</Text>
-                        </LinearGradient>
-                    </TouchableOpacity>
+                    <ButtonYellow style={{ minHeight: 54, flex: 1, minWidth: "50%" }} handlePress={toNextStep}>
+                        <Text style={[cs.fzM, cs.yellowBtnText]}>Далее</Text>
+                    </ButtonYellow>
+
                 </View>
 
             </AppContainer>

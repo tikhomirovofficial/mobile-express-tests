@@ -54,6 +54,7 @@ const ConnectBio: FC<NavProps> = ({ navigation }) => {
                                     <Text style={[cs.fzM, cs.yellowBtnText]}>Разрешить</Text>
                                 </LinearGradient>
                             </TouchableOpacity>
+                            
                             <View style={[cs.fCenterCol]}>
                                 <TouchableOpacity onPress={handleToNotifications}>
                                     <Text onPress={handleSkip} style={[cs.fClickableGray, cs.fzM, cs.fwMedium, { color: theme.title }]}>Пропустить</Text>

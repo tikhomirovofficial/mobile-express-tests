@@ -34,6 +34,7 @@ type AcecssSliceType = {
         error: string,
         valid: boolean,
         checking: boolean
+        sending: boolean
     },
 
 }
@@ -57,7 +58,8 @@ const initialState: AcecssSliceType = {
     accepted: {
         error: "",
         checking: true,
-        valid: false
+        valid: false,
+        sending: false
     },
     pin: {
         exists: false,
@@ -224,15 +226,18 @@ export const accessSlice = createSlice({
         //CHECK ACCEPTED
         builder.addCase(checkValidEnteredPin.pending, (state, action) => {
             state.accepted.error = ""
+            state.accepted.sending = true
         })
         builder.addCase(checkValidEnteredPin.fulfilled, (state, action) => {
             state.accepted.checking = false
             state.accepted.valid = action.payload
+            state.accepted.sending = false
         })
         builder.addCase(checkValidEnteredPin.rejected, (state, action) => {
             state.accepted.valid = false
             state.accepted.checking = false
             state.accepted.error = "Неверный код"
+            state.accepted.sending = false
         })
         //CHECK ACCEPTED BY TOUCH OR FACE
         builder.addCase(checkBioEntered.pending, (state, action) => {
@@ -241,9 +246,11 @@ export const accessSlice = createSlice({
         builder.addCase(checkBioEntered.fulfilled, (state, action) => {
             state.accepted.checking = false
             state.accepted.valid = action.payload
+            state.accepted.sending = false
         })
         builder.addCase(checkBioEntered.rejected, (state, action) => {
             state.accepted.valid = false
+            state.accepted.sending = false
             state.accepted.checking = false
         })
         //SETTING PIN-CODE

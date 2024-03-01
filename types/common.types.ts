@@ -4,6 +4,11 @@ import { ReactNode } from "react";
 export type HasId = {
     id: number
 }
+export type ModalCustomProps = {
+    level?: number
+    show?: boolean
+    handleModal?: () => any
+}
 export type HasNodeChildren = {
     children: ReactNode
 }

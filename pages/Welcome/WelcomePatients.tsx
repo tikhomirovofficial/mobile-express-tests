@@ -20,28 +20,20 @@ const WelcomePatients: FC<NavProps> = ({ navigation }) => {
     const toLoginStep = () => {
         navigation.navigate("login_phone")
     }
-    
+
     return (
         <InfoPageLayout handleSkip={toLoginStep} title='Ваше сотрудничество с нашей лабораторией' image={WelcomePatientsImage} content={
-            <AppContainer style={{ flex: 1, ...cs.spaceXXL}}>
+            <AppContainer style={{ flex: 1, ...cs.spaceXXL }}>
                 <FeauturesLayout step={0} features={[
                     "Приглашайте своих пациентов по номеру телефона",
                     "Назначайте им необходимые анализы",
                     "Отслеживайте статус заказ",
                     "Просматривайте результаты, назначенных анализов",
                 ]} />
-            
-                <View style={[cs.fRowBetw, cs.fAlCenter]}>
-                   
-                    <TouchableOpacity style={[cs.flexOne]} onPress={nextStep}>
-                        <LinearGradient style={[cs.yellowBtn, cs.fCenterCol]}
-                            colors={["#FB0", "#FFCB3D", "#FFDA75"]}>
 
-                            <Text style={[cs.fzM, cs.yellowBtnText]}>Начать</Text>
-                        </LinearGradient>
-                    </TouchableOpacity>
-                
-                </View>
+                <ButtonYellow style={{ minHeight: 54, flex: 1, width: "100%" }} handlePress={nextStep}>
+                    <Text style={[cs.fzM, cs.yellowBtnText]}>Начать</Text>
+                </ButtonYellow>
 
             </AppContainer>
 

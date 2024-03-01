@@ -2,7 +2,7 @@ import React, { FC, useEffect } from 'react';
 import WhiteBordered from "../../../layouts/WhiteBordered";
 import { cs } from "../../../common/styles";
 import { Modal, StyleSheet, Text, View } from "react-native";
-import { PopupProps } from "../../../types/common.types";
+import { ModalCustomProps, PopupProps } from "../../../types/common.types";
 import { ModalContainer } from '../../ModalContainer';
 import { useAppDispatch, useAppSelector } from '../../../app/base/hooks';
 import { handleOrderInfoModal } from '../../../app/features/modals/modalsSlice';
@@ -11,12 +11,11 @@ import { fs } from '../../../navigation/AppNavigator';
 import { SkeletonView } from '../../SkeletonView';
 import { SkeletonContainer } from 'react-native-skeleton-component';
 import { useAppTheme } from '../../../hooks/useTheme';
+import { ModalShadow } from '../../ModalShadow';
 
-const OrderInfoModal = () => {
+const OrderInfoModal: FC<ModalCustomProps> = ({ show, handleModal }) => {
     const dispatch = useAppDispatch()
     const theme = useAppTheme()
-    const handleModal = () => dispatch(handleOrderInfoModal())
-    const { orderInfoModal } = useAppSelector(state => state.modals)
     const { orderInfo: { info_order, analiz_list, results }, loadings } = useAppSelector(state => state.currentData)
 
     useEffect(() => {
@@ -26,13 +25,14 @@ const OrderInfoModal = () => {
     }, [])
 
     return (
-        <Modal animationType={"slide"} visible={orderInfoModal} transparent={true}>
-            <WhiteBordered style={cs.modalSlidedBottom}>
+        <Modal style={{ position: "relative" }} animationType={"slide"} visible={show} transparent={true}>
+            <ModalShadow show={show !== undefined ? show : false} />
+            <WhiteBordered isModal transparentBg style={[cs.modalSlidedBottom, { position: "relative" }]}>
                 <SkeletonContainer backgroundColor={theme.skeleton}>
                     <View style={styles.analysisOrderContent}>
-                        <View style={[cs.fRowBetw]}>
+                        <View style={[cs.fRowBetw, cs.fAlCenter]}>
                             <Text onPress={handleModal}
-                                style={[cs.yellowBtnText, cs.textYellow, cs.fzM]}>Закрыть</Text>
+                                style={[cs.yellowBtnText, cs.textYellow, cs.fzM, cs.modalCloseText]}>Закрыть</Text>
                             <View style={[cs.fAlCenter]}>
                                 <Text style={[cs.fzM, cs.colorDark, styles.labelOrderNum, cs.fwMedium, { color: theme.text_label }]}>Заказ №</Text>
                                 {loadings.order ? <SkeletonView height={22} width={60} /> :
@@ -96,7 +96,7 @@ const OrderInfoModal = () => {
                                             <SkeletonView height={20} width={"100%"} />
                                             <SkeletonView height={20} width={"100%"} />
                                         </View> :
-                                        
+
                                         <View style={[cs.fColumn]}>
                                             {
                                                 analiz_list.map((item, index) => (

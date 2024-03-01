@@ -14,6 +14,7 @@ import { SkeletonContainer } from 'react-native-skeleton-component';
 import { SkeletonView } from '../../SkeletonView';
 import { addToCart, CartItemType, removeProduct } from '../../../app/features/cart/cartSlice';
 import { useAppTheme } from '../../../hooks/useTheme';
+import { ModalShadow } from '../../ModalShadow';
 
 const AnalysisInfoModal: FC<NavProps> = ({ navigation }) => {
     const dispatch = useAppDispatch()
@@ -47,14 +48,15 @@ const AnalysisInfoModal: FC<NavProps> = ({ navigation }) => {
     }, [])
 
     return (
-        <Modal animationType={"slide"} visible={analysisInfoModal} transparent={true}>
-            <WhiteBordered style={[cs.modalSlidedBottom]}>
+        <Modal style={{ position: "relative" }} animationType={"slide"} visible={analysisInfoModal} transparent={true}>
+            <ModalShadow show={analysisInfoModal} />
+            <WhiteBordered isModal transparentBg style={[cs.modalSlidedBottom, { position: "relative" }]}>
                 <SkeletonContainer backgroundColor={theme.skeleton}>
                     <View style={[cs.spaceXXL, styles.patientsModalBlock]}>
-                        <View style={[cs.fRowBetw]}>
-                            <Text onPress={handleModal} style={[cs.yellowBtnText, cs.textYellow, cs.fzM]}>Закрыть</Text>
+                        <View style={[cs.fRowBetw, cs.fAlCenter]}>
+                            <Text onPress={handleModal} style={[cs.yellowBtnText, cs.textYellow, cs.fzM, cs.modalCloseText]}>Закрыть</Text>
                             <View style={[cs.fAlCenter]}>
-                                <Text style={[cs.fzM, cs.colorDark, cs.fzM, cs.colorDark, cs.fwSemi, {color: theme.text_label}]}>Подробнее</Text>
+                                <Text style={[cs.fzM, cs.colorDark, cs.fzM, cs.colorDark, cs.fwSemi, { color: theme.text_label }]}>Подробнее</Text>
                             </View>
                             <View style={{ flex: 0.4 }}></View>
                         </View>
@@ -64,7 +66,7 @@ const AnalysisInfoModal: FC<NavProps> = ({ navigation }) => {
                                     {
                                         loadings.product_info ?
                                             <SkeletonView height={30} width={"100%"} /> :
-                                            <Text style={[cs.fzXL, cs.fwBold, {color: theme.title}]}>{productInfo.name}</Text>
+                                            <Text style={[cs.fzXL, cs.fwBold, { color: theme.title }]}>{productInfo.name}</Text>
                                     }
                                     {/* {
                                         loadings.product_info ?
@@ -80,7 +82,7 @@ const AnalysisInfoModal: FC<NavProps> = ({ navigation }) => {
                                     loadings.product_info ?
                                         <SkeletonView height={80} width={"100%"} /> :
                                         <View style={[cs.spaceM, cs.flexOne,]}>
-                                            <Text style={[cs.fzM, cs.fwBold, {color: theme.title}]}>Описание</Text>
+                                            <Text style={[cs.fzM, cs.fwBold, { color: theme.title }]}>Описание</Text>
                                             <Text style={[cs.colorGray, cs.fzS, fs.montR]}>
                                                 {productInfo.info || "Описание отсутствует."}
                                             </Text>

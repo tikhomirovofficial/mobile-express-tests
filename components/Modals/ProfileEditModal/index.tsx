@@ -1,7 +1,8 @@
 import React, { useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from "../../../app/base/hooks";
-import { Modal, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { Modal, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View, TouchableWithoutFeedback } from "react-native";
 import WhiteBordered from "../../../layouts/WhiteBordered";
+import Animated, { FadeIn, FadeOut } from 'react-native-reanimated';
 import { cs } from "../../../common/styles";
 import ButtonYellow from "../../Buttons/ButtonYellow";
 import { PhotoIcon } from "../../../icons";
@@ -12,6 +13,7 @@ import { handleEditProfileGender, handleProfileForm, setDefaultProfileForm } fro
 import { ProfileData, ProfileEditTextFields } from '../../../types/entities/user.types';
 import { InputField } from '../../InputField';
 import { useAppTheme } from '../../../hooks/useTheme';
+import { ModalShadow } from '../../ModalShadow';
 
 const ProfileEditModal = () => {
     const dispatch = useAppDispatch()
@@ -32,12 +34,13 @@ const ProfileEditModal = () => {
     }, [])
 
     return (
-        <Modal animationType={"slide"} visible={profileEditModal} transparent={true}>
-            <WhiteBordered style={{ ...cs.modalSlidedBottom, paddingBottom: 20 }}>
+        <Modal style={{ position: "relative" }} animationType={"slide"} visible={profileEditModal} transparent={true}>
+            <ModalShadow show={profileEditModal} />
+            <WhiteBordered isModal  style={{ ...cs.modalSlidedBottom, paddingBottom: 20, position: "relative" }}>
                 <View style={[cs.flexOne, styles.profileDataBlock, cs.fColumnBetw, cs.spaceXXL]}>
-                    <View style={[cs.fRowBetw]}>
+                    <View style={[cs.fRowBetw, cs.fAlCenter]}>
                         <Text onPress={handleModal}
-                            style={[cs.yellowBtnText, cs.textYellow, cs.fzM]}>Закрыть</Text>
+                            style={[cs.yellowBtnText, cs.textYellow, cs.fzM, cs.modalCloseText]}>Закрыть</Text>
                         <View style={[cs.fAlCenter]}>
                             <Text style={[cs.fzM, cs.colorDark, cs.fzM, cs.colorDark, cs.fwSemi, { color: theme.text_label }]}>Личные данные</Text>
                         </View>
@@ -50,10 +53,10 @@ const ProfileEditModal = () => {
                                     <View style={[styles.avatarBlock, cs.circle, cs.fCenterCol]}>
                                         <PhotoIcon />
                                     </View>
-                                    <TouchableOpacity>
+                                    {/* <TouchableOpacity>
                                         <Text style={[cs.fwBold, cs.textYellow, cs.fzS, cs.txtCenter]}>Добавить
                                             фото</Text>
-                                    </TouchableOpacity>
+                                    </TouchableOpacity> */}
 
                                 </View>
                                 <InputField
@@ -70,7 +73,7 @@ const ProfileEditModal = () => {
                                     val={form.first_name}
                                     onChange={val => dispatch(handleProfileForm({ key: "first_name", val }))}
                                 />
-                                 <InputField
+                                <InputField
                                     error={""}
                                     label={"Отчество"}
                                     idInput={"labelMiddleName"}
@@ -88,14 +91,17 @@ const ProfileEditModal = () => {
                             </View>
                         </ScrollView>
 
-                        <ButtonYellow isFilled={true} disabled={formAndDataEqual} handlePress={() => { }}>
+                        {/* <ButtonYellow isFilled={true} disabled={formAndDataEqual} handlePress={() => { }}>
                             <Text style={[cs.fzM, cs.yellowBtnText, cs.colorBlack]}>Сохранить</Text>
-                        </ButtonYellow>
+                        </ButtonYellow> */}
                     </View>
 
                 </View>
             </WhiteBordered>
-        </Modal>
+
+
+        </Modal >
+
     );
 };
 

@@ -1,26 +1,18 @@
-import React, { FC, useEffect } from 'react';
+import React, { FC } from 'react';
 import WhiteBorderedLayout from "../../../layouts/WhiteBordered";
-import { Animated, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { cs } from "../../../common/styles";
 import { useAppDispatch, useAppSelector } from "../../../app/base/hooks";
 import { HeartIcon, LightThemeIcon, Logo, LogoutIcon, PhotoIcon, ProfileIcon, ProfilesIcon, ThemeIcon, WalletIcon } from "../../../icons";
 import { fs } from "../../../navigation/AppNavigator";
 import { handleAboutModal, handleOrdersFinancesModal, handlePatientsModal, handleProfileEditModal } from "../../../app/features/modals/modalsSlice";
 import ProfileEditModal from "../../../components/Modals/ProfileEditModal";
-import PatientsModal from "../../../components/Modals/PatientsModal";
 import AboutAppModal from "../../../components/Modals/AboutAppModal";
 import { NavProps } from "../../../types/common.types";
-import Constants from 'expo-constants';
 import OrdersFinancesModal from '../../../components/Modals/OrdersFinancesModal';
-import { BottomSheet } from '../../../components/BottomSheet';
-import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { SkeletonView } from '../../../components/SkeletonView';
 import { SkeletonContainer } from 'react-native-skeleton-component';
-import { logout } from '../../../app/features/login/loginSlice';
-import { resetAccess } from '../../../app/features/access/accessSlice';
-import { resetProfileData } from '../../../app/features/profile/profileSlice';
 import { formatBonus } from '../../../utils/formatBonusesString';
-import { usePagination } from '../../../hooks/usePagination';
 import { useRefresh } from '../../../hooks/useRefresh';
 import { setTheme } from '../../../app/features/settings/settingsSlice';
 import { useAppTheme } from '../../../hooks/useTheme';
@@ -52,7 +44,7 @@ const Profile: FC<NavProps> = ({ navigation }) => {
         dispatch(setTheme("light"))
         await storeTheme("light")
     }
-    
+
     const handleFinances = () => dispatch(handleOrdersFinancesModal())
 
     return (
@@ -108,7 +100,6 @@ const Profile: FC<NavProps> = ({ navigation }) => {
                                     <Text style={[cs.fzXS, fs.montR, cs.txtCenter, cs.colorGray]}>Бонусы и
                                         реквизиты</Text>
                                 </View>
-
                             </TouchableOpacity>
                             <TouchableOpacity onPress={handlePatients}
                                 style={[styles.profileHubItem, cs.wBlockShadow, cs.fAlCenter, cs.flexOne, { backgroundColor: _theme.card_bg || cs.wBlockShadow.backgroundColor }]}>
@@ -120,7 +111,6 @@ const Profile: FC<NavProps> = ({ navigation }) => {
                                     <Text style={[cs.fzXS, fs.montR, cs.txtCenter, cs.colorGray]}>Список ваших
                                         пациентов</Text>
                                 </View>
-
                             </TouchableOpacity>
                             <TouchableOpacity
                                 onPress={handleAbout}
@@ -146,7 +136,6 @@ const Profile: FC<NavProps> = ({ navigation }) => {
                                 <View style={[cs.fAlCenter]}>
                                     <Text style={[cs.fzS, fs.montR, cs.txtCenter, cs.fwMedium, { paddingBottom: 8 }, { color: _theme.title }]}>Включить {theme === "light" ? "тёмную" : "светлую"} тему</Text>
                                 </View>
-
                             </TouchableOpacity>
                             <TouchableOpacity
                                 onPress={handleLogout}
@@ -156,14 +145,12 @@ const Profile: FC<NavProps> = ({ navigation }) => {
                                 </View>
                                 <View style={[cs.fAlCenter]}>
                                     <Text style={[cs.fzS, fs.montR, cs.txtCenter, cs.fwMedium, cs.colorRed, { paddingBottom: 8 }]}>Выйти из приложения</Text>
-
                                 </View>
                             </TouchableOpacity>
                         </View>
                     </View>
                 </View>
             </WhiteBorderedLayout>
-            {patientsModal ? <PatientsModal navigation={navigation} /> : null}
             {profileEditModal ? <ProfileEditModal /> : null}
             {aboutAppModal ? <AboutAppModal /> : null}
             {ordersFinancesModal ? <OrdersFinancesModal /> : null}
@@ -189,6 +176,7 @@ const styles = StyleSheet.create({
         borderRadius: 16,
         gap: 18,
         minWidth: 140,
+        minHeight: 170
     },
     profileItemIcon: {
         height: 64,

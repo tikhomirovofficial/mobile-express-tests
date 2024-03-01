@@ -27,7 +27,7 @@ const Root = () => {
     const appTheme = useAppTheme()
     const { theme, loading } = useAppSelector(state => state.settings)
     const { token } = useAppSelector(state => state.login)
-    const { pin, alreadyBeen, faceId, bio} = useAppSelector(state => state.access)
+    const { pin, alreadyBeen, faceId, bio } = useAppSelector(state => state.access)
     const { notifications, media, contacts } = useAppSelector(state => state.permissions)
     const [fontsLoaded] = useFonts();
     const allAccessesAndPermissionsDefined = !bio.checking && !token.checking && !pin.checking && !alreadyBeen.checking && !notifications.checking && !contacts.checking && !media.checking
@@ -57,9 +57,9 @@ const Root = () => {
 
     useEffect(() => {
         // deleteTokens()
-        // deleteAlreadyBeen()
+        //deleteAlreadyBeen()
         // deleteAccessed()
-        // deletePin()
+        //deletePin()
         dispatch(initAppTheme())
         dispatch(checkBioSupportedOnDevice())
         dispatch(checkToken())
@@ -88,7 +88,7 @@ const Root = () => {
 
                 {notifications.granted ? <NotificationsProvider /> : null}
                 <WithNetwork>
-                    <View style={{ flex: 1 }}>
+                    <View style={{ flex: 1, backgroundColor: appTheme.main_bg }}>
                         <AppNavigator />
                     </View>
                 </WithNetwork>

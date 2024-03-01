@@ -11,11 +11,9 @@ import { handleAboutModal, handleProfileEditModal } from "../../../app/features/
 import { ModalContainer } from '../../ModalContainer';
 import { useAppTheme } from '../../../hooks/useTheme';
 import { DocumentItem } from '../../DocumentItem';
+import { ModalShadow } from '../../ModalShadow';
 
 
-
-
-const docsArr = [1, 3, 34, 5]
 
 const AboutAppModal = () => {
     const dispatch = useAppDispatch()
@@ -27,14 +25,15 @@ const AboutAppModal = () => {
     }
 
     return (
-        <Modal animationType={"slide"} visible={aboutAppModal} transparent={true}>
-            <WhiteBordered style={{ ...cs.modalSlidedBottom, paddingBottom: 20 }}>
+        <Modal style={{ position: "relative" }} animationType={"slide"} visible={aboutAppModal} transparent={true}>
+            <ModalShadow show={aboutAppModal} />
+            <WhiteBordered transparentBg isModal style={{ ...cs.modalSlidedBottom, paddingBottom: 20, position: "relative" }} >
                 <View style={[cs.flexOne, styles.aboutAppContent, cs.fColumnBetw, cs.spaceXXL]}>
                     <View style={[cs.fRowBetw]}>
                         <Text onPress={handleModal}
-                            style={[cs.yellowBtnText, cs.textYellow, cs.fzM]}>Закрыть</Text>
+                            style={[cs.yellowBtnText, cs.textYellow, cs.fzM, cs.modalCloseText]}>Закрыть</Text>
                         <View style={[cs.fAlCenter]}>
-                            <Text style={[cs.fzM, cs.colorDark, cs.fzM, cs.colorDark, cs.fwSemi, {color: theme.text_label}]}>О приложении</Text>
+                            <Text style={[cs.fzM, cs.colorDark, cs.fzM, cs.colorDark, cs.fwSemi, { color: theme.text_label }]}>О приложении</Text>
                         </View>
                         <View style={{ flex: 0.4 }}></View>
                     </View>
@@ -47,11 +46,9 @@ const AboutAppModal = () => {
                             </View>
                         </View>
                         <View style={[cs.spaceM, cs.fColumn]}>
-                            {
-                                docsArr.map((item, index) => (
-                                    <DocumentItem title={"Документ"} neededBorder={index !== docsArr.length - 1} />
-                                ))
-                            }
+                            <DocumentItem title={"Пользовательское соглашение"} neededBorder={true} />
+                            <DocumentItem title={"Политика конфиденциальности"} neededBorder={true} />
+                            <DocumentItem title={"Согласие на обработку персональных данных"} neededBorder={false} />
 
                         </View>
                     </View>
@@ -59,7 +56,7 @@ const AboutAppModal = () => {
 
                 </View>
             </WhiteBordered>
-        </Modal>
+        </Modal >
     );
 };
 

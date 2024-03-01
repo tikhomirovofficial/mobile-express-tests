@@ -1,6 +1,6 @@
 import React, { FC, useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from "../../../app/base/hooks";
-import { Modal, StyleSheet, Text, View, FlatList, ActivityIndicator } from "react-native";
+import { Modal, StyleSheet, Text, View, FlatList, ActivityIndicator, ModalProps } from "react-native";
 import WhiteBordered from "../../../layouts/WhiteBordered";
 import { cs } from "../../../common/styles";
 import ButtonYellow from "../../Buttons/ButtonYellow";
@@ -9,7 +9,7 @@ import {
     handlePatientInfoModal,
     handlePatientsModal
 } from "../../../app/features/modals/modalsSlice";
-import { NavProps } from "../../../types/common.types";
+import { ModalCustomProps, NavProps } from "../../../types/common.types";
 import { SkeletonContainer } from 'react-native-skeleton-component';
 import { SkeletonView } from '../../SkeletonView';
 import { getPatientById } from '../../../app/features/current-data/currentData';
@@ -17,11 +17,13 @@ import { getAllPatients, incrementPatientsPart, resetAllPatients } from '../../.
 import { usePagination } from '../../../hooks/usePagination';
 import { fs } from '../../../navigation/AppNavigator';
 import { useAppTheme } from '../../../hooks/useTheme';
+import PatientInfoModal from '../PatientInfoModal';
+import { ModalShadow } from '../../ModalShadow';
 
-const PatientsModal: FC<NavProps> = ({ navigation }) => {
+const PatientsModal: FC<NavProps & ModalCustomProps> = ({ navigation, level = 1 }) => {
     const dispatch = useAppDispatch()
     const theme = useAppTheme()
-    const { patientsModal } = useAppSelector(state => state.modals)
+    const { patientsModal, patientInfoModal } = useAppSelector(state => state.modals)
     const patients = useAppSelector(state => state.patients)
 
     const [loadOrders, loadMore] = usePagination(
@@ -56,11 +58,12 @@ const PatientsModal: FC<NavProps> = ({ navigation }) => {
     }, [])
 
     return (
-        <Modal animationType={"slide"} visible={patientsModal} transparent={true}>
-            <WhiteBordered scrollable={false} style={{ ...cs.modalSlidedBottom }}>
+        <Modal style={{ position: "relative" }} animationType={"slide"} visible={patientsModal} transparent={true}>
+            <ModalShadow show={patientsModal} />
+            <WhiteBordered isModal transparentBg modalLevel={level} scrollable={false} style={{ ...cs.modalSlidedBottom, position: "relative" }}>
                 <View style={[cs.spaceXXL, styles.patientsModalBlock]}>
-                    <View style={[cs.fRowBetw]}>
-                        <Text onPress={handleModal} style={[cs.yellowBtnText, cs.textYellow, cs.fzM]}>Закрыть</Text>
+                    <View style={[cs.fRowBetw, cs.fAlCenter]}>
+                        <Text onPress={handleModal} style={[cs.yellowBtnText, cs.textYellow, cs.fzM, cs.modalCloseText]}>Закрыть</Text>
                         <View style={[cs.fAlCenter]}>
                             <Text style={[cs.fzM, cs.colorDark, cs.fzM, cs.colorDark, cs.fwSemi, { color: theme.text_label }]}>Мои пациенты</Text>
                         </View>
@@ -103,6 +106,7 @@ const PatientsModal: FC<NavProps> = ({ navigation }) => {
                                                 <View style={{ height: 20 }}>
                                                     {patients.loadings.patients_pagination ? <ActivityIndicator color={cs.bgYellow.backgroundColor} /> : null}
                                                 </View>
+
                                             </>
                                             :
                                             <Text style={[fs.montR, { color: theme.text_label }]}>Вы пока не пригласили ни одного пациента.</Text>
@@ -115,6 +119,10 @@ const PatientsModal: FC<NavProps> = ({ navigation }) => {
                     </View>
                 </View>
             </WhiteBordered>
+            {
+                patientInfoModal ? <PatientInfoModal navigation={navigation} /> : null
+
+            }
         </Modal>
     );
 };

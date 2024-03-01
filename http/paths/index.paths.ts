@@ -1,5 +1,5 @@
 export const USER_PATHS = {
-    LOGIN_PHONE: "auth/token/create ",
+    LOGIN_PHONE: "auth/token/create",
     LOGIN_CODE: "auth/token/get",
     TOKEN_REFRESH: "auth/token/refresh",
     CREATE_PROFILE: "lk/fill_fio_or_passport",

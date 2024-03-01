@@ -14,7 +14,7 @@ import { PhotoIcon } from "../../../icons";
 import OrderCard from "../../Cards/OrderCard";
 import OrderInfoModal from "../OrderInfoModal";
 import { resetOrderBonusesTotal, setPatient } from '../../../app/features/order/orderSlice';
-import { NavProps } from '../../../types/common.types';
+import { ModalCustomProps, NavProps } from '../../../types/common.types';
 import { SkeletonContainer } from 'react-native-skeleton-component';
 import { SkeletonView } from '../../SkeletonView';
 import { normalizeDate } from '../../../utils/normalizeDate';
@@ -26,8 +26,9 @@ import { useAppTheme } from '../../../hooks/useTheme';
 import { formatPhoneNumber } from '../../../utils/formatePhone';
 import { getAgeByDob } from '../../../utils/getAgeByDob';
 import { clearCart } from '../../../app/features/cart/cartSlice';
+import { ModalShadow } from '../../ModalShadow';
 
-const PatientInfoModal: FC<NavProps> = ({ navigation }) => {
+const PatientInfoModal: FC<NavProps & ModalCustomProps> = ({ navigation, level = 2 }) => {
     const dispatch = useAppDispatch()
     const theme = useAppTheme()
     const { patientInfoModal, patientOrderInfoModal, patientsModal } = useAppSelector(state => state.modals)
@@ -87,12 +88,13 @@ const PatientInfoModal: FC<NavProps> = ({ navigation }) => {
     }, [])
 
     return (
-        <Modal animationType={"slide"} visible={patientInfoModal} transparent={true}>
-            <WhiteBordered style={{ ...cs.modalSlidedBottom }}>
+        <Modal style={{ position: "relative" }} animationType={"slide"} visible={patientInfoModal} transparent={true}>
+            <ModalShadow show={patientInfoModal} />
+            <WhiteBordered isModal transparentBg modalLevel={level} style={{ ...cs.modalSlidedBottom, position: "relative" }}>
                 <SkeletonContainer backgroundColor={theme.skeleton}>
                     <View style={[cs.spaceXXL, styles.patientsModalBlock]}>
-                        <View style={[cs.fRowBetw]}>
-                            <Text onPress={handleModal} style={[cs.yellowBtnText, cs.textYellow, cs.fzM]}>Закрыть</Text>
+                        <View style={[cs.fRowBetw, cs.fAlCenter]}>
+                            <Text onPress={handleModal} style={[cs.yellowBtnText, cs.textYellow, cs.fzM, cs.modalCloseText]}>Закрыть</Text>
                             <View style={[cs.fAlCenter]}>
                                 <Text style={[cs.fzM, cs.colorDark, cs.fzM, cs.colorDark, cs.fwSemi, { color: theme.text_label }]}>Пациент</Text>
                             </View>
@@ -185,7 +187,7 @@ const PatientInfoModal: FC<NavProps> = ({ navigation }) => {
                                                             <OrderCard
                                                                 customerHide
                                                                 status={item.status}
-                                                                handlePress={() => dispatch(handleOrderInfoModal())}
+                                                                handlePress={() => dispatch(handlePatientOrderInfoModal())}
                                                                 key={item.id}
                                                                 paid={true}
                                                                 date={normalizeDate(item.date)}
@@ -211,7 +213,7 @@ const PatientInfoModal: FC<NavProps> = ({ navigation }) => {
 
             </WhiteBordered>
             {
-                patientOrderInfoModal ? <OrderInfoModal /> : null
+                patientOrderInfoModal ? <OrderInfoModal level={3} /> : null
             }
         </Modal>
     );

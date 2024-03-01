@@ -173,7 +173,7 @@ const styles = StyleSheet.create({
         alignItems: "center",
         gap: 10,
         borderRadius: 16,
-        height: 150
+        minHeight: 150
     },
     labelOrderNum: {
         fontWeight: "500"

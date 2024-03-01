@@ -66,6 +66,10 @@ const cs = StyleSheet.create({
     textYellow: {
         color: "#FFCF00"
     },
+    modalCloseText: {
+      paddingVertical: 6,
+      paddingRight: 10  
+    },
     textRed: {
         color: "#F40F0F"
     },
@@ -121,13 +125,14 @@ const cs = StyleSheet.create({
             width: 4,
             height: 4,
         },
-        shadowOpacity: 0.3,
+        shadowOpacity: 0.2,
         shadowRadius: 10,
         backgroundColor: "white",
         elevation: 4,
     },
     yellowBtn: {
-        padding: 15,
+        paddingHorizontal: 15,
+        paddingVertical: 15,
         borderRadius: 6,
         textAlign: "center"
     },
@@ -142,6 +147,9 @@ const cs = StyleSheet.create({
     },
     flexOne: {
         flex: 1
+    },
+    searchInput: {
+        paddingVertical: 5
     },
     bgYellow: {
         backgroundColor: "#FFCF00",

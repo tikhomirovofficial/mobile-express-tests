@@ -19,6 +19,7 @@ import OrderCard from '../../Cards/OrderCard';
 import { PaginationBottom } from '../../PaginationBottom';
 import { SkeletonView } from '../../SkeletonView';
 import { OrderByDateApi } from '../../../types/entities/order.types';
+import { ModalShadow } from '../../ModalShadow';
 
 
 // const OrderItem = () => {
@@ -94,14 +95,16 @@ const OrdersFinancesModal = () => {
             dispatch(resetDatedOrders())
         }
     }, [])
+
     return (
-        <Modal animationType={"slide"} visible={ordersFinancesModal} transparent={true}>
-            <WhiteBordered style={{ ...cs.modalSlidedBottom, paddingBottom: 20 }}>
+        <Modal style={{ position: "relative" }} animationType={"slide"} visible={ordersFinancesModal} transparent={true}>
+            <ModalShadow show={ordersFinancesModal} />
+            <WhiteBordered isModal transparentBg style={{ ...cs.modalSlidedBottom, paddingBottom: 20, position: "relative" }}>
                 <SkeletonContainer>
                     <View style={[cs.flexOne, cs.fColumnBetw, cs.spaceXXL]}>
-                        <View style={[cs.fRowBetw]}>
+                        <View style={[cs.fRowBetw, cs.fAlCenter]}>
                             <Text onPress={handleModal}
-                                style={[cs.yellowBtnText, cs.textYellow, cs.fzM]}>Закрыть</Text>
+                                style={[cs.yellowBtnText, cs.textYellow, cs.fzM, cs.modalCloseText]}>Закрыть</Text>
                             <View style={[cs.fAlCenter]}>
                                 <Text style={[cs.fzM, cs.colorDark, cs.fzM, cs.colorDark, cs.fwSemi, { color: theme.text_label }]}>Финансы</Text>
                             </View>

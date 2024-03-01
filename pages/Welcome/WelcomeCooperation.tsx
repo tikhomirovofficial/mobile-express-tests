@@ -8,6 +8,7 @@ import { setWelcomeStep } from "../../app/features/welcome/welcomeSlice";
 import { NavProps } from "../../types/common.types";
 import InfoPageLayout from '../../layouts/InfoPageLayout';
 import AppContainer from '../../components/AppContainer';
+import ButtonYellow from '../../components/Buttons/ButtonYellow';
 const WelcomeCooperationImage = require('../../assets/welcome_cooperative.jpg')
 
 const WelcomePatients: FC<NavProps> = ({ navigation }) => {
@@ -33,12 +34,9 @@ const WelcomePatients: FC<NavProps> = ({ navigation }) => {
                             <Text style={[cs.fClickableGray, cs.fzM]}>назад</Text>
                         </TouchableOpacity>
                     </View>
-                    <TouchableOpacity style={[cs.flexOne]} onPress={toLoginStep}>
-                        <LinearGradient style={[cs.yellowBtn, cs.fCenterCol]}
-                            colors={["#FB0", "#FFCB3D", "#FFDA75"]}>
-                            <Text style={[cs.fzM, cs.yellowBtnText]}>Начать</Text>
-                        </LinearGradient>
-                    </TouchableOpacity>
+                    <ButtonYellow style={{ minHeight: 54, flex: 1, minWidth: "50%" }} handlePress={toLoginStep}>
+                        <Text style={[cs.fzM, cs.yellowBtnText]}>Далее</Text>
+                    </ButtonYellow>
                 </View>
 
             </AppContainer>

@@ -41,13 +41,15 @@ import InvitingLinked from '../pages/Informational/InvitingLinked';
 import { useAppTheme } from '../hooks/useTheme';
 import DocsAccept from '../pages/Register/DocsAccept';
 import { LoadingScreen } from '../pages/LoadingScreen';
+import PatientsModal from '../components/Modals/PatientsModal';
+import { handleOrderInfoModal } from '../app/features/modals/modalsSlice';
 
 const Stack = createNativeStackNavigator()
 const Tab = createBottomTabNavigator()
 
 const MainTabs: FC<NavProps> = ({ navigation }) => {
     const dispatch = useAppDispatch()
-    const { patientInfoModal, orderInfoModal } = useAppSelector(state => state.modals)
+    const { patientInfoModal, orderInfoModal, patientsModal } = useAppSelector(state => state.modals)
 
     useEffect(() => {
         dispatch(getProfile())
@@ -62,12 +64,11 @@ const MainTabs: FC<NavProps> = ({ navigation }) => {
                 <Tab.Screen name="support" component={Support} />
                 <Tab.Screen name="profile" component={Profile} />
             </Tab.Navigator>
-            {
-                patientInfoModal ? <PatientInfoModal navigation={navigation} /> : null
 
-            }
+            {patientsModal ? <PatientsModal navigation={navigation} /> : null}
+
             {
-                orderInfoModal ? <OrderInfoModal /> : null
+                orderInfoModal ? <OrderInfoModal show={orderInfoModal} handleModal={() => dispatch(handleOrderInfoModal())} /> : null
             }
         </>
     );

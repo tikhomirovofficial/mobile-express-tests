@@ -35,6 +35,7 @@ export async function getOrRegisterPushToken() {
         const token = await Notifications.getExpoPushTokenAsync({
             projectId: `${Constants?.expoConfig?.extra?.eas.projectId}`
         });
+        //const token = await Notifications.getDevicePushTokenAsync()
         return token.data;
     }
     return false

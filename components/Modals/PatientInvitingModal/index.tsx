@@ -16,8 +16,8 @@ const PatientInvitingModal = () => {
         <Modal animationType={"slide"} visible={patientInvitingModal} transparent={true}>
             <WhiteBordered style={{...cs.modalSlidedBottom}}>
                 <View style={[cs.spaceXXL, styles.patientsModalBlock]}>
-                    <View style={[cs.fRowBetw]}>
-                        <Text onPress={handleModal} style={[cs.yellowBtnText, cs.textYellow, cs.fzM]}>Закрыть</Text>
+                    <View style={[cs.fRowBetw, cs.fAlCenter]}>
+                        <Text onPress={handleModal} style={[cs.yellowBtnText, cs.textYellow, cs.fzM, cs.modalCloseText]}>Закрыть</Text>
                         <View style={[cs.fAlCenter]}>
                             <Text style={[cs.fzM, cs.colorDark, cs.fzM, cs.colorDark, cs.fwSemi]}>Новый номер</Text>
                         </View>

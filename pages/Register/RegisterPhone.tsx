@@ -1,20 +1,13 @@
 import React, { FC, useEffect, useState } from 'react';
-import { Animated, Text, TouchableOpacity, View, StyleSheet, TextInput, ScrollView, Keyboard, ActivityIndicator } from "react-native";
+import { Animated, Text, View, Keyboard, ActivityIndicator } from "react-native";
 import { useAppDispatch, useAppSelector } from '../../app/base/hooks';
-import { handlePatientInvitingModal } from '../../app/features/modals/modalsSlice';
 import { cs } from '../../common/styles';
 import AppContainer from '../../components/AppContainer';
-import PatientInvitingModal from '../../components/Modals/PatientInvitingModal';
-import PatientItem from '../../components/PatientItem';
 import ButtonYellow from '../../components/Buttons/ButtonYellow';
-import { SearchIcon } from '../../icons';
 import { fs } from '../../navigation/AppNavigator';
 import { NavProps } from '../../types/common.types';
-import { LinearGradient } from 'expo-linear-gradient';
 import WhiteBorderedLayout from '../../layouts/WhiteBordered';
-import MaskInput from 'react-native-mask-input';
-import { createNumberMask, Masks } from 'react-native-mask-input';
-import { handleLoginForm, resetLoginCodeStatus, resetLoginPhoneStatus, sendAuthPhone } from '../../app/features/login/loginSlice';
+import { handleLoginForm, resetLoginPhoneStatus, sendAuthPhone, setCodeFreezedSecs, setCodeIsFreezed } from '../../app/features/login/loginSlice';
 import { phoneMask } from '../../rules/masks.rules';
 import { InputField } from '../../components/InputField';
 import { useAppTheme } from '../../hooks/useTheme';
@@ -36,6 +29,8 @@ const LoginPhone: FC<NavProps> = ({ navigation }) => {
         if (auth.success.phone) {
             navigation.navigate("sms_login")
             dispatch(resetLoginPhoneStatus())
+            dispatch(setCodeIsFreezed(true))
+            dispatch(setCodeFreezedSecs(5))
         }
     }, [auth.success.phone])
 
@@ -63,7 +58,7 @@ const LoginPhone: FC<NavProps> = ({ navigation }) => {
                     topContent={
                         <AppContainer style={{ paddingBottom: 0 }}>
                             <View style={[cs.fCenterCol]}>
-                                <Text style={[cs.fwSemi, cs.fwSemi, cs.fzXL, {color: theme.title}]}>Вход</Text>
+                                <Text style={[cs.fwSemi, cs.fwSemi, cs.fzXL, { color: theme.title }]}>Вход</Text>
                             </View>
                         </AppContainer>
                     }
@@ -87,7 +82,7 @@ const LoginPhone: FC<NavProps> = ({ navigation }) => {
                                 }}
                             />
 
-                            <ButtonYellow style={{minHeight: 54}} disabled={disabledBtn || auth.loading} handlePress={handleSendPhone}>
+                            <ButtonYellow style={{ minHeight: 54 }} disabled={disabledBtn || auth.loading} handlePress={handleSendPhone}>
                                 {auth.loading ? <ActivityIndicator color={"black"} /> : <Text style={[cs.fzM, cs.yellowBtnText]}>Продолжить</Text>}
 
                             </ButtonYellow>
