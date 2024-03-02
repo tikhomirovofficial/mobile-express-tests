@@ -123,7 +123,7 @@ const AcceptPinCode: FC<NavProps> = ({ navigation }) => {
                             </View>
                         </View>
                         <View style={[cs.fColumn, cs.spaceL, cs.fAlCenter,]}>
-                            <View style={[cs.fColumn, cs.spaceL, { maxWidth: "85%" }]}>
+                            <View style={[cs.fColumn, cs.spaceL, { maxWidth: "80%" }]}>
                                 <View style={[cs.fRowBetw, cs.spaceXXL, { width: "100%" }]}>
                                     <TouchableOpacity onPress={() => handlePin("1")} style={[styles.pinKeyBtn, cs.fCenterCol, { backgroundColor: theme.pin_btns }]}>
                                         <Text style={[styles.pinKey, cs.textYellow, fs.montR]}>1</Text>

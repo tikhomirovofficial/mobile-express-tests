@@ -14,6 +14,7 @@ import { ProfileData, ProfileEditTextFields } from '../../../types/entities/user
 import { InputField } from '../../InputField';
 import { useAppTheme } from '../../../hooks/useTheme';
 import { ModalShadow } from '../../ModalShadow';
+import { containerStyles } from '../../AppContainer';
 
 const ProfileEditModal = () => {
     const dispatch = useAppDispatch()
@@ -36,7 +37,7 @@ const ProfileEditModal = () => {
     return (
         <Modal style={{ position: "relative" }} animationType={"slide"} visible={profileEditModal} transparent={true}>
             <ModalShadow show={profileEditModal} />
-            <WhiteBordered isModal  style={{ ...cs.modalSlidedBottom, paddingBottom: 20, position: "relative" }}>
+            <WhiteBordered isModal style={{ ...cs.modalSlidedBottom, paddingBottom: 20, position: "relative" }}>
                 <View style={[cs.flexOne, styles.profileDataBlock, cs.fColumnBetw, cs.spaceXXL]}>
                     <View style={[cs.fRowBetw, cs.fAlCenter]}>
                         <Text onPress={handleModal}
@@ -115,7 +116,7 @@ const styles = StyleSheet.create({
         borderColor: "#E2E2E9"
     },
     selectableBtn: {
-        minWidth: 144,
+        minWidth: (containerStyles.container.maxWidth / 2) - 10,
         height: 52
     },
     profileInfo: {

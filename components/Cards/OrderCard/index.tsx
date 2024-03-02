@@ -27,15 +27,13 @@ const OrderCard: FC<OrderAnalysisType> = ({
             styleBlock: cs.statusGray,
             text: status
         }
-
-        if (status === "Не оплачен") {
-            statusObj.styleBlock = cs.statusGray
-
-        } else if (status === "Оплачен") {
+        if (status === "Оплачен") {
             statusObj.styleBlock = cs.statusGreen
+            return statusObj
         }
-
+        statusObj.styleBlock = cs.statusGray
         return statusObj
+        
     }, [status])
 
     const handleOpenInfo = () => {
