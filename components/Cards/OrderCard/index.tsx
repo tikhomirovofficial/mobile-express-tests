@@ -32,7 +32,7 @@ const OrderCard: FC<OrderAnalysisType> = ({
             statusObj.styleBlock = cs.statusGray
 
         } else if (status === "Оплачен") {
-            statusObj.styleBlock = cs.statusGray
+            statusObj.styleBlock = cs.statusGreen
         }
 
         return statusObj

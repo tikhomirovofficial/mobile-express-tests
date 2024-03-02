@@ -11,7 +11,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { fs } from '../../navigation/AppNavigator';
 import { NavProps } from '../../types/common.types';
 import { handlePatientsModal } from '../../app/features/modals/modalsSlice';
-import { resetCreateInvitingForm, resetSuccessInviting} from '../../app/features/inviting/invitingSlice';
+import { resetCreateInvitingForm, resetSuccessInviting } from '../../app/features/inviting/invitingSlice';
 const InfoInvitingSentImage = require('../../assets/info_inviting_sent.jpg')
 
 const InvitingLinked: FC<NavProps> = ({ navigation }) => {
@@ -52,12 +52,9 @@ const InvitingLinked: FC<NavProps> = ({ navigation }) => {
                 }]}>
 
                     <View style={[cs.fColumn, cs.spaceXL]}>
-                        <TouchableOpacity style={[cs.flexOne]} onPress={toHome}>
-                            <LinearGradient style={[cs.yellowBtn, cs.fCenterCol]}
-                                colors={["#FB0", "#FFCB3D", "#FFDA75"]}>
-                                <Text style={[cs.fzM, cs.yellowBtnText]}>Закрыть</Text>
-                            </LinearGradient>
-                        </TouchableOpacity>
+                        <ButtonYellow style={{ minHeight: 54 }} handlePress={toHome}>
+                            <Text style={[cs.fzM, cs.yellowBtnText]}>Закрыть</Text>
+                        </ButtonYellow>
                         <TouchableOpacity onPress={toInviting} style={{ alignSelf: "center" }}>
                             <Text style={[cs.fzM, fs.montR, cs.textYellow, cs.fwMedium]}>Пригласить других пациентов</Text>
                         </TouchableOpacity>

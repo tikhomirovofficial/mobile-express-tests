@@ -57,9 +57,9 @@ const Root = () => {
 
     useEffect(() => {
         // deleteTokens()
-        //deleteAlreadyBeen()
+        // deleteAlreadyBeen()
         // deleteAccessed()
-        //deletePin()
+        // deletePin()
         dispatch(initAppTheme())
         dispatch(checkBioSupportedOnDevice())
         dispatch(checkToken())
@@ -72,9 +72,11 @@ const Root = () => {
         dispatch(checkMediaPerm())
         console.log(theme);
 
-        const themeListener = Appearance.addChangeListener((e) => {
-
-            //dispatch(setTheme(e.colorScheme || "light"))
+        const themeListener = Appearance.addChangeListener(async (e) => {
+            if (e.colorScheme === "dark") {
+                dispatch(setTheme(e.colorScheme))
+                await storeTheme(e.colorScheme)
+            }
         })
         return () => {
             themeListener.remove()

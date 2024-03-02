@@ -231,7 +231,7 @@ export const AddIcon: FC<IconProps> = ({ width = 10, height = 16 }) => {
 }
 export const RemoveIcon: FC<IconProps> = ({ width = 10, height = 16 }) => {
     return (
-        <Svg width="22" height="23" viewBox="0 0 22 23" fill="none">
+        <Svg width="22" height="22" viewBox="0 0 22 23" fill="none">
             <Path fill-rule="evenodd" clip-rule="evenodd" d="M15.6857 1.5H6.31429C3.04762 1.5 1 3.81208 1 7.08516V15.9148C1 19.1879 3.0381 21.5 6.31429 21.5H15.6857C18.9619 21.5 21 19.1879 21 15.9148V7.08516C21 3.81208 18.9619 1.5 15.6857 1.5Z" fill="url(#paint0_linear_1161_252)" stroke="url(#paint1_linear_1161_252)" strokeWidth="1.5" stroke-linecap="round" stroke-linejoin="round" />
             <Path d="M14.6667 11.4904H7.33337" stroke="white" strokeWidth="1.5" stroke-linecap="round" stroke-linejoin="round" />
             <Defs>

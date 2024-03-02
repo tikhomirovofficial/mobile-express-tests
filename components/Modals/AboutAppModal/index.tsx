@@ -29,7 +29,7 @@ const AboutAppModal = () => {
             <ModalShadow show={aboutAppModal} />
             <WhiteBordered transparentBg isModal style={{ ...cs.modalSlidedBottom, paddingBottom: 20, position: "relative" }} >
                 <View style={[cs.flexOne, styles.aboutAppContent, cs.fColumnBetw, cs.spaceXXL]}>
-                    <View style={[cs.fRowBetw]}>
+                    <View style={[cs.fRowBetw, cs.fAlCenter]}>
                         <Text onPress={handleModal}
                             style={[cs.yellowBtnText, cs.textYellow, cs.fzM, cs.modalCloseText]}>Закрыть</Text>
                         <View style={[cs.fAlCenter]}>

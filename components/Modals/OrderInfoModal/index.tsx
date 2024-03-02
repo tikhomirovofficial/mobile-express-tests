@@ -12,6 +12,8 @@ import { SkeletonView } from '../../SkeletonView';
 import { SkeletonContainer } from 'react-native-skeleton-component';
 import { useAppTheme } from '../../../hooks/useTheme';
 import { ModalShadow } from '../../ModalShadow';
+import { correctFormDate } from '../../../utils/correctFormDate';
+import { normalizeDate } from '../../../utils/normalizeDate';
 
 const OrderInfoModal: FC<ModalCustomProps> = ({ show, handleModal }) => {
     const dispatch = useAppDispatch()
@@ -42,7 +44,7 @@ const OrderInfoModal: FC<ModalCustomProps> = ({ show, handleModal }) => {
                                     </View>}
                             </View>
                             {
-                                loadings.order ? <SkeletonView height={22} width={84} /> : <Text style={[cs.fzM, cs.colorGray, fs.montR]}>{info_order.date}</Text>
+                                loadings.order ? <SkeletonView height={22} width={84} /> : <Text style={[cs.fzM, cs.colorGray, fs.montR]}>{normalizeDate(info_order.date)}</Text>
                             }
 
                         </View>

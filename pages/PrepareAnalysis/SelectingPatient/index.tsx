@@ -149,7 +149,7 @@ const SelectingPatient: FC<NavProps> = ({ navigation }) => {
                                                 )}
                                             />
                                         </View> :
-                                        <Text style={[fs.montR, { color: theme.text_label }]}>Вы пока не пригласили пациентов.</Text>
+                                        <Text style={[fs.montR, { color: theme.text_label }]}>{defferedSearchVal.length > 0 ? "Пациент не найден." : "Вы пока не пригласили пациентов."}</Text>
                                 }
 
                             </View>
